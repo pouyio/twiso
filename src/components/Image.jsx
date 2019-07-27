@@ -11,15 +11,16 @@ export default function Image({ item }) {
 
     const placeholder = (text) => `https://via.placeholder.com/450x680?text=${text}`;
 
-    const findFirstValid = (posters) => {
-        const p = posters.find(p => p.iso_639_1 === language);
-        return p || posters[0];
-    }
-
     useEffect(() => {
         if (!config) {
             return;
         }
+
+        const findFirstValid = (posters) => {
+            const p = posters.find(p => p.iso_639_1 === language);
+            return p || posters[0];
+        }
+
         getImgs(item.movie.ids.tmdb).then(({ data }) => {
             const posterSize = config.images.profile_sizes[1];
             const poster = findFirstValid(data.posters);
@@ -30,7 +31,7 @@ export default function Image({ item }) {
         }).catch(() => {
             setImgUrl(placeholder('Film not found in TMDB'));
         });
-    }, [config, item.movie.ids.tmdb])
+    }, [config, item.movie.ids.tmdb, language])
 
     return (
         <div ref={ref} style={{ minHeight: '20em' }}>
