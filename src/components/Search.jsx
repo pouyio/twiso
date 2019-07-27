@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useDebounce from '../utils/debounce';
 import Movie from './Movie';
 import { searchMovie } from '../utils/api';
+import Emoji from './Emoji';
 
 
 export default function Search() {
@@ -30,7 +31,7 @@ export default function Search() {
         <div>
             <h1>This is search!</h1>
             <input type="text" placeholder="Search movie and show" autoFocus={true} onChange={(e) => setQuery(e.target.value)} />
-            {loading && <span role="img" aria-label="emoji">⏳</span>}
+            {loading && <Emoji emoji={'⏳'} rotating={true} />}
             <ul>
                 {results.map(r => <Movie key={r.movie.ids.trakt} item={r} />)}
             </ul>

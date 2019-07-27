@@ -9,6 +9,7 @@ import MovieDetail from './components/MovieDetail'
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { UserProvider } from './utils/UserContext';
 import { AuthProvider } from './utils/AuthContext';
+import Emoji from './components/Emoji';
 
 function ParamsComponent({ location, history }) {
 
@@ -39,15 +40,15 @@ function App() {
           <ul className="navbar">
             <li>
               <Link to="/watchlist">
-                <span role="img" aria-label="emoji">📺</span> Pendientes</Link>
+                <Emoji emoji={'📺'} /> Pendientes</Link>
             </li>
             <li>
               <Link to="/watched">
-                <span role="img" aria-label="emoji">📌</span> Vistas</Link>
+                <Emoji emoji={'📌'} /> Vistas</Link>
             </li>
             <li>
               <Link to="/search">
-                <span role="img" aria-label="emoji">🔍</span> Buscar</Link>
+                <Emoji emoji={'🔍'} /> Buscar</Link>
             </li>
             <li>
               <button onClick={logout}>Log out</button>

@@ -3,6 +3,7 @@ import WatchButton from './WatchButton';
 import { getMovie } from '../utils/api';
 import Image from './Image';
 import useTranslate from '../utils/useTranslate';
+import Emoji from './Emoji';
 
 export default function MovieDetail({ location: { state }, match: { params: { id } } }) {
 
@@ -24,11 +25,11 @@ export default function MovieDetail({ location: { state }, match: { params: { id
         item ? (<div>
             <h1>{title}</h1>
             <WatchButton item={item} />
-            <p><small> <span role="img" aria-label="emoji">📅</span> {item.movie.year}</small></p>
-            <a href={item.movie.trailer} target="_blank" rel="noopener noreferrer"><span role="img" aria-label="emoji">▶️</span> Trailer</a>
+            <p><small> <Emoji emoji={'📅'} /> {item.movie.year}</small></p>
+            <a href={item.movie.trailer} target="_blank" rel="noopener noreferrer"><Emoji emoji={'▶️'} /> Trailer</a>
             <p>{overview || 'Sin descripción'}</p>
             <Image item={item} />
         </div>)
-            : <span role="img" aria-label="emoji">⏳</span>
+            : <Emoji emoji={'⏳'} />
     );
 }

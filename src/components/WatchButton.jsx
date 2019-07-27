@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import UserContext from '../utils/UserContext';
+import Emoji from './Emoji';
 
 export default function WatchButton({ item }) {
     const { userInfo: {
@@ -28,14 +29,14 @@ export default function WatchButton({ item }) {
         <div>
             {isWatched() ?
                 <button onClick={() => removeMovieWatched(item)}>
-                    <span role="img" aria-label="emoji">❌</span> Quitar vista</button>
+                    <Emoji emoji={'❌'} /> Quitar vista</button>
                 : <button onClick={() => addMovieWatched(item)}>
-                    <span role="img" aria-label="emoji">✅</span> Añadir vista</button>}
+                    <Emoji emoji={'✅'} /> Añadir vista</button>}
             {isWatchlist() ?
                 <button onClick={() => removeMovieWatchlist(item)}>
-                    <span role="img" aria-label="emoji">❌</span> Quitar pendiente</button>
+                    <Emoji emoji={'❌'} /> Quitar pendiente</button>
                 : <button onClick={() => addMovieWatchlist(item)}>
-                    <span role="img" aria-label="emoji">✅</span> Añadir pendiente</button>}
+                    <Emoji emoji={'✅'} /> Añadir pendiente</button>}
         </div>
     )
 }
