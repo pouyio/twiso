@@ -1,0 +1,67 @@
+import './index.css';
+import React from 'react';
+import { BrowserRouter, Route, Link } from "react-router-dom";
+import Watchlist from './components/Watchlist'
+import Watched from './components/Watched';
+import Search from './components/Search';
+import Login from './components/Login'
+import MovieDetail from './components/MovieDetail'
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { UserProvider } from './utils/UserContext';
+import { AuthProvider } from './utils/AuthContext';
+
+function ParamsComponent({ location, history }) {
+
+  const params = new URLSearchParams(location.search);
+
+  return (
+    <div>
+      {
+        params.get("code") ?
+          <Login code={params.get("code")} history={history} />
+          : <a href="https://trakt.tv/oauth/authorize?response_type=code&client_id=61afe7ed7ef7a2b6b2193254dd1cca580ba8dee91490df454d78fd68aed7e5f9&redirect_uri=http://localhost:3000">Login</a>
+      }
+    </div >
+  );
+}
+
+function App() {
+
+  const logout = () => {
+    localStorage.removeItem('session');
+    window.location.reload();
+  }
+
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <UserProvider>
+          <ul className="navbar">
+            <li>
+              <Link to="/watchlist">
+                <span role="img" aria-label="emoji">📺</span> Pendientes</Link>
+            </li>
+            <li>
+              <Link to="/watched">
+                <span role="img" aria-label="emoji">📌</span> Vistas</Link>
+            </li>
+            <li>
+              <Link to="/search">
+                <span role="img" aria-label="emoji">🔍</span> Buscar</Link>
+            </li>
+            <li>
+              <button onClick={logout}>Log out</button>
+            </li>
+          </ul>
+          <Route exact path="/" component={ParamsComponent} />
+          <ProtectedRoute path="/watchlist" component={Watchlist} />
+          <ProtectedRoute path="/watched" component={Watched} />
+          <ProtectedRoute path="/search" component={Search} />
+          <ProtectedRoute path="/movie/:id" component={MovieDetail} />
+        </UserProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}
+
+export default App;
