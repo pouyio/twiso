@@ -14,6 +14,7 @@ export default function useTranslate(item) {
             return;
         }
         if (!item.movie.available_translations.includes(language)) {
+            setTranslation(item.movie);
             return;
         }
         getMovieTranslations(session, item.movie.ids.trakt).then(({ data }) => {

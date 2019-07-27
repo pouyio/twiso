@@ -24,9 +24,9 @@ export default function MovieDetail({ location: { state }, match: { params: { id
         item ? (<div>
             <h1>{title}</h1>
             <WatchButton item={item} />
-            <p><small>{item.movie.year}</small></p>
+            <p><small> <span role="img" aria-label="emoji">📅</span> {item.movie.year}</small></p>
             <a href={item.movie.trailer} target="_blank" rel="noopener noreferrer"><span role="img" aria-label="emoji">▶️</span> Trailer</a>
-            <p>{overview}</p>
+            <p>{overview || 'Sin descripción'}</p>
             <Image item={item} />
         </div>)
             : <span role="img" aria-label="emoji">⏳</span>
