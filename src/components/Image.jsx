@@ -34,7 +34,7 @@ export default function Image({ item }) {
     }, [config, item.movie.ids.tmdb, language])
 
     return (
-        <div ref={ref} style={{ minHeight: '20em' }}>
+        <div ref={ref} style={{ minHeight: '10em'}}>
             {inView && <img src={imgUrl} alt="poster" />}
         </div>
     );

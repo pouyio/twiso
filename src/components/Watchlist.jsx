@@ -14,7 +14,7 @@ export default function Watchlist() {
     return (
         <div>
             <h1>Pendientes</h1>
-            <ul>
+            <ul className="flex flex-wrap">
                 {movies.map(m => <Movie key={m.movie.ids.trakt} item={m} />)}
             </ul>
         </div>

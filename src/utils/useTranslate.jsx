@@ -13,7 +13,7 @@ export default function useTranslate(item) {
         if (!item) {
             return;
         }
-        if (!item.movie.available_translations.includes(language)) {
+        if (language === 'en' || !item.movie.available_translations.includes(language)) {
             setTranslation(item.movie);
             return;
         }
