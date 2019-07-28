@@ -3,7 +3,7 @@ import { getImgs } from '../utils/api';
 import UserContext from '../utils/UserContext';
 import { useInView } from 'react-hook-inview';
 
-export default function Image({ item }) {
+export default function Image({ item, ...props }) {
 
     const [imgUrl, setImgUrl] = useState('');
     const { config, language } = useContext(UserContext);
@@ -34,7 +34,7 @@ export default function Image({ item }) {
     }, [config, item.movie.ids.tmdb, language])
 
     return (
-        <div ref={ref} style={{ minHeight: '10em'}}>
+        <div ref={ref} style={{ minHeight: '10em'}} {...props}>
             {inView && <img className="rounded-lg" src={imgUrl} alt="poster" />}
         </div>
     );

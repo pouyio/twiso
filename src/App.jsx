@@ -37,7 +37,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <UserProvider>
-          <ul className="navbar flex w-full bg-gray-200 fixed bottom-0 px-4 z-10 text-center justify-around">
+          <ul className="navbar flex w-full bg-gray-200 fixed bottom-0 px-4 z-50 text-center justify-around">
             <li>
               <Link to="/watchlist">
                 <Emoji className="text-3xl" emoji={'⏱'} /></Link>

@@ -22,13 +22,16 @@ export default function MovieDetail({ location: { state }, match: { params: { id
     }, [state, id]);
 
     return (
-        item ? (<div>
-            <h1>{title}</h1>
-            <WatchButton item={item} />
-            <p><small> <Emoji emoji={'📅'} /> {item.movie.year}</small></p>
-            <a href={item.movie.trailer} target="_blank" rel="noopener noreferrer"><Emoji emoji={'▶️'} /> Trailer</a>
-            <p>{overview || 'Sin descripción'}</p>
-            <Image item={item} />
+        item ? (<div className="bg-gray-400">
+            <Image item={item} className="p-10 sticky top-0 z-0" />
+            <article className="relative p-4 bg-white z-10 rounded-t-lg" style={{'transform': 'translate3d(0,0,0)'}}>
+                <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
+                <h1>{title}</h1>
+                <WatchButton item={item} />
+                <p><small> <Emoji emoji={'📅'} /> {item.movie.year}</small></p>
+                <a href={item.movie.trailer} target="_blank" rel="noopener noreferrer"><Emoji emoji={'▶️'} /> Trailer</a>
+                <p>{overview || 'Sin descripción'}</p>
+            </article>
         </div>)
             : <Emoji emoji={'⏳'} />
     );
