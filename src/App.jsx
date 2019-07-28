@@ -37,23 +37,23 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <UserProvider>
-          <ul className="navbar flex w-full bg-gray-200 fixed bottom-0 py-4 px-2 z-10">
+          <ul className="navbar flex w-full bg-gray-200 fixed bottom-0 px-4 z-10 text-center justify-around">
             <li>
               <Link to="/watchlist">
-                <Emoji emoji={'📺'} /> Pendientes</Link>
+                <Emoji className="text-3xl" emoji={'⏱'} /></Link>
             </li>
             <li>
               <Link to="/watched">
-                <Emoji emoji={'📌'} /> Vistas</Link>
+                <Emoji className="text-3xl" emoji={'📚'} /></Link>
             </li>
             <li>
               <Link to="/search">
-                <Emoji emoji={'🔍'} /> Buscar</Link>
+                <Emoji className="text-3xl" emoji={'🔍'} /></Link>
             </li>
-            <li className="flex-grow text-right underline">
-              <button onClick={logout}><Emoji emoji={'❌'} /></button>
+            <li>
+              <button onClick={logout}><Emoji className="text-3xl" emoji={'❌'} /></button>
             </li>
-          </ul>          
+          </ul>
           <Route exact path="/" component={ParamsComponent} />
           <ProtectedRoute path="/watchlist" component={Watchlist} />
           <ProtectedRoute path="/watched" component={Watched} />
@@ -61,7 +61,7 @@ function App() {
           <ProtectedRoute path="/movie/:id" component={MovieDetail} />
           <ul className="navbar flex w-full py-4 opacity-0">
             <li>
-                <Emoji emoji={'📺'} /> P
+              <Emoji emoji={'📺'} /> P
             </li>
           </ul>
         </UserProvider>

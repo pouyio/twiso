@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default function Emoji({ emoji, rotating, className , onClick}) {
+export default function Emoji({ emoji, rotating, className , ...props}) {
 
-    return <span onClick={onClick} className={className + ' ' + (rotating ? 'spin' : '')} role="img" aria-label="emoji">{emoji}</span>;
+    return <span {...props} className={className + ' ' + (rotating ? 'spin' : '')} role="img" aria-label="emoji">{emoji}</span>;
 
 }

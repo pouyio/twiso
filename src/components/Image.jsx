@@ -35,7 +35,7 @@ export default function Image({ item }) {
 
     return (
         <div ref={ref} style={{ minHeight: '10em'}}>
-            {inView && <img src={imgUrl} alt="poster" />}
+            {inView && <img className="rounded-lg" src={imgUrl} alt="poster" />}
         </div>
     );
 }

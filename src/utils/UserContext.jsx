@@ -23,6 +23,7 @@ export const UserProvider = ({ children }) => {
             watchlist: []
         }
     });
+    const [globalError, setGlobalError] = useState(false);
     const [config, setConfig] = useState(false);
     const [language] = useState('es');
 
@@ -69,8 +70,12 @@ export const UserProvider = ({ children }) => {
         if (!session) {
             return;
         }
-        getMoviesWatched(session).then(({ data }) => setMoviesWatched(data));
-        getMoviesWatchlist(session).then(({ data }) => setMoviesWatchlist(data));
+        getMoviesWatched(session)
+            .then(({ data }) => setMoviesWatched(data))
+            .catch((data) => setGlobalError(data));
+        getMoviesWatchlist(session)
+            .then(({ data }) => setMoviesWatchlist(data))
+            .catch((data) => setGlobalError(data));
 
     }, [session]);
 
@@ -111,6 +116,7 @@ export const UserProvider = ({ children }) => {
             userInfo,
             config,
             language,
+            globalError,
             addMovieWatched,
             removeMovieWatched,
             addMovieWatchlist,
