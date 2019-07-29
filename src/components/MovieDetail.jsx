@@ -28,7 +28,7 @@ export default function MovieDetail({ location: { state }, match: { params: { id
             <Image item={item} className="p-10 sticky top-0 z-0" />
             <article className="relative p-4 bg-white z-10 rounded-t-lg" style={{ 'transform': 'translate3d(0,0,0)' }}>
                 <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
-                <h1 className="text-4xl">{title}</h1>
+                <h1 className="text-4xl leading-none">{title}</h1>
                 <div className="flex mb-4 justify-between">
                     <h2 className="text-2xl text-gray-600 ">{new Date(item.movie.released).toLocaleDateString(language, { year: 'numeric', month: 'long', day: 'numeric' })}</h2>
                     <a href={item.movie.trailer} target="_blank" rel="noopener noreferrer"><img src="/youtube.png" alt="youtube"/></a>
