@@ -13,8 +13,8 @@ export default function useTranslate(item) {
         if (!item) {
             return;
         }
+        setTranslation(item.movie);
         if (language === 'en' || !item.movie.available_translations.includes(language)) {
-            setTranslation(item.movie);
             return;
         }
         getMovieTranslations(session, item.movie.ids.trakt).then(({ data }) => {
