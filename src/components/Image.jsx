@@ -12,7 +12,7 @@ export default function Image({ item, ...props }) {
     const placeholder = (text) => `https://via.placeholder.com/450x680?text=${text}`;
 
     useEffect(() => {
-        if (!config) {
+        if (!config || !inView) {
             return;
         }
 
@@ -31,10 +31,10 @@ export default function Image({ item, ...props }) {
         }).catch(() => {
             setImgUrl(placeholder('Film not found in TMDB'));
         });
-    }, [config, item.movie.ids.tmdb, language])
+    }, [config, item.movie.ids.tmdb, language, inView])
 
     return (
-        <div ref={ref} style={{ minHeight: '10em'}} {...props}>
+        <div ref={ref} style={{ minHeight: '15em'}} {...props}>
             {inView && <img className="rounded-lg" src={imgUrl} alt="poster" />}
         </div>
     );
