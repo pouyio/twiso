@@ -53,7 +53,7 @@ export const searchMovie = (query) => {
 }
 
 export const getMoviesWatched = (session) => {
-    return axios.get(`${BASE_URL}/sync/history/movies?extended=full`, {
+    return axios.get(`${BASE_URL}/sync/history/movies?page=1&limit=10000&extended=full`, {
         headers: {
             ...base_headers,
             'Authorization': `Bearer ${session.access_token}`
@@ -89,6 +89,10 @@ export const getMoviesWatchlist = (session) => {
             ...base_headers,
             'Authorization': `Bearer ${session.access_token}`
         }
+    }).then(res => {
+        const ordered = res.data.sort((a, b) => new Date(b.listed_at) - new Date(a.listed_at));
+        res.data = ordered;
+        return res;
     });
 }
 
