@@ -10,6 +10,8 @@ import {
     removeMovieWatched as removeMWD,
 } from './api';
 
+const PAGE_SIZE = 40;
+
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -120,7 +122,8 @@ export const UserProvider = ({ children }) => {
             addMovieWatched,
             removeMovieWatched,
             addMovieWatchlist,
-            removeMovieWatchlist
+            removeMovieWatchlist,
+            PAGE_SIZE
         }}>
             {children}
         </UserContext.Provider>

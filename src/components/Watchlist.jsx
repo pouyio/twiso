@@ -3,14 +3,12 @@ import Movie from './Movie';
 import UserContext from '../utils/UserContext';
 import Emoji from './Emoji';
 import Pagination from './Pagination';
-import usePagination from './usePagination';
-
-const PAGE_SIZE = 40;
+import usePagination from '../utils/usePagination';
 
 export default function Watchlist({ location, history }) {
 
     const [movies, setMovies] = useState([]);
-    const { userInfo } = useContext(UserContext);
+    const { userInfo, PAGE_SIZE } = useContext(UserContext);
     const { currentPage, lastPage, setFirst, setLast, setPrev, setNext } = usePagination(movies, location, history)
 
     useEffect(() => {

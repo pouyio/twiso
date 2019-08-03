@@ -1,11 +1,11 @@
-import { useEffect, useState, useCallback } from 'react';
-
-const PAGE_SIZE = 40;
+import { useEffect, useState, useCallback, useContext } from 'react';
+import UserContext from './UserContext';
 
 export default function usePagination(movies, location, history) {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [lastPage, setLastPage] = useState(1);
+    const { PAGE_SIZE } = useContext(UserContext)
 
     const turnPage = useCallback((finalPage) => {
         history.push({ search: `?page=${finalPage}` });
@@ -24,9 +24,7 @@ export default function usePagination(movies, location, history) {
     useEffect(() => {
         const localLastPage = Math.ceil(movies.length / PAGE_SIZE);
         setLastPage(localLastPage);
-    }, [movies.length]);
-
-
+    }, [movies.length, PAGE_SIZE]);
 
     const turnSafePage = (direction) => {
         const params = new URLSearchParams(location.search);

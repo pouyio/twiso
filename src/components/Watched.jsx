@@ -3,14 +3,12 @@ import Movie from './Movie';
 import UserContext from '../utils/UserContext';
 import Emoji from './Emoji';
 import Pagination from './Pagination';
-import usePagination from './usePagination';
-
-const PAGE_SIZE = 40;
+import usePagination from '../utils/usePagination';
 
 export default function Watched({ location, history }) {
 
     const [movies, setMovies] = useState([]);
-    const { userInfo, globalError } = useContext(UserContext);
+    const { userInfo, globalError, PAGE_SIZE } = useContext(UserContext);
     const { currentPage, lastPage, setFirst, setLast, setPrev, setNext } = usePagination(movies, location, history)
 
     useEffect(() => {
