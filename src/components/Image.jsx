@@ -10,7 +10,7 @@ export default function Image({ item, delay = 0, className = '', ...props }) {
     const { config, language } = useContext(UserContext);
     const [ref, inView] = useInView();
 
-    const placeholder = (text) => `https://via.placeholder.com/450x680?text=${text}`;
+    const placeholder = (text) => `https://via.placeholder.com/320x480?text=${text}`;
 
     useEffect(() => {
         if (!config || !inView) {
@@ -27,12 +27,12 @@ export default function Image({ item, delay = 0, className = '', ...props }) {
             const poster = findFirstValid(data.posters);
             const url = poster ?
                 `${config.images.secure_base_url}${posterSize}${poster.file_path}`
-                : placeholder('Film does not have image');
+                : placeholder(`"${item.movie.title}" does not have image`);
             setImgUrl(url);
         }).catch(() => {
-            setImgUrl(placeholder('Film not found in TMDB'));
+            setImgUrl(placeholder(`"${item.movie.title}" not found in TMDB`));
         });
-    }, [config, item.movie.ids.tmdb, language, inView]);
+    }, [config, item.movie.ids.tmdb, language, inView, item.movie.title]);
 
     useEffect(() => {
         if (!delay) {
