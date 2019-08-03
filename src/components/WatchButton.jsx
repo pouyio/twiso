@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import UserContext from '../utils/UserContext';
-import Emoji from './Emoji';
 
 export default function WatchButton({ item }) {
     const { userInfo: {
@@ -26,17 +25,17 @@ export default function WatchButton({ item }) {
     }
 
     return (
-        <div>
+        <div className="flex justify-around my-8">
             {isWatched() ?
-                <button onClick={() => removeMovieWatched(item)}>
-                    <Emoji emoji="❌" /> Quitar vista</button>
-                : <button onClick={() => addMovieWatched(item)}>
-                    <Emoji emoji="✅" /> Añadir vista</button>}
+                <button className="bg-green-400 py-3 px-12 rounded-full text-white" onClick={() => removeMovieWatched(item)}>
+                    ✓ Vista</button>
+                : <button className="bg-gray-200 py-3 px-12 rounded-full text-gray-700" onClick={() => addMovieWatched(item)}>
+                    Vista</button>}
             {isWatchlist() ?
-                <button onClick={() => removeMovieWatchlist(item)}>
-                    <Emoji emoji="❌" /> Quitar pendiente</button>
-                : <button onClick={() => addMovieWatchlist(item)}>
-                    <Emoji emoji="✅" /> Añadir pendiente</button>}
+                <button className="bg-blue-400 py-3 px-12 rounded-full text-white" onClick={() => removeMovieWatchlist(item)}>
+                    Pendiente</button>
+                : <button className="bg-gray-200 py-3 px-12 rounded-full text-gray-700" onClick={() => addMovieWatchlist(item)}>
+                    Pendiente</button>}
         </div>
     )
 }
