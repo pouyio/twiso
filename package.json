@@ -8,7 +8,8 @@
     "react-dom": "^16.8.6",
     "react-hook-inview": "^4.0.0",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "use-react-router": "^1.0.7"
   },
   "scripts": {
     "tailwind:css": "tailwind build src/tailwind.src.css -c  tailwind.js -o src/tailwind.css",

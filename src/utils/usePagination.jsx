@@ -1,8 +1,10 @@
 import { useEffect, useState, useCallback, useContext } from 'react';
+import useReactRouter from 'use-react-router';
 import UserContext from './UserContext';
 
-export default function usePagination(movies, location, history) {
+export default function usePagination(movies) {
 
+    const { history, location } = useReactRouter();
     const [currentPage, setCurrentPage] = useState(1);
     const [lastPage, setLastPage] = useState(1);
     const { PAGE_SIZE } = useContext(UserContext)
