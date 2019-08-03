@@ -29,14 +29,14 @@ export default function WatchButton({ item }) {
         <div>
             {isWatched() ?
                 <button onClick={() => removeMovieWatched(item)}>
-                    <Emoji emoji={'❌'} /> Quitar vista</button>
+                    <Emoji emoji="❌" /> Quitar vista</button>
                 : <button onClick={() => addMovieWatched(item)}>
-                    <Emoji emoji={'✅'} /> Añadir vista</button>}
+                    <Emoji emoji="✅" /> Añadir vista</button>}
             {isWatchlist() ?
                 <button onClick={() => removeMovieWatchlist(item)}>
-                    <Emoji emoji={'❌'} /> Quitar pendiente</button>
+                    <Emoji emoji="❌" /> Quitar pendiente</button>
                 : <button onClick={() => addMovieWatchlist(item)}>
-                    <Emoji emoji={'✅'} /> Añadir pendiente</button>}
+                    <Emoji emoji="✅" /> Añadir pendiente</button>}
         </div>
     )
 }

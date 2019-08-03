@@ -37,6 +37,6 @@ export default function MovieDetail({ location: { state }, match: { params: { id
                 <p>{overview || 'Sin descripción'}</p>
             </article>
         </div>)
-            : <Emoji emoji={'⏳'} />
+            : <Emoji emoji="⏳" />
     );
 }

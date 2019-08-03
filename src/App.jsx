@@ -40,18 +40,18 @@ function App() {
           <ul className="navbar flex w-full bg-gray-200 fixed bottom-0 px-4 z-50 text-center justify-around">
             <li>
               <Link to="/watchlist">
-                <Emoji className="text-3xl" emoji={'⏱'} /></Link>
+                <Emoji className="text-3xl" emoji="⏱" /></Link>
             </li>
             <li>
               <Link to="/watched">
-                <Emoji className="text-3xl" emoji={'📚'} /></Link>
+                <Emoji className="text-3xl" emoji="📚" /></Link>
             </li>
             <li>
               <Link to="/search">
-                <Emoji className="text-3xl" emoji={'🔍'} /></Link>
+                <Emoji className="text-3xl" emoji="🔍" /></Link>
             </li>
             <li>
-              <button onClick={logout}><Emoji className="text-3xl" emoji={'❌'} /></button>
+              <button onClick={logout}><Emoji className="text-3xl" emoji="❌" /></button>
             </li>
           </ul>
           <Route exact path="/" component={ParamsComponent} />
@@ -61,7 +61,7 @@ function App() {
           <ProtectedRoute path="/movie/:id" component={MovieDetail} />
           <ul className="navbar flex w-full py-4 opacity-0">
             <li>
-              <Emoji emoji={'📺'} /> P
+              <Emoji emoji="📺" /> P
             </li>
           </ul>
         </UserProvider>

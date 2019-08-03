@@ -28,7 +28,7 @@ export default function Watched({ location, history }) {
     return (
         <div>
             {globalError && <div><pre className="overflow-scroll text-xs text-red-700 whitespace-pre-wrap">{JSON.stringify(globalError)}</pre></div>}
-            <h1 className="text-3xl text-center text-gray-700 m-4"><Emoji emoji={'📚'} /> Vistas</h1>
+            <h1 className="text-3xl text-center text-gray-700 m-4"><Emoji emoji="📚" /> Vistas</h1>
             {LocalPagination}
             <ul className="flex flex-wrap p-2">
                 {getMoviesByPage(currentPage).map(m => <Movie key={m.movie.ids.trakt} item={m} />)}

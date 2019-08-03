@@ -27,7 +27,7 @@ export default function Watchlist({ location, history }) {
 
     return (
         <div>
-            <h1 className="text-3xl text-center text-gray-700 m-4"><Emoji emoji={'⏱'} /> Pendientes</h1>
+            <h1 className="text-3xl text-center text-gray-700 m-4"><Emoji emoji="⏱" /> Pendientes</h1>
             {LocalPagination}
             <ul className="flex flex-wrap p-2">
                 {getMoviesByPage(currentPage).map(m => <Movie key={m.movie.ids.trakt} item={m} />)}
