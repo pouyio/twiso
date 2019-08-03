@@ -3,7 +3,7 @@ import Movie from './Movie';
 import UserContext from '../utils/UserContext';
 import Emoji from './Emoji';
 import Pagination from './Pagination';
-import usePagination from './PaginationContainer';
+import usePagination from './usePagination';
 
 const PAGE_SIZE = 40;
 
