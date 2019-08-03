@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import { getMovieTranslations } from './api';
 import AuthContext from './AuthContext';
 import UserContext from './UserContext';
@@ -9,6 +9,17 @@ export default function useTranslate(item) {
     const { language } = useContext(UserContext);
     const [translation, setTranslation] = useState(item.movie || {});
 
+    const mergeTranslation = useCallback((translation) => {
+        const mergedTranslation = JSON.parse(JSON.stringify(translation));
+        if(!translation.overview) {
+            mergedTranslation.overview = item.movie.overview;
+        }
+        if(!translation.title) {
+            mergedTranslation.overview = item.movie.title;
+        }
+        return mergedTranslation;
+    }, [item.movie]);
+
     useEffect(() => {
         if (!item) {
             return;
@@ -18,9 +29,9 @@ export default function useTranslate(item) {
             return;
         }
         getMovieTranslations(session, item.movie.ids.trakt).then(({ data }) => {
-            setTranslation(data[0]);
+            setTranslation(mergeTranslation(data[0]));
         });
-    }, [item, session, language]);
+    }, [item, session, language, mergeTranslation]);
 
     return translation;
 }
