@@ -22,7 +22,7 @@ export default function Watched() {
             {globalError && <div><pre className="overflow-scroll text-xs text-red-700 whitespace-pre-wrap">{JSON.stringify(globalError)}</pre></div>}
             <h1 className="text-3xl text-center text-gray-700 m-4"><Emoji emoji="📚" /> Vistas</h1>
             <PaginationContainer movies={movies}>
-                <ul className="flex flex-wrap p-2">
+                <ul className="flex flex-wrap p-2 justify-center">
                     {getMoviesByPage(currentPage).map(m => <Movie key={m.movie.ids.trakt} item={m} />)}
                 </ul>
             </PaginationContainer>
