@@ -6,7 +6,7 @@ import { useInView } from 'react-hook-inview';
 export default function Image({ item, className = '', style, ...props }) {
 
     const [imgUrl, setImgUrl] = useState('');
-    const { config, language } = useContext(UserContext);
+    const { config, language, isMovieWatched, isMovieWatchlist } = useContext(UserContext);
     const [ref, inView] = useInView({ unobserveOnEnter: true });
 
     const placeholder = (text) => `https://via.placeholder.com/320x480?text=${text}`;
@@ -33,10 +33,20 @@ export default function Image({ item, className = '', style, ...props }) {
         });
     }, [config, item.movie.ids.tmdb, language, inView, item.movie.title]);
 
+    const getBorderClass = () => {
+        if (isMovieWatched(item.movie.ids.trakt)) {
+            return 'border-2 border-green-400';
+        }
+        if (isMovieWatchlist(item.movie.ids.trakt)) {
+            return 'border-2 border-blue-400';
+        }
+        return '';
+    }
+
     return (
         <div ref={ref} style={style} {...props} className={className + ' ' + (!inView ? 'bg-gray-300 flex justify-center items-center rounded-lg' : '')}>
             {!inView && <h1 className="justify-center items-center">{item.movie.title}</h1>}
-            {inView && <img className={'rounded-lg ' + (inView ? 'show' : 'hidden')} src={imgUrl} alt="poster" />}
+            {inView && <img className={'rounded-lg m-auto md:max-w-md ' + getBorderClass()} src={imgUrl} alt="poster" />}
         </div>
     );
 }

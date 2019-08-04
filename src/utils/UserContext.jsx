@@ -113,6 +113,13 @@ export const UserProvider = ({ children }) => {
         });
     }
 
+    const isMovieWatched = (id) => {
+        return userInfo.movies.watched.some(i => i.movie.ids.trakt === id);
+    }
+    const isMovieWatchlist = (id) => {
+        return userInfo.movies.watchlist.some(i => i.movie.ids.trakt === id);
+    }
+
     return (
         <UserContext.Provider value={{
             userInfo,
@@ -123,6 +130,8 @@ export const UserProvider = ({ children }) => {
             removeMovieWatched,
             addMovieWatchlist,
             removeMovieWatchlist,
+            isMovieWatched,
+            isMovieWatchlist,
             PAGE_SIZE
         }}>
             {children}

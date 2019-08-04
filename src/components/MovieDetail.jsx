@@ -11,9 +11,9 @@ import getGenre from '../utils/getGenre';
 export default function MovieDetail({ location: { state }, match: { params: { id } } }) {
 
     const [item, setItem] = useState(false);
-    const { userInfo: {
-        movies: { watched, watchlist } },
-        language } = useContext(UserContext);
+    const { language,
+        isMovieWatched,
+        isMovieWatchlist } = useContext(UserContext);
     const { title, overview } = useTranslate(item);
 
     useEffect(() => {
@@ -28,25 +28,14 @@ export default function MovieDetail({ location: { state }, match: { params: { id
         window.scrollTo(0, 0);
     }, [state, id]);
 
-    const isWatched = () => {
-        if (!item) {
-            return false;
-        }
-        return watched.some(w => w.movie.ids.trakt === item.movie.ids.trakt);
-    }
-
-    const isWatchlist = () => {
-        if (!item) {
-            return false;
-        }
-        return watchlist.some(w => w.movie.ids.trakt === item.movie.ids.trakt);
-    }
-
     const getBgClassName = () => {
-        if (isWatched()) {
+        if (!item) {
+            return;
+        }
+        if (isMovieWatched(item.movie.ids.trakt)) {
             return 'bg-green-400';
         }
-        if (isWatchlist()) {
+        if (isMovieWatchlist(item.movie.ids.trakt)) {
             return 'bg-blue-400';
         }
         return 'bg-gray-300';
