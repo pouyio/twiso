@@ -6,9 +6,8 @@ import { useInView } from 'react-hook-inview';
 export default function Image({ item, delay = 0, className = '', ...props }) {
 
     const [imgUrl, setImgUrl] = useState('');
-    const [debouncedInView, setDebouncedInView] = useState(false);
     const { config, language } = useContext(UserContext);
-    const [ref, inView] = useInView();
+    const [ref, inView] = useInView({ unobserveOnEnter: true });
 
     const placeholder = (text) => `https://via.placeholder.com/320x480?text=${text}`;
 
@@ -34,25 +33,10 @@ export default function Image({ item, delay = 0, className = '', ...props }) {
         });
     }, [config, item.movie.ids.tmdb, language, inView, item.movie.title]);
 
-    useEffect(() => {
-        if (!delay) {
-            setDebouncedInView(true);
-        }
-        if (!inView) {
-            return;
-        }
-        const to = setTimeout(() => {
-            if (inView) {
-                setDebouncedInView(true);
-            }
-        }, delay);
-        return () => clearInterval(to);
-    }, [inView, delay]);
-
     return (
-        <div ref={ref} style={{ minHeight: '15em' }} {...props} className={className + ' ' + (!debouncedInView ? 'bg-gray-300 flex justify-center items-center rounded-lg' : '')}>
-            {!debouncedInView && <h1 className="justify-center items-center">{item.movie.title}</h1>}
-            {debouncedInView && <img className={'rounded-lg ' + (debouncedInView ? 'show' : 'hidden')} src={imgUrl} alt="poster" />}
+        <div ref={ref} style={{ minHeight: '15em' }} {...props} className={className + ' ' + (!inView ? 'bg-gray-300 flex justify-center items-center rounded-lg' : '')}>
+            {!inView && <h1 className="justify-center items-center">{item.movie.title}</h1>}
+            {inView && <img className={'rounded-lg ' + (inView ? 'show' : 'hidden')} src={imgUrl} alt="poster" />}
         </div>
     );
 }
