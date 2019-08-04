@@ -46,7 +46,7 @@ export default function Image({ item, className = '', style, ...props }) {
     return (
         <div ref={ref} style={style} {...props} className={className + ' ' + (!inView ? 'bg-gray-300 flex justify-center items-center rounded-lg' : '')}>
             {!inView && <h1 className="justify-center items-center">{item.movie.title}</h1>}
-            {inView && <img className={'rounded-lg m-auto md:max-w-md ' + getBorderClass()} src={imgUrl} alt="poster" />}
+            {inView && <img className={'rounded-lg m-auto md:max-w-md ' + getBorderClass()} src={imgUrl} alt={item.movie.title} />}
         </div>
     );
 }

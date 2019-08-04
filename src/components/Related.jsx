@@ -13,7 +13,7 @@ export default function Related({ itemId }) {
     }, [itemId]);
 
     return (
-        <ul className="flex overflow-x-auto -mr-4">
+        <ul className="flex overflow-x-auto -mr-4" style={{WebkitOverflowScrolling: 'touch'}}>
             {restuls.map(r => <li key={r.movie.ids.trakt} style={{minWidth: '45%'}}>
                 <Movie item={r}/>
             </li>)
