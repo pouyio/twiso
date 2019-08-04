@@ -3,36 +3,37 @@ import useDebounce from '../utils/debounce';
 import Movie from './Movie';
 import { searchMovie } from '../utils/api';
 import Emoji from './Emoji';
+import useSerch from '../utils/useSearch';
 
 
 export default function Search() {
-    const [query, setQuery] = useState('');
+    const { search, setSearch } = useSerch();
     const [loading, setLoading] = useState(false);
     const [results, setResults] = useState([]);
-    const debouncedQuery = useDebounce(query, 500);
+    const debouncedSearch = useDebounce(search, 500);
 
     useEffect(
         () => {
-            if (!debouncedQuery) {
+            if (!debouncedSearch) {
                 setResults([])
                 return;
             }
             setLoading(true);
-            searchMovie(debouncedQuery).then(({ data }) => {
-                setResults(data)
+            searchMovie(debouncedSearch).then(({ data }) => {
+                setResults(data);
                 setLoading(false);
             });
         },
-        [debouncedQuery]
+        [debouncedSearch]
     );
 
     return (
         <div className="m-4">
             <div className="w-full flex items-center md:max-w-md m-auto">
-                <input className="bg-gray-300 text-black px-2 py-1 rounded outline-none flex-grow text-gray-700" type="text" placeholder="🔍 Busca una película" autoFocus={true} onChange={(e) => setQuery(e.target.value)} value={query} />
+                <input className="bg-gray-300 text-black px-2 py-1 rounded outline-none flex-grow text-gray-700" type="text" placeholder="🔍 Busca una película" autoFocus={true} onChange={(e) => setSearch(e.target.value)} value={search} />
                 {loading ?
                     <Emoji className="ml-3" emoji="⏳" rotating={true} />
-                    : <Emoji className="ml-3" emoji="❌" onClick={() => setQuery('')} />}
+                    : <Emoji className="ml-3" emoji="❌" onClick={() => setSearch('')} />}
             </div>
             <ul className="mt-5 flex flex-wrap justify-center">
                 {results.length ?
