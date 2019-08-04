@@ -1,8 +1,8 @@
 import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Image from './Image';
 
-const Movie = withRouter(({ item }) => {
+const Movie = ({ item }) => {
 
     return (
         <div className="p-2 overflow-auto" style={{ flex: '1 0 45%', maxWidth: '15em' }}>
@@ -11,6 +11,6 @@ const Movie = withRouter(({ item }) => {
             </Link>
         </div>
     );
-})
+}
 
 export default Movie;
