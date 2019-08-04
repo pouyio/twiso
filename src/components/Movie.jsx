@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Image from './Image';
 
-const Movie = ({ item }) => {
+const Movie = ({ item, style }) => {
 
     return (
-        <div className="p-2 overflow-auto" style={{ flex: '1 0 45%', maxWidth: '15em' }}>
+        <div className="p-2 overflow-auto">
             <Link to={{ pathname: `/movie/${item.movie.ids.trakt}`, state: { item } }} >
-                <Image item={item} delay={200} />
+                <Image item={item} style={style}/>
             </Link>
         </div>
     );

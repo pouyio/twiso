@@ -3,7 +3,7 @@ import { getImgs } from '../utils/api';
 import UserContext from '../utils/UserContext';
 import { useInView } from 'react-hook-inview';
 
-export default function Image({ item, delay = 0, className = '', ...props }) {
+export default function Image({ item, className = '', style, ...props }) {
 
     const [imgUrl, setImgUrl] = useState('');
     const { config, language } = useContext(UserContext);
@@ -34,7 +34,7 @@ export default function Image({ item, delay = 0, className = '', ...props }) {
     }, [config, item.movie.ids.tmdb, language, inView, item.movie.title]);
 
     return (
-        <div ref={ref} style={{ minHeight: '15em' }} {...props} className={className + ' ' + (!inView ? 'bg-gray-300 flex justify-center items-center rounded-lg' : '')}>
+        <div ref={ref} style={style} {...props} className={className + ' ' + (!inView ? 'bg-gray-300 flex justify-center items-center rounded-lg' : '')}>
             {!inView && <h1 className="justify-center items-center">{item.movie.title}</h1>}
             {inView && <img className={'rounded-lg ' + (inView ? 'show' : 'hidden')} src={imgUrl} alt="poster" />}
         </div>

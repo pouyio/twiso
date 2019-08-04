@@ -5,6 +5,7 @@ import Image from './Image';
 import useTranslate from '../utils/useTranslate';
 import Emoji from './Emoji';
 import UserContext from '../utils/UserContext';
+import Related from './Related';
 
 export default function MovieDetail({ location: { state }, match: { params: { id } } }) {
 
@@ -51,7 +52,7 @@ export default function MovieDetail({ location: { state }, match: { params: { id
 
     return (
         item ? (<div className={getBgClassName()}>
-            <Image item={item} className="p-10 sticky top-0 z-0" />
+            <Image item={item} className="p-10 sticky top-0 z-0" style={{ minHeight: '15em' }} />
             <article className="relative p-4 bg-white z-10 rounded-t-lg" style={{ 'transform': 'translate3d(0,0,0)' }}>
                 <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
                 <h1 className="text-4xl leading-none">{title}</h1>
@@ -60,9 +61,24 @@ export default function MovieDetail({ location: { state }, match: { params: { id
                     <a href={item.movie.trailer} target="_blank" rel="noopener noreferrer"><img src="/youtube.png" alt="youtube" /></a>
                 </div>
                 <WatchButton item={item} />
-                <p>{overview || 'Sin descripción'}</p>
+                <div className="my-4">
+                    <p>Resumen:</p>
+                    <p className="leading-tight font-light">{overview || 'Sin descripción'}</p>
+                </div>
+                <div className="my-4">
+                    <p>Géneros:</p>
+                    <ul className="flex overflow-x-auto my-2 -mr-4">
+                        {item.movie.genres.map(g => (
+                            <li className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre"><Emoji emoji="⭐️" /> {g}</li>
+                        ))}
+                    </ul>
+                </div>
+                <div className="my-4">
+                    <p>Relacionados:</p>
+                    <Related itemId={item.movie.ids.trakt} />
+                </div>
             </article>
         </div>)
-            : <Emoji emoji="⏳" />
+            : <Emoji emoji="⏳" rotating="true" />
     );
 }

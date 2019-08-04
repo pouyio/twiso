@@ -21,7 +21,9 @@ export default function Popular() {
             <h1 className="text-3xl text-center text-gray-700 mx-4 mb-4">
                 <Emoji className="ml-3" emoji={loading ? '⏳' : '⭐'} rotating={loading} /> Popular</h1>
             <ul className="mt-5 flex flex-wrap justify-center">
-                {results.map(r => <Movie key={r.movie.ids.trakt} item={r} />)}
+                {results.map(r => <li style={{ flex: '1 0 45%', maxWidth: '15em' }}>
+                    <Movie key={r.movie.ids.trakt} item={r} style={{ minHeight: '15em' }}/>
+                </li>)}
             </ul>
         </div>
     );
