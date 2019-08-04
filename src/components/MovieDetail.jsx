@@ -11,6 +11,7 @@ import getGenre from '../utils/getGenre';
 export default function MovieDetail({ location: { state }, match: { params: { id } } }) {
 
     const [item, setItem] = useState(false);
+    const [showRating, setShowRating] = useState(true);
     const { language,
         isMovieWatched,
         isMovieWatchlist } = useContext(UserContext);
@@ -45,8 +46,8 @@ export default function MovieDetail({ location: { state }, match: { params: { id
         item ? (<div className={getBgClassName()}>
             <div className="p-10 sticky top-0 z-0" style={{ minHeight: '15em' }}>
                 <Image item={item} />
-                <a className="absolute" style={{right: '4em', bottom: '4em'}} href={item.movie.trailer} target="_blank" rel="noopener noreferrer">
-                    <Emoji emoji="▶️" className="text-4xl"/>
+                <a className="absolute" style={{ right: '4em', bottom: '4em' }} href={item.movie.trailer} target="_blank" rel="noopener noreferrer">
+                    <Emoji emoji="▶️" className="text-4xl" />
                 </a>
             </div>
             <article className="relative p-4 bg-white z-10 rounded-t-lg" style={{ 'transform': 'translate3d(0,0,0)' }}>
@@ -54,7 +55,12 @@ export default function MovieDetail({ location: { state }, match: { params: { id
                 <h1 className="text-4xl leading-none text-center mb-2">{title}</h1>
                 <div className="flex mb-4 justify-between items-center text-gray-600">
                     <h2 className="text-2xl ">{new Date(item.movie.released).toLocaleDateString(language, { year: 'numeric', month: 'long', day: 'numeric' })}</h2>
-                    <p className="font-thin"><Emoji emoji="❤️" />{Math.round(item.movie.rating * 10)}%</p>
+                    <div onClick={() => setShowRating(!showRating)}>
+                        {showRating ?
+                            <p className="font-thin"><Emoji emoji="❤️" />{Math.round(item.movie.rating * 10)}%</p>
+                            : <p className="font-thin"><Emoji emoji="🗳" />{item.movie.votes.toLocaleString('es')}</p>
+                        }
+                    </div>
                 </div>
                 <WatchButton item={item} />
 
