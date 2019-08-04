@@ -3,6 +3,7 @@ import useDebounce from '../utils/debounce';
 import Movie from './Movie';
 import { searchMovie } from '../utils/api';
 import Emoji from './Emoji';
+import Popular from './Popular';
 import useSerch from '../utils/useSearch';
 
 
@@ -36,9 +37,9 @@ export default function Search() {
                     : <Emoji className="ml-3" emoji="❌" onClick={() => setSearch('')} />}
             </div>
             <ul className="mt-5 flex flex-wrap justify-center">
-                {results.length ?
+                {search || results.length ?
                     results.map(r => <Movie key={r.movie.ids.trakt} item={r} />)
-                    : <h1 className="text-4xl text-gray-700">Sin resultados</h1>}
+                    : <Popular />}
             </ul>
         </div>
     );

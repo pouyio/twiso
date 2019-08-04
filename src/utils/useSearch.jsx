@@ -12,7 +12,6 @@ export default function useSerch() {
     }, [history]);
 
     useEffect(() => {
-        debugger;
         const params = new URLSearchParams(location.search);
         const paramSearch = params.get('search');
         if (!paramSearch) {

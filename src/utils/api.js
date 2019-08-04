@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { PAGE_SIZE } from './UserContext';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
 const client_secret = process.env.REACT_APP_CLIENT_SECRET;
@@ -47,7 +48,7 @@ export const getMovieTranslations = (session, id) => {
 }
 
 export const searchMovie = (query) => {
-    return axios.get(`${BASE_URL}/search/movie?query=${query}&extended=full`, {
+    return axios.get(`${BASE_URL}/search/movie?query=${query}&extended=full&page=1&limit=${PAGE_SIZE}`, {
         headers: base_headers
     });
 }
@@ -116,4 +117,13 @@ export const removeMovieWatchlist = (movie, session) => {
                 'Authorization': `Bearer ${session.access_token}`
             }
         });
+}
+
+export const getMoviesPopular = () => {
+    const year = new Date().getFullYear();
+    return axios.get(`${BASE_URL}/movies/watched/weekly?extended=full&page=1&limit=${PAGE_SIZE}&years=${year}`, {
+        headers: {
+            ...base_headers
+        }
+    });
 }
