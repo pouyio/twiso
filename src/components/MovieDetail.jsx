@@ -6,6 +6,7 @@ import useTranslate from '../utils/useTranslate';
 import Emoji from './Emoji';
 import UserContext from '../utils/UserContext';
 import Related from './Related';
+import getGenre from '../utils/getGenre';
 
 export default function MovieDetail({ location: { state }, match: { params: { id } } }) {
 
@@ -61,22 +62,26 @@ export default function MovieDetail({ location: { state }, match: { params: { id
                     <a href={item.movie.trailer} target="_blank" rel="noopener noreferrer"><img src="/youtube.png" alt="youtube" /></a>
                 </div>
                 <WatchButton item={item} />
+
                 <div className="my-4">
                     <p>Resumen:</p>
                     <p className="leading-tight font-light">{overview || 'Sin descripción'}</p>
                 </div>
+
                 <div className="my-4">
                     <p>Géneros:</p>
                     <ul className="flex overflow-x-auto my-2 -mr-4">
                         {item.movie.genres.map(g => (
-                            <li className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre"><Emoji emoji="⭐️" /> {g}</li>
+                            <li className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre"><Emoji emoji={getGenre(g).emoji} /> {g}</li>
                         ))}
                     </ul>
                 </div>
+
                 <div className="my-4">
                     <p>Relacionados:</p>
                     <Related itemId={item.movie.ids.trakt} />
                 </div>
+
             </article>
         </div>)
             : <Emoji emoji="⏳" rotating="true" />

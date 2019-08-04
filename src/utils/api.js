@@ -127,3 +127,11 @@ export const getMoviesPopular = () => {
         }
     });
 }
+
+export const getMoviesRelated = (id) => {
+    return axios.get(`${BASE_URL}/movies/${id}/related?extended=full&page=1&limit=10`, {
+        headers: {
+            ...base_headers
+        }
+    });
+}
