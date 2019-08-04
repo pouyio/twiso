@@ -1,22 +1,22 @@
 const genres = {
     action: {
-        name: "Acción",
+        name: "acción",
         emoji: "👊"
     },
     adventure: {
-        name: "Aventura",
+        name: "aventura",
         emoji: "🗺"
     },
     animation: {
-        name: "Animación",
+        name: "animación",
         emoji: "👾"
     },
     anime: {
-        name: "Anime",
+        name: "anime",
         emoji: "🇯🇵"
     },
     comedy: {
-        name: "Comedia",
+        name: "comedia",
         emoji: "😆"
     },
     crime: {
@@ -24,83 +24,83 @@ const genres = {
         emoji: "💣"
     },
     documentary: {
-        name: "Documental",
+        name: "documental",
         emoji: "🗃"
     },
     drama: {
-        name: "Drama",
+        name: "drama",
         emoji: "👥"
     },
     family: {
-        name: "Familiar",
+        name: "familiar",
         emoji: "👨‍👩‍👧‍👦"
     },
     fantasy: {
-        name: "Fanstasía",
+        name: "fanstasía",
         emoji: "🐲"
     },
     history: {
-        name: "Histórica",
+        name: "histórica",
         emoji: "📜"
     },
     holiday: {
-        name: "Vacaciones",
+        name: "vacaciones",
         emoji: "🏖"
     },
     horror: {
-        name: "Terror",
+        name: "terror",
         emoji: "👹"
     },
     music: {
-        name: "Música",
+        name: "música",
         emoji: "🎤"
     },
     musical: {
-        name: "Musical",
+        name: "musical",
         emoji: "🎶"
     },
     mystery: {
-        name: "Misterio",
+        name: "misterio",
         emoji: "🔍"
     },
     none: {
-        name: "Ninguna",
+        name: "ninguna",
         emoji: "❌"
     },
     romance: {
-        name: "Romántica",
+        name: "romántica",
         emoji: "💕"
     },
     "science-fiction": {
-        name: "Ciencia-ficción",
+        name: "ciencia-ficción",
         emoji: "🚀"
     },
     short: {
-        name: "Corto",
+        name: "corto",
         emoji: "🎥"
     },
     "sporting-event": {
-        name: "Deportes",
+        name: "deportes",
         emoji: "⚽️"
     },
     superhero: {
-        name: "Superhéroes",
+        name: "superhéroes",
         emoji: "💪🏻"
     },
     suspense: {
-        name: "Suspense",
+        name: "suspense",
         emoji: "⏸"
     },
     thriller: {
-        name: "Thriller",
+        name: "thriller",
         emoji: "🔪"
     },
     war: {
-        name: "Bélica",
+        name: "bélica",
         emoji: "⚔️"
     },
     western: {
-        name: "Western",
+        name: "western",
         emoji: "🏜"
     }
 };
