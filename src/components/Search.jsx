@@ -20,10 +20,15 @@ export default function Search() {
                 return;
             }
             setLoading(true);
+            let isSubscribed = true;
             searchMovie(debouncedSearch).then(({ data }) => {
+                if (!isSubscribed) {
+                    return;
+                }
                 setResults(data);
                 setLoading(false);
             });
+            return () => isSubscribed = false
         },
         [debouncedSearch]
     );
@@ -39,7 +44,7 @@ export default function Search() {
             <ul className="mt-5 flex flex-wrap justify-center">
                 {search || results.length ?
                     results.map(r => <li key={r.movie.ids.trakt} style={{ flex: '1 0 45%', maxWidth: '15em' }}>
-                        <Movie item={r} style={{ minHeight: '15em' }}/>
+                        <Movie item={r} style={{ minHeight: '15em' }} />
                     </li>)
                     : <Popular />}
             </ul>

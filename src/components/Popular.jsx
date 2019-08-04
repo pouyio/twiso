@@ -9,11 +9,16 @@ export default function Popular() {
     const [results, setResults] = useState([]);
 
     useEffect(() => {
+        let isSubscribed = true;
         setLoading(true);
         getMoviesPopular().then(({ data }) => {
+            if (!isSubscribed) {
+                return;
+            }
             setResults(data);
             setLoading(false);
         });
+        return () => isSubscribed = false;
     }, []);
 
     return (
@@ -22,7 +27,7 @@ export default function Popular() {
                 <Emoji className="ml-3" emoji={loading ? '⏳' : '⭐'} rotating={loading} /> Popular</h1>
             <ul className="mt-5 flex flex-wrap justify-center">
                 {results.map(r => <li key={r.movie.ids.trakt} style={{ flex: '1 0 45%', maxWidth: '15em' }}>
-                    <Movie item={r} style={{ minHeight: '15em' }}/>
+                    <Movie item={r} style={{ minHeight: '15em' }} />
                 </li>)}
             </ul>
         </div>
