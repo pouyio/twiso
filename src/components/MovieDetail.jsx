@@ -25,6 +25,7 @@ export default function MovieDetail({ location: { state }, match: { params: { id
             return;
         }
         setItem(state.item);
+        window.scrollTo(0, 0);
     }, [state, id]);
 
     const isWatched = () => {
@@ -72,7 +73,7 @@ export default function MovieDetail({ location: { state }, match: { params: { id
                     <p>Géneros:</p>
                     <ul className="flex overflow-x-auto my-2 -mr-4">
                         {item.movie.genres.map(g => (
-                            <li className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre"><Emoji emoji={getGenre(g).emoji} /> {g}</li>
+                            <li key={g} className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre"><Emoji emoji={getGenre(g).emoji} /> {g}</li>
                         ))}
                     </ul>
                 </div>

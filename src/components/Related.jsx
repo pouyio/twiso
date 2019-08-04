@@ -14,8 +14,8 @@ export default function Related({ itemId }) {
 
     return (
         <ul className="flex overflow-x-auto -mr-4">
-            {restuls.map(r => <li style={{minWidth: '45%'}}>
-                <Movie item={r} key={r.movie.ids.trakt}/>
+            {restuls.map(r => <li key={r.movie.ids.trakt} style={{minWidth: '45%'}}>
+                <Movie item={r}/>
             </li>)
             }
         </ul >
