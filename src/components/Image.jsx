@@ -50,7 +50,7 @@ export default function Image({ item, delay = 0, className = '', ...props }) {
     }, [inView, delay]);
 
     return (
-        <div ref={ref} style={{ minHeight: '16em' }} {...props} className={className + ' ' + (!debouncedInView ? 'bg-gray-300 flex justify-center items-center rounded-lg' : '')}>
+        <div ref={ref} style={{ minHeight: '15em' }} {...props} className={className + ' ' + (!debouncedInView ? 'bg-gray-300 flex justify-center items-center rounded-lg' : '')}>
             {!debouncedInView && <h1 className="justify-center items-center">{item.movie.title}</h1>}
             {debouncedInView && <img className={'rounded-lg ' + (debouncedInView ? 'show' : 'hidden')} src={imgUrl} alt="poster" />}
         </div>
