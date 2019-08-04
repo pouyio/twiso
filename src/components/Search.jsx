@@ -38,8 +38,8 @@ export default function Search() {
             </div>
             <ul className="mt-5 flex flex-wrap justify-center">
                 {search || results.length ?
-                    results.map(r => <li style={{ flex: '1 0 45%', maxWidth: '15em' }}>
-                        <Movie key={r.movie.ids.trakt} item={r} style={{ minHeight: '15em' }}/>
+                    results.map(r => <li key={r.movie.ids.trakt} style={{ flex: '1 0 45%', maxWidth: '15em' }}>
+                        <Movie item={r} style={{ minHeight: '15em' }}/>
                     </li>)
                     : <Popular />}
             </ul>
