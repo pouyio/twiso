@@ -6,8 +6,8 @@ const client_secret = process.env.REACT_APP_CLIENT_SECRET;
 const tmbdb_api_key = process.env.REACT_APP_TMDB_API_KEY;
 const content_type = 'application/json';
 const trakt_api_version = 2;
-const BASE_URL = 'https://cors-anywhere.herokuapp.com/https://api.trakt.tv';
-const LOGIN_URL = 'https://cors-anywhere.herokuapp.com/https://trakt.tv/oauth/token';
+const BASE_URL = 'https://api.trakt.tv';
+const LOGIN_URL = 'https://trakt.tv/oauth/token';
 const IMG_URL = 'https://api.themoviedb.org/3';
 
 const base_headers = {
