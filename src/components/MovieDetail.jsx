@@ -11,7 +11,6 @@ import getGenre from '../utils/getGenre';
 export default function MovieDetail({ location: { state }, match: { params: { id } } }) {
 
     const [item, setItem] = useState(false);
-    const [showRating, setShowRating] = useState(true);
     const { language,
         isMovieWatched,
         isMovieWatchlist } = useContext(UserContext);
@@ -53,14 +52,9 @@ export default function MovieDetail({ location: { state }, match: { params: { id
             <article className="relative p-4 bg-white z-10 rounded-t-lg" style={{ 'transform': 'translate3d(0,0,0)' }}>
                 <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
                 <h1 className="text-4xl leading-none text-center mb-2">{title}</h1>
-                <div className="flex mb-4 justify-between items-center text-gray-600">
-                    <h2 className="text-2xl ">{new Date(item.movie.released).toLocaleDateString(language, { year: 'numeric', month: 'long', day: 'numeric' })}</h2>
-                    <div onClick={() => setShowRating(!showRating)}>
-                        {showRating ?
-                            <p className="font-thin"><Emoji emoji="❤️" />{Math.round(item.movie.rating * 10)}%</p>
-                            : <p className="font-thin"><Emoji emoji="🗳" />{item.movie.votes.toLocaleString('es')}</p>
-                        }
-                    </div>
+                <div className="flex mb-4 justify-between items-center text-gray-600 text-2xl ">
+                    <h2>{new Date(item.movie.released).toLocaleDateString(language, { year: 'numeric', month: 'long', day: 'numeric' })}</h2>
+                    <h3 className="font-light">{item.movie.runtime} mins</h3>
                 </div>
                 <WatchButton item={item} />
 
@@ -73,7 +67,7 @@ export default function MovieDetail({ location: { state }, match: { params: { id
                     <p>Géneros:</p>
                     <ul className="flex overflow-x-auto my-2 -mr-4" style={{ WebkitOverflowScrolling: 'touch' }}>
                         {item.movie.genres.map(g => (
-                            <li key={g} className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre"><Emoji emoji={getGenre(g).emoji} /> {g}</li>
+                            <li key={g} className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre"><Emoji emoji={getGenre(g).emoji} /> {getGenre(g).name}</li>
                         ))}
                     </ul>
                 </div>
