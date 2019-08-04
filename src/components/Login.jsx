@@ -13,5 +13,5 @@ export default function Login({ code, history }) {
         });
     });
 
-    return <h1>Loading...</h1>
+    return <h1 className="text-2xl">Loading...</h1>
 }
