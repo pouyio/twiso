@@ -74,7 +74,7 @@ export default function MovieDetail({ location: { state }, match: { params: { id
 
                 <div className="my-4">
                     <p>Relacionados:</p>
-                    <Related itemId={item.movie.ids.trakt} />
+                    <Related itemId={item.movie.ids.trakt} type="movie" />
                 </div>
 
             </article>

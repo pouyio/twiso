@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import Show from './Show';
+import ImageLink from './ImageLink';
 import UserContext from '../utils/UserContext';
 import Emoji from './Emoji';
 import PaginationContainer from './PaginationContainer';
@@ -23,7 +23,7 @@ export default function Series() {
             <PaginationContainer items={shows}>
                 <ul className="flex flex-wrap p-2 justify-center">
                     {getMoviesByPage(currentPage).map(m => <li key={m.show.ids.trakt} style={{ flex: '1 0 45%', maxWidth: '15em' }}>
-                        <Show item={m} style={{ minHeight: '15em' }} />
+                        <ImageLink item={m} style={{ minHeight: '15em' }} type="show"/>
                     </li>)}
                 </ul>
             </PaginationContainer>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import WatchButton from './WatchButton';
-import { getShow, getShowProgress } from '../utils/api';
+import { getShow } from '../utils/api';
 import Image from './Image';
 import useTranslate from '../utils/useTranslate';
 import Emoji from './Emoji';
@@ -8,7 +8,6 @@ import UserContext from '../utils/UserContext';
 import Related from './Related';
 import SeasonsContainer from './Seasons/SeasonsContainer';
 import getGenre from '../utils/getGenre';
-import AuthContext from '../utils/AuthContext';
 
 export default function ShowDetail({ location: { state }, match: { params: { id } } }) {
 
@@ -61,7 +60,7 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
                 {/* <WatchButton item={item} /> */}
 
                 <div className="my-4">
-                    <SeasonsContainer show={item.show} showId={id}/>
+                    <SeasonsContainer show={item.show} showId={id} />
                 </div>
 
                 <div className="my-4">
@@ -78,10 +77,10 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
                     </ul>
                 </div>
 
-                {/* <div className="my-4">
+                <div className="my-4">
                     <p>Relacionados:</p>
-                    <Related itemId={item.show.ids.trakt} />
-                </div> */}
+                    <Related itemId={item.show.ids.trakt} type="show" />
+                </div>
 
             </article>
         </div>)

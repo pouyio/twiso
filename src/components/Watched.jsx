@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import Movie from './Movie';
+import ImageLink from './ImageLink';
 import UserContext from '../utils/UserContext';
 import Emoji from './Emoji';
 import PaginationContainer from './PaginationContainer';
@@ -24,7 +24,7 @@ export default function Watched() {
             <PaginationContainer items={movies}>
                 <ul className="flex flex-wrap p-2 justify-center">
                     {getMoviesByPage(currentPage).map(m => <li key={m.movie.ids.trakt} style={{ flex: '1 0 45%', maxWidth: '15em' }}>
-                        <Movie item={m} style={{ minHeight: '15em' }}/>
+                        <ImageLink item={m} style={{ minHeight: '15em' }} type="movie"/>
                     </li>)}
                 </ul>
             </PaginationContainer>

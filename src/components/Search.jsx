@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useDebounce from '../utils/debounce';
-import Movie from './Movie';
-import Show from './Show';
+import ImageLink from './ImageLink';
 import { searchMovie, searchShows } from '../utils/api';
 import Emoji from './Emoji';
 import Popular from './Popular';
@@ -50,7 +49,7 @@ export default function Search() {
             <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
                 {search || results.length ?
                     results.map(r => <li key={r.movie.ids.trakt} style={{ flex: '1 0 45%', maxWidth: '15em' }}>
-                        <Movie item={r} style={{ minHeight: '15em' }} />
+                        <ImageLink item={r} style={{ minHeight: '15em' }} type="movie" />
                     </li>)
                     : <Popular />}
                 </ul>
@@ -59,7 +58,7 @@ export default function Search() {
             <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
                 {(search || showResults.length) &&
                     showResults.map(r => <li key={r.show.ids.trakt} style={{ flex: '1 0 45%', maxWidth: '15em' }}>
-                        <Show item={r} style={{ minHeight: '15em' }} />
+                        <ImageLink item={r} style={{ minHeight: '15em' }} type="show" />
                     </li>)}
             </ul>
 

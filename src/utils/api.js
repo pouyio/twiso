@@ -197,13 +197,13 @@ export const getMoviesPopular = () => {
     });
 }
 
-export const getMoviesRelated = (id) => {
-    return axios.get(`${BASE_URL}/movies/${id}/related?extended=full&page=1&limit=10`, {
+export const getRelated = (type, id) => {
+    return axios.get(`${BASE_URL}/${type}s/${id}/related?extended=full&page=1&limit=10`, {
         headers: {
             ...base_headers
         }
     }).then(res => {
-        const mapped = res.data.map(m => ({ movie: { ...m }, type: 'movie' }));
+        const mapped = res.data.map(m => ({ [type]: { ...m }, type }));
         res.data = mapped;
         return res;
     });
