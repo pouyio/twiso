@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react';
 import WatchButton from './WatchButton';
-import { getMovie } from '../utils/api';
+import { getShow, getShowProgress } from '../utils/api';
 import Image from './Image';
 import useTranslate from '../utils/useTranslate';
 import Emoji from './Emoji';
 import UserContext from '../utils/UserContext';
 import Related from './Related';
+import SeasonsContainer from './Seasons/SeasonsContainer';
 import getGenre from '../utils/getGenre';
+import AuthContext from '../utils/AuthContext';
 
-export default function MovieDetail({ location: { state }, match: { params: { id } } }) {
+export default function ShowDetail({ location: { state }, match: { params: { id } } }) {
 
     const [item, setItem] = useState(false);
     const { language,
@@ -18,7 +20,7 @@ export default function MovieDetail({ location: { state }, match: { params: { id
 
     useEffect(() => {
         if (!state) {
-            getMovie(id).then(({ data }) => {
+            getShow(id).then(({ data }) => {
                 const item = data[0];
                 setItem(item);
             });
@@ -32,10 +34,10 @@ export default function MovieDetail({ location: { state }, match: { params: { id
         if (!item) {
             return;
         }
-        if (isMovieWatched(item.movie.ids.trakt)) {
+        if (isMovieWatched(item.show.ids.trakt)) {
             return 'bg-green-400';
         }
-        if (isMovieWatchlist(item.movie.ids.trakt)) {
+        if (isMovieWatchlist(item.show.ids.trakt)) {
             return 'bg-blue-400';
         }
         return 'bg-gray-300';
@@ -45,7 +47,7 @@ export default function MovieDetail({ location: { state }, match: { params: { id
         item ? (<div className={getBgClassName()}>
             <div className="p-10 sticky top-0 z-0" style={{ minHeight: '15em' }}>
                 <Image item={item} />
-                {item.movie.trailer && <a className="absolute" style={{ right: '4em', bottom: '4em' }} href={item.movie.trailer} target="_blank" rel="noopener noreferrer">
+                {item.show.trailer && <a className="absolute" style={{ right: '4em', bottom: '4em' }} href={item.show.trailer} target="_blank" rel="noopener noreferrer">
                     <Emoji emoji="▶️" className="text-4xl" />
                 </a>}
             </div>
@@ -53,10 +55,14 @@ export default function MovieDetail({ location: { state }, match: { params: { id
                 <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
                 <h1 className="text-4xl leading-none text-center mb-2">{title}</h1>
                 <div className="flex mb-4 justify-between items-center text-gray-600 text-2xl ">
-                    <h2>{new Date(item.movie.released).toLocaleDateString(language, { year: 'numeric', month: 'long', day: 'numeric' })}</h2>
-                    <h3 className="font-light">{item.movie.runtime} mins</h3>
+                    <h2>{new Date(item.show.first_aired).toLocaleDateString(language, { year: 'numeric', month: 'long', day: 'numeric' })}</h2>
+                    <h3 className="font-light">{item.show.runtime} mins</h3>
                 </div>
-                <WatchButton item={item} />
+                {/* <WatchButton item={item} /> */}
+
+                <div className="my-4">
+                    <SeasonsContainer show={item.show} showId={id}/>
+                </div>
 
                 <div className="my-4">
                     <p>Resumen:</p>
@@ -66,16 +72,16 @@ export default function MovieDetail({ location: { state }, match: { params: { id
                 <div className="my-4">
                     <p>Géneros:</p>
                     <ul className="flex overflow-x-auto my-2 -mr-4" style={{ WebkitOverflowScrolling: 'touch' }}>
-                        {item.movie.genres.map(g => (
+                        {(item.show.genres || []).map(g => (
                             <li key={g} className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre"><Emoji emoji={getGenre(g).emoji} /> {getGenre(g).name}</li>
                         ))}
                     </ul>
                 </div>
 
-                <div className="my-4">
+                {/* <div className="my-4">
                     <p>Relacionados:</p>
-                    <Related itemId={item.movie.ids.trakt} />
-                </div>
+                    <Related itemId={item.show.ids.trakt} />
+                </div> */}
 
             </article>
         </div>)

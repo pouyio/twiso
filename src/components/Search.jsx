@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import useDebounce from '../utils/debounce';
 import Movie from './Movie';
-import { searchMovie } from '../utils/api';
+import Show from './Show';
+import { searchMovie, searchShows } from '../utils/api';
 import Emoji from './Emoji';
 import Popular from './Popular';
 import useSerch from '../utils/useSearch';
@@ -11,6 +12,7 @@ export default function Search() {
     const { search, setSearch } = useSerch();
     const [loading, setLoading] = useState(false);
     const [results, setResults] = useState([]);
+    const [showResults, setShowResults] = useState([]);
     const debouncedSearch = useDebounce(search, 500);
 
     useEffect(
@@ -19,16 +21,18 @@ export default function Search() {
                 setResults([])
                 return;
             }
+
             setLoading(true);
             let isSubscribed = true;
-            searchMovie(debouncedSearch).then(({ data }) => {
+            Promise.all([searchMovie(debouncedSearch), searchShows(debouncedSearch)]).then(([movies, shows]) => {
                 if (!isSubscribed) {
                     return;
                 }
-                setResults(data);
+                setResults(movies.data);
+                setShowResults(shows.data);
                 setLoading(false);
             });
-            return () => isSubscribed = false
+            return () => isSubscribed = false;
         },
         [debouncedSearch]
     );
@@ -41,13 +45,24 @@ export default function Search() {
                     <Emoji className="ml-3" emoji="⏳" rotating={true} />
                     : <Emoji className="ml-3" emoji="❌" onClick={() => setSearch('')} />}
             </div>
-            <ul className="mt-5 flex flex-wrap justify-center">
+            
+            <h1 className="text-3xl mt-4 text-gray-700">Películas</h1>
+            <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
                 {search || results.length ?
                     results.map(r => <li key={r.movie.ids.trakt} style={{ flex: '1 0 45%', maxWidth: '15em' }}>
                         <Movie item={r} style={{ minHeight: '15em' }} />
                     </li>)
                     : <Popular />}
+                </ul>
+
+            <h1 className="text-3xl mt-4 text-gray-700">Series</h1>
+            <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
+                {(search || showResults.length) &&
+                    showResults.map(r => <li key={r.show.ids.trakt} style={{ flex: '1 0 45%', maxWidth: '15em' }}>
+                        <Show item={r} style={{ minHeight: '15em' }} />
+                    </li>)}
             </ul>
+
         </div>
     );
 }

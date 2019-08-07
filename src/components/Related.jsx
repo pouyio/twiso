@@ -8,7 +8,7 @@ export default function Related({ itemId }) {
 
     useEffect(() => {
         getMoviesRelated(itemId).then(({ data }) => {
-            setResults(data.map(d => ({ movie: d })));
+            setResults(data);
         })
     }, [itemId]);
 

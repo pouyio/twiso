@@ -20,7 +20,7 @@ export default function Watchlist() {
     return (
         <div>
             <h1 className="text-3xl text-center text-gray-700 m-4"><Emoji emoji="⏱" /> Pendientes</h1>
-            <PaginationContainer movies={movies}>
+            <PaginationContainer items={movies}>
                 <ul className="flex flex-wrap p-2 justify-center">
                     {getMoviesByPage(currentPage).map(m => <li key={m.movie.ids.trakt} style={{ flex: '1 0 45%', maxWidth: '15em' }}>
                         <Movie item={m} style={{ minHeight: '15em' }}/>

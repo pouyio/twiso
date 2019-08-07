@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useContext } from 'react';
 import useReactRouter from 'use-react-router';
 import UserContext from './UserContext';
 
-export default function usePagination(movies) {
+export default function usePagination(items) {
 
     const { history, location } = useReactRouter();
     const [currentPage, setCurrentPage] = useState(1);
@@ -24,9 +24,9 @@ export default function usePagination(movies) {
     }, [location.search, turnPage]);
 
     useEffect(() => {
-        const localLastPage = Math.ceil(movies.length / PAGE_SIZE);
+        const localLastPage = Math.ceil(items.length / PAGE_SIZE);
         setLastPage(localLastPage);
-    }, [movies.length, PAGE_SIZE]);
+    }, [items.length, PAGE_SIZE]);
 
     const turnSafePage = (direction) => {
         const params = new URLSearchParams(location.search);

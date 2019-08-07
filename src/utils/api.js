@@ -30,8 +30,12 @@ export const getImgsConfig = () => {
     return axios.get(`${IMG_URL}/configuration?api_key=${tmbdb_api_key}`);
 }
 
-export const getImgs = (id) => {
-    return axios.get(`${IMG_URL}/movie/${id}/images?api_key=${tmbdb_api_key}&include_image_language=es,en`);
+export const getImgs = (id, type) => {
+    let newType = type;
+    if (type === 'show') {
+        newType = 'tv';
+    }
+    return axios.get(`${IMG_URL}/${newType}/${id}/images?api_key=${tmbdb_api_key}&include_image_language=es,en`);
 }
 
 export const getMovie = (id) => {
@@ -40,15 +44,41 @@ export const getMovie = (id) => {
     });
 }
 
-export const getMovieTranslations = (session, id) => {
-    return axios.get(`${BASE_URL}/movies/${id}/translations/es`, {
-        headers: base_headers,
-        'Authorization': `Bearer ${session.access_token}`
+export const getShowSeasons = (id) => {
+    return axios.get(`${BASE_URL}/shows/${id}/seasons?extended=episodes`, {
+        headers: base_headers
+    });
+}
+
+export const getShow = (id) => {
+    return axios.get(`${BASE_URL}/search/trakt/${id}?type=show&extended=full`, {
+        headers: base_headers
+    });
+}
+
+export const getShowProgress = (session, id) => {
+    return axios.get(`${BASE_URL}/shows/${id}/progress/watched`, {
+        headers: {
+            ...base_headers,
+            'Authorization': `Bearer ${session.access_token}`
+        }
+    });
+}
+
+export const getTranslations = (id, type) => {
+    return axios.get(`${BASE_URL}/${type}s/${id}/translations/es`, {
+        headers: base_headers
     });
 }
 
 export const searchMovie = (query) => {
-    return axios.get(`${BASE_URL}/search/movie?query=${query}&extended=full&page=1&limit=${PAGE_SIZE}`, {
+    return axios.get(`${BASE_URL}/search/movie?query=${query}&extended=full&page=1&limit=${Math.round(PAGE_SIZE / 7)}`, {
+        headers: base_headers
+    });
+}
+
+export const searchShows = (query) => {
+    return axios.get(`${BASE_URL}/search/show?query=${query}&extended=full&page=1&limit=${Math.round(PAGE_SIZE / 7)}`, {
         headers: base_headers
     });
 }
@@ -97,6 +127,41 @@ export const getMoviesWatchlist = (session) => {
     });
 }
 
+export const getShowsWatched = (session) => {
+    return axios.get(`${BASE_URL}/sync/watched/shows?extended=full`, {
+        headers: {
+            ...base_headers,
+            'Authorization': `Bearer ${session.access_token}`
+        }
+    }).then(res => {
+        const mapped = res.data.map(s => ({ ...s, type: 'show' }));
+        res.data = mapped;
+        return res;
+    });
+}
+
+export const addShowEpisodeWatched = (episode, session) => {
+    return axios.post(`${BASE_URL}/sync/history`, {
+        episodes: [episode]
+    }, {
+            headers: {
+                ...base_headers,
+                'Authorization': `Bearer ${session.access_token}`
+            }
+        });
+}
+
+export const removeShowEpisodeWatched = (episode, session) => {
+    return axios.post(`${BASE_URL}/sync/history/remove`, {
+        episodes: [episode]
+    }, {
+            headers: {
+                ...base_headers,
+                'Authorization': `Bearer ${session.access_token}`
+            }
+        });
+}
+
 export const addMovieWatchlist = (movie, session) => {
     return axios.post(`${BASE_URL}/sync/watchlist`, {
         movies: [movie]
@@ -125,6 +190,10 @@ export const getMoviesPopular = () => {
         headers: {
             ...base_headers
         }
+    }).then(res => {
+        const mapped = res.data.map(m => ({ ...m, type: 'movie' }));
+        res.data = mapped;
+        return res;
     });
 }
 
@@ -133,5 +202,9 @@ export const getMoviesRelated = (id) => {
         headers: {
             ...base_headers
         }
+    }).then(res => {
+        const mapped = res.data.map(m => ({ movie: { ...m }, type: 'movie' }));
+        res.data = mapped;
+        return res;
     });
 }

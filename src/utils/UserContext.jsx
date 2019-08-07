@@ -4,6 +4,7 @@ import {
     getImgsConfig,
     getMoviesWatched,
     getMoviesWatchlist,
+    getShowsWatched,
     addMovieWatchlist as addMWL,
     removeMovieWatchlist as removeMWL,
     addMovieWatched as addMWD,
@@ -49,6 +50,12 @@ export const UserProvider = ({ children }) => {
             return { ...prev };
         });
     }
+    const setShowsWatched = (shows) => {
+        setUserInfo((prev) => {
+            prev.shows.watched = [...shows, ...prev.shows.watched];
+            return { ...prev };
+        });
+    }
 
     const removeMoviesWatchlist = (movies) => {
         const oldWL = userInfo.movies.watchlist;
@@ -77,6 +84,9 @@ export const UserProvider = ({ children }) => {
             .catch((data) => setGlobalError(data));
         getMoviesWatchlist(session)
             .then(({ data }) => setMoviesWatchlist(data))
+            .catch((data) => setGlobalError(data));
+        getShowsWatched(session)
+            .then(({ data }) => setShowsWatched(data))
             .catch((data) => setGlobalError(data));
 
     }, [session]);
