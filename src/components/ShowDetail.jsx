@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import WatchButton from './WatchButton';
 import { getShow } from '../utils/api';
 import Image from './Image';
 import useTranslate from '../utils/useTranslate';
@@ -57,7 +56,6 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
                     <h2>{new Date(item.show.first_aired).toLocaleDateString(language, { year: 'numeric', month: 'long', day: 'numeric' })}</h2>
                     <h3 className="font-light">{item.show.runtime} mins</h3>
                 </div>
-                {/* <WatchButton item={item} /> */}
 
                 <div className="my-4">
                     <SeasonsContainer show={item.show} showId={id} />
