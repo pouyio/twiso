@@ -61,10 +61,17 @@ const Seasons = ({
         }
     }
 
+    const hasProgress = (season) => {
+        if (progress) {
+            return progress.seasons.some(p => p.number === season.number);
+        }
+        return false;
+    }
+
     return (
         <>
             <ul className="flex overflow-x-auto my-6 -mr-4" style={{ WebkitOverflowScrolling: 'touch' }}>
-                {seasons.map(s => (
+                {seasons.filter(hasProgress).map(s => (
                     <li onClick={() => selectSeason(s)} key={s.ids.trakt} className={'whitespace-pre mx-1 rounded-full text-sm px-3 py-2 ' + selectedClass(s)}>
                         Temporada {s.number}
                         {isSeasonWatched(s.number) ? <span className="ml-2 text-gray-600">✓</span> : ''}
