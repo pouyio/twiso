@@ -39,7 +39,10 @@ const Seasons = ({
 
     const isEpisodeWatched = (episodeNumber) => {
         const foundSeasonProgress = progress.seasons.find(s => s.number === currentSeason.number);
-        return foundSeasonProgress.episodes.find(e => e.number === episodeNumber).completed;
+        if (!foundSeasonProgress) {
+            return false;
+        }
+        return (foundSeasonProgress.episodes.find(e => e.number === episodeNumber) || {}).completed;
     }
 
     const isSeasonWatched = (seasonNumber) => {
@@ -61,17 +64,10 @@ const Seasons = ({
         }
     }
 
-    const hasProgress = (season) => {
-        if (progress) {
-            return progress.seasons.some(p => p.number === season.number);
-        }
-        return false;
-    }
-
     return (
         <>
             <ul className="flex overflow-x-auto my-6 -mr-4" style={{ WebkitOverflowScrolling: 'touch' }}>
-                {seasons.filter(hasProgress).map(s => (
+                {seasons.filter(s => s.number).map(s => (
                     <li onClick={() => selectSeason(s)} key={s.ids.trakt} className={'whitespace-pre mx-1 rounded-full text-sm px-3 py-2 ' + selectedClass(s)}>
                         Temporada {s.number}
                         {isSeasonWatched(s.number) ? <span className="ml-2 text-gray-600">✓</span> : ''}
@@ -84,7 +80,7 @@ const Seasons = ({
                         <span className="text-gray-600 text-xs font-bold mr-1">{e.number}</span>
                         {isEpisodeWatched(e.number) ? <span className="text-gray-600 mr-2 ml-1">✓</span> : <span className="text-blue-400 mx-2">•</span>}
                         <span className={isEpisodeWatched(e.number) ? 'text-gray-600' : ''}>{e.title}</span>
-                        <span></span></li>
+                    </li>
                 ))}
             </ul>}
         </>
