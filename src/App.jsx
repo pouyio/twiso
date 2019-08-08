@@ -12,6 +12,8 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { UserProvider } from './utils/UserContext';
 import { AuthProvider } from './utils/AuthContext';
 import Emoji from './components/Emoji';
+const redirect_url = process.env.REACT_APP_REDIRECT_URL;
+
 
 function ParamsComponent({ location }) {
 
@@ -22,7 +24,7 @@ function ParamsComponent({ location }) {
       {
         params.get("code") ?
           <Login code={params.get("code")} />
-          : <a className="bg-purple-500 py-3 px-12 rounded-full text-white" href="https://trakt.tv/oauth/authorize?response_type=code&client_id=61afe7ed7ef7a2b6b2193254dd1cca580ba8dee91490df454d78fd68aed7e5f9&redirect_uri=http://localhost:3000">Login</a>
+          : <a className="bg-purple-500 py-3 px-12 rounded-full text-white" href={`https://trakt.tv/oauth/authorize?response_type=code&client_id=61afe7ed7ef7a2b6b2193254dd1cca580ba8dee91490df454d78fd68aed7e5f9&redirect_uri=${redirect_url}`}>Login</a>
       }
     </div >
   );

@@ -4,6 +4,7 @@ import { PAGE_SIZE } from './UserContext';
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
 const client_secret = process.env.REACT_APP_CLIENT_SECRET;
 const tmbdb_api_key = process.env.REACT_APP_TMDB_API_KEY;
+const redirect_url = process.env.REACT_APP_REDIRECT_URL;
 const content_type = 'application/json';
 const trakt_api_version = 2;
 const BASE_URL = 'https://api.trakt.tv';
@@ -21,7 +22,7 @@ export const login = (code) => {
         code,
         client_secret,
         client_id: trakt_api_key,
-        redirect_uri: "http://localhost:3000",
+        redirect_uri: redirect_url,
         grant_type: "authorization_code"
     });
 }
