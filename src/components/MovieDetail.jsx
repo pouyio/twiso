@@ -65,11 +65,13 @@ export default function MovieDetail({ location: { state }, match: { params: { id
 
                 <div className="my-4">
                     <p>Géneros:</p>
-                    <ul className="flex overflow-x-auto my-2 -mr-4" style={{ WebkitOverflowScrolling: 'touch' }}>
-                        {item.movie.genres.map(g => (
-                            <li key={g} className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre"><Emoji emoji={getGenre(g).emoji} /> {getGenre(g).name}</li>
-                        ))}
-                    </ul>
+                    {item.movie.genres.length ?
+                        <ul className="flex overflow-x-auto my-2 -mr-4" style={{ WebkitOverflowScrolling: 'touch' }}>
+                            {item.movie.genres.map(g => (
+                                <li key={g} className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre"><Emoji emoji={getGenre(g).emoji} /> {getGenre(g).name}</li>
+                            ))}
+                        </ul>
+                        : <span className="bg-gray-200 inline-block my-2 font-light px-3 py-2 rounded-full">Ninguno <Emoji emoji="😵" /></span>}
                 </div>
 
                 <div className="my-4">

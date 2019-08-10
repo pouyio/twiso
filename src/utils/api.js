@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { PAGE_SIZE } from './UserContext';
+import rateLimit from 'axios-rate-limit';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
 const client_secret = process.env.REACT_APP_CLIENT_SECRET;
@@ -16,6 +17,8 @@ const base_headers = {
     'trakt-api-key': trakt_api_key,
     'trakt-api-version': trakt_api_version
 }
+
+const limitAxios = rateLimit(axios.create(), { maxRequests: 42, perMilliseconds: 10000 });
 
 export const login = (code) => {
     return axios.post(LOGIN_URL, {
@@ -36,7 +39,7 @@ export const getImgs = (id, type) => {
     if (type === 'show') {
         newType = 'tv';
     }
-    return axios.get(`${IMG_URL}/${newType}/${id}/images?api_key=${tmbdb_api_key}&include_image_language=es,en`);
+    return limitAxios.get(`${IMG_URL}/${newType}/${id}/images?api_key=${tmbdb_api_key}&include_image_language=es,en`);
 }
 
 export const getMovie = (id) => {

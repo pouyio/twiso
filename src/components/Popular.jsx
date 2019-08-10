@@ -26,7 +26,7 @@ export default function Popular() {
             <h1 className="text-3xl text-center text-gray-700 mx-4 mb-4">
                 <Emoji className="ml-3" emoji={loading ? '⏳' : '⭐'} rotating={loading} /> Popular</h1>
             <ul className="mt-5 flex flex-wrap justify-center">
-                {results.map(r => <li key={r.movie.ids.trakt} style={{ flex: '1 0 45%', maxWidth: '15em' }}>
+                {results.map(r => <li key={r.movie.ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
                     <ImageLink item={r} style={{ minHeight: '15em' }} type="movie" />
                 </li>)}
             </ul>

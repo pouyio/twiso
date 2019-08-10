@@ -7,8 +7,7 @@ export default function Pagination({ setFirst, setPrev, setNext, setLast, page, 
         <div className="flex justify-center text-2xl">
             <button className="mr-10" onClick={setFirst}><Emoji emoji="⏮" /></button>
             <button className="mr-10" onClick={setPrev}><Emoji emoji="⬅️" /></button>
-            <h1>{page}</h1>
-            <h1>... {last}</h1>
+            <h1 className="font-light"> {page} ... {last} </h1>
             <button className="ml-10" onClick={setNext}><Emoji emoji="➡️" /></button>
             <button className="ml-10" onClick={setLast}><Emoji emoji="⏭" /></button>
         </div>
