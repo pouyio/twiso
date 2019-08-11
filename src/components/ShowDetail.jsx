@@ -28,23 +28,10 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
         window.scrollTo(0, 0);
     }, [state, id]);
 
-    const getBgClassName = () => {
-        if (!item) {
-            return;
-        }
-        if (isMovieWatched(item.show.ids.trakt)) {
-            return 'bg-green-400';
-        }
-        if (isMovieWatchlist(item.show.ids.trakt)) {
-            return 'bg-blue-400';
-        }
-        return 'bg-gray-300';
-    }
-
     return (
-        item ? (<div className={getBgClassName()}>
+        item ? (<div className="bg-gray-300">
             <div className="p-10 sticky top-0 z-0" style={{ minHeight: '15em' }}>
-                <Image item={item} />
+                <Image item={item} type="show"/>
                 {item.show.trailer && <a className="absolute" style={{ right: '4em', bottom: '4em' }} href={item.show.trailer} target="_blank" rel="noopener noreferrer">
                     <Emoji emoji="▶️" className="text-4xl" />
                 </a>}

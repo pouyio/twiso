@@ -6,7 +6,7 @@ const ImageLink = ({ item, style, type }) => {
 
     return (
         <Link to={{ pathname: `/${type}/${item[type].ids.trakt}`, state: { item } }} >
-            <Image item={item} style={style} />
+            <Image item={item} style={style} type={type} />
         </Link>
     );
 }

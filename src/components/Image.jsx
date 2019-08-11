@@ -4,7 +4,7 @@ import { useInView } from 'react-hook-inview';
 import Emoji from '../components/Emoji';
 import getImgUrl from '../utils/extractImg';
 
-export default function Image({ item, className = '', style, ...props }) {
+export default function Image({ item, className = '', type = '', style, ...props }) {
 
     const [imgUrl, setImgUrl] = useState('');
     const [message, setMessage] = useState('');
@@ -23,6 +23,9 @@ export default function Image({ item, className = '', style, ...props }) {
     }, [config, item, language, inView]);
 
     const getBorderClass = () => {
+        if (type === 'show') {
+            return '';
+        }
         if (isMovieWatched(item[item.type].ids.trakt)) {
             return 'border-2 border-green-400';
         }
