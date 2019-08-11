@@ -7,7 +7,7 @@ import Search from './components/Search';
 import Login from './components/Login';
 import MovieDetail from './components/MovieDetail';
 import ShowDetail from './components/ShowDetail';
-import Series from './components/Series';
+import Shows from './components/Shows';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { UserProvider } from './utils/UserContext';
 import { AuthProvider } from './utils/AuthContext';
@@ -67,7 +67,7 @@ function App() {
           <ProtectedRoute path="/watched" component={Watched} />
           <ProtectedRoute path="/search" component={Search} />
           <ProtectedRoute path="/movie/:id" component={MovieDetail} />
-          <ProtectedRoute path="/shows" component={Series} />
+          <ProtectedRoute path="/shows" component={Shows} />
           <ProtectedRoute path="/show/:id" component={ShowDetail} />
           <ul className="navbar flex w-full py-4 opacity-0">
             <li>
