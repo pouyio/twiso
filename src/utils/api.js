@@ -188,14 +188,14 @@ export const removeMovieWatchlist = (movie, session) => {
         });
 }
 
-export const getMoviesPopular = () => {
+export const getPopular = (type) => {
     const year = new Date().getFullYear();
-    return axios.get(`${BASE_URL}/movies/watched/weekly?extended=full&page=1&limit=${PAGE_SIZE}&years=${year}`, {
+    return axios.get(`${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${PAGE_SIZE}&years=${year}`, {
         headers: {
             ...base_headers
         }
     }).then(res => {
-        const mapped = res.data.map(m => ({ ...m, type: 'movie' }));
+        const mapped = res.data.map(m => ({ ...m, type }));
         res.data = mapped;
         return res;
     });

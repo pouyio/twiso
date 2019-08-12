@@ -11,9 +11,7 @@ import getGenre from '../utils/getGenre';
 export default function ShowDetail({ location: { state }, match: { params: { id } } }) {
 
     const [item, setItem] = useState(false);
-    const { language,
-        isMovieWatched,
-        isMovieWatchlist } = useContext(UserContext);
+    const { language } = useContext(UserContext);
     const { title, overview } = useTranslate(item);
 
     useEffect(() => {

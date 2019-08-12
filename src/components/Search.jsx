@@ -10,14 +10,14 @@ import useSerch from '../utils/useSearch';
 export default function Search() {
     const { search, setSearch } = useSerch();
     const [loading, setLoading] = useState(false);
-    const [results, setResults] = useState([]);
+    const [movieResults, setMovieResults] = useState([]);
     const [showResults, setShowResults] = useState([]);
     const debouncedSearch = useDebounce(search, 500);
 
     useEffect(
         () => {
             if (!debouncedSearch) {
-                setResults([])
+                setMovieResults([])
                 return;
             }
 
@@ -27,7 +27,7 @@ export default function Search() {
                 if (!isSubscribed) {
                     return;
                 }
-                setResults(movies.data);
+                setMovieResults(movies.data);
                 setShowResults(shows.data);
                 setLoading(false);
             });
@@ -44,22 +44,21 @@ export default function Search() {
                     <Emoji className="ml-3" emoji="⏳" rotating={true} />
                     : <Emoji className="ml-3" emoji="❌" onClick={() => setSearch('')} />}
             </div>
-            
-            <h1 className="text-3xl mt-4 text-gray-700">Películas</h1>
+
             <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
-                {search || results.length ?
-                    results.map(r => <li key={r.movie.ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
+                {search || movieResults.length ?
+                    movieResults.map(r => <li key={r.movie.ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
                         <ImageLink item={r} style={{ minHeight: '15em' }} type="movie" />
                     </li>)
-                    : <Popular />}
-                </ul>
+                    : <Popular type="movie" />}
+            </ul>
 
-            <h1 className="text-3xl mt-4 text-gray-700">Series</h1>
             <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
-                {(search || showResults.length) &&
+                {(search || showResults.length) ?
                     showResults.map(r => <li key={r.show.ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
                         <ImageLink item={r} style={{ minHeight: '15em' }} type="show" />
-                    </li>)}
+                    </li>)
+                    : <Popular type="show" />}
             </ul>
 
         </div>
