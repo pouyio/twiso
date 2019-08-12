@@ -17,7 +17,8 @@ export default function Search() {
     useEffect(
         () => {
             if (!debouncedSearch) {
-                setMovieResults([])
+                setMovieResults([]);
+                setShowResults([]);
                 return;
             }
 
@@ -45,21 +46,27 @@ export default function Search() {
                     : <Emoji className="ml-3" emoji="❌" onClick={() => setSearch('')} />}
             </div>
 
-            <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
-                {search || movieResults.length ?
-                    movieResults.map(r => <li key={r.movie.ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
-                        <ImageLink item={r} style={{ minHeight: '15em' }} type="movie" />
-                    </li>)
-                    : <Popular type="movie" />}
-            </ul>
+            {search || movieResults.length ?
+                <>
+                    <h1 className="text-3xl mt-4 text-gray-700">Películas </h1>
+                    <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
+                        {movieResults.map(r => <li key={r.movie.ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
+                            <ImageLink item={r} style={{ minHeight: '15em' }} type="movie" />
+                        </li>)}
+                    </ul>
+                </>
+                : <Popular type="movie" />}
 
-            <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
-                {(search || showResults.length) ?
-                    showResults.map(r => <li key={r.show.ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
-                        <ImageLink item={r} style={{ minHeight: '15em' }} type="show" />
-                    </li>)
-                    : <Popular type="show" />}
-            </ul>
+            {(search || showResults.length) ?
+                <>
+                    <h1 className="text-3xl mt-4 text-gray-700">Series </h1>
+                    <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
+                        {showResults.map(r => <li key={r.show.ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
+                            <ImageLink item={r} style={{ minHeight: '15em' }} type="show" />
+                        </li>)}
+                    </ul>
+                </>
+                : <Popular type="show" />}
 
         </div>
     );

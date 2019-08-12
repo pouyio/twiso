@@ -6,7 +6,7 @@ import Emoji from './Emoji';
 
 export default function PopularMovies({ type }) {
     const [loading, setLoading] = useState(false);
-    const [show, setShow] = useState(false);
+    const [show, setShow] = useState(true);
     const [results, setResults] = useState([]);
 
     useEffect(() => {
@@ -37,7 +37,7 @@ export default function PopularMovies({ type }) {
 
     return (
         <div>
-            <h1 className="text-3xl text-center text-gray-700 m-4 mt-8" onClick={toggleShow}>
+            <h1 className="text-3xl text-center text-gray-700 m-4 mt-8 flex items-baseline" onClick={toggleShow}>
                 <Emoji className="ml-3" emoji={loading ? '⏳' : '⭐'} rotating={loading} /> {getTitle()} populares <Emoji className="text-base" emoji={show ? '🔽' : '🔼'} /></h1>
             {show &&
                 <ul className="mt-5 flex flex-wrap justify-center">
