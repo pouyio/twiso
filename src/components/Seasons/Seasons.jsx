@@ -5,6 +5,8 @@ const Seasons = ({
     seasons,
     addEpisodeWatched,
     removeEpisodeWatched,
+    addSeasonWatched,
+    removeSeasonWatched
 }) => {
 
     const [currentSeason, setCurrentSeason] = useState(false);
@@ -66,7 +68,7 @@ const Seasons = ({
 
     return (
         <>
-            <ul className="flex overflow-x-auto my-6 -mr-4" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <ul className="flex overflow-x-auto my-5 -mr-4" style={{ WebkitOverflowScrolling: 'touch' }}>
                 {seasons.filter(s => s.number).map(s => (
                     <li onClick={() => selectSeason(s)} key={s.ids.trakt} className={'whitespace-pre mx-1 rounded-full text-sm px-3 py-2 ' + selectedClass(s)}>
                         Temporada {s.number}
@@ -74,15 +76,25 @@ const Seasons = ({
                     </li>
                 ))}
             </ul>
-            {currentSeason && <ul>
-                {currentSeason.episodes.map(e => (
-                    <li className="myt-6 mt-3 pb-8 text-sm leading-tight border-b" key={e.ids.trakt} onClick={() => toggleEpisode(e)}>
-                        <span className="text-gray-600 text-xs font-bold mr-1">{e.number}</span>
-                        {isEpisodeWatched(e.number) ? <span className="text-gray-600 mr-2 ml-1">✓</span> : <span className="text-blue-400 mx-2">•</span>}
-                        <span className={isEpisodeWatched(e.number) ? 'text-gray-600' : ''}>{e.title}</span>
-                    </li>
-                ))}
-            </ul>}
+            {currentSeason &&
+                <>
+                    <ul className="my-4">
+                        {currentSeason.episodes.map(e => (
+                            <li className="myt-6 mt-3 pb-8 text-sm leading-tight border-b" key={e.ids.trakt} onClick={() => toggleEpisode(e)}>
+                                <span className="text-gray-600 text-xs font-bold mr-1">{e.number}</span>
+                                {isEpisodeWatched(e.number) ? <span className="text-gray-600 mr-2 ml-1">✓</span> : <span className="text-blue-400 mx-2">•</span>}
+                                <span className={isEpisodeWatched(e.number) ? 'text-gray-600' : ''}>{e.title}</span>
+                            </li>
+                        ))}
+                    </ul>
+                    <div className="flex justify-center">
+                        {
+                            isSeasonWatched(currentSeason.number) ?
+                                <button className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200" onClick={() => removeSeasonWatched(currentSeason)}>Marcar todo como no vistos</button>
+                                : <button className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200" onClick={() => addSeasonWatched(currentSeason)}>Marcar todo como vistos</button>
+                        }
+                    </div>
+                </>}
         </>
     );
 }

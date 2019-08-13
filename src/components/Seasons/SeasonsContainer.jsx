@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { getShowSeasons, addShowEpisodeWatched, removeShowEpisodeWatched, getShowProgress } from '../../utils/api';
+import { getShowSeasons, addShowEpisodeWatched, removeShowEpisodeWatched, getShowProgress, addShowSeasonWatched, removeShowSeasonWatched } from '../../utils/api';
 import AuthContext from '../../utils/AuthContext';
 import Seasons from './Seasons';
 
@@ -27,6 +27,15 @@ const SeasonsContainer = ({ show, showId }) => {
         });
     }
 
+    const updateSeason = (season, completed) => {
+        const seasonIndex = progress.seasons.findIndex(s => s.number === season.number);
+        setProgress((prev) => {
+            prev.seasons[seasonIndex].episodes = prev.seasons[seasonIndex].episodes.map(e => ({...e, completed}));
+            prev.seasons[seasonIndex].completed = prev.seasons[seasonIndex].episodes.length;
+            return { ...prev };
+        });
+    }
+
     const addEpisodeWatched = (episode) => {
         addShowEpisodeWatched(episode, session).then(() => updateEpisode(episode, true));
     }
@@ -35,12 +44,21 @@ const SeasonsContainer = ({ show, showId }) => {
         removeShowEpisodeWatched(episode, session).then(() => updateEpisode(episode, false));
     }
 
+    const addSeasonWatched = (season) => {
+        addShowSeasonWatched(season, session).then(() => updateSeason(season, true));
+    }
+    const removeSeasonWatched = (season) => {
+        removeShowSeasonWatched(season, session).then(() => updateSeason(season, false));
+    }
+
     return (
         <Seasons
             seasons={seasons}
             progress={progress}
             addEpisodeWatched={addEpisodeWatched}
             removeEpisodeWatched={removeEpisodeWatched}
+            addSeasonWatched={addSeasonWatched}
+            removeSeasonWatched={removeSeasonWatched}
         />
     );
 }

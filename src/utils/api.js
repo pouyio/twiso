@@ -155,9 +155,31 @@ export const addShowEpisodeWatched = (episode, session) => {
         });
 }
 
+export const addShowSeasonWatched = (season, session) => {
+    return axios.post(`${BASE_URL}/sync/history`, {
+        seasons: [season]
+    }, {
+            headers: {
+                ...base_headers,
+                'Authorization': `Bearer ${session.access_token}`
+            }
+        });
+}
+
 export const removeShowEpisodeWatched = (episode, session) => {
     return axios.post(`${BASE_URL}/sync/history/remove`, {
         episodes: [episode]
+    }, {
+            headers: {
+                ...base_headers,
+                'Authorization': `Bearer ${session.access_token}`
+            }
+        });
+}
+
+export const removeShowSeasonWatched = (season, session) => {
+    return axios.post(`${BASE_URL}/sync/history/remove`, {
+        seasons: [season]
     }, {
             headers: {
                 ...base_headers,
