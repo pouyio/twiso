@@ -69,9 +69,9 @@ const Seasons = ({
     return (
         <>
             <ul className="flex overflow-x-auto my-5 -mr-4" style={{ WebkitOverflowScrolling: 'touch' }}>
-                {seasons.filter(s => s.number).map(s => (
+                {seasons.filter(s => s.episodes).map(s => (
                     <li onClick={() => selectSeason(s)} key={s.ids.trakt} className={'whitespace-pre mx-1 rounded-full text-sm px-3 py-2 ' + selectedClass(s)}>
-                        Temporada {s.number}
+                        {s.number ? `Temporada ${s.number}` : 'Especiales'}
                         {isSeasonWatched(s.number) ? <span className="ml-2 text-gray-600">✓</span> : ''}
                     </li>
                 ))}

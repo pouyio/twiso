@@ -55,7 +55,7 @@ export const getSeasons = (id) => {
 }
 
 export const getProgress = (session, id) => {
-    return axios.get(`${BASE_URL}/shows/${id}/progress/watched`, {
+    return axios.get(`${BASE_URL}/shows/${id}/progress/watched?specials=true`, {
         headers: {
             ...base_headers,
             'Authorization': `Bearer ${session.access_token}`
