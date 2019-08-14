@@ -8,7 +8,7 @@ export default function Related({ itemId, type }) {
     const [results, setResults] = useState([]);
 
     useEffect(() => {
-        getRelated(type, itemId).then(({ data }) => {
+        getRelated(itemId, type).then(({ data }) => {
             setResults(data);
         })
     }, [itemId, type]);

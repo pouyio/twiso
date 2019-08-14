@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getShow } from '../utils/api';
+import { get } from '../utils/api';
 import Image from './Image';
 import useTranslate from '../utils/useTranslate';
 import Emoji from './Emoji';
@@ -22,7 +22,7 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
 
     useEffect(() => {
         if (!state) {
-            getShow(id).then(({ data }) => {
+            get(id, 'show').then(({ data }) => {
                 const item = data[0];
                 setItem(item);
             });

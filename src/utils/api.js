@@ -42,25 +42,19 @@ export const getImgs = (id, type) => {
     return limitAxios.get(`${IMG_URL}/${newType}/${id}/images?api_key=${tmbdb_api_key}&include_image_language=es,en`);
 }
 
-export const getMovie = (id) => {
-    return axios.get(`${BASE_URL}/search/trakt/${id}?type=movie&extended=full`, {
+export const get = (id, type) => {
+    return axios.get(`${BASE_URL}/search/trakt/${id}?type=${type}&extended=full`, {
         headers: base_headers
     });
 }
 
-export const getShowSeasons = (id) => {
+export const getSeasons = (id) => {
     return axios.get(`${BASE_URL}/shows/${id}/seasons?extended=episodes`, {
         headers: base_headers
     });
 }
 
-export const getShow = (id) => {
-    return axios.get(`${BASE_URL}/search/trakt/${id}?type=show&extended=full`, {
-        headers: base_headers
-    });
-}
-
-export const getShowProgress = (session, id) => {
+export const getProgress = (session, id) => {
     return axios.get(`${BASE_URL}/shows/${id}/progress/watched`, {
         headers: {
             ...base_headers,
@@ -75,30 +69,32 @@ export const getTranslations = (id, type) => {
     });
 }
 
-export const searchMovie = (query) => {
-    return axios.get(`${BASE_URL}/search/movie?query=${query}&extended=full&page=1&limit=${Math.round(PAGE_SIZE / 7)}`, {
+export const search = (query, type) => {
+    return axios.get(`${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${Math.round(PAGE_SIZE / 7)}`, {
         headers: base_headers
     });
 }
 
-export const searchShows = (query) => {
-    return axios.get(`${BASE_URL}/search/show?query=${query}&extended=full&page=1&limit=${Math.round(PAGE_SIZE / 7)}`, {
-        headers: base_headers
-    });
-}
+export const getWatched = (session, type) => {
+    const url = type === 'movie' ?
+        `${BASE_URL}/sync/history/movies?page=1&limit=10000&extended=full`
+        : `${BASE_URL}/sync/watched/shows?extended=full`;
 
-export const getMoviesWatched = (session) => {
-    return axios.get(`${BASE_URL}/sync/history/movies?page=1&limit=10000&extended=full`, {
+    return axios.get(url, {
         headers: {
             ...base_headers,
             'Authorization': `Bearer ${session.access_token}`
         }
+    }).then(res => {
+        const mapped = res.data.map(s => ({ ...s, type }));
+        res.data = mapped;
+        return res;
     });
 }
 
-export const addMovieWatched = (movie, session) => {
+export const addWatched = (item, session, type) => {
     return axios.post(`${BASE_URL}/sync/history`, {
-        movies: [movie]
+        [`${type}s`]: [item]
     }, {
             headers: {
                 ...base_headers,
@@ -107,9 +103,9 @@ export const addMovieWatched = (movie, session) => {
         });
 }
 
-export const removeMovieWatched = (movie, session) => {
+export const removeWatched = (item, session, type) => {
     return axios.post(`${BASE_URL}/sync/history/remove`, {
-        movies: [movie]
+        [`${type}s`]: [item]
     }, {
             headers: {
                 ...base_headers,
@@ -118,8 +114,8 @@ export const removeMovieWatched = (movie, session) => {
         });
 }
 
-export const getMoviesWatchlist = (session) => {
-    return axios.get(`${BASE_URL}/sync/watchlist/movies?extended=full`, {
+export const getWatchlist = (session, type) => {
+    return axios.get(`${BASE_URL}/sync/watchlist/${type}s?extended=full`, {
         headers: {
             ...base_headers,
             'Authorization': `Bearer ${session.access_token}`
@@ -131,66 +127,9 @@ export const getMoviesWatchlist = (session) => {
     });
 }
 
-export const getShowsWatched = (session) => {
-    return axios.get(`${BASE_URL}/sync/watched/shows?extended=full`, {
-        headers: {
-            ...base_headers,
-            'Authorization': `Bearer ${session.access_token}`
-        }
-    }).then(res => {
-        const mapped = res.data.map(s => ({ ...s, type: 'show' }));
-        res.data = mapped;
-        return res;
-    });
-}
-
-export const addShowEpisodeWatched = (episode, session) => {
-    return axios.post(`${BASE_URL}/sync/history`, {
-        episodes: [episode]
-    }, {
-            headers: {
-                ...base_headers,
-                'Authorization': `Bearer ${session.access_token}`
-            }
-        });
-}
-
-export const addShowSeasonWatched = (season, session) => {
-    return axios.post(`${BASE_URL}/sync/history`, {
-        seasons: [season]
-    }, {
-            headers: {
-                ...base_headers,
-                'Authorization': `Bearer ${session.access_token}`
-            }
-        });
-}
-
-export const removeShowEpisodeWatched = (episode, session) => {
-    return axios.post(`${BASE_URL}/sync/history/remove`, {
-        episodes: [episode]
-    }, {
-            headers: {
-                ...base_headers,
-                'Authorization': `Bearer ${session.access_token}`
-            }
-        });
-}
-
-export const removeShowSeasonWatched = (season, session) => {
-    return axios.post(`${BASE_URL}/sync/history/remove`, {
-        seasons: [season]
-    }, {
-            headers: {
-                ...base_headers,
-                'Authorization': `Bearer ${session.access_token}`
-            }
-        });
-}
-
-export const addMovieWatchlist = (movie, session) => {
+export const addWatchlist = (item, session, type) => {
     return axios.post(`${BASE_URL}/sync/watchlist`, {
-        movies: [movie]
+        [`${type}s`]: [item]
     }, {
             headers: {
                 ...base_headers,
@@ -199,9 +138,9 @@ export const addMovieWatchlist = (movie, session) => {
         });
 }
 
-export const removeMovieWatchlist = (movie, session) => {
+export const removeWatchlist = (item, session, type) => {
     return axios.post(`${BASE_URL}/sync/watchlist/remove`, {
-        movies: [movie]
+        [`${type}s`]: [item]
     }, {
             headers: {
                 ...base_headers,
@@ -223,7 +162,7 @@ export const getPopular = (type) => {
     });
 }
 
-export const getRelated = (type, id) => {
+export const getRelated = (id, type) => {
     return axios.get(`${BASE_URL}/${type}s/${id}/related?extended=full&page=1&limit=10`, {
         headers: {
             ...base_headers

@@ -2,13 +2,12 @@ import React, { createContext, useEffect, useContext, useState } from 'react';
 import AuthContext from './AuthContext';
 import {
     getImgsConfig,
-    getMoviesWatched,
-    getMoviesWatchlist,
-    getShowsWatched,
-    addMovieWatchlist as addMWL,
-    removeMovieWatchlist as removeMWL,
-    addMovieWatched as addMWD,
-    removeMovieWatched as removeMWD,
+    getWatchlist,
+    addWatchlist,
+    removeWatchlist,
+    addWatched,
+    removeWatched,
+    getWatched,
 } from './api';
 
 export const PAGE_SIZE = 40;
@@ -79,20 +78,20 @@ export const UserProvider = ({ children }) => {
         if (!session) {
             return;
         }
-        getMoviesWatched(session)
+        getWatched(session, 'movie')
             .then(({ data }) => setMoviesWatched(data))
             .catch((data) => setGlobalError(data));
-        getMoviesWatchlist(session)
+        getWatchlist(session, 'movie')
             .then(({ data }) => setMoviesWatchlist(data))
             .catch((data) => setGlobalError(data));
-        getShowsWatched(session)
+        getWatched(session, 'show')
             .then(({ data }) => setShowsWatched(data))
             .catch((data) => setGlobalError(data));
 
     }, [session]);
 
     const addMovieWatched = (item) => {
-        addMWD(item.movie, session).then(({ data }) => {
+        addWatched(item.movie, session, 'movie').then(({ data }) => {
             if (data.added.movies) {
                 setMoviesWatched([item]);
                 removeMoviesWatchlist([item]);
@@ -100,7 +99,7 @@ export const UserProvider = ({ children }) => {
         });
     }
     const removeMovieWatched = (item) => {
-        removeMWD(item.movie, session).then(({ data }) => {
+        removeWatched(item.movie, session, 'movie').then(({ data }) => {
             if (data.deleted.movies) {
                 removeMoviesWatched([item]);
             }
@@ -108,7 +107,7 @@ export const UserProvider = ({ children }) => {
     }
 
     const addMovieWatchlist = (item) => {
-        addMWL(item.movie, session).then(({ data }) => {
+        addWatchlist(item.movie, session).then(({ data }) => {
             if (data.added.movies) {
                 setMoviesWatchlist([item]);
                 removeMoviesWatched([item]);
@@ -116,7 +115,7 @@ export const UserProvider = ({ children }) => {
         });
     }
     const removeMovieWatchlist = (item) => {
-        removeMWL(item.movie, session).then(({ data }) => {
+        removeWatchlist(item.movie, session).then(({ data }) => {
             if (data.deleted.movies) {
                 removeMoviesWatchlist([item]);
             }

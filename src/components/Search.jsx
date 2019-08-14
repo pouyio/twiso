@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useDebounce from '../utils/debounce';
 import ImageLink from './ImageLink';
-import { searchMovie, searchShows } from '../utils/api';
+import { search as searchApi } from '../utils/api';
 import Emoji from './Emoji';
 import Popular from './Popular';
 import useSerch from '../utils/useSearch';
@@ -24,7 +24,7 @@ export default function Search() {
 
             setLoading(true);
             let isSubscribed = true;
-            Promise.all([searchMovie(debouncedSearch), searchShows(debouncedSearch)]).then(([movies, shows]) => {
+            Promise.all([searchApi(debouncedSearch, 'movie'), searchApi(debouncedSearch, 'show')]).then(([movies, shows]) => {
                 if (!isSubscribed) {
                     return;
                 }
