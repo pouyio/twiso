@@ -5,7 +5,7 @@ import useTranslate from '../utils/useTranslate';
 import Emoji from './Emoji';
 import Related from './Related';
 import SeasonsContainer from './Seasons/SeasonsContainer';
-import getGenre from '../utils/getGenre';
+import Genres from './Genres';
 
 const status = {
     'returning series': 'en antena',
@@ -59,11 +59,7 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
 
                 <div className="my-4">
                     <p>Géneros:</p>
-                    <ul className="flex overflow-x-auto my-2 -mr-4" style={{ WebkitOverflowScrolling: 'touch' }}>
-                        {(item.show.genres || []).map(g => (
-                            <li key={g} className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre"><Emoji emoji={getGenre(g).emoji} /> {getGenre(g).name}</li>
-                        ))}
-                    </ul>
+                    <Genres genres={item.show.genres} />
                 </div>
 
                 <div className="my-4">
