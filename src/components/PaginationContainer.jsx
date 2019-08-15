@@ -15,10 +15,10 @@ export default function PaginationContainer({ children, items }) {
         setLast={setLast} />
 
     return (
-        <div>
+        <>
             {LocalPagination}
             {children}
             {LocalPagination}
-        </div>
+        </>
     );
 }
