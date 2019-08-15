@@ -16,8 +16,8 @@ export default function Related({ itemId, type }) {
     return (
         <>{
             results.length ?
-                <ul className="flex overflow-x-auto -mr-4" style={{ WebkitOverflowScrolling: 'touch' }}>
-                    {results.map(r => <li key={r[type].ids.trakt} className="p-2" style={{ minWidth: '50%' }}>
+                <ul className="flex overflow-x-auto -mx-4" style={{ WebkitOverflowScrolling: 'touch' }}>
+                    {results.map(r => <li key={r[type].ids.trakt} className="p-2" style={{ minWidth: '43%' }}>
                         <ImageLink item={r} type={type} />
                     </li>)
                     }
