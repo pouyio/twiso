@@ -17,5 +17,4 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     )
 }
-export const AuthConsumer = AuthContext.Consumer;
 export default AuthContext;

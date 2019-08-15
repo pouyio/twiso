@@ -147,5 +147,4 @@ export const UserProvider = ({ children }) => {
         </UserContext.Provider>
     );
 }
-export const UserConsumer = UserContext.Consumer;
 export default UserContext;
