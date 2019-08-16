@@ -43,24 +43,24 @@ function App() {
       <AuthProvider>
         <UserProvider>
           <ModalProvider>
-            <ul className="navbar flex w-full bg-gray-200 fixed bottom-0 px-4 z-50 text-center justify-around">
-              <li>
+            <ul className="flex w-full bg-gray-200 fixed bottom-0 px-4 z-50 text-center justify-around" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
+              <li className="py-3">
                 <Link to="/shows">
                   <Emoji className="text-3xl" emoji="📺" /></Link>
               </li>
-              <li>
+              <li className="py-3">
                 <Link to="/watchlist">
                   <Emoji className="text-3xl" emoji="⏱" /></Link>
               </li>
-              <li>
+              <li className="py-3">
                 <Link to="/watched">
                   <Emoji className="text-3xl" emoji="📚" /></Link>
               </li>
-              <li>
+              <li className="py-3">
                 <Link to="/search">
                   <Emoji className="text-3xl" emoji="🔍" /></Link>
               </li>
-              <li>
+              <li className="py-3">
                 <button onClick={logout}><Emoji className="text-3xl" emoji="❌" /></button>
               </li>
             </ul>
@@ -72,7 +72,7 @@ function App() {
             <ProtectedRoute path="/shows" component={Shows} />
             <ProtectedRoute path="/show/:id" component={ShowDetail} />
             <ul className="navbar flex w-full py-4 opacity-0">
-              <li>
+              <li className="py-3">
                 <Emoji emoji="📺" /> P
             </li>
             </ul>
