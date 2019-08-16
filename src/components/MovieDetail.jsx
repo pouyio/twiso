@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import WatchButton from './WatchButton';
-import { get } from '../utils/api';
+import { getApi } from '../utils/api';
 import Image from './Image';
 import useTranslate from '../utils/useTranslate';
 import Emoji from './Emoji';
@@ -18,7 +18,7 @@ export default function MovieDetail({ location: { state }, match: { params: { id
 
     useEffect(() => {
         if (!state) {
-            get(id, 'movie').then(({ data }) => {
+            getApi(id, 'movie').then(({ data }) => {
                 const item = data[0];
                 setItem(item);
             });

@@ -1,4 +1,4 @@
-import { getImgs } from "./api";
+import { getImgsApi } from "./api";
 import { getFromCache, saveToCache } from "./cache";
 
 const findFirstValid = (posters, language) => {
@@ -13,7 +13,7 @@ const getImgUrl = async (id, type, config, language) => {
     }
 
     try {
-        const { data } = await getImgs(id, type);
+        const { data } = await getImgsApi(id, type);
         const posterSize = config.images.profile_sizes[1];
         const poster = findFirstValid(data.posters, language);
         if (poster) {

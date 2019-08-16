@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useContext, useState } from 'react';
 import AuthContext from './AuthContext';
 import {
-    getImgsConfig,
+    getImgsConfigApi,
     getWatchlistApi,
     addWatchlistApi,
     removeWatchlistApi,
@@ -33,7 +33,7 @@ export const UserProvider = ({ children }) => {
     const [language] = useState('es');
 
     useEffect(() => {
-        getImgsConfig().then(({ data }) => {
+        getImgsConfigApi().then(({ data }) => {
             setConfig(data);
         });
     }, [])

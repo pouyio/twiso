@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useCallback } from 'react';
-import { getTranslations } from './api';
+import { getTranslationsApi } from './api';
 import AuthContext from './AuthContext';
 import UserContext from './UserContext';
 
@@ -28,7 +28,7 @@ export default function useTranslate(item) {
         if (language === 'en' || !item[item.type].available_translations.includes(language)) {
             return;
         }
-        getTranslations(item[item.type].ids.trakt, item.type).then(({ data }) => {
+        getTranslationsApi(item[item.type].ids.trakt, item.type).then(({ data }) => {
             setTranslation(mergeTranslation(data[0]));
         });
     }, [item, session, language, mergeTranslation]);

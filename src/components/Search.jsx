@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useDebounce from '../utils/debounce';
 import ImageLink from './ImageLink';
-import { search as searchApi } from '../utils/api';
+import { searchApi } from '../utils/api';
 import Emoji from './Emoji';
 import Popular from './Popular';
 import useSerch from '../utils/useSearch';

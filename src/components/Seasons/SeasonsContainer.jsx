@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { getSeasons, addWatchedApi, removeWatchedApi, getProgress, getSeason } from '../../utils/api';
+import { getSeasonsApi, addWatchedApi, removeWatchedApi, getProgressApi, getSeasonApi } from '../../utils/api';
 import AuthContext from '../../utils/AuthContext';
 import Seasons from './Seasons';
 
@@ -10,11 +10,11 @@ const SeasonsContainer = ({ show, showId }) => {
     const [seasons, setSeasons] = useState([]);
 
     useEffect(() => {
-        getProgress(session, showId).then(({ data }) => setProgress(data));
+        getProgressApi(session, showId).then(({ data }) => setProgress(data));
     }, [session, showId]);
 
     useEffect(() => {
-        getSeasons(show.ids.trakt).then(({ data }) => setSeasons(data))
+        getSeasonsApi(show.ids.trakt).then(({ data }) => setSeasons(data))
     }, [show.ids.trakt]);
 
     const updateEpisode = (episode, completed) => {
@@ -52,7 +52,7 @@ const SeasonsContainer = ({ show, showId }) => {
     }
 
     const getSeasonDetails = (season) => {
-        return getSeason(showId, season);
+        return getSeasonApi(showId, season);
     }
 
     return (

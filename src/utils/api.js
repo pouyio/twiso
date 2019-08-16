@@ -20,7 +20,7 @@ const base_headers = {
 
 const limitAxios = rateLimit(axios.create(), { maxRequests: 42, perMilliseconds: 10000 });
 
-export const login = (code) => {
+export const loginApi = (code) => {
     return axios.post(LOGIN_URL, {
         code,
         client_secret,
@@ -30,11 +30,11 @@ export const login = (code) => {
     });
 }
 
-export const getImgsConfig = () => {
+export const getImgsConfigApi = () => {
     return axios.get(`${IMG_URL}/configuration?api_key=${tmbdb_api_key}`);
 }
 
-export const getImgs = (id, type) => {
+export const getImgsApi = (id, type) => {
     let newType = type;
     if (type === 'show') {
         newType = 'tv';
@@ -42,25 +42,25 @@ export const getImgs = (id, type) => {
     return limitAxios.get(`${IMG_URL}/${newType}/${id}/images?api_key=${tmbdb_api_key}&include_image_language=es,en`);
 }
 
-export const get = (id, type) => {
+export const getApi = (id, type) => {
     return axios.get(`${BASE_URL}/search/trakt/${id}?type=${type}&extended=full`, {
         headers: base_headers
     });
 }
 
-export const getSeasons = (id) => {
+export const getSeasonsApi = (id) => {
     return axios.get(`${BASE_URL}/shows/${id}/seasons?extended=episodes`, {
         headers: base_headers
     });
 }
 
-export const getSeason = (id, season) => {
+export const getSeasonApi = (id, season) => {
     return axios.get(`${BASE_URL}/shows/${id}/seasons/${season}?extended=full`, {
         headers: base_headers
     });
 }
 
-export const getProgress = (session, id) => {
+export const getProgressApi = (session, id) => {
     return axios.get(`${BASE_URL}/shows/${id}/progress/watched?specials=true`, {
         headers: {
             ...base_headers,
@@ -69,13 +69,13 @@ export const getProgress = (session, id) => {
     });
 }
 
-export const getTranslations = (id, type) => {
+export const getTranslationsApi = (id, type) => {
     return axios.get(`${BASE_URL}/${type}s/${id}/translations/es`, {
         headers: base_headers
     });
 }
 
-export const search = (query, type) => {
+export const searchApi = (query, type) => {
     return axios.get(`${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${Math.round(PAGE_SIZE / 7)}`, {
         headers: base_headers
     });
