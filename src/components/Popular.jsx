@@ -37,8 +37,10 @@ export default function PopularMovies({ type }) {
 
     return (
         <div>
-            <h1 className="text-3xl text-center text-gray-700 m-4 mt-8 flex items-baseline" onClick={toggleShow}>
-                <Emoji className="ml-3" emoji={loading ? '⏳' : '⭐'} rotating={loading} /> {getTitle()} populares <Emoji className="text-base" emoji={show ? '🔽' : '🔼'} /></h1>
+            <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline" onClick={toggleShow}>
+                <Emoji emoji={loading ? '⏳' : '⭐'} rotating={loading} />
+                <span className="mx-2">{getTitle()} populares</span>
+                <Emoji className="text-base" emoji={show ? '🔽' : '🔼'} /></h1>
             {show &&
                 <ul className="mt-5 flex flex-wrap justify-center">
                     {results.map(r => <li key={r[type].ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
@@ -46,7 +48,7 @@ export default function PopularMovies({ type }) {
                     </li>)}
                 </ul>
             }
-            <div className="h-1 border-2 rounded-full m-8"></div>
+            <div className="h-1 border-b-2 rounded-full my-8"></div>
         </div>
     );
 }
