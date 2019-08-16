@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { getSeasonsApi, addWatchedApi, removeWatchedApi, getProgressApi, getSeasonApi } from '../../utils/api';
+import { getSeasonsApi, addWatchedApi, removeWatchedApi, getProgressApi, getSeasonApi, removeWatchlistApi } from '../../utils/api';
 import AuthContext from '../../utils/AuthContext';
 import Seasons from './Seasons';
+import UserContext from '../../utils/UserContext';
 
 const SeasonsContainer = ({ show, showId }) => {
 
     const [progress, setProgress] = useState(false);
     const { session } = useContext(AuthContext);
+    const { removeWatchlistLocal } = useContext(UserContext);
     const [seasons, setSeasons] = useState([]);
 
     useEffect(() => {
@@ -30,14 +32,17 @@ const SeasonsContainer = ({ show, showId }) => {
     const updateSeason = (season, completed) => {
         const seasonIndex = progress.seasons.findIndex(s => s.number === season.number);
         setProgress((prev) => {
-            prev.seasons[seasonIndex].episodes = prev.seasons[seasonIndex].episodes.map(e => ({...e, completed}));
+            prev.seasons[seasonIndex].episodes = prev.seasons[seasonIndex].episodes.map(e => ({ ...e, completed }));
             prev.seasons[seasonIndex].completed = prev.seasons[seasonIndex].episodes.length;
             return { ...prev };
         });
     }
 
     const addEpisodeWatched = (episode) => {
-        addWatchedApi(episode, session, 'episode').then(() => updateEpisode(episode, true));
+        addWatchedApi(episode, session, 'episode').then(() => {
+            updateEpisode(episode, true);
+            removeWatchlistLocal([{ show: { ...show } }], 'show');
+        });
     }
 
     const removeEpisodeWatched = (episode) => {
@@ -45,7 +50,10 @@ const SeasonsContainer = ({ show, showId }) => {
     }
 
     const addSeasonWatched = (season) => {
-        addWatchedApi(season, session, 'season').then(() => updateSeason(season, true));
+        addWatchedApi(season, session, 'season').then(() => {
+            updateSeason(season, true);
+            removeWatchlistLocal([{ show: { ...show } }], 'show');
+        });
     }
     const removeSeasonWatched = (season) => {
         removeWatchedApi(season, session, 'season').then(() => updateSeason(season, false));

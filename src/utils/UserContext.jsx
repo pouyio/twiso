@@ -171,6 +171,7 @@ export const UserProvider = ({ children }) => {
             isMovieWatchlist,
             isShowWatched,
             isShowWatchlist,
+            removeWatchlistLocal: removeWatchlist,
             PAGE_SIZE
         }}>
             {children}
