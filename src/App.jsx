@@ -2,6 +2,7 @@ import './index.css';
 import React from 'react';
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import Watchlist from './components/Watchlist'
+import ShowsWatchlist from './components/ShowsWatchlist'
 import Watched from './components/Watched';
 import Search from './components/Search';
 import Login from './components/Login';
@@ -43,7 +44,11 @@ function App() {
       <AuthProvider>
         <UserProvider>
           <ModalProvider>
-            <ul className="flex w-full bg-gray-200 fixed bottom-0 px-4 z-50 text-center justify-around" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
+            <ul className="flex w-full bg-gray-200 fixed bottom-0 px-2 z-50 text-center justify-around" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
+              <li className="py-3">
+                <Link to="/showsWachlist">
+                  <Emoji className="text-3xl" emoji="🖥" /></Link>
+              </li>
               <li className="py-3">
                 <Link to="/shows">
                   <Emoji className="text-3xl" emoji="📺" /></Link>
@@ -65,6 +70,7 @@ function App() {
               </li>
             </ul>
             <Route exact path="/" component={ParamsComponent} />
+            <ProtectedRoute path="/showsWachlist" component={ShowsWatchlist} />
             <ProtectedRoute path="/watchlist" component={Watchlist} />
             <ProtectedRoute path="/watched" component={Watched} />
             <ProtectedRoute path="/search" component={Search} />

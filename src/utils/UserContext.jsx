@@ -118,10 +118,26 @@ export const UserProvider = ({ children }) => {
             }
         });
     }
+
+    const addShowWatchlist = (item) => {
+        addWatchlistApi(item.show, session, SHOW).then(({ data }) => {
+            if (data.added.shows) {
+                setWatchlist([item], SHOW);
+                removeWatched([item], SHOW);
+            }
+        });
+    }
     const removeMovieWatchlist = (item) => {
         removeWatchlistApi(item.movie, session, MOVIE).then(({ data }) => {
             if (data.deleted.movies) {
                 removeWatchlist([item], MOVIE);
+            }
+        });
+    }
+    const removeShowWatchlist = (item) => {
+        removeWatchlistApi(item.show, session, SHOW).then(({ data }) => {
+            if (data.deleted.shows) {
+                removeWatchlist([item], SHOW);
             }
         });
     }
@@ -131,6 +147,12 @@ export const UserProvider = ({ children }) => {
     }
     const isMovieWatchlist = (id) => {
         return userInfo.movies.watchlist.some(i => i.movie.ids.trakt === id);
+    }
+    const isShowWatched = (id) => {
+        return userInfo.shows.watched.some(i => i.show.ids.trakt === id);
+    }
+    const isShowWatchlist = (id) => {
+        return userInfo.shows.watchlist.some(i => i.show.ids.trakt === id);
     }
 
     return (
@@ -142,9 +164,13 @@ export const UserProvider = ({ children }) => {
             addMovieWatched,
             removeMovieWatched,
             addMovieWatchlist,
+            addShowWatchlist,
             removeMovieWatchlist,
+            removeShowWatchlist,
             isMovieWatched,
             isMovieWatchlist,
+            isShowWatched,
+            isShowWatchlist,
             PAGE_SIZE
         }}>
             {children}

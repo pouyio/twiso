@@ -6,6 +6,7 @@ import Emoji from './Emoji';
 import Related from './Related';
 import SeasonsContainer from './Seasons/SeasonsContainer';
 import Genres from './Genres';
+import ShowWatchButton from './ShowWatchButton';
 
 const status = {
     'returning series': 'en antena',
@@ -48,6 +49,9 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
                     <h2>{item.show.runtime} mins</h2>
                 </div>
 
+                <div className="my-4">
+                    <ShowWatchButton item={item} />
+                </div>
                 <div className="my-4">
                     <SeasonsContainer show={item.show} showId={id} />
                 </div>
