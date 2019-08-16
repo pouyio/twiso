@@ -103,11 +103,8 @@ const Seasons = ({
                                 <div className="mb-2 flex">
                                     <span className="text-gray-600 text-xs font-bold mr-1">{e.number}</span>
                                     {isEpisodeWatched(e.number) ? <span className="text-gray-600 mr-2 ml-1">✓</span> : <span className="text-blue-400 mx-2">•</span>}
-                                    <span onClick={() => toggle({ title: e.title, text: getEpisodeDescription(e.number) })} className={isEpisodeWatched(e.number) ? 'text-gray-600' : ''}>{e.title}</span>
-                                    <button style={{
-                                        gridColumnStart: 2,
-                                        gridRowStart: 1, gridRowEnd: 3
-                                    }} className="px-5 bg-gray-200 rounded-full" onClick={() => toggleEpisode(e)}>
+                                    <span onClick={() => toggle({ title: e.title, text: getEpisodeDescription(e.number) })} className={`flex-grow ${isEpisodeWatched(e.number) ? 'text-gray-600' : ''}`}>{e.title}</span>
+                                    <button className="px-5 text-right" onClick={() => toggleEpisode(e)}>
                                         <Emoji emoji="▶️" />
                                     </button>
                                 </div>
