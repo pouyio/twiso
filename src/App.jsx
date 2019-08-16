@@ -12,6 +12,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { UserProvider } from './utils/UserContext';
 import { AuthProvider } from './utils/AuthContext';
 import Emoji from './components/Emoji';
+import { ModalProvider } from './utils/ModalContext';
 const redirect_url = process.env.REACT_APP_REDIRECT_URL;
 
 
@@ -41,39 +42,41 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <UserProvider>
-          <ul className="navbar flex w-full bg-gray-200 fixed bottom-0 px-4 z-50 text-center justify-around">
-            <li>
-              <Link to="/shows">
-                <Emoji className="text-3xl" emoji="📺" /></Link>
+          <ModalProvider>
+            <ul className="navbar flex w-full bg-gray-200 fixed bottom-0 px-4 z-50 text-center justify-around">
+              <li>
+                <Link to="/shows">
+                  <Emoji className="text-3xl" emoji="📺" /></Link>
+              </li>
+              <li>
+                <Link to="/watchlist">
+                  <Emoji className="text-3xl" emoji="⏱" /></Link>
+              </li>
+              <li>
+                <Link to="/watched">
+                  <Emoji className="text-3xl" emoji="📚" /></Link>
+              </li>
+              <li>
+                <Link to="/search">
+                  <Emoji className="text-3xl" emoji="🔍" /></Link>
+              </li>
+              <li>
+                <button onClick={logout}><Emoji className="text-3xl" emoji="❌" /></button>
+              </li>
+            </ul>
+            <Route exact path="/" component={ParamsComponent} />
+            <ProtectedRoute path="/watchlist" component={Watchlist} />
+            <ProtectedRoute path="/watched" component={Watched} />
+            <ProtectedRoute path="/search" component={Search} />
+            <ProtectedRoute path="/movie/:id" component={MovieDetail} />
+            <ProtectedRoute path="/shows" component={Shows} />
+            <ProtectedRoute path="/show/:id" component={ShowDetail} />
+            <ul className="navbar flex w-full py-4 opacity-0">
+              <li>
+                <Emoji emoji="📺" /> P
             </li>
-            <li>
-              <Link to="/watchlist">
-                <Emoji className="text-3xl" emoji="⏱" /></Link>
-            </li>
-            <li>
-              <Link to="/watched">
-                <Emoji className="text-3xl" emoji="📚" /></Link>
-            </li>
-            <li>
-              <Link to="/search">
-                <Emoji className="text-3xl" emoji="🔍" /></Link>
-            </li>
-            <li>
-              <button onClick={logout}><Emoji className="text-3xl" emoji="❌" /></button>
-            </li>
-          </ul>
-          <Route exact path="/" component={ParamsComponent} />
-          <ProtectedRoute path="/watchlist" component={Watchlist} />
-          <ProtectedRoute path="/watched" component={Watched} />
-          <ProtectedRoute path="/search" component={Search} />
-          <ProtectedRoute path="/movie/:id" component={MovieDetail} />
-          <ProtectedRoute path="/shows" component={Shows} />
-          <ProtectedRoute path="/show/:id" component={ShowDetail} />
-          <ul className="navbar flex w-full py-4 opacity-0">
-            <li>
-              <Emoji emoji="📺" /> P
-            </li>
-          </ul>
+            </ul>
+          </ModalProvider>
         </UserProvider>
       </AuthProvider>
     </BrowserRouter>

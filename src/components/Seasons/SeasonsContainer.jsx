@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { getSeasons, addWatched, removeWatched, getProgress } from '../../utils/api';
+import { getSeasons, addWatched, removeWatched, getProgress, getSeason } from '../../utils/api';
 import AuthContext from '../../utils/AuthContext';
 import Seasons from './Seasons';
 
@@ -51,10 +51,15 @@ const SeasonsContainer = ({ show, showId }) => {
         removeWatched(season, session, 'season').then(() => updateSeason(season, false));
     }
 
+    const getSeasonDetails = (season) => {
+        return getSeason(showId, season);
+    }
+
     return (
         <Seasons
             seasons={seasons}
             progress={progress}
+            getSeasonDetails={getSeasonDetails}
             addEpisodeWatched={addEpisodeWatched}
             removeEpisodeWatched={removeEpisodeWatched}
             addSeasonWatched={addSeasonWatched}

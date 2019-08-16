@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import Emoji from '../Emoji';
+import ModalContext from '../../utils/ModalContext';
 
 const Seasons = ({
     progress,
@@ -6,14 +8,24 @@ const Seasons = ({
     addEpisodeWatched,
     removeEpisodeWatched,
     addSeasonWatched,
-    removeSeasonWatched
+    removeSeasonWatched,
+    getSeasonDetails
 }) => {
 
     const [currentSeason, setCurrentSeason] = useState(false);
+    const [seasonDetails, setSeasonDetails] = useState([]);
+    const { toggle } = useContext(ModalContext);
 
     const selectSeason = useCallback((season) => {
+        setSeasonDetails([]);
+        if (!season) {
+            return
+        }
         if (!currentSeason) {
             setCurrentSeason(season);
+            getSeasonDetails(season.number).then(({ data }) => {
+                setSeasonDetails(data);
+            });
             return;
         }
         if (currentSeason.ids.trakt === season.ids.trakt) {
@@ -21,7 +33,10 @@ const Seasons = ({
             return;
         }
         setCurrentSeason(season);
-    }, [currentSeason]);
+        getSeasonDetails(season.number).then(({ data }) => {
+            setSeasonDetails(data);
+        });
+    }, [currentSeason, getSeasonDetails]);
 
     useEffect(() => {
         if (progress.next_episode) {
@@ -66,6 +81,10 @@ const Seasons = ({
         }
     }
 
+    const getEpisodeDescription = (episode) => {
+        return (seasonDetails.find(s => s.number === episode) || {}).overview;
+    }
+
     return (
         <>
             <ul className="flex overflow-x-auto my-5 -mr-4" style={{ WebkitOverflowScrolling: 'touch' }}>
@@ -80,10 +99,18 @@ const Seasons = ({
                 <>
                     <ul className="my-4">
                         {currentSeason.episodes.map(e => (
-                            <li className="myt-6 mt-3 pb-8 text-sm leading-tight border-b" key={e.ids.trakt} onClick={() => toggleEpisode(e)}>
-                                <span className="text-gray-600 text-xs font-bold mr-1">{e.number}</span>
-                                {isEpisodeWatched(e.number) ? <span className="text-gray-600 mr-2 ml-1">✓</span> : <span className="text-blue-400 mx-2">•</span>}
-                                <span className={isEpisodeWatched(e.number) ? 'text-gray-600' : ''}>{e.title}</span>
+                            <li className="myt-6 mt-3 pb-4 text-sm leading-tight border-b" key={e.ids.trakt} >
+                                <div className="mb-2 flex">
+                                    <span className="text-gray-600 text-xs font-bold mr-1">{e.number}</span>
+                                    {isEpisodeWatched(e.number) ? <span className="text-gray-600 mr-2 ml-1">✓</span> : <span className="text-blue-400 mx-2">•</span>}
+                                    <span onClick={() => toggle({ title: e.title, text: getEpisodeDescription(e.number) })} className={isEpisodeWatched(e.number) ? 'text-gray-600' : ''}>{e.title}</span>
+                                    <button style={{
+                                        gridColumnStart: 2,
+                                        gridRowStart: 1, gridRowEnd: 3
+                                    }} className="px-5 bg-gray-200 rounded-full" onClick={() => toggleEpisode(e)}>
+                                        <Emoji emoji="▶️" />
+                                    </button>
+                                </div>
                             </li>
                         ))}
                     </ul>

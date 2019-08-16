@@ -54,6 +54,12 @@ export const getSeasons = (id) => {
     });
 }
 
+export const getSeason = (id, season) => {
+    return axios.get(`${BASE_URL}/shows/${id}/seasons/${season}?extended=full`, {
+        headers: base_headers
+    });
+}
+
 export const getProgress = (session, id) => {
     return axios.get(`${BASE_URL}/shows/${id}/progress/watched?specials=true`, {
         headers: {
