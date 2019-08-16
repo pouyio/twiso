@@ -36,7 +36,7 @@ export default function Image({ item, className = '', type = '', style, ...props
     }
 
     return (
-        <div ref={ref} style={style} {...props} className={className + ' h-full bg-gray-300 flex justify-center items-center rounded-lg overflow-auto ' + getBorderClass()}>
+        <div ref={ref} style={style} {...props} className={className + ' h-full bg-gray-300 flex justify-center items-center rounded-lg overflow-hidden ' + getBorderClass()}>
             {(!inView || !imgUrl) && <h1 className="justify-center items-center p-2">
                 {item[item.type].title}
                 <br />
