@@ -5,7 +5,7 @@ export default function WatchButton({ item }) {
     const { addMovieWatched,
         removeMovieWatched,
         addMovieWatchlist,
-        removeWatchlist,
+        removeMovieWatchlist,
         isMovieWatched,
         isMovieWatchlist
     } = useContext(UserContext);
@@ -18,7 +18,7 @@ export default function WatchButton({ item }) {
                 : <button className="bg-gray-200 py-3 px-12 rounded-full text-gray-700 font-light" onClick={() => addMovieWatched(item)}>
                     Vista</button>}
             {isMovieWatchlist(item.movie.ids.trakt) ?
-                <button className="bg-blue-400 py-3 px-12 rounded-full text-white font-bold" onClick={() => removeWatchlist(item, 'movie')}>
+                <button className="bg-blue-400 py-3 px-12 rounded-full text-white font-bold" onClick={() => removeMovieWatchlist(item)}>
                     Pendiente</button>
                 : <button className="bg-gray-200 py-3 px-12 rounded-full text-gray-700 font-light" onClick={() => addMovieWatchlist(item)}>
                     Pendiente</button>}

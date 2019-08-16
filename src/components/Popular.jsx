@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ImageLink from './ImageLink';
-import { getPopular } from '../utils/api';
+import { getPopularApi } from '../utils/api';
 import Emoji from './Emoji';
 
 
@@ -12,7 +12,7 @@ export default function PopularMovies({ type }) {
     useEffect(() => {
         let isSubscribed = true;
         setLoading(true);
-        getPopular(type).then(({ data }) => {
+        getPopularApi(type).then(({ data }) => {
             if (!isSubscribed) {
                 return;
             }

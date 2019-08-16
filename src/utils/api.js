@@ -81,7 +81,7 @@ export const search = (query, type) => {
     });
 }
 
-export const getWatched = (session, type) => {
+export const getWatchedApi = (session, type) => {
     const url = type === 'movie' ?
         `${BASE_URL}/sync/history/movies?page=1&limit=10000&extended=full`
         : `${BASE_URL}/sync/watched/shows?extended=full`;
@@ -98,7 +98,7 @@ export const getWatched = (session, type) => {
     });
 }
 
-export const addWatched = (item, session, type) => {
+export const addWatchedApi = (item, session, type) => {
     return axios.post(`${BASE_URL}/sync/history`, {
         [`${type}s`]: [item]
     }, {
@@ -109,7 +109,7 @@ export const addWatched = (item, session, type) => {
         });
 }
 
-export const removeWatched = (item, session, type) => {
+export const removeWatchedApi = (item, session, type) => {
     return axios.post(`${BASE_URL}/sync/history/remove`, {
         [`${type}s`]: [item]
     }, {
@@ -120,7 +120,7 @@ export const removeWatched = (item, session, type) => {
         });
 }
 
-export const getWatchlist = (session, type) => {
+export const getWatchlistApi = (session, type) => {
     return axios.get(`${BASE_URL}/sync/watchlist/${type}s?extended=full`, {
         headers: {
             ...base_headers,
@@ -133,7 +133,7 @@ export const getWatchlist = (session, type) => {
     });
 }
 
-export const addWatchlist = (item, session, type) => {
+export const addWatchlistApi = (item, session, type) => {
     return axios.post(`${BASE_URL}/sync/watchlist`, {
         [`${type}s`]: [item]
     }, {
@@ -144,7 +144,7 @@ export const addWatchlist = (item, session, type) => {
         });
 }
 
-export const removeWatchlist = (item, session, type) => {
+export const removeWatchlistApi = (item, session, type) => {
     return axios.post(`${BASE_URL}/sync/watchlist/remove`, {
         [`${type}s`]: [item]
     }, {
@@ -155,7 +155,7 @@ export const removeWatchlist = (item, session, type) => {
         });
 }
 
-export const getPopular = (type) => {
+export const getPopularApi = (type) => {
     const year = new Date().getFullYear();
     return axios.get(`${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${PAGE_SIZE}&years=${year}`, {
         headers: {
@@ -168,7 +168,7 @@ export const getPopular = (type) => {
     });
 }
 
-export const getRelated = (id, type) => {
+export const getRelatedApi = (id, type) => {
     return axios.get(`${BASE_URL}/${type}s/${id}/related?extended=full&page=1&limit=10`, {
         headers: {
             ...base_headers

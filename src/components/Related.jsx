@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getRelated } from '../utils/api';
+import { getRelatedApi } from '../utils/api';
 import ImageLink from './ImageLink';
 import Emoji from './Emoji';
 
@@ -8,7 +8,7 @@ export default function Related({ itemId, type }) {
     const [results, setResults] = useState([]);
 
     useEffect(() => {
-        getRelated(itemId, type).then(({ data }) => {
+        getRelatedApi(itemId, type).then(({ data }) => {
             setResults(data);
         })
     }, [itemId, type]);
