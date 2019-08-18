@@ -20,6 +20,7 @@ const status = {
 export default function ShowDetail({ location: { state }, match: { params: { id } } }) {
 
     const [item, setItem] = useState(false);
+    const [showOriginalTitle, setShowOriginalTitle] = useState(false);
     const { isWatched, isWatchlist } = useContext(UserContext);
     const { title, overview } = useTranslate(item);
 
@@ -48,6 +49,10 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
         return 'bg-gray-300';
     }
 
+    const toggleShowOriginalTitle = () => {
+        setShowOriginalTitle(!showOriginalTitle);
+    }
+
     return (
         item ? (<div className={getBgClassName()}>
             <div className="p-10 sticky top-0 z-0" style={{ minHeight: '15em' }}>
@@ -58,7 +63,9 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
             </div>
             <article className="relative p-4 bg-white z-10 rounded-t-lg" style={{ 'transform': 'translate3d(0,0,0)' }}>
                 <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
-                <h1 className="text-4xl leading-none text-center mb-4">{title}</h1>
+                <h1 onClick={toggleShowOriginalTitle} className="text-4xl leading-none text-center mb-4">
+                    {showOriginalTitle ? item.show.title : title}
+                </h1>
                 <div className="flex mb-4 justify-between items-center text-gray-600">
                     <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200 capitalize">{status[item.show.status]}</h2>
                     <h2>{item.show.runtime} mins</h2>
