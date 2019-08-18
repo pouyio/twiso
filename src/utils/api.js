@@ -75,6 +75,12 @@ export const getTranslationsApi = (id, type) => {
     });
 }
 
+export const getEpisodeTranslationApi = (id, season, episode) => {
+    return axios.get(`${BASE_URL}/shows/${id}/seasons/${season}/episodes/${episode}/translations/es`, {
+        headers: base_headers
+    });
+}
+
 export const searchApi = (query, type) => {
     return axios.get(`${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${Math.round(PAGE_SIZE / 7)}`, {
         headers: base_headers
