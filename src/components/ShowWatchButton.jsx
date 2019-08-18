@@ -5,12 +5,11 @@ export default function ShowWatchButton({ item }) {
     const {
         addShowWatchlist,
         removeShowWatchlist,
-        isWatchlist,
-        isWatched
+        isWatchlist
     } = useContext(UserContext);
 
     return (
-        <div className={(isWatched(item.show.ids.trakt, 'show') ? 'pointer-events-none opacity-50' : '') + ' flex justify-around my-8'}>
+        <div className="flex justify-around my-8">
             {isWatchlist(item.show.ids.trakt, 'show') ?
                 <button className="bg-blue-400 py-3 px-12 rounded-full text-white font-bold" onClick={() => removeShowWatchlist(item)}>
                     Pendiente</button>
