@@ -142,17 +142,11 @@ export const UserProvider = ({ children }) => {
         });
     }
 
-    const isMovieWatched = (id) => {
-        return userInfo.movies.watched.some(i => i.movie.ids.trakt === id);
+    const isWatched = (id, type) => {
+        return userInfo[`${type}s`].watched.some(i => i[type].ids.trakt === id);
     }
-    const isMovieWatchlist = (id) => {
-        return userInfo.movies.watchlist.some(i => i.movie.ids.trakt === id);
-    }
-    const isShowWatched = (id) => {
-        return userInfo.shows.watched.some(i => i.show.ids.trakt === id);
-    }
-    const isShowWatchlist = (id) => {
-        return userInfo.shows.watchlist.some(i => i.show.ids.trakt === id);
+    const isWatchlist = (id, type) => {
+        return userInfo[`${type}s`].watchlist.some(i => i[type].ids.trakt === id);
     }
 
     return (
@@ -167,10 +161,8 @@ export const UserProvider = ({ children }) => {
             addShowWatchlist,
             removeMovieWatchlist,
             removeShowWatchlist,
-            isMovieWatched,
-            isMovieWatchlist,
-            isShowWatched,
-            isShowWatchlist,
+            isWatched,
+            isWatchlist,
             removeWatchlistLocal: removeWatchlist,
             PAGE_SIZE
         }}>

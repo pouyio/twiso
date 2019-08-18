@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { getApi } from '../utils/api';
 import Image from './Image';
 import useTranslate from '../utils/useTranslate';
@@ -7,6 +7,7 @@ import Related from './Related';
 import SeasonsContainer from './Seasons/SeasonsContainer';
 import Genres from './Genres';
 import ShowWatchButton from './ShowWatchButton';
+import UserContext from '../utils/UserContext';
 
 const status = {
     'returning series': 'en antena',
@@ -19,6 +20,7 @@ const status = {
 export default function ShowDetail({ location: { state }, match: { params: { id } } }) {
 
     const [item, setItem] = useState(false);
+    const { isWatched, isWatchlist } = useContext(UserContext);
     const { title, overview } = useTranslate(item);
 
     useEffect(() => {
@@ -33,8 +35,21 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
         window.scrollTo(0, 0);
     }, [state, id]);
 
+    const getBgClassName = () => {
+        if (!item) {
+            return;
+        }
+        if (isWatched(item.show.ids.trakt, 'show')) {
+            return 'bg-green-400';
+        }
+        if (isWatchlist(item.show.ids.trakt, 'show')) {
+            return 'bg-blue-400';
+        }
+        return 'bg-gray-300';
+    }
+
     return (
-        item ? (<div className="bg-gray-300">
+        item ? (<div className={getBgClassName()}>
             <div className="p-10 sticky top-0 z-0" style={{ minHeight: '15em' }}>
                 <Image item={item} type="show" />
                 {item.show.trailer && <a className="absolute" style={{ right: '4em', bottom: '4em' }} href={item.show.trailer} target="_blank" rel="noopener noreferrer">

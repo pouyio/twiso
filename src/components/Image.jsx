@@ -8,7 +8,7 @@ export default function Image({ item, className = '', type = '', style, ...props
 
     const [imgUrl, setImgUrl] = useState('');
     const [message, setMessage] = useState('');
-    const { config, language, isMovieWatched, isMovieWatchlist } = useContext(UserContext);
+    const { config, language, isWatched, isWatchlist } = useContext(UserContext);
     const [ref, inView] = useInView({ unobserveOnEnter: true });
 
     useEffect(() => {
@@ -23,13 +23,10 @@ export default function Image({ item, className = '', type = '', style, ...props
     }, [config, item, language, inView]);
 
     const getBorderClass = () => {
-        if (type === 'show') {
-            return '';
-        }
-        if (isMovieWatched(item[item.type].ids.trakt)) {
+        if (isWatched(item[item.type].ids.trakt, type)) {
             return 'border-2 border-green-400';
         }
-        if (isMovieWatchlist(item[item.type].ids.trakt)) {
+        if (isWatchlist(item[item.type].ids.trakt, type)) {
             return 'border-2 border-blue-400';
         }
         return '';

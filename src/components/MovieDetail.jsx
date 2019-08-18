@@ -12,8 +12,8 @@ export default function MovieDetail({ location: { state }, match: { params: { id
 
     const [item, setItem] = useState(false);
     const { language,
-        isMovieWatched,
-        isMovieWatchlist } = useContext(UserContext);
+        isWatched,
+        isWatchlist } = useContext(UserContext);
     const { title, overview } = useTranslate(item);
 
     useEffect(() => {
@@ -32,10 +32,10 @@ export default function MovieDetail({ location: { state }, match: { params: { id
         if (!item) {
             return;
         }
-        if (isMovieWatched(item.movie.ids.trakt)) {
+        if (isWatched(item.movie.ids.trakt, 'movie')) {
             return 'bg-green-400';
         }
-        if (isMovieWatchlist(item.movie.ids.trakt)) {
+        if (isWatchlist(item.movie.ids.trakt, 'movie')) {
             return 'bg-blue-400';
         }
         return 'bg-gray-300';
