@@ -28,7 +28,7 @@ const SeasonsContainer = ({ show, showId }) => {
         if (progress.next_episode) {
             setSelectedSeason(seasons.find(s => s.number === progress.next_episode.season));
         }
-    }, [progress.next_episode]);
+    }, [progress.next_episode, seasons]);
 
     const updateEpisode = (episode, completed) => {
         const seasonIndex = progress.seasons.findIndex(s => s.number === episode.season);
@@ -107,7 +107,7 @@ const SeasonsContainer = ({ show, showId }) => {
         getSeasonApi(showId, season.number).then(({ data }) => {
             setSeasonDetails(data);
         });
-    }, [selectedSeason]);
+    }, [selectedSeason, showId]);
 
     return (
         <Seasons
