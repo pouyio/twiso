@@ -24,12 +24,14 @@ export default function Search() {
 
             setLoading(true);
             let isSubscribed = true;
-            Promise.all([searchApi(debouncedSearch, 'movie'), searchApi(debouncedSearch, 'show')]).then(([movies, shows]) => {
+            searchApi(debouncedSearch, 'movie,show').then(({ data }) => {
+                const movies = data.filter(r => r.type === 'movie');
+                const shows = data.filter(r => r.type === 'show');
                 if (!isSubscribed) {
                     return;
                 }
-                setMovieResults(movies.data);
-                setShowResults(shows.data);
+                setMovieResults(movies);
+                setShowResults(shows);
                 setLoading(false);
             });
             return () => isSubscribed = false;

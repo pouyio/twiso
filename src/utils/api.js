@@ -82,7 +82,7 @@ export const getEpisodeTranslationApi = (id, season, episode) => {
 }
 
 export const searchApi = (query, type) => {
-    return axios.get(`${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${Math.round(PAGE_SIZE / 7)}`, {
+    return axios.get(`${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${Math.round(PAGE_SIZE / 14)}`, {
         headers: base_headers
     });
 }
@@ -163,6 +163,14 @@ export const removeWatchlistApi = (item, session, type) => {
 
 export const getPeopleApi = (id, type) => {
     return axios.get(`${BASE_URL}/${type}s/${id}/people`, {
+        headers: {
+            ...base_headers
+        }
+    });
+}
+
+export const getPersonApi = (person) => {
+    return axios.get(`${BASE_URL}/search/movie,show?query=${person}&limit=40&extended=full`, {
         headers: {
             ...base_headers
         }
