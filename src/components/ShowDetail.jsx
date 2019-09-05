@@ -9,6 +9,7 @@ import Genres from './Genres';
 import ShowWatchButton from './ShowWatchButton';
 import People from './People';
 import UserContext from '../utils/UserContext';
+import CollapsableText from './CollapsableText';
 
 const status = {
     'returning series': 'en antena',
@@ -89,7 +90,7 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
 
                 <div className="my-4">
                     <p>Resumen:</p>
-                    <p className="leading-tight font-light">{overview || 'Sin descripción'}</p>
+                    <CollapsableText className="leading-tight font-light">{overview || 'Sin descripción'}</CollapsableText>
                 </div>
 
                 <div className="my-4">

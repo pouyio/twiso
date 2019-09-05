@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 const People = ({
     people: { cast = [], crew = {} },
@@ -12,10 +13,12 @@ const People = ({
                 <ul className="flex overflow-x-auto my-2 -mx-4" style={{ WebkitOverflowScrolling: 'touch' }}>
                     {cast.map((character, i) => (
                         <li key={i}>
-                            <div className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre flex flex-col text-center">
-                                <span>{character.person.name}</span>
-                                <small>{character.character}</small>
-                            </div>
+                            <Link to={`/person/${character.person.ids.slug}`}>
+                                <div className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre flex flex-col text-center">
+                                    <span>{character.person.name}</span>
+                                    <small>{character.character}</small>
+                                </div>
+                            </Link>
                         </li>
                     ))}
                 </ul>
@@ -30,9 +33,11 @@ const People = ({
                                 .filter(crew => crew.job.toLowerCase() === 'director')
                                 .map((crew, i) => (
                                     <li key={i}>
-                                        <div className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre">
-                                            {crew.person.name}
-                                        </div>
+                                        <Link to={`/person/${crew.person.ids.slug}`}>
+                                            <div className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre">
+                                                {crew.person.name}
+                                            </div>
+                                        </Link>
                                     </li>
                                 ))}
                         </ul>

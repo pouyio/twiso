@@ -8,6 +8,7 @@ import UserContext from '../utils/UserContext';
 import Related from './Related';
 import Genres from './Genres';
 import People from './People';
+import CollapsableText from './CollapsableText';
 
 export default function MovieDetail({ location: { state }, match: { params: { id } } }) {
 
@@ -74,7 +75,7 @@ export default function MovieDetail({ location: { state }, match: { params: { id
 
                 <div className="my-4">
                     <p>Resumen:</p>
-                    <p className="leading-tight font-light">{overview || 'Sin descripción'}</p>
+                    <CollapsableText className="leading-tight font-light">{overview || 'Sin descripción'}</CollapsableText>
                 </div>
 
                 <div className="my-4">

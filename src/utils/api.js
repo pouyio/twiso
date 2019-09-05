@@ -169,7 +169,15 @@ export const getPeopleApi = (id, type) => {
     });
 }
 
-export const getPersonApi = (person) => {
+export const getPersonApi = (id) => {
+    return axios.get(`${BASE_URL}/people/${id}?extended=full`, {
+        headers: {
+            ...base_headers
+        }
+    });
+}
+
+export const getPersonItemsApi = (person) => {
     return axios.get(`${BASE_URL}/search/movie,show?query=${person}&limit=40&extended=full`, {
         headers: {
             ...base_headers

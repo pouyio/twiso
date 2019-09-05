@@ -14,6 +14,7 @@ import { UserProvider } from './utils/UserContext';
 import { AuthProvider } from './utils/AuthContext';
 import Emoji from './components/Emoji';
 import { ModalProvider } from './utils/ModalContext';
+import Person from './components/Person';
 const redirect_url = process.env.REACT_APP_REDIRECT_URL;
 
 
@@ -44,7 +45,7 @@ function App() {
       <AuthProvider>
         <UserProvider>
           <ModalProvider>
-            <ul className="flex w-full bg-gray-200 fixed bottom-0 px-2 z-50 text-center justify-around" style={{paddingBottom: 'env(safe-area-inset-bottom)'}}>
+            <ul className="flex w-full bg-gray-200 fixed bottom-0 px-2 z-50 text-center justify-around" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
               <li className="py-3">
                 <Link to="/showsWachlist">
                   <Emoji className="text-3xl" emoji="🖥" /></Link>
@@ -77,6 +78,7 @@ function App() {
             <ProtectedRoute path="/movie/:id" component={MovieDetail} />
             <ProtectedRoute path="/shows" component={Shows} />
             <ProtectedRoute path="/show/:id" component={ShowDetail} />
+            <ProtectedRoute path="/person/:id" component={Person} />
             <ul className="navbar flex w-full py-4 opacity-0">
               <li className="py-3">
                 <Emoji emoji="📺" /> P
