@@ -1,17 +1,19 @@
 import React, { useEffect, useState, useContext } from 'react';
 import WatchButton from './WatchButton';
-import { getApi } from '../utils/api';
+import { getApi, getPeopleApi } from '../utils/api';
 import Image from './Image';
 import useTranslate from '../utils/useTranslate';
 import Emoji from './Emoji';
 import UserContext from '../utils/UserContext';
 import Related from './Related';
 import Genres from './Genres';
+import People from './People';
 
 export default function MovieDetail({ location: { state }, match: { params: { id } } }) {
 
     const [item, setItem] = useState(false);
     const [showOriginalTitle, setShowOriginalTitle] = useState(false);
+    const [people, setPeople] = useState({ cast: [] });
     const { language,
         isWatched,
         isWatchlist } = useContext(UserContext);
@@ -28,7 +30,12 @@ export default function MovieDetail({ location: { state }, match: { params: { id
         setItem(state.item);
         window.scrollTo(0, 0);
     }, [state, id]);
-
+    useEffect(() => {
+        getPeopleApi(id, 'movie').then(({ data }) => {
+            setPeople(data);
+        });
+        return;
+    }, [id]);
     const getBgClassName = () => {
         if (!item) {
             return;
@@ -49,7 +56,7 @@ export default function MovieDetail({ location: { state }, match: { params: { id
     return (
         item ? (<div className={getBgClassName()}>
             <div className="p-10 sticky top-0 z-0" style={{ minHeight: '15em' }}>
-                <Image item={item} type="movie"/>
+                <Image item={item} type="movie" />
                 {item.movie.trailer && <a className="absolute" style={{ right: '4em', bottom: '4em' }} href={item.movie.trailer} target="_blank" rel="noopener noreferrer">
                     <Emoji emoji="▶️" className="text-4xl" />
                 </a>}
@@ -78,6 +85,10 @@ export default function MovieDetail({ location: { state }, match: { params: { id
                 <div className="my-4">
                     <p>Relacionados:</p>
                     <Related itemId={item.movie.ids.trakt} type="movie" />
+                </div>
+
+                <div className="my-4">
+                    <People people={people} type="movie" />
                 </div>
 
             </article>

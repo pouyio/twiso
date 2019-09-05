@@ -161,6 +161,14 @@ export const removeWatchlistApi = (item, session, type) => {
         });
 }
 
+export const getPeopleApi = (id, type) => {
+    return axios.get(`${BASE_URL}/${type}s/${id}/people`, {
+        headers: {
+            ...base_headers
+        }
+    });
+}
+
 export const getPopularApi = (type) => {
     const year = new Date().getFullYear();
     return axios.get(`${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${PAGE_SIZE}&years=${year}`, {

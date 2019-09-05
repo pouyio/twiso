@@ -35,6 +35,7 @@
     ]
   },
   "devDependencies": {
-    "tailwindcss": "^1.0.5"
+    "tailwindcss": "^1.0.5",
+    "trakt.tv": "^7.2.0"
   }
 }

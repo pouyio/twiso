@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { getApi } from '../utils/api';
+import { getApi, getPeopleApi } from '../utils/api';
 import Image from './Image';
 import useTranslate from '../utils/useTranslate';
 import Emoji from './Emoji';
@@ -7,6 +7,7 @@ import Related from './Related';
 import SeasonsContainer from './Seasons/SeasonsContainer';
 import Genres from './Genres';
 import ShowWatchButton from './ShowWatchButton';
+import People from './People';
 import UserContext from '../utils/UserContext';
 
 const status = {
@@ -21,6 +22,7 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
 
     const [item, setItem] = useState(false);
     const [showOriginalTitle, setShowOriginalTitle] = useState(false);
+    const [people, setPeople] = useState({ cast: [] });
     const { isWatched, isWatchlist } = useContext(UserContext);
     const { title, overview } = useTranslate(item);
 
@@ -35,6 +37,13 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
         setItem(state.item);
         window.scrollTo(0, 0);
     }, [state, id]);
+
+    useEffect(() => {
+        getPeopleApi(id, 'show').then(({ data }) => {
+            setPeople(data);
+        });
+        return;
+    }, [id]);
 
     const getBgClassName = () => {
         if (!item) {
@@ -91,6 +100,10 @@ export default function ShowDetail({ location: { state }, match: { params: { id 
                 <div className="my-4">
                     <p>Relacionados:</p>
                     <Related itemId={item.show.ids.trakt} type="show" />
+                </div>
+
+                <div className="my-4">
+                    <People people={people} type="show" />
                 </div>
 
             </article>
