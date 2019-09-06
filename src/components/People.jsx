@@ -14,7 +14,7 @@ const People = ({
                     {cast.map((character, i) => (
                         <li key={i}>
                             <Link to={`/person/${character.person.ids.slug}`}>
-                                <div className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre flex flex-col text-center">
+                                <div className="bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre flex flex-col text-center">
                                     <span>{character.person.name}</span>
                                     <small>{character.character}</small>
                                 </div>
@@ -34,7 +34,7 @@ const People = ({
                                 .map((crew, i) => (
                                     <li key={i}>
                                         <Link to={`/person/${crew.person.ids.slug}`}>
-                                            <div className="bg-gray-200 font-light px-3 py-2 rounded-full mx-1 whitespace-pre">
+                                            <div className="bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre">
                                                 {crew.person.name}
                                             </div>
                                         </Link>
