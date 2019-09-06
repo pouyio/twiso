@@ -177,8 +177,8 @@ export const getPersonApi = (id) => {
     });
 }
 
-export const getPersonItemsApi = (person) => {
-    return axios.get(`${BASE_URL}/search/movie,show?query=${person}&limit=40&extended=full`, {
+export const getPersonItemsApi = (person, type) => {
+    return axios.get(`${BASE_URL}/people/${person}/${type}s?extended=full`, {
         headers: {
             ...base_headers
         }

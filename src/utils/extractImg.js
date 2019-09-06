@@ -1,9 +1,9 @@
 import { getImgsApi } from "./api";
 import { getFromCache, saveToCache } from "./cache";
 
-const findFirstValid = (posters, language) => {
-    const p = posters.find(p => p.iso_639_1 === language);
-    return p || posters[0];
+const findFirstValid = (images, language) => {
+    const p = images.find(p => p.iso_639_1 === language);
+    return p || images[0];
 }
 
 const getImgUrl = async (id, type, config, language) => {
@@ -15,7 +15,7 @@ const getImgUrl = async (id, type, config, language) => {
     try {
         const { data } = await getImgsApi(id, type);
         const posterSize = config.images.profile_sizes[1];
-        const poster = findFirstValid(data.posters, language);
+        const poster = findFirstValid(data.posters || data.profiles, language);
         if (poster) {
             const url = `${config.images.secure_base_url}${posterSize}${poster.file_path}`;
             saveToCache(id, type, language, url);
