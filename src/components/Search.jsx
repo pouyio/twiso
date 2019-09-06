@@ -12,6 +12,7 @@ export default function Search() {
     const [loading, setLoading] = useState(false);
     const [movieResults, setMovieResults] = useState([]);
     const [showResults, setShowResults] = useState([]);
+    const [peopleResults, setPeopleResults] = useState([]);
     const debouncedSearch = useDebounce(search, 500);
 
     useEffect(
@@ -19,19 +20,22 @@ export default function Search() {
             if (!debouncedSearch) {
                 setMovieResults([]);
                 setShowResults([]);
+                setPeopleResults([]);
                 return;
             }
 
             setLoading(true);
             let isSubscribed = true;
-            searchApi(debouncedSearch, 'movie,show').then(({ data }) => {
+            searchApi(debouncedSearch, 'movie,show,person').then(({ data }) => {
                 const movies = data.filter(r => r.type === 'movie');
                 const shows = data.filter(r => r.type === 'show');
+                const person = data.filter(r => r.type === 'person');
                 if (!isSubscribed) {
                     return;
                 }
                 setMovieResults(movies);
                 setShowResults(shows);
+                setPeopleResults(person);
                 setLoading(false);
             });
             return () => isSubscribed = false;
@@ -52,7 +56,7 @@ export default function Search() {
                 <>
                     <h1 className="text-3xl mt-4 text-gray-700">Películas </h1>
                     <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
-                        {movieResults.map(r => <li key={r.movie.ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
+                        {movieResults.map(r => <li key={r.movie.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
                             <ImageLink item={r} style={{ minHeight: '15em' }} type="movie" />
                         </li>)}
                     </ul>
@@ -63,12 +67,23 @@ export default function Search() {
                 <>
                     <h1 className="text-3xl mt-4 text-gray-700">Series </h1>
                     <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
-                        {showResults.map(r => <li key={r.show.ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
+                        {showResults.map(r => <li key={r.show.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
                             <ImageLink item={r} style={{ minHeight: '15em' }} type="show" />
                         </li>)}
                     </ul>
                 </>
                 : <Popular type="show" />}
+
+            {(search || peopleResults.length) ?
+                <>
+                    <h1 className="text-3xl mt-4 text-gray-700">Personas </h1>
+                    <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
+                        {peopleResults.map(r => <li key={r.person.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
+                            <ImageLink item={r} style={{ minHeight: '15em' }} type="person" />
+                        </li>)}
+                    </ul>
+                </>
+                : null}
 
         </div>
     );

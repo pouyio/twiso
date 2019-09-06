@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import ImageLink from './ImageLink';
+import Image from './Image';
 import CollapsableText from './CollapsableText';
 import { getPersonItemsApi, getPersonApi } from '../utils/api';
 import UserContext from '../utils/UserContext';
-import getImgUrl from '../utils/extractImg';
 import Emoji from './Emoji';
 
 
@@ -11,19 +11,12 @@ export default function Person({ match: { params: { id } } }) {
     const [localState, setLocalState] = useState();
     const [movieResults, setMovieResults] = useState([]);
     const [showResults, setShowResults] = useState([]);
-    const [imgUrl, setImgUrl] = useState('');
 
-    const { language, config } = useContext(UserContext);
+    const { language } = useContext(UserContext);
 
     useEffect(
         () => {
-            if (!config) return;
-            getPersonApi(id).then(({ data }) => {
-                setLocalState(data);
-                getImgUrl(data.ids.tmdb, 'person', config, language)
-                    .then(url => setImgUrl(url))
-                    .catch(({ message }) => console.error(message));;
-            });
+            getPersonApi(id).then(({ data }) => setLocalState(data));
             getPersonItemsApi(id, 'show')
                 .then(({ data }) => {
                     setShowResults(data.cast.map(r => ({ show: r.show, type: 'show', title: r.character })).filter(r => !(r.title === 'Himself' || r.title === 'Herself')));
@@ -38,15 +31,13 @@ export default function Person({ match: { params: { id } } }) {
                             .filter(r => !(r.title === 'Himself' || r.title === 'Herself'))
                     ]);
                 });
-        }, [id, config, language]);
+        }, [id, language]);
 
     return (
         localState ? (
             <div className="bg-gray-300">
                 <div className="p-10 sticky top-0 z-0" style={{ minHeight: '15em' }}>
-                    {imgUrl
-                        ? <img className="m-auto md:max-w-md h-full rounded" src={imgUrl} alt={localState.name} />
-                        : 'Not found in TMDB'}
+                    {localState && <Image item={{ person: localState, type: 'person' }} type="person" />}
                 </div>
 
                 <article className="relative p-4 bg-white z-10 rounded-t-lg" style={{ 'transform': 'translate3d(0,0,0)' }}>

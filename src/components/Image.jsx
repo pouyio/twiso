@@ -23,6 +23,7 @@ export default function Image({ item, className = '', type = '', style, ...props
     }, [config, item, language, inView]);
 
     const getBorderClass = () => {
+        if (type === 'person') return '';
         if (isWatched(item[item.type].ids.trakt, type)) {
             return 'border-2 border-green-400';
         }
@@ -32,14 +33,16 @@ export default function Image({ item, className = '', type = '', style, ...props
         return '';
     }
 
+    const getTitle = () => item[item.type].title || item[item.type].name;
+
     return (
         <div ref={ref} style={style} {...props} className={className + ' h-full bg-gray-300 flex justify-center items-center rounded-lg overflow-hidden ' + getBorderClass()}>
             {(!inView || !imgUrl) && <h1 className="justify-center items-center p-2">
-                {item[item.type].title}
+                {getTitle()}
                 <br />
                 {message || <Emoji className="ml-3" emoji="⏳" rotating={true} />}
             </h1>}
-            {inView && imgUrl && <img className={'m-auto md:max-w-md h-full'} src={imgUrl} alt={item[item.type].title} />}
+            {inView && imgUrl && <img className={'m-auto md:max-w-md h-full'} src={imgUrl} alt={getTitle()} />}
         </div>
     );
 }
