@@ -6,7 +6,6 @@ import Emoji from './Emoji';
 
 export default function PopularMovies({ type }) {
     const [loading, setLoading] = useState(false);
-    const [show, setShow] = useState(true);
     const [results, setResults] = useState([]);
 
     useEffect(() => {
@@ -33,22 +32,18 @@ export default function PopularMovies({ type }) {
         }
     }
 
-    const toggleShow = () => setShow(!show);
-
     return (
-        <div>
-            <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline" onClick={toggleShow}>
+        <>
+            <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
                 <Emoji emoji={loading ? '⏳' : '⭐'} rotating={loading} />
                 <span className="mx-2">{getTitle()} populares</span>
-                <Emoji className="text-base" emoji={show ? '🔽' : '🔼'} /></h1>
-            {show &&
-                <ul className="mt-5 flex flex-wrap justify-center">
-                    {results.map(r => <li key={r[type].ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
-                        <ImageLink item={r} style={{ minHeight: '15em' }} type={type} />
-                    </li>)}
-                </ul>
-            }
+            </h1>
+            <ul className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}>
+                {results.map(r => <li key={r[type].ids.trakt} className="p-2" style={{ height: '13.5em', maxWidth: '9em' }}>
+                    <ImageLink item={r} style={{ minHeight: '10em' }} type={type} />
+                </li>)}
+            </ul>
             <div className="h-1 border-b-2 rounded-full my-8"></div>
-        </div>
+        </>
     );
 }

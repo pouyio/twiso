@@ -52,39 +52,53 @@ export default function Search() {
                     : <Emoji className="ml-3" emoji="❌" onClick={() => setSearch('')} />}
             </div>
 
-            {search || movieResults.length ?
+            {search ? (
                 <>
-                    <h1 className="text-3xl mt-4 text-gray-700">Películas </h1>
-                    <ul className="-mx-2 -mt-2 flex overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
-                        {movieResults.map(r => <li key={r.movie.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '43%' }}>
-                            <ImageLink item={r} style={{ minHeight: '10em' }} type="movie" />
-                        </li>)}
-                    </ul>
-                </>
-                : <Popular type="movie" />}
+                    {movieResults.length ?
+                        <>
+                            <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">Películas</h1>
+                            <ul className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}>
+                                {movieResults.map(r => <li key={r.movie.ids.slug} className="p-2" style={{ height: '13.5em', maxWidth: '9em' }}>
+                                    <ImageLink item={r} style={{ minHeight: '10em' }} type="movie" />
+                                </li>)}
+                            </ul>
+                        </>
+                        : <h1 className="text-3xl mt-8 text-gray-700">No hay películas</h1>
+                    }
 
-            {(search || showResults.length) ?
-                <>
-                    <h1 className="text-3xl mt-4 text-gray-700">Series </h1>
-                    <ul className="-mx-2 -mt-2 flex overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
-                        {showResults.map(r => <li key={r.show.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '43%' }}>
-                            <ImageLink item={r} style={{ minHeight: '10em' }} type="show" />
-                        </li>)}
-                    </ul>
-                </>
-                : <Popular type="show" />}
+                    {showResults.length ?
+                        <>
+                            <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">Series</h1>
+                            <ul className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}>
+                                {showResults.map(r => <li key={r.show.ids.slug} className="p-2" style={{ height: '13.5em', maxWidth: '9em' }}>
+                                    <ImageLink item={r} style={{ minHeight: '10em' }} type="show" />
+                                </li>)}
+                            </ul>
+                        </>
+                        : <h1 className="text-3xl mt-8 text-gray-700">No hay series</h1>
+                    }
 
-            {(search || peopleResults.length) ?
-                <>
-                    <h1 className="text-3xl mt-4 text-gray-700">Personas </h1>
-                    <ul className="-mx-2 -mt-2 flex overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
-                        {peopleResults.map(r => <li key={r.person.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '43%' }}>
-                            <ImageLink item={r} style={{ minHeight: '10em' }} type="person" />
-                        </li>)}
-                    </ul>
-                </>
-                : null}
+                    {peopleResults.length ?
+                        <>
+                            <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">Personas</h1>
+                            <ul className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}>
+                                {peopleResults.map(r => <li key={r.person.ids.slug} className="p-2" style={{ height: '13.5em', maxWidth: '9em'  }}>
+                                    <ImageLink item={r} style={{ minHeight: '10em' }} type="person" />
+                                </li>)}
+                            </ul>
+                        </>
+                        : <h1 className="text-3xl mt-8 text-gray-700">No hay personas</h1>
+                    }
 
-        </div>
+                </>
+            ) : (
+                    <>
+                        <Popular type="movie" />
+                        <Popular type="show" />
+                    </>
+                )
+
+            }
+        </div >
     );
 }

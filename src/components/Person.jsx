@@ -57,9 +57,9 @@ export default function Person({ match: { params: { id } } }) {
                     </div>
 
                     {movieResults.length ? <>
-                        <h1 className="text-3xl mt-8 text-gray-700">Películas </h1>
-                        <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
-                            {movieResults.map((r, i) => <li key={`${r.movie.ids.trakt}-movie-${i}`} className="p-2 h-full" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
+                        <h1 className="text-3xl mt-3 text-gray-700">Películas </h1>
+                        <ul className="-mx-2 -mt-2 flex overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+                            {movieResults.map((r, i) => <li key={`${r.movie.ids.trakt}-movie-${i}`} className="p-2 h-full" style={{ flex: '1 0 50%', maxWidth: '43%' }}>
                                 <div className="bg-gray-300 rounded-lg">
                                     <ImageLink item={r} type="movie">
                                         {r.title && <p className="text-sm text-gray-700 text-center py-1">{r.title}</p>}
@@ -73,9 +73,9 @@ export default function Person({ match: { params: { id } } }) {
 
                     {showResults.length ?
                         <>
-                            <h1 className="text-3xl mt-8 text-gray-700">Series </h1>
-                            <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
-                                {showResults.map((r, i) => <li key={`${r.show.ids.trakt}-show-${i}`} className="p-2 h-full" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
+                            <h1 className="text-3xl mt-3 text-gray-700">Series </h1>
+                            <ul className="-mx-2 -mt-2 flex overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+                                {showResults.map((r, i) => <li key={`${r.show.ids.trakt}-show-${i}`} className="p-2 h-full" style={{ flex: '1 0 50%', maxWidth: '43%' }}>
                                     <div className="bg-gray-300 rounded-lg">
                                         <ImageLink item={r} type="show">
                                             {r.title && <p className="text-sm text-gray-700 text-center py-1">{r.title}</p>}
