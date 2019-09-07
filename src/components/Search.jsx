@@ -55,9 +55,9 @@ export default function Search() {
             {search || movieResults.length ?
                 <>
                     <h1 className="text-3xl mt-4 text-gray-700">Películas </h1>
-                    <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
+                    <ul className="-mx-2 -mt-2 flex overflow-x-auto">
                         {movieResults.map(r => <li key={r.movie.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
-                            <ImageLink item={r} style={{ minHeight: '15em' }} type="movie" />
+                            <ImageLink item={r} style={{ minHeight: '10em' }} type="movie" />
                         </li>)}
                     </ul>
                 </>
@@ -66,9 +66,9 @@ export default function Search() {
             {(search || showResults.length) ?
                 <>
                     <h1 className="text-3xl mt-4 text-gray-700">Series </h1>
-                    <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
+                    <ul className="-mx-2 -mt-2 flex overflow-x-auto">
                         {showResults.map(r => <li key={r.show.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
-                            <ImageLink item={r} style={{ minHeight: '15em' }} type="show" />
+                            <ImageLink item={r} style={{ minHeight: '10em' }} type="show" />
                         </li>)}
                     </ul>
                 </>
@@ -77,9 +77,9 @@ export default function Search() {
             {(search || peopleResults.length) ?
                 <>
                     <h1 className="text-3xl mt-4 text-gray-700">Personas </h1>
-                    <ul className="-mx-2 -mt-2 flex flex-wrap justify-center">
+                    <ul className="-mx-2 -mt-2 flex overflow-x-auto">
                         {peopleResults.map(r => <li key={r.person.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
-                            <ImageLink item={r} style={{ minHeight: '15em' }} type="person" />
+                            <ImageLink item={r} style={{ minHeight: '10em' }} type="person" />
                         </li>)}
                     </ul>
                 </>
