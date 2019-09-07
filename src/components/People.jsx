@@ -13,7 +13,7 @@ const People = ({
                 <ul className="flex overflow-x-auto my-2 -mx-4" style={{ WebkitOverflowScrolling: 'touch' }}>
                     {cast.map((character, i) => (
                         <li key={i}>
-                            <Link to={`/person/${character.person.ids.slug}`}>
+                            <Link to={{ pathname: `/person/${character.person.ids.trakt}`, search: `?slug=${character.person.ids.slug}` }}>
                                 <div className="bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre flex flex-col text-center">
                                     <span>{character.person.name}</span>
                                     <small>{character.character}</small>
@@ -33,7 +33,7 @@ const People = ({
                                 .filter(crew => crew.job.toLowerCase() === 'director')
                                 .map((crew, i) => (
                                     <li key={i}>
-                                        <Link to={`/person/${crew.person.ids.slug}`}>
+                                        <Link to={{ pathname: `/person/${crew.person.ids.trakt}`, search: `?slug=${crew.person.ids.slug}` }}>
                                             <div className="bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre">
                                                 {crew.person.name}
                                             </div>

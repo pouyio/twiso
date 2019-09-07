@@ -5,7 +5,7 @@ import Image from './Image';
 const ImageLink = ({ item, style, type, children }) => {
 
     return (
-        <Link to={{ pathname: `/${type}/${item[type].ids.slug}`, state: { item } }} >
+        <Link to={{ pathname: `/${type}/${item[type].ids.trakt}`, search: `?slug=${item[type].ids.slug}`, state: { item } }} >
             <Image item={item} style={style} type={type} />
             {children}
         </Link>
