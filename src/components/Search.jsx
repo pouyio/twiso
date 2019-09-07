@@ -56,7 +56,7 @@ export default function Search() {
                 <>
                     <h1 className="text-3xl mt-4 text-gray-700">Películas </h1>
                     <ul className="-mx-2 -mt-2 flex overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
-                        {movieResults.map(r => <li key={r.movie.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
+                        {movieResults.map(r => <li key={r.movie.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '43%' }}>
                             <ImageLink item={r} style={{ minHeight: '10em' }} type="movie" />
                         </li>)}
                     </ul>
@@ -67,7 +67,7 @@ export default function Search() {
                 <>
                     <h1 className="text-3xl mt-4 text-gray-700">Series </h1>
                     <ul className="-mx-2 -mt-2 flex overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
-                        {showResults.map(r => <li key={r.show.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
+                        {showResults.map(r => <li key={r.show.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '43%' }}>
                             <ImageLink item={r} style={{ minHeight: '10em' }} type="show" />
                         </li>)}
                     </ul>
@@ -78,7 +78,7 @@ export default function Search() {
                 <>
                     <h1 className="text-3xl mt-4 text-gray-700">Personas </h1>
                     <ul className="-mx-2 -mt-2 flex overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
-                        {peopleResults.map(r => <li key={r.person.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
+                        {peopleResults.map(r => <li key={r.person.ids.slug} className="p-2" style={{ flex: '1 0 50%', maxWidth: '43%' }}>
                             <ImageLink item={r} style={{ minHeight: '10em' }} type="person" />
                         </li>)}
                     </ul>
