@@ -1,6 +1,6 @@
 import './index.css';
-import React from 'react';
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import React, { useContext } from 'react';
+import { BrowserRouter, Route, Link, Redirect } from "react-router-dom";
 import Watchlist from './components/Watchlist'
 import ShowsWatchlist from './components/ShowsWatchlist'
 import Watched from './components/Watched';
@@ -11,7 +11,7 @@ import ShowDetail from './components/ShowDetail';
 import Shows from './components/Shows';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { UserProvider } from './utils/UserContext';
-import { AuthProvider } from './utils/AuthContext';
+import AuthContext, { AuthProvider } from './utils/AuthContext';
 import Emoji from './components/Emoji';
 import { ModalProvider } from './utils/ModalContext';
 import Person from './components/Person';
@@ -21,16 +21,17 @@ const redirect_url = process.env.REACT_APP_REDIRECT_URL;
 function ParamsComponent({ location }) {
 
   const params = new URLSearchParams(location.search);
+  const { session } = useContext(AuthContext);
 
-  return (
-    <div className="text-center mt-20">
+  return session
+    ? <Redirect to="/watchlist" />
+    : <div className="text-center mt-20">
       {
         params.get("code") ?
           <Login code={params.get("code")} />
           : <a className="bg-purple-500 py-3 px-12 rounded-full text-white" href={`https://trakt.tv/oauth/authorize?response_type=code&client_id=61afe7ed7ef7a2b6b2193254dd1cca580ba8dee91490df454d78fd68aed7e5f9&redirect_uri=${redirect_url}`}>Login</a>
       }
     </div >
-  );
 }
 
 function App() {
