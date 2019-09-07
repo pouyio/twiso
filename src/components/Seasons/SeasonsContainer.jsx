@@ -25,7 +25,10 @@ const SeasonsContainer = ({ show, showId }) => {
     }, [show.ids.trakt]);
 
     useEffect(() => {
-        if (progress.next_episode && progress.next_episode.season) {
+        if (progress.next_episode
+            && progress.next_episode.season
+            && progress.next_episode.season !== 1
+            && progress.next_episode.episode !== 1) {
             setSelectedSeason(seasons.find(s => s.number === progress.next_episode.season));
         }
     }, [progress.next_episode, seasons]);
