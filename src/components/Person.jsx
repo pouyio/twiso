@@ -40,107 +40,129 @@ export default function Person({
 
   return localState ? (
     <div className="bg-gray-300">
-      <div className="p-10 sticky top-0 z-0" style={{ minHeight: '15em' }}>
-        {localState && (
-          <Image item={{ person: localState, type: 'person' }} type="person" />
-        )}
-      </div>
-
-      <article
-        className="relative p-4 bg-white z-10 rounded-t-lg"
-        style={{ transform: 'translate3d(0,0,0)' }}
-      >
-        <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
-        <h1 className="text-4xl leading-none text-center mb-4">
-          {localState.name}
-        </h1>
-        <div className="flex flex-wrap mb-4 justify-between items-center text-gray-600">
-          <h2>
-            {new Date(localState.birthday).toLocaleDateString(language, {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}{' '}
-          </h2>
-          {localState.death && (
-            <h2>
-              {' '}
-              <Emoji emoji="✝️" />{' '}
-              {new Date(localState.death).toLocaleDateString(language, {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </h2>
+      <div className="lg:max-w-5xl lg:mx-auto lg:pt-2">
+        <div
+          className="p-10 sticky top-0 z-0 lg:hidden"
+          style={{ minHeight: '15em' }}
+        >
+          {localState && (
+            <Image
+              item={{ person: localState, type: 'person' }}
+              type="person"
+            />
           )}
-          {localState.birthplace && <h2>{localState.birthplace}</h2>}
         </div>
 
-        <div className="my-4 relative">
-          <p>Biografía:</p>
-          <CollapsableText className="leading-tight font-light">
-            {localState.biography || 'Sin descripción'}
-          </CollapsableText>
-        </div>
+        <article
+          className="relative p-4 bg-white z-10 rounded-t-lg"
+          style={{ transform: 'translate3d(0,0,0)' }}
+        >
+          <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
+          <div className="flex items-start">
 
-        {movieResults.length ? (
-          <>
-            <h1 className="text-3xl mt-3 text-gray-700">Películas </h1>
-            <ul
-              className="-mx-2 -mt-2 flex overflow-x-auto"
-              style={{ WebkitOverflowScrolling: 'touch' }}
-            >
-              {movieResults.map((r, i) => (
-                <li
-                  key={`${r.movie.ids.trakt}-movie-${i}`}
-                  className="p-2 h-full"
-                  style={{ flex: '1 0 50%', maxWidth: '10em' }}
-                >
-                  <div className="bg-gray-300 rounded-lg">
-                    <ImageLink item={r} type="movie">
-                      {r.title && (
-                        <p className="text-sm text-gray-700 text-center py-1">
-                          {r.title}
-                        </p>
-                      )}
-                    </ImageLink>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </>
-        ) : null}
+            <div className="hidden lg:block relative px-4">
+              {localState && (
+                <Image
+                  item={{ person: localState, type: 'person' }}
+                  type="person"
+                />
+              )}
+            </div>
 
-        {showResults.length ? (
-          <>
-            <h1 className="text-3xl mt-3 text-gray-700">Series </h1>
-            <ul
-              className="-mx-2 -mt-2 flex overflow-x-auto"
-              style={{ WebkitOverflowScrolling: 'touch' }}
-            >
-              {showResults.map((r, i) => (
-                <li
-                  key={`${r.show.ids.trakt}-show-${i}`}
-                  className="p-2 h-full"
-                  style={{ flex: '1 0 50%', maxWidth: '10em' }}
-                >
-                  <div className="bg-gray-300 rounded-lg">
-                    <ImageLink item={r} type="show">
-                      {r.title && (
-                        <p className="text-sm text-gray-700 text-center py-1">
-                          {r.title}
-                        </p>
-                      )}
-                    </ImageLink>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </>
-        ) : null}
-      </article>
+            <div className="w-full">
+              <h1 className="text-4xl leading-none text-center mb-4">
+                {localState.name}
+              </h1>
+              <div className="flex flex-wrap mb-4 justify-between items-center text-gray-600">
+                <h2>
+                  {new Date(localState.birthday).toLocaleDateString(language, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}{' '}
+                </h2>
+                {localState.death && (
+                  <h2>
+                    {' '}
+                    <Emoji emoji="✝️" />{' '}
+                    {new Date(localState.death).toLocaleDateString(language, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </h2>
+                )}
+                {localState.birthplace && <h2>{localState.birthplace}</h2>}
+              </div>
+            </div>
+          </div>
+
+          <div className="my-4 relative">
+            <p>Biografía:</p>
+            <CollapsableText className="leading-tight font-light">
+              {localState.biography || 'Sin descripción'}
+            </CollapsableText>
+          </div>
+
+          {movieResults.length ? (
+            <>
+              <h1 className="text-3xl mt-3 text-gray-700">Películas </h1>
+              <ul
+                className="-mx-2 -mt-2 flex overflow-x-auto"
+                style={{ WebkitOverflowScrolling: 'touch' }}
+              >
+                {movieResults.map((r, i) => (
+                  <li
+                    key={`${r.movie.ids.trakt}-movie-${i}`}
+                    className="p-2 h-full"
+                    style={{ flex: '1 0 50%', maxWidth: '10em' }}
+                  >
+                    <div className="bg-gray-300 rounded-lg">
+                      <ImageLink item={r} type="movie">
+                        {r.title && (
+                          <p className="text-sm text-gray-700 text-center py-1">
+                            {r.title}
+                          </p>
+                        )}
+                      </ImageLink>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+
+          {showResults.length ? (
+            <>
+              <h1 className="text-3xl mt-3 text-gray-700">Series </h1>
+              <ul
+                className="-mx-2 -mt-2 flex overflow-x-auto"
+                style={{ WebkitOverflowScrolling: 'touch' }}
+              >
+                {showResults.map((r, i) => (
+                  <li
+                    key={`${r.show.ids.trakt}-show-${i}`}
+                    className="p-2 h-full"
+                    style={{ flex: '1 0 50%', maxWidth: '10em' }}
+                  >
+                    <div className="bg-gray-300 rounded-lg">
+                      <ImageLink item={r} type="show">
+                        {r.title && (
+                          <p className="text-sm text-gray-700 text-center py-1">
+                            {r.title}
+                          </p>
+                        )}
+                      </ImageLink>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+        </article>
+      </div>
     </div>
   ) : (
-    <Emoji emoji="⏳" rotating={true} />
-  );
+      <Emoji emoji="⏳" rotating={true} />
+    );
 }

@@ -69,68 +69,93 @@ export default function ShowDetail({
 
   return item ? (
     <div className={getBgClassName()}>
-      <div className="p-10 sticky top-0 z-0" style={{ minHeight: '15em' }}>
-        <Image item={item} type="show" />
-        {item.show.trailer && (
-          <a
-            className="absolute"
-            style={{ right: '4em', bottom: '4em' }}
-            href={item.show.trailer}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Emoji emoji="▶️" className="text-4xl" />
-          </a>
-        )}
-      </div>
-      <article
-        className="relative p-4 bg-white z-10 rounded-t-lg"
-        style={{ transform: 'translate3d(0,0,0)' }}
-      >
-        <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
-        <h1
-          onClick={toggleShowOriginalTitle}
-          className="text-4xl leading-none text-center mb-4"
+      <div className="lg:max-w-5xl lg:mx-auto lg:pt-2">
+        <div
+          className="p-10 sticky top-0 z-0 lg:hidden"
+          style={{ minHeight: '15em' }}
         >
-          {showOriginalTitle ? item.show.title : title}
-        </h1>
-        <div className="flex mb-4 justify-between items-center text-gray-600">
-          <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200 capitalize">
-            {status[item.show.status]}
-          </h2>
-          <h2>{item.show.runtime} mins</h2>
+          <Image item={item} type="show" />
+          {item.show.trailer && (
+            <a
+              className="absolute"
+              style={{ right: '4em', bottom: '4em' }}
+              href={item.show.trailer}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Emoji emoji="▶️" className="text-4xl" />
+            </a>
+          )}
         </div>
+        <article
+          className="relative p-4 bg-white z-10 rounded-t-lg"
+          style={{ transform: 'translate3d(0,0,0)' }}
+        >
+          <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
+          <div className="flex items-start">
+            <div className="hidden lg:block relative px-4">
+              <Image item={item} type="show" />
+              {item.show.trailer && (
+                <a
+                  className="absolute"
+                  style={{ right: '4em', bottom: '4em' }}
+                  href={item.show.trailer}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Emoji emoji="▶️" className="text-4xl" />
+                </a>
+              )}
+            </div>
 
-        {!isWatched(item.show.ids.trakt, 'show') && (
-          <div className="my-4">
-            <ShowWatchButton item={item} />
+            <div className="w-full">
+              <h1
+                onClick={toggleShowOriginalTitle}
+                className="text-4xl leading-none text-center mb-4"
+              >
+                {showOriginalTitle ? item.show.title : title}
+              </h1>
+
+              <div className="flex mb-4 justify-between items-center text-gray-600">
+                <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200 capitalize">
+                  {status[item.show.status]}
+                </h2>
+                <h2>{item.show.runtime || '?'} mins</h2>
+              </div>
+
+              {!isWatched(item.show.ids.trakt, 'show') && (
+                <div className="my-4">
+                  <ShowWatchButton item={item} />
+                </div>
+              )}
+              <div className="my-4">
+                <SeasonsContainer show={item.show} showId={id} />
+              </div>
+            </div>
           </div>
-        )}
-        <div className="my-4">
-          <SeasonsContainer show={item.show} showId={id} />
-        </div>
 
-        <div className="my-4">
-          <p>Resumen:</p>
-          <CollapsableText className="leading-tight font-light">
-            {overview || 'Sin descripción'}
-          </CollapsableText>
-        </div>
+          <div className="my-4">
+            <p>Resumen:</p>
+            <CollapsableText className="leading-tight font-light">
+              {overview || 'Sin descripción'}
+            </CollapsableText>
+          </div>
 
-        <div className="my-4">
-          <p>Géneros:</p>
-          <Genres genres={item.show.genres} />
-        </div>
+          <div className="my-4">
+            <p>Géneros:</p>
+            <Genres genres={item.show.genres} />
+          </div>
 
-        <div className="my-4">
-          <p>Relacionados:</p>
-          <Related itemId={item.show.ids.trakt} type="show" />
-        </div>
+          <div className="my-4">
+            <p>Relacionados:</p>
+            <Related itemId={item.show.ids.trakt} type="show" />
+          </div>
 
-        <div className="my-4">
-          <People people={people} type="show" />
-        </div>
-      </article>
+          <div className="my-4">
+            <People people={people} type="show" />
+          </div>
+        </article>
+      </div>
     </div>
   ) : (
     <Emoji emoji="⏳" rotating="true" />

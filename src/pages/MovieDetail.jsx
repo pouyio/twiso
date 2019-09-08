@@ -58,64 +58,87 @@ export default function MovieDetail({
 
   return item ? (
     <div className={getBgClassName()}>
-      <div className="p-10 sticky top-0 z-0" style={{ minHeight: '15em' }}>
-        <Image item={item} type="movie" />
-        {item.movie.trailer && (
-          <a
-            className="absolute"
-            style={{ right: '4em', bottom: '4em' }}
-            href={item.movie.trailer}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Emoji emoji="▶️" className="text-4xl" />
-          </a>
-        )}
-      </div>
-      <article
-        className="relative p-4 bg-white z-10 rounded-t-lg"
-        style={{ transform: 'translate3d(0,0,0)' }}
-      >
-        <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
-        <h1
-          onClick={toggleShowOriginalTitle}
-          className="text-4xl leading-none text-center mb-4"
+      <div className="lg:max-w-5xl lg:mx-auto lg:pt-2">
+        <div
+          className="p-10 sticky top-0 z-0 lg:hidden"
+          style={{ minHeight: '15em' }}
         >
-          {showOriginalTitle ? item.movie.title : title}
-        </h1>
-        <div className="flex mb-4 justify-between items-center text-gray-600">
-          <h2>
-            {new Date(item.movie.released).toLocaleDateString(language, {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </h2>
-          <h2>{item.movie.runtime} mins</h2>
+          <Image item={item} type="movie" />
+          {item.movie.trailer && (
+            <a
+              className="absolute"
+              style={{ right: '4em', bottom: '4em' }}
+              href={item.movie.trailer}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Emoji emoji="▶️" className="text-4xl" />
+            </a>
+          )}
         </div>
-        <WatchButton item={item} />
+        <article
+          className="relative p-4 bg-white z-10 rounded-t-lg"
+          style={{ transform: 'translate3d(0,0,0)' }}
+        >
+          <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
+          <div className="flex items-start">
+            <div className="hidden lg:block relative px-4">
+              <Image item={item} type="movie" />
+              {item.movie.trailer && (
+                <a
+                  className="absolute"
+                  style={{ right: '4em', bottom: '4em' }}
+                  href={item.movie.trailer}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Emoji emoji="▶️" className="text-4xl" />
+                </a>
+              )}
+            </div>
 
-        <div className="my-4">
-          <p>Resumen:</p>
-          <CollapsableText className="leading-tight font-light">
-            {overview || 'Sin descripción'}
-          </CollapsableText>
-        </div>
+            <div className="w-full">
+              <h1
+                onClick={toggleShowOriginalTitle}
+                className="text-4xl leading-none text-center mb-4"
+              >
+                {showOriginalTitle ? item.movie.title : title}
+              </h1>
+              <div className="flex mb-4 justify-between items-center text-gray-600">
+                <h2>
+                  {new Date(item.movie.released).toLocaleDateString(language, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </h2>
+                <h2>{item.movie.runtime || '?'} mins</h2>
+              </div>
+              <WatchButton item={item} />
+            </div>
+          </div>
+          <div className="my-4">
+            <p>Resumen:</p>
+            <CollapsableText className="leading-tight font-light">
+              {overview || 'Sin descripción'}
+            </CollapsableText>
+          </div>
 
-        <div className="my-4">
-          <p>Géneros:</p>
-          <Genres genres={item.movie.genres} />
-        </div>
+          <div className="my-4">
+            <p>Géneros:</p>
+            <Genres genres={item.movie.genres} />
+          </div>
 
-        <div className="my-4">
-          <p>Relacionados:</p>
-          <Related itemId={item.movie.ids.trakt} type="movie" />
-        </div>
+          <div className="my-4">
+            <p>Relacionados:</p>
+            <Related itemId={item.movie.ids.trakt} type="movie" />
+          </div>
 
-        <div className="my-4">
-          <People people={people} type="movie" />
-        </div>
-      </article>
+          <div className="my-4">
+            <People people={people} type="movie" />
+          </div>
+        </article>
+      </div>
     </div>
   ) : (
     <Emoji emoji="⏳" rotating="true" />
