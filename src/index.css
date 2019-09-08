@@ -1,5 +1,9 @@
 img {
-  width: 100%
+  width: 100%;
+}
+
+button:focus {
+  outline: 0;
 }
 
 .spin {

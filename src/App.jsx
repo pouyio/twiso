@@ -1,4 +1,3 @@
-import './index.css';
 import React, { useContext } from 'react';
 import { BrowserRouter, Route, Link, Redirect } from 'react-router-dom';
 import Search from './pages/Search';
@@ -81,7 +80,7 @@ function App() {
             <ProtectedRoute path="/show/:id" component={ShowDetail} />
             <ProtectedRoute path="/person/:id" component={Person} />
             <ul className="navbar flex w-full py-4 opacity-0">
-              <li className="py-3">
+              <li className="py-1">
                 <Emoji emoji="📺" /> P
               </li>
             </ul>
