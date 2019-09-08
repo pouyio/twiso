@@ -94,7 +94,7 @@ export default function Person({
                 <li
                   key={`${r.movie.ids.trakt}-movie-${i}`}
                   className="p-2 h-full"
-                  style={{ flex: '1 0 50%', maxWidth: '43%' }}
+                  style={{ flex: '1 0 50%', maxWidth: '10em' }}
                 >
                   <div className="bg-gray-300 rounded-lg">
                     <ImageLink item={r} type="movie">
@@ -122,7 +122,7 @@ export default function Person({
                 <li
                   key={`${r.show.ids.trakt}-show-${i}`}
                   className="p-2 h-full"
-                  style={{ flex: '1 0 50%', maxWidth: '43%' }}
+                  style={{ flex: '1 0 50%', maxWidth: '10em' }}
                 >
                   <div className="bg-gray-300 rounded-lg">
                     <ImageLink item={r} type="show">

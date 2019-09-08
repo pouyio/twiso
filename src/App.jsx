@@ -47,8 +47,13 @@ function App() {
       <AuthProvider>
         <UserProvider>
           <ModalProvider>
+            <ul className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block">
+              <li className="py-1">
+                <Emoji emoji="📺" /> P
+              </li>
+            </ul>
             <ul
-              className="flex w-full bg-gray-200 fixed bottom-0 px-2 z-50 text-center justify-around text-2xl"
+              className="flex w-full bg-gray-200 fixed bottom-0 px-2 z-50 text-center justify-around text-2xl lg:top-0 lg:bottom-auto"
               style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
             >
               <li className="py-1">
@@ -79,7 +84,7 @@ function App() {
             <ProtectedRoute path="/movie/:id" component={MovieDetail} />
             <ProtectedRoute path="/show/:id" component={ShowDetail} />
             <ProtectedRoute path="/person/:id" component={Person} />
-            <ul className="navbar flex w-full py-4 opacity-0">
+            <ul className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden">
               <li className="py-1">
                 <Emoji emoji="📺" /> P
               </li>

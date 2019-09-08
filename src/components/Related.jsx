@@ -23,7 +23,7 @@ export default function Related({ itemId, type }) {
             <li
               key={r[type].ids.trakt}
               className="p-2"
-              style={{ minWidth: '43%' }}
+              style={{ minWidth: '10em' }}
             >
               <ImageLink item={r} type={type} />
             </li>

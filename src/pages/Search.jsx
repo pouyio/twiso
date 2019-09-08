@@ -40,10 +40,10 @@ export default function Search() {
   }, [debouncedSearch]);
 
   return (
-    <div className="m-4">
-      <div className="w-full flex items-center md:max-w-md m-auto">
+    <div className="m-4 lg:max-w-5xl lg:mx-auto">
+      <div className="w-full flex items-center m-auto lg:max-w-lg">
         <input
-          className="bg-gray-300 text-black px-2 py-1 rounded outline-none flex-grow text-gray-700"
+          className="bg-gray-300 text-black px-2 py-1 rounded outline-none flex-grow text-gray-700 "
           type="text"
           placeholder="🔍 Busca una película, serie o persona"
           autoFocus={true}
@@ -93,7 +93,7 @@ export default function Search() {
                 Series
               </h1>
               <ul
-                className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto"
+                className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
                 style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
               >
                 {showResults.map(r => (
@@ -121,7 +121,7 @@ export default function Search() {
                 Personas
               </h1>
               <ul
-                className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto"
+                className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
                 style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
               >
                 {peopleResults.map(r => (
