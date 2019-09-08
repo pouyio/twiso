@@ -10,7 +10,7 @@ const Login = withRouter(({ code, history }) => {
     useEffect(() => {
         loginApi(code).then(({ data }) => {
             persistSession(data);
-            history.push('/watched')
+            history.push('/movies')
         });
     });
 
