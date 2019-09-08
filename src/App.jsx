@@ -22,7 +22,7 @@ function ParamsComponent({ location }) {
   const { session } = useContext(AuthContext);
 
   return session
-    ? <Redirect to="/watchlist" />
+    ? <Redirect to="/movies" />
     : <div className="text-center mt-20">
       {
         params.get("code") ?
