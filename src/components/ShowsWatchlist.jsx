@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import ImageLink from './ImageLink';
 import UserContext from '../utils/UserContext';
-import Emoji from './Emoji';
 import PaginationContainer from './PaginationContainer';
 import usePagination from '../utils/usePagination';
 
@@ -19,7 +18,6 @@ export default function ShowsWatchlist() {
 
     return (
         <div>
-            <h1 className="text-3xl text-center text-gray-700 m-4"><Emoji emoji="⏱" /> Pendientes {shows.length}</h1>
             <PaginationContainer items={shows}>
                 <ul className="flex flex-wrap p-2 items-stretch justify-center">
                     {getShowsByPage(currentPage).map(m => <li key={m.show.ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
