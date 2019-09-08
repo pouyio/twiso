@@ -5,7 +5,7 @@ import Emoji from './Emoji';
 import PaginationContainer from './PaginationContainer';
 import usePagination from '../utils/usePagination';
 
-export default function Shows() {
+export default function ShowsWatched() {
 
     const [shows, setShows] = useState([]);
     const { userInfo, PAGE_SIZE } = useContext(UserContext);

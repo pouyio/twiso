@@ -41,6 +41,7 @@ export default function usePagination(items) {
 
         localPage = localPage + direction;
         turnPage(localPage);
+        window.scrollTo(0, 0);
     }
 
     const setSafePage = (page) => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import Emoji from './Emoji';
 
 const People = ({
     people: { cast = [], crew = {} },
@@ -11,16 +12,19 @@ const People = ({
             <div className="my-4">
                 <p>Reparto:</p>
                 <ul className="flex overflow-x-auto my-2 -mx-4" style={{ WebkitOverflowScrolling: 'touch' }}>
-                    {cast.map((character, i) => (
-                        <li key={i}>
-                            <Link to={{ pathname: `/person/${character.person.ids.trakt}`, search: `?slug=${character.person.ids.slug}` }}>
-                                <div className="bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre flex flex-col text-center">
-                                    <span>{character.person.name}</span>
-                                    <small>{character.character}</small>
-                                </div>
-                            </Link>
-                        </li>
-                    ))}
+                    {cast.length
+                        ? cast.map((character, i) => (
+                            <li key={i}>
+                                <Link to={{ pathname: `/person/${character.person.ids.trakt}`, search: `?slug=${character.person.ids.slug}` }}>
+                                    <div className="bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre flex flex-col text-center">
+                                        <span>{character.person.name}</span>
+                                        <small>{character.character}</small>
+                                    </div>
+                                </Link>
+                            </li>
+                        ))
+                        : <span className="bg-gray-200 inline-block my-2 font-light px-2 py-1 rounded-full">Ninguno <Emoji emoji="😵" /></span>
+                    }
                 </ul>
             </div>
 

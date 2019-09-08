@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import useDebounce from '../utils/debounce';
-import ImageLink from './ImageLink';
+import ImageLink from '../components/ImageLink';
 import { searchApi } from '../utils/api';
-import Emoji from './Emoji';
-import Popular from './Popular';
+import Popular from '../components/Popular';
 import useSerch from '../utils/useSearch';
+import Emoji from '../components/Emoji';
 
 
 export default function Search() {
@@ -58,7 +58,7 @@ export default function Search() {
                         <>
                             <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">Películas</h1>
                             <ul className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}>
-                                {movieResults.map(r => <li key={r.movie.ids.slug} className="p-2" style={{ height: '13.5em', maxWidth: '9em' }}>
+                                {movieResults.map(r => <li key={r.movie.ids.slug} className="p-2" style={{ height: '13.5em', width: '9.5em' }}>
                                     <ImageLink item={r} style={{ minHeight: '10em' }} type="movie" />
                                 </li>)}
                             </ul>
@@ -70,7 +70,7 @@ export default function Search() {
                         <>
                             <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">Series</h1>
                             <ul className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}>
-                                {showResults.map(r => <li key={r.show.ids.slug} className="p-2" style={{ height: '13.5em', maxWidth: '9em' }}>
+                                {showResults.map(r => <li key={r.show.ids.slug} className="p-2" style={{ height: '13.5em', width: '9.5em' }}>
                                     <ImageLink item={r} style={{ minHeight: '10em' }} type="show" />
                                 </li>)}
                             </ul>
@@ -82,7 +82,7 @@ export default function Search() {
                         <>
                             <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">Personas</h1>
                             <ul className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}>
-                                {peopleResults.map(r => <li key={r.person.ids.slug} className="p-2" style={{ height: '13.5em', maxWidth: '9em'  }}>
+                                {peopleResults.map(r => <li key={r.person.ids.slug} className="p-2" style={{ height: '13.5em', width: '9.5em'  }}>
                                     <ImageLink item={r} style={{ minHeight: '10em' }} type="person" />
                                 </li>)}
                             </ul>

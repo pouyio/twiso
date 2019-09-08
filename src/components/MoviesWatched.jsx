@@ -1,25 +1,24 @@
 import React, { useEffect, useState, useContext } from 'react';
 import ImageLink from './ImageLink';
 import UserContext from '../utils/UserContext';
-import Emoji from './Emoji';
 import PaginationContainer from './PaginationContainer';
 import usePagination from '../utils/usePagination';
 
-export default function Watchlist() {
+export default function MoviesWatched() {
 
     const [movies, setMovies] = useState([]);
-    const { userInfo, PAGE_SIZE } = useContext(UserContext);
+    const { userInfo, globalError, PAGE_SIZE } = useContext(UserContext);
     const { currentPage } = usePagination(movies);
 
     useEffect(() => {
-        setMovies(userInfo.movies.watchlist);
-    }, [userInfo.movies.watchlist]);
+        setMovies(userInfo.movies.watched);
+    }, [userInfo.movies.watched]);
 
     const getMoviesByPage = (page) => movies.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
     return (
         <div>
-            <h1 className="text-3xl text-center text-gray-700 m-4"><Emoji emoji="⏱" /> Pendientes {movies.length}</h1>
+            {globalError && <div><pre className="overflow-scroll text-xs text-red-700 whitespace-pre-wrap">{JSON.stringify(globalError)}</pre></div>}
             <PaginationContainer items={movies}>
                 <ul className="flex flex-wrap p-2 items-stretch justify-center">
                     {getMoviesByPage(currentPage).map(m => <li key={m.movie.ids.trakt} className="p-2" style={{ flex: '1 0 50%', maxWidth: '15em' }}>
