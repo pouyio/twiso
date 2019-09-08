@@ -1,10 +1,10 @@
 module.exports = {
   theme: {
-    extend: {}
+    extend: {},
   },
   variants: {},
   corePlugins: {
     outline: false,
   },
-  plugins: []
-}
+  plugins: [],
+};
