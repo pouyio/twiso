@@ -59,7 +59,7 @@ export default function Image({
       )}
       {inView && imgUrl && (
         <img
-          className={'m-auto md:max-w-md h-full'}
+          className="m-auto md:max-w-md h-full"
           src={imgUrl}
           alt={getTitle()}
         />
