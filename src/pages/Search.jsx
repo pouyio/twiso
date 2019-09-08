@@ -46,7 +46,7 @@ export default function Search() {
     return (
         <div className="m-4">
             <div className="w-full flex items-center md:max-w-md m-auto">
-                <input className="bg-gray-300 text-black px-2 py-1 rounded outline-none flex-grow text-gray-700" type="text" placeholder="🔍 Busca una película" autoFocus={true} onChange={(e) => setSearch(e.target.value)} value={search} />
+                <input className="bg-gray-300 text-black px-2 py-1 rounded outline-none flex-grow text-gray-700" type="text" placeholder="🔍 Busca una película, serie o persona" autoFocus={true} onChange={(e) => setSearch(e.target.value)} value={search} />
                 {loading ?
                     <Emoji className="ml-3" emoji="⏳" rotating={true} />
                     : <Emoji className="ml-3" emoji="❌" onClick={() => setSearch('')} />}
