@@ -49,27 +49,27 @@ function App() {
         <UserProvider>
           <ModalProvider>
             <ul
-              className="flex w-full bg-gray-200 fixed bottom-0 px-2 z-50 text-center justify-around"
+              className="flex w-full bg-gray-200 fixed bottom-0 px-2 z-50 text-center justify-around text-2xl"
               style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
             >
               <li className="py-1">
                 <Link to="/movies">
-                  <Emoji className="text-3xl" emoji="🎬" />
+                  <Emoji emoji="🎬" />
                 </Link>
               </li>
               <li className="py-1">
                 <Link to="/shows">
-                  <Emoji className="text-3xl" emoji="📺" />
+                  <Emoji emoji="📺" />
                 </Link>
               </li>
               <li className="py-1">
                 <Link to="/search">
-                  <Emoji className="text-3xl" emoji="🔍" />
+                  <Emoji emoji="🔍" />
                 </Link>
               </li>
               <li className="py-1">
                 <button onClick={logout}>
-                  <Emoji className="text-3xl" emoji="❌" />
+                  <Emoji emoji="❌" />
                 </button>
               </li>
             </ul>
