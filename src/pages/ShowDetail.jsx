@@ -147,12 +147,12 @@ export default function ShowDetail({
           </div>
 
           <div className="my-4">
-            <p>Relacionados:</p>
-            <Related itemId={item.show.ids.trakt} type="show" />
+            <People people={people} type="show" />
           </div>
 
           <div className="my-4">
-            <People people={people} type="show" />
+            <p>Relacionados:</p>
+            <Related itemId={item.show.ids.trakt} type="show" />
           </div>
         </article>
       </div>

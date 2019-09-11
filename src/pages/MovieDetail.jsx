@@ -130,12 +130,12 @@ export default function MovieDetail({
           </div>
 
           <div className="my-4">
-            <p>Relacionados:</p>
-            <Related itemId={item.movie.ids.trakt} type="movie" />
+            <People people={people} type="movie" />
           </div>
 
           <div className="my-4">
-            <People people={people} type="movie" />
+            <p>Relacionados:</p>
+            <Related itemId={item.movie.ids.trakt} type="movie" />
           </div>
         </article>
       </div>
