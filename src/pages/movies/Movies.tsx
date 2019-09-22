@@ -14,7 +14,7 @@ export default function Movies() {
 
   useEffect(() => {
     if (!mode) {
-      setMode('watched');
+      setMode('watchlist');
     }
     // eslint-disable-next-line
   }, []);
