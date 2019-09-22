@@ -27,9 +27,9 @@ export default function MoviesWatched() {
       )}
       <PaginationContainer items={movies}>
         <ul className="flex flex-wrap p-2 items-stretch justify-center">
-          {getMoviesByPage(currentPage).map(m => (
+          {getMoviesByPage(currentPage).map((m, i) => (
             <li
-              key={m.movie.ids.trakt}
+              key={`${m.movie.ids.trakt}_${i}`}
               className="p-2"
               style={{ flex: '1 0 50%', maxWidth: '15em' }}
             >

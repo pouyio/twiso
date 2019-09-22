@@ -1,29 +1,16 @@
-import { useEffect, useState, useCallback, useContext } from 'react';
-import useReactRouter from 'use-react-router';
+import { useEffect, useState, useContext } from 'react';
 import UserContext from './UserContext';
+import { useQueryParam, NumberParam } from 'use-query-params';
 
 export default function usePagination(items) {
-  const { history, location } = useReactRouter();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage = 1, setCurrentPage] = useQueryParam('page', NumberParam);
   const [lastPage, setLastPage] = useState(1);
   const { PAGE_SIZE } = useContext(UserContext);
 
-  const turnPage = useCallback(
-    finalPage => {
-      history.push({ search: `?page=${finalPage}` });
-      setCurrentPage(finalPage);
-    },
-    [history],
-  );
-
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const paramPage = +params.get('page');
-    if (!paramPage) {
-      turnPage(1);
-    }
-    setCurrentPage(+params.get('page') || 1);
-  }, [location.search, turnPage]);
+    setCurrentPage(currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const localLastPage = Math.ceil(items.length / PAGE_SIZE);
@@ -31,24 +18,21 @@ export default function usePagination(items) {
   }, [items.length, PAGE_SIZE]);
 
   const turnSafePage = direction => {
-    const params = new URLSearchParams(location.search);
-    let localPage = +params.get('page');
-    if (localPage === 1 && direction === -1) {
+    if (currentPage === 1 && direction === -1) {
       return;
     }
 
-    if (localPage >= lastPage && direction === 1) {
+    if (currentPage >= lastPage && direction === 1) {
       return;
     }
 
-    localPage = localPage + direction;
-    turnPage(localPage);
+    setCurrentPage(currentPage + direction);
     window.scrollTo(0, 0);
   };
 
   const setSafePage = page => {
     const localPage = page === 'first' ? 1 : lastPage;
-    turnPage(localPage);
+    setCurrentPage(localPage);
   };
 
   return {

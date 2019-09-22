@@ -1,6 +1,17 @@
 import React from 'react';
 
-export default function Emoji({ emoji, rotating, className = '', ...props }) {
+interface IEmojiProps {
+  emoji: string;
+  rotating?: boolean;
+  className?: string;
+}
+
+export default function Emoji({
+  emoji,
+  rotating = false,
+  className = '',
+  ...props
+}: IEmojiProps) {
   return (
     <span
       {...props}

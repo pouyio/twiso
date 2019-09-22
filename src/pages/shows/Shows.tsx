@@ -1,15 +1,23 @@
-import React, { useState, useContext } from 'react';
-import MoviesWatchlist from '../../components/MoviesWatchlist';
-import MoviesWatched from '../../components/MoviesWatched';
+import React, { useContext, useEffect } from 'react';
 import UserContext from '../../utils/UserContext';
 import Emoji from '../../components/Emoji';
+import ShowsWatchlist from '../../components/ShowsWatchlist';
+import ShowsWatched from '../../components/ShowsWatched';
+import { StringParam, useQueryParam } from 'use-query-params';
 
-export default function Movies() {
-  const [mode, setMode] = useState('watchlist');
+export default function Shows() {
+  const [mode, setMode] = useQueryParam('mode', StringParam);
 
   const {
-    userInfo: { movies },
+    userInfo: { shows },
   } = useContext(UserContext);
+
+  useEffect(() => {
+    if (!mode) {
+      setMode('watched');
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="lg:max-w-5xl lg:mx-auto">
@@ -20,7 +28,7 @@ export default function Movies() {
           }`}
           onClick={() => setMode('watchlist')}
         >
-          <Emoji emoji="⏱" /> Pendientes ({movies.watchlist.length})
+          <Emoji emoji="⏱" /> Pendientes ({shows.watchlist.length})
         </button>
         <button
           className={`border-b-2 pb-2 w-full ${
@@ -28,10 +36,10 @@ export default function Movies() {
           }`}
           onClick={() => setMode('watched')}
         >
-          <Emoji emoji="📚" /> Vistas ({movies.watched.length})
+          <Emoji emoji="📚" /> Siguiendo ({shows.watched.length})
         </button>
       </div>
-      {mode === 'watchlist' ? <MoviesWatchlist /> : <MoviesWatched />}
+      {mode === 'watchlist' ? <ShowsWatchlist /> : <ShowsWatched />}
     </div>
   );
 }
