@@ -3,7 +3,7 @@ import Modal from '../components/Modal';
 
 const ModalContext = createContext({ session: false });
 
-export const ModalProvider = ({ children }) => {
+export const ModalProvider = ({ children, modalRef }) => {
   const [isShowing, setIsShowing] = useState(false);
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
@@ -17,7 +17,7 @@ export const ModalProvider = ({ children }) => {
   return (
     <ModalContext.Provider value={{ isShowing, toggle, title, text }}>
       {children}
-      <Modal />
+      {modalRef && <Modal modalRef={modalRef} />}
     </ModalContext.Provider>
   );
 };

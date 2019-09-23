@@ -253,3 +253,11 @@ export const getRelatedApi = (id, type) => {
       return res;
     });
 };
+
+export const getStatsApi = id => {
+  return axios.get(`${BASE_URL}/users/${id}/stats`, {
+    headers: {
+      ...base_headers,
+    },
+  });
+};

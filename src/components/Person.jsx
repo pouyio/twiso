@@ -54,7 +54,7 @@ export default function Person({
         </div>
 
         <article
-          className="relative p-4 bg-white z-10 rounded-t-lg"
+          className="relative p-4 bg-white rounded-t-lg"
           style={{ transform: 'translate3d(0,0,0)' }}
         >
           <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>

@@ -1,3 +1,77 @@
+.theme-wrapper {
+  transition: background-color .25s, color .25s;
+}
+
+.theme-light {
+  --primary-light: white;
+  --primary-dark: black;
+
+  --gray-100: #f7fafc;
+  --gray-200: #edf2f7;
+  --gray-300: #e2e8f0;
+  --gray-400: #cbd5e0;
+  --gray-500: #a0aec0;
+  --gray-600: #718096;
+  --gray-700: #4a5568;
+  --gray-800: #2d3748;
+  --gray-900: #1a202c;
+
+  --blue-100: #ebf8ff;
+  --blue-200: #bee3f8;
+  --blue-300: #90cdf4;
+  --blue-400: #63b3ed;
+  --blue-500: #4299e1;
+  --blue-600: #3182ce;
+  --blue-700: #2b6cb0;
+  --blue-800: #2c5282;
+  --blue-900: #2a4365;
+
+  --green-100: #f0fff4;
+  --green-200: #c6f6d5;
+  --green-300: #9ae6b4;
+  --green-400: #68d391;
+  --green-500: #48bb78;
+  --green-600: #38a169;
+  --green-700: #2f855a;
+  --green-800: #276749;
+  --green-900: #22543d;
+}
+
+.theme-dark {
+  --primary-dark: white;
+  --primary-light: black;
+
+  --gray-900: #f7fafc;
+  --gray-800: #edf2f7;
+  --gray-700: #e2e8f0;
+  --gray-600: #cbd5e0;
+  --gray-500: #a0aec0;
+  --gray-400: #718096;
+  --gray-300: #4a5568;
+  --gray-200: #2d3748;
+  --gray-100: #1a202c;
+
+  --blue-900: #ebf8ff;
+  --blue-800: #bee3f8;
+  --blue-700: #90cdf4;
+  --blue-600: #63b3ed;
+  --blue-500: #4299e1;
+  --blue-400: #3182ce;
+  --blue-300: #2b6cb0;
+  --blue-200: #2c5282;
+  --blue-100: #2a4365;
+
+  --green-900: #f0fff4;
+  --green-800: #c6f6d5;
+  --green-700: #9ae6b4;
+  --green-600: #68d391;
+  --green-500: #48bb78;
+  --green-400: #38a169;
+  --green-300: #2f855a;
+  --green-200: #276749;
+  --green-100: #22543d;
+}
+
 img {
   width: 100%;
 }

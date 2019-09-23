@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 import ModalContext from '../utils/ModalContext';
 
-const Modal = () => {
+const Modal = ({ modalRef }) => {
   const { isShowing, toggle, title, text } = useContext(ModalContext);
 
   return ReactDOM.createPortal(
@@ -10,7 +10,7 @@ const Modal = () => {
       onClick={toggle}
       className={`${
         isShowing ? '' : 'hidden'
-      } fixed w-full h-full top-0 left-0 flex items-center justify-center z-10`}
+        } fixed w-full h-full top-0 left-0 flex items-center justify-center z-10`}
     >
       <div className="absolute w-full h-full bg-gray-900 opacity-50"></div>
 
@@ -25,7 +25,7 @@ const Modal = () => {
         </div>
       </div>
     </div>,
-    document.body,
+    modalRef,
   );
 };
 

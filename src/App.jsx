@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { BrowserRouter, Route, Link, Redirect } from 'react-router-dom';
 import Search from './pages/Search';
 import Login from './components/Login';
@@ -12,7 +12,9 @@ import { ModalProvider } from './utils/ModalContext';
 import Person from './components/Person';
 import Movies from './pages/movies/Movies';
 import Shows from './pages/shows/Shows';
+import User from './pages/User';
 import { QueryParamProvider } from 'use-query-params';
+import { ThemeProvider } from './utils/ThemeContext';
 const redirect_url = process.env.REACT_APP_REDIRECT_URL;
 
 function ParamsComponent({ location }) {
@@ -22,7 +24,7 @@ function ParamsComponent({ location }) {
   return session ? (
     <Redirect to="/movies" />
   ) : (
-      <div className="text-center mt-20">
+      <div className="text-center pt-20">
         {params.get('code') ? (
           <Login code={params.get('code')} />
         ) : (
@@ -37,64 +39,64 @@ function ParamsComponent({ location }) {
 }
 
 function App() {
-  const logout = () => {
-    localStorage.removeItem('session');
-    window.location.reload();
-  };
+  const [ref, setRef] = useState();
 
   return (
-    <BrowserRouter>
-      <QueryParamProvider ReactRouterRoute={Route}>
-        <AuthProvider>
-          <UserProvider>
-            <ModalProvider>
-              <ul className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block">
-                <li className="py-1">
-                  <Emoji emoji="📺" /> P
+    <div ref={setRef}>
+      <BrowserRouter>
+        <QueryParamProvider ReactRouterRoute={Route}>
+          <AuthProvider>
+            <UserProvider>
+              <ThemeProvider>
+                <ModalProvider modalRef={ref}>
+                  <ul className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block">
+                    <li className="py-1">
+                      <Emoji emoji="📺" /> P
               </li>
-              </ul>
-              <ul
-                className="flex w-full bg-gray-200 fixed bottom-0 px-2 z-50 text-center justify-around text-2xl lg:top-0 lg:bottom-auto"
-                style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-              >
-                <li className="py-1">
-                  <Link to="/movies">
-                    <Emoji emoji="🎬" />
-                  </Link>
-                </li>
-                <li className="py-1">
-                  <Link to="/shows">
-                    <Emoji emoji="📺" />
-                  </Link>
-                </li>
-                <li className="py-1">
-                  <Link to="/search">
-                    <Emoji emoji="🔍" />
-                  </Link>
-                </li>
-                <li className="py-1">
-                  <button onClick={logout}>
-                    <Emoji emoji="❌" />
-                  </button>
-                </li>
-              </ul>
-              <Route exact path="/" component={ParamsComponent} />
-              <ProtectedRoute path="/movies" component={Movies} />
-              <ProtectedRoute path="/shows" component={Shows} />
-              <ProtectedRoute path="/search" component={Search} />
-              <ProtectedRoute path="/movie/:id" component={MovieDetail} />
-              <ProtectedRoute path="/show/:id" component={ShowDetail} />
-              <ProtectedRoute path="/person/:id" component={Person} />
-              <ul className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden">
-                <li className="py-1">
-                  <Emoji emoji="📺" /> P
-              </li>
-              </ul>
-            </ModalProvider>
-          </UserProvider>
-        </AuthProvider>
-      </QueryParamProvider>
-    </BrowserRouter>
+                  </ul>
+                  <ul
+                    className="flex w-full bg-gray-200 fixed bottom-0 px-2 z-50 text-center justify-around text-2xl lg:top-0 lg:bottom-auto"
+                    style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+                  >
+                    <li className="py-1">
+                      <Link to="/movies">
+                        <Emoji emoji="🎬" />
+                      </Link>
+                    </li>
+                    <li className="py-1">
+                      <Link to="/shows">
+                        <Emoji emoji="📺" />
+                      </Link>
+                    </li>
+                    <li className="py-1">
+                      <Link to="/search">
+                        <Emoji emoji="🔍" />
+                      </Link>
+                    </li>
+                    <li className="py-1">
+                      <Link to="/user">
+                        <Emoji emoji="👤" />
+                      </Link>
+                    </li>
+                  </ul>
+                  <Route exact path="/" component={ParamsComponent} />
+                  <ProtectedRoute path="/movies" component={Movies} />
+                  <ProtectedRoute path="/shows" component={Shows} />
+                  <ProtectedRoute path="/search" component={Search} />
+                  <ProtectedRoute path="/movie/:id" component={MovieDetail} />
+                  <ProtectedRoute path="/show/:id" component={ShowDetail} />
+                  <ProtectedRoute path="/person/:id" component={Person} />
+                  <ProtectedRoute path="/user" component={User} />
+                  <ul className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden">
+                    <li className="py-1"><Emoji emoji="📺" />P</li>
+                  </ul>
+                </ModalProvider>
+              </ThemeProvider>
+            </UserProvider>
+          </AuthProvider>
+        </QueryParamProvider>
+      </BrowserRouter>
+    </div>
   );
 }
 
