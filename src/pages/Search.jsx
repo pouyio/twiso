@@ -40,7 +40,7 @@ export default function Search() {
   }, [debouncedSearch]);
 
   return (
-    <div className="m-4 lg:max-w-5xl lg:mx-auto">
+    <div className="p-4 lg:max-w-5xl lg:mx-auto">
       <div className="w-full flex items-center m-auto lg:max-w-lg">
         <input
           className="bg-gray-300 text-black px-2 py-1 rounded outline-none flex-grow text-gray-700 "
