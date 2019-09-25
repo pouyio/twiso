@@ -28,7 +28,10 @@ export const ThemeProvider: React.FC<IThemeProviderProps> = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{ theme: localTheme, toggleTheme }}>
-      <div className={`theme-wrapper text-black bg-white ${localTheme}`} style={{minHeight: '100vh'}}>
+      <div
+        className={`theme-wrapper text-black bg-white ${localTheme}`}
+        style={{ minHeight: 'calc(100vh - env(safe-area-inset-bottom) - 2em)' }}
+      >
         {children}
       </div>
     </ThemeContext.Provider>

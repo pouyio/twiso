@@ -1,5 +1,5 @@
 .theme-wrapper {
-  transition: background-color .25s, color .25s;
+  transition: background-color 0.25s, color 0.25s;
 }
 
 .theme-light {
@@ -35,6 +35,16 @@
   --green-700: #2f855a;
   --green-800: #276749;
   --green-900: #22543d;
+
+  --purple-100: #faf5ff;
+  --purple-200: #e9d8fd;
+  --purple-300: #d6bcfa;
+  --purple-400: #b794f4;
+  --purple-500: #9f7aea;
+  --purple-600: #805ad5;
+  --purple-700: #6b46c1;
+  --purple-800: #553c9a;
+  --purple-900: #44337a;
 }
 
 .theme-dark {
@@ -70,6 +80,16 @@
   --green-300: #2f855a;
   --green-200: #276749;
   --green-100: #22543d;
+
+  --purple-900: #faf5ff;
+  --purple-800: #e9d8fd;
+  --purple-700: #d6bcfa;
+  --purple-600: #b794f4;
+  --purple-500: #9f7aea;
+  --purple-400: #805ad5;
+  --purple-300: #6b46c1;
+  --purple-200: #553c9a;
+  --purple-100: #44337a;
 }
 
 img {
