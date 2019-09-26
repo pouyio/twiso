@@ -21,7 +21,7 @@ export default function Shows() {
 
   return (
     <div className="lg:max-w-5xl lg:mx-auto">
-      <div className="flex w-full pt-2 justify-around border-b-2 border-gray-200 text-gray-600 mb-3">
+      <div className="flex w-full pt-2 justify-around border-gray-200 text-gray-600 mb-3">
         <button
           className={`border-b-2 pb-2 w-full ${
             mode === 'watchlist' ? 'border-blue-300' : 'border-transparent'
