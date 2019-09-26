@@ -48,6 +48,21 @@ export const UserProvider = ({ children }) => {
   };
   const setWatchlist = (items, type) => {
     setUserInfo(prev => {
+      if (type === MOVIE) {
+        const nearFuture = new Date();
+        nearFuture.setDate(nearFuture.getDate() + 7);
+        items = items.reverse().reduce((acc, m) => {
+          if (!m.movie.released) {
+            return [...acc, m];
+          }
+          const released = new Date(m.movie.released);
+          if (released < nearFuture) {
+            return [m, ...acc];
+          } else {
+            return [...acc, m];
+          }
+        }, []);
+      }
       prev[`${type}s`].watchlist = [...items, ...prev[`${type}s`].watchlist];
       return { ...prev };
     });
