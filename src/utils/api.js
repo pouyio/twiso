@@ -69,12 +69,15 @@ export const getSeasonApi = (id, season) => {
 };
 
 export const getProgressApi = (session, id) => {
-  return axios.get(`${BASE_URL}/shows/${id}/progress/watched?specials=true`, {
-    headers: {
-      ...base_headers,
-      Authorization: `Bearer ${session.access_token}`,
+  return axios.get(
+    `${BASE_URL}/shows/${id}/progress/watched?specials=true&count_specials=false`,
+    {
+      headers: {
+        ...base_headers,
+        Authorization: `Bearer ${session.access_token}`,
+      },
     },
-  });
+  );
 };
 
 export const getTranslationsApi = (id, type) => {
