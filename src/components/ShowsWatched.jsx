@@ -24,9 +24,9 @@ export default function ShowsWatched() {
             <li
               key={m.show.ids.trakt}
               className="p-2"
-              style={{ flex: '1 0 50%', maxWidth: '15em' }}
+              style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >
-              <ImageLink item={m} style={{ minHeight: '15em' }} type="show" />
+              <ImageLink item={m} style={{ minHeight: '13.5em' }} type="show" />
             </li>
           ))}
         </ul>

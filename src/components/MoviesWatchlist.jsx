@@ -23,9 +23,9 @@ export default function MoviesWatchlist() {
           <li
             key={m.movie.ids.trakt}
             className="p-2"
-            style={{ flex: '1 0 50%', maxWidth: '15em' }}
+            style={{ flex: '1 0 50%', maxWidth: '10em' }}
           >
-            <ImageLink item={m} style={{ minHeight: '15em' }} type="movie" />
+            <ImageLink item={m} style={{ minHeight: '13.5em' }} type="movie" />
           </li>
         ))}
       </ul>
