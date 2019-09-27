@@ -59,23 +59,35 @@ function App() {
                     style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
                   >
                     <li className="py-1">
-                      <Link to="/movies">
+                      <Link to="/movies" className="flex items-center">
                         <Emoji emoji="🎬" />
+                        <span className="ml-2 text-base hidden lg:inline">
+                          Películas
+                        </span>
                       </Link>
                     </li>
                     <li className="py-1">
-                      <Link to="/shows">
+                      <Link to="/shows" className="flex items-center">
                         <Emoji emoji="📺" />
+                        <span className="ml-2 text-base hidden lg:inline">
+                          Series
+                        </span>
                       </Link>
                     </li>
                     <li className="py-1">
-                      <Link to="/search">
+                      <Link to="/search" className="flex items-center">
                         <Emoji emoji="🔍" />
+                        <span className="ml-2 text-base hidden lg:inline">
+                          Buscar
+                        </span>
                       </Link>
                     </li>
                     <li className="py-1">
-                      <Link to="/user">
+                      <Link to="/user" className="flex items-center">
                         <Emoji emoji="👤" />
+                        <span className="ml-2 text-base hidden lg:inline">
+                          Perfil
+                        </span>
                       </Link>
                     </li>
                   </ul>
