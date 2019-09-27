@@ -6,6 +6,7 @@ module.exports = {
     process.env.NODE_ENV === 'production' &&
       purgecss({
         content: ['./src/**/*.html', './src/**/*.jsx', './src/**/*.tsx'],
+        whitelist: ['body', 'html'],
         defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
       }),
   ],
