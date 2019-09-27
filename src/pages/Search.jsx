@@ -41,20 +41,21 @@ export default function Search() {
 
   return (
     <div className="p-4 lg:max-w-5xl lg:mx-auto">
-      <div className="w-full flex items-center m-auto lg:max-w-lg">
+      <div className="w-full bg-gray-300 rounded flex items-center m-auto lg:max-w-lg">
         <input
-          className="bg-gray-300 text-black px-2 py-1 rounded outline-none flex-grow text-gray-700 "
+          className="bg-gray-300 rounded text-black px-2 py-1 outline-none flex-grow text-gray-700 "
           type="text"
           placeholder="🔍 Busca una película, serie o persona"
           autoFocus={true}
           onChange={e => setSearch(e.target.value)}
           value={search}
         />
-        {loading ? (
-          <Emoji className="ml-3" emoji="⏳" rotating={true} />
-        ) : (
-          <Emoji className="ml-3" emoji="❌" onClick={() => setSearch('')} />
-        )}
+        <Emoji
+          className="ml-3 mr-2"
+          emoji={loading ? '⏳' : '❌'}
+          rotating={loading}
+          onClick={() => setSearch('')}
+        />
       </div>
 
       {search ? (
@@ -84,8 +85,8 @@ export default function Search() {
               </ul>
             </>
           ) : (
-            <h1 className="text-3xl mt-8 text-gray-700">No hay películas</h1>
-          )}
+              <h1 className="text-3xl mt-8 text-gray-700">No hay películas</h1>
+            )}
 
           {showResults.length ? (
             <>
@@ -112,8 +113,8 @@ export default function Search() {
               </ul>
             </>
           ) : (
-            <h1 className="text-3xl mt-8 text-gray-700">No hay series</h1>
-          )}
+              <h1 className="text-3xl mt-8 text-gray-700">No hay series</h1>
+            )}
 
           {peopleResults.length ? (
             <>
@@ -140,15 +141,15 @@ export default function Search() {
               </ul>
             </>
           ) : (
-            <h1 className="text-3xl mt-8 text-gray-700">No hay personas</h1>
-          )}
+              <h1 className="text-3xl mt-8 text-gray-700">No hay personas</h1>
+            )}
         </>
       ) : (
-        <>
-          <Popular type="movie" />
-          <Popular type="show" />
-        </>
-      )}
+          <>
+            <Popular type="movie" />
+            <Popular type="show" />
+          </>
+        )}
     </div>
   );
 }
