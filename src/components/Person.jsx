@@ -54,13 +54,13 @@ export default function Person({
         </div>
 
         <article
-          className="relative p-4 bg-white rounded-t-lg"
+          className="relative p-4 lg:p-8 bg-white rounded-t-lg"
           style={{ transform: 'translate3d(0,0,0)' }}
         >
           <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
           <div className="flex items-start">
 
-            <div className="hidden lg:block relative px-4">
+            <div className="hidden lg:block relative pr-4">
               {localState && (
                 <Image
                   item={{ person: localState, type: 'person' }}
@@ -108,7 +108,7 @@ export default function Person({
             <>
               <h1 className="text-3xl mt-3 text-gray-700">Películas </h1>
               <ul
-                className="-mx-2 -mt-2 flex overflow-x-auto"
+                className="-mx-2 -mt-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
                 style={{ WebkitOverflowScrolling: 'touch' }}
               >
                 {movieResults.map((r, i) => (
@@ -118,7 +118,11 @@ export default function Person({
                     style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >
                     <div className="bg-gray-300 rounded-lg">
-                      <ImageLink item={r} type="movie">
+                      <ImageLink
+                        item={r}
+                        type="movie"
+                        style={{ minHeight: '13.5em' }}
+                      >
                         {r.title && (
                           <p className="text-sm text-gray-700 text-center py-1">
                             {r.title}
@@ -136,7 +140,7 @@ export default function Person({
             <>
               <h1 className="text-3xl mt-3 text-gray-700">Series </h1>
               <ul
-                className="-mx-2 -mt-2 flex overflow-x-auto"
+                className="-mx-2 -mt-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
                 style={{ WebkitOverflowScrolling: 'touch' }}
               >
                 {showResults.map((r, i) => (
@@ -146,7 +150,11 @@ export default function Person({
                     style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >
                     <div className="bg-gray-300 rounded-lg">
-                      <ImageLink item={r} type="show">
+                      <ImageLink
+                        item={r}
+                        type="show"
+                        style={{ minHeight: '13.5em' }}
+                      >
                         {r.title && (
                           <p className="text-sm text-gray-700 text-center py-1">
                             {r.title}

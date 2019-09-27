@@ -5,7 +5,7 @@ import getGenre from '../utils/getGenre';
 const Genres = ({ genres }) => {
   return genres.length ? (
     <ul
-      className="flex overflow-x-auto my-2 -mx-4"
+      className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
       style={{ WebkitOverflowScrolling: 'touch' }}
     >
       {genres.map(g => (

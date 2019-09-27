@@ -77,12 +77,12 @@ export default function MovieDetail({
           )}
         </div>
         <article
-          className="relative p-4 bg-white rounded-t-lg"
+          className="relative p-4 lg:p-8 bg-white rounded-t-lg"
           style={{ transform: 'translate3d(0,0,0)' }}
         >
           <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
           <div className="flex items-start">
-            <div className="hidden lg:block relative px-4">
+            <div className="hidden lg:block relative pr-4">
               <Image item={item} type="movie" />
               {item.movie.trailer && (
                 <a

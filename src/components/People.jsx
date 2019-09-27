@@ -8,12 +8,12 @@ const People = ({ people: { cast = [], crew = {} }, type }) => {
       <div className="my-4">
         <p>Reparto:</p>
         <ul
-          className="flex overflow-x-auto my-2 -mx-4"
+          className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
           style={{ WebkitOverflowScrolling: 'touch' }}
         >
           {cast.length ? (
             cast.map((character, i) => (
-              <li key={i}>
+              <li key={i} className="my-1">
                 <Link
                   to={{
                     pathname: `/person/${character.person.ids.trakt}`,
@@ -39,13 +39,13 @@ const People = ({ people: { cast = [], crew = {} }, type }) => {
         <div className="my-4">
           <p>Dirección:</p>
           <ul
-            className="flex overflow-x-auto my-2 -mx-4"
+            className="flex overflow-x-auto my-2 -mx-4 lg:overflow-auto lg:flex-wrap lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {(crew.directing || [])
               .filter(crew => crew.job.toLowerCase() === 'director')
               .map((crew, i) => (
-                <li key={i}>
+                <li key={i} className="my-1">
                   <Link
                     to={{
                       pathname: `/person/${crew.person.ids.trakt}`,

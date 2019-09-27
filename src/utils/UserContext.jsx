@@ -10,7 +10,7 @@ import {
   getWatchedApi,
 } from './api';
 
-export const PAGE_SIZE = 36;
+export const PAGE_SIZE = 40;
 
 const MOVIE = 'movie';
 const SHOW = 'show';

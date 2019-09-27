@@ -63,7 +63,7 @@ const Seasons = ({
   return (
     <>
       <ul
-        className="flex overflow-x-auto my-5 -mr-4"
+        className="flex overflow-x-auto my-5 -mr-3"
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {seasons
