@@ -4,8 +4,6 @@ import {
   addWatchedApi,
   removeWatchedApi,
   getProgressApi,
-  getSeasonApi,
-  getEpisodeTranslationApi,
 } from '../../utils/api';
 import AuthContext from '../../utils/AuthContext';
 import Seasons from './Seasons';
@@ -14,7 +12,6 @@ import ModalContext from '../../utils/ModalContext';
 
 const SeasonsContainer = ({ show, showId }) => {
   const [selectedSeason, setSelectedSeason] = useState(false);
-  const [seasonDetails, setSeasonDetails] = useState([]);
   const [progress, setProgress] = useState(false);
   const [seasons, setSeasons] = useState([]);
   const { session } = useContext(AuthContext);
@@ -98,36 +95,17 @@ const SeasonsContainer = ({ show, showId }) => {
     );
   };
 
-  const getEpisodeDescription = episode => {
-    return (seasonDetails.find(s => s.number === episode) || {}).overview;
-  };
-
-  const showModal = episode => {
-    let title = episode.title;
-    let text = getEpisodeDescription(episode.number);
-    toggle({ title, text });
-    getEpisodeTranslationApi(showId, episode.season, episode.number).then(
-      ({ data }) => {
-        if (data[0]) {
-          title = data[0].title || title;
-          text = data[0].overview || text;
-          toggle({ title, text });
-        }
-      },
-    );
+  const showModal = ({ title, overview }) => {
+    toggle({ title, text: overview });
   };
 
   const selectSeason = useCallback(
     season => {
-      setSeasonDetails([]);
       if (!season) {
         return;
       }
       if (!selectedSeason) {
         setSelectedSeason(season);
-        getSeasonApi(showId, season.number).then(({ data }) => {
-          setSeasonDetails(data);
-        });
         return;
       }
       if (selectedSeason.ids.trakt === season.ids.trakt) {
@@ -135,11 +113,8 @@ const SeasonsContainer = ({ show, showId }) => {
         return;
       }
       setSelectedSeason(season);
-      getSeasonApi(showId, season.number).then(({ data }) => {
-        setSeasonDetails(data);
-      });
     },
-    [selectedSeason, showId],
+    [selectedSeason],
   );
 
   return (

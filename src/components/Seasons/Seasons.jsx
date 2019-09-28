@@ -60,6 +60,13 @@ const Seasons = ({
     }
   };
 
+  const getTranslated = (string, episode) => {
+    if (episode.translations.length) {
+      return episode.translations[0][string];
+    }
+    return episode[string];
+  };
+
   return (
     <>
       <ul
@@ -81,8 +88,8 @@ const Seasons = ({
               {isSeasonWatched(s.number) ? (
                 <span className="ml-2 text-gray-600">✓</span>
               ) : (
-                ''
-              )}
+                  ''
+                )}
             </li>
           ))}
       </ul>
@@ -101,15 +108,18 @@ const Seasons = ({
                   {isEpisodeWatched(e.number) ? (
                     <span className="text-gray-600 mr-2 ml-1">✓</span>
                   ) : (
-                    <span className="text-blue-400 mx-2">•</span>
-                  )}
+                      <span className="text-blue-400 mx-2">•</span>
+                    )}
                   <span
-                    onClick={() => showModal(e)}
+                    onClick={() => showModal({
+                      title: getTranslated('title', e),
+                      overview: getTranslated('overview', e)
+                    })}
                     className={`flex-grow ${
                       isEpisodeWatched(e.number) ? 'text-gray-600' : ''
-                    }`}
+                      }`}
                   >
-                    {e.title}
+                    {getTranslated('title', e)}
                   </span>
                   <button
                     className="px-5 text-right"
@@ -130,13 +140,13 @@ const Seasons = ({
                 Marcar todo como no vistos
               </button>
             ) : (
-              <button
-                className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
-                onClick={() => addSeasonWatched(selectedSeason)}
-              >
-                Marcar todo como vistos
-              </button>
-            )}
+                <button
+                  className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
+                  onClick={() => addSeasonWatched(selectedSeason)}
+                >
+                  Marcar todo como vistos
+                </button>
+              )}
           </div>
         </>
       )}

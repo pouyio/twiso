@@ -57,15 +57,12 @@ export const getApi = (id, type) => {
 };
 
 export const getSeasonsApi = id => {
-  return axios.get(`${BASE_URL}/shows/${id}/seasons?extended=episodes`, {
-    headers: base_headers,
-  });
-};
-
-export const getSeasonApi = (id, season) => {
-  return axios.get(`${BASE_URL}/shows/${id}/seasons/${season}?extended=full`, {
-    headers: base_headers,
-  });
+  return axios.get(
+    `${BASE_URL}/shows/${id}/seasons?extended=episodes&translations=es`,
+    {
+      headers: base_headers,
+    },
+  );
 };
 
 export const getProgressApi = (session, id) => {
@@ -84,15 +81,6 @@ export const getTranslationsApi = (id, type) => {
   return axios.get(`${BASE_URL}/${type}s/${id}/translations/es`, {
     headers: base_headers,
   });
-};
-
-export const getEpisodeTranslationApi = (id, season, episode) => {
-  return axios.get(
-    `${BASE_URL}/shows/${id}/seasons/${season}/episodes/${episode}/translations/es`,
-    {
-      headers: base_headers,
-    },
-  );
 };
 
 export const searchApi = (query, type) => {
