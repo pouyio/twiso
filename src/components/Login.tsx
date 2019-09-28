@@ -3,7 +3,11 @@ import { useHistory } from 'react-router-dom';
 import AuthContext from '../utils/AuthContext';
 import { loginApi } from '../utils/api';
 
-const Login = ({ code }: { code: string }) => {
+interface ILoginProps {
+  code: string;
+}
+
+const Login = ({ code }: ILoginProps) => {
   const history = useHistory();
   const { persistSession } = useContext(AuthContext);
 

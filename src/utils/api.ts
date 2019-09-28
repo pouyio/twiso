@@ -26,8 +26,8 @@ const limitAxios = rateLimit(axios.create(), {
   perMilliseconds: 10000,
 });
 
-export const loginApi = (code: string): Promise<AxiosResponse<Session>> => {
-  return axios.post(LOGIN_URL, {
+export const loginApi = (code: string) => {
+  return axios.post<Session>(LOGIN_URL, {
     code,
     client_secret,
     client_id: trakt_api_key,
