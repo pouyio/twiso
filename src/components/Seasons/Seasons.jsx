@@ -67,6 +67,15 @@ const Seasons = ({
     return episode[string];
   };
 
+  const isEpisodeAvailable = episode => {
+    const seasonAvailable = progress.seasons.find(s => s.number === episode.season);
+    if (!seasonAvailable) {
+      return false;
+    }
+
+    return seasonAvailable.episodes.some(e => e.number === episode.number);
+  };
+
   return (
     <>
       <ul
@@ -101,15 +110,17 @@ const Seasons = ({
                 className="myt-6 mt-3 pb-4 text-sm leading-tight border-b"
                 key={e.ids.trakt}
               >
-                <div className="mb-2 flex">
+                <div className="mb-2 flex items-center">
                   <span className="text-gray-600 text-xs font-bold mr-1">
                     {e.number}
                   </span>
-                  {isEpisodeWatched(e.number) ? (
-                    <span className="text-gray-600 mr-2 ml-1">✓</span>
-                  ) : (
-                      <span className="text-blue-400 mx-2">•</span>
-                    )}
+                  {isEpisodeAvailable(e) && <>
+                    {isEpisodeWatched(e.number) ? (
+                      <span className="text-gray-600 mr-2 ml-1">✓</span>
+                    ) : (
+                        <span className="text-blue-400 mx-2">•</span>
+                      )}
+                  </>}
                   <span
                     onClick={() => showModal({
                       title: getTranslated('title', e),
@@ -121,12 +132,15 @@ const Seasons = ({
                   >
                     {getTranslated('title', e)}
                   </span>
-                  <button
-                    className="px-5 text-right"
-                    onClick={() => toggleEpisode(e)}
-                  >
-                    <Emoji emoji="▶️" />
-                  </button>
+                  {
+                    isEpisodeAvailable(e) &&
+                    <button
+                      className="px-5 text-right"
+                      onClick={() => toggleEpisode(e)}
+                    >
+                      <Emoji emoji="▶️" />
+                    </button>
+                  }
                 </div>
               </li>
             ))}
