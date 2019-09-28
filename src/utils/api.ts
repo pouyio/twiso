@@ -1,6 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { PAGE_SIZE } from './UserContext';
 import rateLimit from 'axios-rate-limit';
+import { ItemType } from '../models/ItemType';
+import { Session } from './AuthContext';
+import { Item } from '../models/Item';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
 const client_secret = process.env.REACT_APP_CLIENT_SECRET;
@@ -23,7 +26,7 @@ const limitAxios = rateLimit(axios.create(), {
   perMilliseconds: 10000,
 });
 
-export const loginApi = code => {
+export const loginApi = (code: string): Promise<AxiosResponse<Session>> => {
   return axios.post(LOGIN_URL, {
     code,
     client_secret,
@@ -37,8 +40,8 @@ export const getImgsConfigApi = () => {
   return axios.get(`${IMG_URL}/configuration?api_key=${tmbdb_api_key}`);
 };
 
-export const getImgsApi = (id, type) => {
-  let newType = type;
+export const getImgsApi = (id: number, type: ItemType) => {
+  let newType: string = type;
   if (type === 'show') {
     newType = 'tv';
   }
@@ -47,7 +50,7 @@ export const getImgsApi = (id, type) => {
   );
 };
 
-export const getApi = (id, type) => {
+export const getApi = (id: number, type: ItemType) => {
   return axios.get(
     `${BASE_URL}/search/trakt/${id}?type=${type}&extended=full`,
     {
@@ -56,7 +59,7 @@ export const getApi = (id, type) => {
   );
 };
 
-export const getSeasonsApi = id => {
+export const getSeasonsApi = (id: number) => {
   return axios.get(
     `${BASE_URL}/shows/${id}/seasons?extended=episodes&translations=es`,
     {
@@ -65,7 +68,7 @@ export const getSeasonsApi = id => {
   );
 };
 
-export const getProgressApi = (session, id) => {
+export const getProgressApi = (session: Session, id: number) => {
   return axios.get(
     `${BASE_URL}/shows/${id}/progress/watched?specials=true&count_specials=false`,
     {
@@ -77,13 +80,13 @@ export const getProgressApi = (session, id) => {
   );
 };
 
-export const getTranslationsApi = (id, type) => {
+export const getTranslationsApi = (id: number, type: ItemType) => {
   return axios.get(`${BASE_URL}/${type}s/${id}/translations/es`, {
     headers: base_headers,
   });
 };
 
-export const searchApi = (query, type) => {
+export const searchApi = (query: string, type: ItemType) => {
   return axios.get(
     `${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${PAGE_SIZE}`,
     {
@@ -92,7 +95,7 @@ export const searchApi = (query, type) => {
   );
 };
 
-export const getWatchedApi = (session, type) => {
+export const getWatchedApi = (session: Session, type: ItemType) => {
   const url =
     type === 'movie'
       ? `${BASE_URL}/sync/history/movies?page=1&limit=10000&extended=full`
@@ -106,13 +109,13 @@ export const getWatchedApi = (session, type) => {
       },
     })
     .then(res => {
-      const mapped = res.data.map(s => ({ ...s, type }));
+      const mapped = res.data.map((s: any) => ({ ...s, type }));
       res.data = mapped;
       return res;
     });
 };
 
-export const addWatchedApi = (item, session, type) => {
+export const addWatchedApi = (item: Item, session: Session, type: ItemType) => {
   return axios.post(
     `${BASE_URL}/sync/history`,
     {
@@ -127,7 +130,11 @@ export const addWatchedApi = (item, session, type) => {
   );
 };
 
-export const removeWatchedApi = (item, session, type) => {
+export const removeWatchedApi = (
+  item: Item,
+  session: Session,
+  type: ItemType,
+) => {
   return axios.post(
     `${BASE_URL}/sync/history/remove`,
     {
@@ -142,7 +149,7 @@ export const removeWatchedApi = (item, session, type) => {
   );
 };
 
-export const getWatchlistApi = (session, type) => {
+export const getWatchlistApi = (session: Session, type: ItemType) => {
   return axios
     .get(`${BASE_URL}/sync/watchlist/${type}s?extended=full`, {
       headers: {
@@ -152,14 +159,19 @@ export const getWatchlistApi = (session, type) => {
     })
     .then(res => {
       const ordered = res.data.sort(
-        (a, b) => new Date(b.listed_at) - new Date(a.listed_at),
+        (a: any, b: any) =>
+          (new Date(b.listed_at) as any) - (new Date(a.listed_at) as any),
       );
       res.data = ordered;
       return res;
     });
 };
 
-export const addWatchlistApi = (item, session, type) => {
+export const addWatchlistApi = (
+  item: Item,
+  session: Session,
+  type: ItemType,
+) => {
   return axios.post(
     `${BASE_URL}/sync/watchlist`,
     {
@@ -174,7 +186,11 @@ export const addWatchlistApi = (item, session, type) => {
   );
 };
 
-export const removeWatchlistApi = (item, session, type) => {
+export const removeWatchlistApi = (
+  item: Item,
+  session: Session,
+  type: ItemType,
+) => {
   return axios.post(
     `${BASE_URL}/sync/watchlist/remove`,
     {
@@ -189,7 +205,7 @@ export const removeWatchlistApi = (item, session, type) => {
   );
 };
 
-export const getPeopleApi = (id, type) => {
+export const getPeopleApi = (id: number, type: ItemType) => {
   return axios.get(`${BASE_URL}/${type}s/${id}/people`, {
     headers: {
       ...base_headers,
@@ -197,7 +213,7 @@ export const getPeopleApi = (id, type) => {
   });
 };
 
-export const getPersonApi = id => {
+export const getPersonApi = (id: number) => {
   return axios.get(`${BASE_URL}/people/${id}?extended=full`, {
     headers: {
       ...base_headers,
@@ -205,7 +221,7 @@ export const getPersonApi = id => {
   });
 };
 
-export const getPersonItemsApi = (person, type) => {
+export const getPersonItemsApi = (person: string, type: ItemType) => {
   return axios.get(`${BASE_URL}/people/${person}/${type}s?extended=full`, {
     headers: {
       ...base_headers,
@@ -213,7 +229,7 @@ export const getPersonItemsApi = (person, type) => {
   });
 };
 
-export const getPopularApi = type => {
+export const getPopularApi = (type: ItemType) => {
   const year = new Date().getFullYear();
   return axios
     .get(
@@ -225,13 +241,13 @@ export const getPopularApi = type => {
       },
     )
     .then(res => {
-      const mapped = res.data.map(m => ({ ...m, type }));
+      const mapped = res.data.map((m: any) => ({ ...m, type }));
       res.data = mapped;
       return res;
     });
 };
 
-export const getRelatedApi = (id, type) => {
+export const getRelatedApi = (id: number, type: ItemType) => {
   return axios
     .get(`${BASE_URL}/${type}s/${id}/related?extended=full&page=1&limit=10`, {
       headers: {
@@ -239,14 +255,14 @@ export const getRelatedApi = (id, type) => {
       },
     })
     .then(res => {
-      const mapped = res.data.map(m => ({ [type]: { ...m }, type }));
+      const mapped = res.data.map((m: any) => ({ [type]: { ...m }, type }));
       res.data = mapped;
       return res;
     });
 };
 
-export const getStatsApi = id => {
-  return axios.get(`${BASE_URL}/users/${id}/stats`, {
+export const getStatsApi = (username: string) => {
+  return axios.get(`${BASE_URL}/users/${username}/stats`, {
     headers: {
       ...base_headers,
     },
