@@ -8,12 +8,32 @@ import {
   addWatchedApi,
   removeWatchedApi,
   getWatchedApi,
+  getProgressApi,
 } from './api';
 
 export const PAGE_SIZE = 40;
 
 const MOVIE = 'movie';
 const SHOW = 'show';
+
+const sortShowsWatched = (a, b) => {
+  if (
+    a.watched.next_episode === null &&
+    b.watched.next_episode === null
+  ) {
+    return 0;
+  }
+
+  if (!a.watched.next_episode) {
+    return 1;
+  }
+
+  if (!b.watched.next_episode) {
+    return -1;
+  }
+
+  return 0;
+};
 
 const UserContext = createContext();
 
@@ -31,14 +51,13 @@ export const UserProvider = ({ children }) => {
   const [globalError, setGlobalError] = useState(false);
   const [config, setConfig] = useState(false);
   const [language] = useState('es');
+  const { session } = useContext(AuthContext);
 
   useEffect(() => {
     getImgsConfigApi().then(({ data }) => {
       setConfig(data);
     });
   }, []);
-
-  const { session } = useContext(AuthContext);
 
   const setWatched = (items, type) => {
     setUserInfo(prev => {
@@ -104,7 +123,19 @@ export const UserProvider = ({ children }) => {
       .catch(data => setGlobalError(data));
 
     getWatchedApi(session, SHOW)
-      .then(({ data }) => setWatched(data, SHOW))
+      .then(({ data }) => {
+        const watchedPromises = data.map(i =>
+          getProgressApi(session, i.show.ids.trakt),
+        );
+        Promise.all(watchedPromises).then(res => {
+          const datas = res.map(r => r.data);
+          const orderedShows = data
+            .map((item, index) => ({ watched: datas[index], item }))
+            .sort(sortShowsWatched, [])
+            .map(({ item }) => item);
+          setWatched(orderedShows, SHOW);
+        });
+      })
       .catch(data => setGlobalError(data));
 
     getWatchlistApi(session, SHOW)
@@ -167,6 +198,20 @@ export const UserProvider = ({ children }) => {
     return userInfo[`${type}s`].watchlist.some(i => i[type].ids.trakt === id);
   };
 
+  const showUpdated = show => {
+    const updatedShow = userInfo.shows.watched.find(i => i.show.ids.trakt === show.ids.trakt);
+    // TODO: only works for shows that are already watched
+    // should add new shows too, probably should make a request to progress and then add it.
+    if (!updatedShow) {
+      return;
+    }
+    setUserInfo(prev => {
+      prev.shows.watched = prev.shows.watched.filter(i => i.show.ids.trakt !== show.ids.trakt);
+      prev.shows.watched = [updatedShow, ...prev.shows.watched];
+      return { ...prev };
+    });
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -182,6 +227,7 @@ export const UserProvider = ({ children }) => {
         removeShowWatchlist,
         isWatched,
         isWatchlist,
+        showUpdated,
         removeWatchlistLocal: removeWatchlist,
         PAGE_SIZE,
       }}

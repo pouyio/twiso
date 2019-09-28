@@ -18,7 +18,7 @@ const SeasonsContainer = ({ show, showId }) => {
   const [progress, setProgress] = useState(false);
   const [seasons, setSeasons] = useState([]);
   const { session } = useContext(AuthContext);
-  const { removeWatchlistLocal } = useContext(UserContext);
+  const { removeWatchlistLocal, showUpdated } = useContext(UserContext);
   const { toggle } = useContext(ModalContext);
 
   useEffect(() => {
@@ -75,13 +75,15 @@ const SeasonsContainer = ({ show, showId }) => {
     addWatchedApi(episode, session, 'episode').then(() => {
       updateEpisode(episode, true);
       removeWatchlistLocal([{ show: { ...show } }], 'show');
+      showUpdated(show);
     });
   };
 
   const removeEpisodeWatched = episode => {
-    removeWatchedApi(episode, session, 'episode').then(() =>
-      updateEpisode(episode, false),
-    );
+    removeWatchedApi(episode, session, 'episode').then(() => {
+      updateEpisode(episode, false);
+      showUpdated(show);
+    });
   };
 
   const addSeasonWatched = season => {
