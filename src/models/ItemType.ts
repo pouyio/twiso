@@ -1,1 +1,1 @@
-export type ItemType = 'show' | 'movie';
+export type ItemType = 'show' | 'movie' | 'person' | 'movie,show,person';

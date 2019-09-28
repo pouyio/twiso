@@ -3,7 +3,7 @@ import { PAGE_SIZE } from './UserContext';
 import rateLimit from 'axios-rate-limit';
 import { ItemType } from '../models/ItemType';
 import { Session } from './AuthContext';
-import { Item } from '../models/Item';
+import { Item, SearchMovie, SearchPerson, SearchShow } from '../models/Item';
 import { IImgConfig } from '../models/IImgConfig';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
@@ -90,7 +90,7 @@ export const getTranslationsApi = (id: number, type: ItemType) => {
 };
 
 export const searchApi = (query: string, type: ItemType) => {
-  return axios.get<any>(
+  return axios.get<(SearchMovie & SearchShow & SearchPerson)[]>(
     `${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${PAGE_SIZE}`,
     {
       headers: base_headers,

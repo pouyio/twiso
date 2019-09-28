@@ -5,13 +5,14 @@ import { searchApi } from '../utils/api';
 import Popular from '../components/Popular';
 import useSearch from '../utils/useSearch';
 import Emoji from '../components/Emoji';
+import { SearchMovie, SearchPerson, SearchShow } from '../models/Item';
 
 export default function Search() {
   const { search, setSearch } = useSearch();
   const [loading, setLoading] = useState(false);
-  const [movieResults, setMovieResults] = useState([]);
-  const [showResults, setShowResults] = useState([]);
-  const [peopleResults, setPeopleResults] = useState([]);
+  const [movieResults, setMovieResults] = useState<SearchMovie[]>([]);
+  const [showResults, setShowResults] = useState<SearchShow[]>([]);
+  const [peopleResults, setPeopleResults] = useState<SearchPerson[]>([]);
   const debouncedSearch = useDebounce(search, 500);
 
   useEffect(() => {
@@ -31,12 +32,14 @@ export default function Search() {
       if (!isSubscribed) {
         return;
       }
-      setMovieResults(movies);
-      setShowResults(shows);
-      setPeopleResults(person);
+      setMovieResults(movies as SearchMovie[]);
+      setShowResults(shows as SearchShow[]);
+      setPeopleResults(person as SearchPerson[]);
       setLoading(false);
     });
-    return () => (isSubscribed = false);
+    return () => {
+      isSubscribed = false;
+    };
   }, [debouncedSearch]);
 
   return (
@@ -85,8 +88,8 @@ export default function Search() {
               </ul>
             </>
           ) : (
-              <h1 className="text-3xl mt-8 text-gray-700">No hay películas</h1>
-            )}
+            <h1 className="text-3xl mt-8 text-gray-700">No hay películas</h1>
+          )}
 
           {showResults.length ? (
             <>
@@ -113,8 +116,8 @@ export default function Search() {
               </ul>
             </>
           ) : (
-              <h1 className="text-3xl mt-8 text-gray-700">No hay series</h1>
-            )}
+            <h1 className="text-3xl mt-8 text-gray-700">No hay series</h1>
+          )}
 
           {peopleResults.length ? (
             <>
@@ -141,15 +144,15 @@ export default function Search() {
               </ul>
             </>
           ) : (
-              <h1 className="text-3xl mt-8 text-gray-700">No hay personas</h1>
-            )}
+            <h1 className="text-3xl mt-8 text-gray-700">No hay personas</h1>
+          )}
         </>
       ) : (
-          <>
-            <Popular type="movie" />
-            <Popular type="show" />
-          </>
-        )}
+        <>
+          <Popular type="movie" />
+          <Popular type="show" />
+        </>
+      )}
     </div>
   );
 }
