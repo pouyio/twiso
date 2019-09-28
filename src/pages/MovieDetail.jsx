@@ -30,7 +30,7 @@ export default function MovieDetail({
       });
       return;
     }
-    setItem(state.item);
+    setItem(state);
     window.scrollTo(0, 0);
   }, [state, id]);
   useEffect(() => {

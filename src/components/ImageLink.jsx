@@ -8,7 +8,7 @@ const ImageLink = ({ item, style, type, children = '' }) => {
       to={{
         pathname: `/${type}/${item[type].ids.trakt}`,
         search: `?slug=${item[type].ids.slug}`,
-        state: { item },
+        state: item,
       }}
     >
       <Image item={item} style={style} type={type} />
