@@ -3,11 +3,11 @@ import useDebounce from '../utils/debounce';
 import ImageLink from '../components/ImageLink';
 import { searchApi } from '../utils/api';
 import Popular from '../components/Popular';
-import useSerch from '../utils/useSearch';
+import useSearch from '../utils/useSearch';
 import Emoji from '../components/Emoji';
 
 export default function Search() {
-  const { search, setSearch } = useSerch();
+  const { search, setSearch } = useSearch();
   const [loading, setLoading] = useState(false);
   const [movieResults, setMovieResults] = useState([]);
   const [showResults, setShowResults] = useState([]);

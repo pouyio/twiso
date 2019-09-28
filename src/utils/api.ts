@@ -1,9 +1,10 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { PAGE_SIZE } from './UserContext';
 import rateLimit from 'axios-rate-limit';
 import { ItemType } from '../models/ItemType';
 import { Session } from './AuthContext';
 import { Item } from '../models/Item';
+import { IImgConfig } from '../models/IImgConfig';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
 const client_secret = process.env.REACT_APP_CLIENT_SECRET;
@@ -37,7 +38,9 @@ export const loginApi = (code: string) => {
 };
 
 export const getImgsConfigApi = () => {
-  return axios.get(`${IMG_URL}/configuration?api_key=${tmbdb_api_key}`);
+  return axios.get<IImgConfig>(
+    `${IMG_URL}/configuration?api_key=${tmbdb_api_key}`,
+  );
 };
 
 export const getImgsApi = (id: number, type: ItemType) => {
@@ -87,7 +90,7 @@ export const getTranslationsApi = (id: number, type: ItemType) => {
 };
 
 export const searchApi = (query: string, type: ItemType) => {
-  return axios.get(
+  return axios.get<any>(
     `${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${PAGE_SIZE}`,
     {
       headers: base_headers,
