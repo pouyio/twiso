@@ -10,7 +10,7 @@ export default function Movies() {
 
   const {
     userInfo: { movies },
-  } = useContext(UserContext);
+  } = useContext(UserContext)!;
 
   useEffect(() => {
     if (!mode) {

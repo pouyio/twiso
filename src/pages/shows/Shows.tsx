@@ -10,7 +10,7 @@ export default function Shows() {
 
   const {
     userInfo: { shows },
-  } = useContext(UserContext);
+  } = useContext(UserContext)!;
 
   useEffect(() => {
     if (!mode) {

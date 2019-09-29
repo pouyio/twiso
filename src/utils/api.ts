@@ -3,7 +3,16 @@ import { PAGE_SIZE } from './UserContext';
 import rateLimit from 'axios-rate-limit';
 import { ItemType } from '../models/ItemType';
 import { Session } from './AuthContext';
-import { Item, SearchMovie, SearchPerson, SearchShow } from '../models/Item';
+import {
+  Item,
+  SearchMovie,
+  SearchPerson,
+  SearchShow,
+  MovieWatchlist,
+  ShowWatchlist,
+  ShowWatched,
+  ShowProgress,
+} from '../models/Item';
 import { IImgConfig } from '../models/IImgConfig';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
@@ -72,7 +81,7 @@ export const getSeasonsApi = (id: number) => {
 };
 
 export const getProgressApi = (session: Session, id: number) => {
-  return axios.get(
+  return axios.get<ShowProgress>(
     `${BASE_URL}/shows/${id}/progress/watched?specials=true&count_specials=false`,
     {
       headers: {
@@ -105,7 +114,7 @@ export const getWatchedApi = (session: Session, type: ItemType) => {
       : `${BASE_URL}/sync/watched/shows?extended=full`;
 
   return axios
-    .get(url, {
+    .get<ShowWatched[]>(url, {
       headers: {
         ...base_headers,
         Authorization: `Bearer ${session.access_token}`,
@@ -152,9 +161,12 @@ export const removeWatchedApi = (
   );
 };
 
-export const getWatchlistApi = (session: Session, type: ItemType) => {
+export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
+  session: Session,
+  type: ItemType,
+) => {
   return axios
-    .get(`${BASE_URL}/sync/watchlist/${type}s?extended=full`, {
+    .get<T[]>(`${BASE_URL}/sync/watchlist/${type}s?extended=full`, {
       headers: {
         ...base_headers,
         Authorization: `Bearer ${session.access_token}`,
