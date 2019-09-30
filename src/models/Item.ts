@@ -56,7 +56,7 @@ export interface ShowProgress {
   last_watched_at: string;
   next_episode: any;
   reset_at: string;
-  seasons: any[];
+  seasons: Season[];
 }
 
 interface Ids {
@@ -111,10 +111,31 @@ export interface Show {
   overview: string;
   rating: number;
   runtime: number;
-  status: string;
+  status:
+    | 'returning series'
+    | 'in production'
+    | 'planned'
+    | 'canceled'
+    | 'ended';
   title: string;
   trailer: string;
   updated_at: string;
   votes: number;
   year: number;
+}
+
+export interface Season {
+  episodes: Episode[];
+  ids: Ids;
+  number: number;
+  completed: number;
+}
+
+export interface Episode {
+  ids: Ids;
+  number: number;
+  season: number;
+  title: string;
+  translations: any[];
+  completed: boolean;
 }

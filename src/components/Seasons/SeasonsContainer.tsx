@@ -9,17 +9,26 @@ import AuthContext from '../../utils/AuthContext';
 import Seasons from './Seasons';
 import UserContext from '../../utils/UserContext';
 import ModalContext from '../../utils/ModalContext';
+import { Show, ShowProgress, Season, Episode } from '../../models/Item';
 
-const SeasonsContainer = ({ show, showId }) => {
-  const [selectedSeason, setSelectedSeason] = useState(false);
-  const [progress, setProgress] = useState(false);
-  const [seasons, setSeasons] = useState([]);
+interface ISeasonsContainerProps {
+  show: Show;
+  showId: number;
+}
+
+const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
+  show,
+  showId,
+}) => {
+  const [selectedSeason, setSelectedSeason] = useState<Season | false>();
+  const [progress, setProgress] = useState<ShowProgress>();
+  const [seasons, setSeasons] = useState<Season[]>([]);
   const { session } = useContext(AuthContext);
-  const { removeWatchlistLocal, showUpdated } = useContext(UserContext);
+  const { removeWatchlistLocal, showUpdated } = useContext(UserContext)!;
   const { toggle } = useContext(ModalContext);
 
   useEffect(() => {
-    getProgressApi(session, showId).then(({ data }) => setProgress(data));
+    getProgressApi(session!, showId).then(({ data }) => setProgress(data));
   }, [session, showId]);
 
   useEffect(() => {
@@ -27,6 +36,9 @@ const SeasonsContainer = ({ show, showId }) => {
   }, [show.ids.trakt]);
 
   useEffect(() => {
+    if (!progress) {
+      return;
+    }
     if (
       progress.next_episode &&
       progress.next_episode.season &&
@@ -37,9 +49,12 @@ const SeasonsContainer = ({ show, showId }) => {
         seasons.find(s => s.number === progress.next_episode.season),
       );
     }
-  }, [progress.next_episode, seasons]);
+  }, [progress, seasons]);
 
-  const updateEpisode = (episode, completed) => {
+  const updateEpisode = (episode: Episode, completed: boolean) => {
+    if (!progress) {
+      return;
+    }
     const seasonIndex = progress.seasons.findIndex(
       s => s.number === episode.season,
     );
@@ -47,6 +62,9 @@ const SeasonsContainer = ({ show, showId }) => {
       e => e.number === episode.number,
     );
     setProgress(prev => {
+      if (!prev) {
+        return;
+      }
       prev.seasons[seasonIndex].episodes[episodeIndex].completed = completed;
       prev.seasons[seasonIndex].completed =
         prev.seasons[seasonIndex].completed + (completed ? 1 : -1);
@@ -54,11 +72,14 @@ const SeasonsContainer = ({ show, showId }) => {
     });
   };
 
-  const updateSeason = (season, completed) => {
-    const seasonIndex = progress.seasons.findIndex(
+  const updateSeason = (season: Season, completed: boolean) => {
+    const seasonIndex = progress!.seasons.findIndex(
       s => s.number === season.number,
     );
     setProgress(prev => {
+      if (!prev) {
+        return;
+      }
       prev.seasons[seasonIndex].episodes = prev.seasons[
         seasonIndex
       ].episodes.map(e => ({ ...e, completed }));
@@ -68,34 +89,40 @@ const SeasonsContainer = ({ show, showId }) => {
     });
   };
 
-  const addEpisodeWatched = episode => {
-    addWatchedApi(episode, session, 'episode').then(() => {
+  const addEpisodeWatched = (episode: Episode) => {
+    addWatchedApi(episode, session!, 'episode').then(() => {
       updateEpisode(episode, true);
       removeWatchlistLocal([{ show: { ...show } }], 'show');
       showUpdated(show);
     });
   };
 
-  const removeEpisodeWatched = episode => {
-    removeWatchedApi(episode, session, 'episode').then(() => {
+  const removeEpisodeWatched = (episode: Episode) => {
+    removeWatchedApi(episode, session!, 'episode').then(() => {
       updateEpisode(episode, false);
       showUpdated(show);
     });
   };
 
-  const addSeasonWatched = season => {
-    addWatchedApi(season, session, 'season').then(() => {
+  const addSeasonWatched = (season: Season) => {
+    addWatchedApi(season, session!, 'season').then(() => {
       updateSeason(season, true);
       removeWatchlistLocal([{ show: { ...show } }], 'show');
     });
   };
-  const removeSeasonWatched = season => {
-    removeWatchedApi(season, session, 'season').then(() =>
+  const removeSeasonWatched = (season: Season) => {
+    removeWatchedApi(season, session!, 'season').then(() =>
       updateSeason(season, false),
     );
   };
 
-  const showModal = ({ title, overview }) => {
+  const showModal = ({
+    title,
+    overview,
+  }: {
+    title: string;
+    overview: string;
+  }) => {
     toggle({ title, text: overview });
   };
 

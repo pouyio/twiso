@@ -10,30 +10,29 @@ import ShowWatchButton from '../components/ShowWatchButton';
 import People from '../components/People';
 import UserContext from '../utils/UserContext';
 import CollapsableText from '../components/CollapsableText';
+import { useLocation, useParams } from 'react-router-dom';
+import { SearchShow } from '../models/Item';
 
-const status = {
-  'returning series': 'en antena',
-  'in production': 'en producción',
-  planned: 'planeada',
-  canceled: 'cancelada',
-  ended: 'terminada',
-};
+enum status {
+  'returning series' = 'en antena',
+  'in production' = 'en producción',
+  planned = 'planeada',
+  canceled = 'cancelada',
+  ended = 'terminada',
+}
 
-export default function ShowDetail({
-  location: { state },
-  match: {
-    params: { id },
-  },
-}) {
-  const [item, setItem] = useState(false);
+export default function ShowDetail() {
+  const [item, setItem] = useState<SearchShow>();
   const [showOriginalTitle, setShowOriginalTitle] = useState(false);
   const [people, setPeople] = useState({ cast: [] });
-  const { isWatched, isWatchlist } = useContext(UserContext);
-  const { title, overview } = useTranslate(item);
+  const { isWatched, isWatchlist } = useContext(UserContext)!;
+  const { title, overview } = useTranslate(item || false);
+  const { state } = useLocation();
+  const { id } = useParams();
 
   useEffect(() => {
     if (!state) {
-      getApi(id, 'show').then(({ data }) => {
+      getApi<SearchShow>(id, 'show').then(({ data }) => {
         const item = data[0];
         setItem(item);
       });
@@ -158,6 +157,6 @@ export default function ShowDetail({
       </div>
     </div>
   ) : (
-    <Emoji emoji="⏳" rotating="true" />
+    <Emoji emoji="⏳" rotating={true} />
   );
 }

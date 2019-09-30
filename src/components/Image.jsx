@@ -8,7 +8,7 @@ export default function Image({
   item,
   className = '',
   type = '',
-  style,
+  style = {},
   ...props
 }) {
   const [imgUrl, setImgUrl] = useState('');

@@ -9,22 +9,21 @@ import Related from '../components/Related';
 import Genres from '../components/Genres';
 import People from '../components/People';
 import CollapsableText from '../components/CollapsableText';
+import { SearchMovie } from '../models/Item';
+import { useLocation, useParams } from 'react-router-dom';
 
-export default function MovieDetail({
-  location: { state },
-  match: {
-    params: { id },
-  },
-}) {
-  const [item, setItem] = useState(false);
+export default function MovieDetail() {
+  const [item, setItem] = useState<SearchMovie>();
   const [showOriginalTitle, setShowOriginalTitle] = useState(false);
   const [people, setPeople] = useState({ cast: [] });
-  const { language, isWatched, isWatchlist } = useContext(UserContext);
-  const { title, overview } = useTranslate(item);
+  const { language, isWatched, isWatchlist } = useContext(UserContext)!;
+  const { title, overview } = useTranslate(item || false);
+  const { state } = useLocation();
+  const { id } = useParams();
 
   useEffect(() => {
     if (!state) {
-      getApi(id, 'movie').then(({ data }) => {
+      getApi<SearchMovie>(id, 'movie').then(({ data }) => {
         const item = data[0];
         setItem(item);
       });
@@ -141,6 +140,6 @@ export default function MovieDetail({
       </div>
     </div>
   ) : (
-      <Emoji emoji="⏳" rotating="true" />
-    );
+    <Emoji emoji="⏳" rotating={true} />
+  );
 }

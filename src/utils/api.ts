@@ -12,6 +12,7 @@ import {
   ShowWatchlist,
   ShowWatched,
   ShowProgress,
+  Season,
 } from '../models/Item';
 import { IImgConfig } from '../models/IImgConfig';
 
@@ -52,7 +53,7 @@ export const getImgsConfigApi = () => {
   );
 };
 
-export const getImgsApi = (id: number, type: ItemType) => {
+export const getImgsApi = (id: number, type: ItemType): Promise<string> => {
   let newType: string = type;
   if (type === 'show') {
     newType = 'tv';
@@ -62,8 +63,8 @@ export const getImgsApi = (id: number, type: ItemType) => {
   );
 };
 
-export const getApi = (id: number, type: ItemType) => {
-  return axios.get(
+export const getApi = <T>(id: number, type: ItemType) => {
+  return axios.get<T[]>(
     `${BASE_URL}/search/trakt/${id}?type=${type}&extended=full`,
     {
       headers: base_headers,
@@ -72,7 +73,7 @@ export const getApi = (id: number, type: ItemType) => {
 };
 
 export const getSeasonsApi = (id: number) => {
-  return axios.get(
+  return axios.get<Season[]>(
     `${BASE_URL}/shows/${id}/seasons?extended=episodes&translations=es`,
     {
       headers: base_headers,
