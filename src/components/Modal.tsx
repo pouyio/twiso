@@ -3,16 +3,20 @@ import ReactDOM from 'react-dom';
 import ModalContext from '../utils/ModalContext';
 import ThemeContext from '../utils/ThemeContext';
 
-const Modal = ({ modalRef }) => {
+interface IModalProps {
+  modalRef: HTMLDivElement;
+}
+
+const Modal: React.FC<IModalProps> = ({ modalRef }) => {
   const { isShowing, toggle, title, text } = useContext(ModalContext);
   const { theme } = useContext(ThemeContext);
 
   return ReactDOM.createPortal(
     <div
-      onClick={toggle}
+      onClick={() => toggle()}
       className={`${theme} ${
         isShowing ? '' : 'hidden'
-        } fixed w-full h-full top-0 left-0 flex items-center justify-center z-10`}
+      } fixed w-full h-full top-0 left-0 flex items-center justify-center z-10`}
     >
       <div className="absolute w-full h-full bg-gray-900 opacity-50"></div>
 

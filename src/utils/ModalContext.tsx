@@ -2,14 +2,14 @@ import React, { useState, createContext, ReactNode } from 'react';
 import Modal from '../components/Modal';
 
 interface IModalContext {
-  toggle: (text: { title: string; text: string }) => void;
+  toggle: (text?: { title: string; text: string }) => void;
   isShowing: boolean;
   title: string;
   text: string;
 }
 
 const ModalContext = createContext<IModalContext>({
-  toggle: (text: { title: string; text: string }) => {},
+  toggle: (text?: { title: string; text: string }) => {},
   isShowing: false,
   title: '',
   text: '',
@@ -26,9 +26,11 @@ export const ModalProvider = ({
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
 
-  const toggle = ({ title, text }: { title: string; text: string }) => {
-    setTitle(title);
-    setText(text);
+  const toggle = (data?: { title: string; text: string }) => {
+    if (data) {
+      setTitle(data.title);
+      setText(data.text);
+    }
     setIsShowing(!isShowing);
   };
 
