@@ -12,6 +12,7 @@ import UserContext from '../utils/UserContext';
 import CollapsableText from '../components/CollapsableText';
 import { useLocation, useParams } from 'react-router-dom';
 import { SearchShow } from '../models/Item';
+import { IPeople } from '../models/IPeople';
 
 enum status {
   'returning series' = 'en antena',
@@ -24,7 +25,7 @@ enum status {
 export default function ShowDetail() {
   const [item, setItem] = useState<SearchShow>();
   const [showOriginalTitle, setShowOriginalTitle] = useState(false);
-  const [people, setPeople] = useState({ cast: [] });
+  const [people, setPeople] = useState<IPeople>();
   const { isWatched, isWatchlist } = useContext(UserContext)!;
   const { title, overview } = useTranslate(item || false);
   const { state } = useLocation();
@@ -146,7 +147,7 @@ export default function ShowDetail() {
           </div>
 
           <div className="my-4">
-            <People people={people} type="show" />
+            {people && <People people={people} type="show" />}
           </div>
 
           <div className="my-4">

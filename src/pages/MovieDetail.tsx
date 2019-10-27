@@ -11,11 +11,12 @@ import People from '../components/People';
 import CollapsableText from '../components/CollapsableText';
 import { SearchMovie } from '../models/Item';
 import { useLocation, useParams } from 'react-router-dom';
+import { IPeople } from '../models/IPeople';
 
 export default function MovieDetail() {
   const [item, setItem] = useState<SearchMovie>();
   const [showOriginalTitle, setShowOriginalTitle] = useState(false);
-  const [people, setPeople] = useState({ cast: [] });
+  const [people, setPeople] = useState<IPeople>();
   const { language, isWatched, isWatchlist } = useContext(UserContext)!;
   const { title, overview } = useTranslate(item || false);
   const { state } = useLocation();
@@ -129,7 +130,7 @@ export default function MovieDetail() {
           </div>
 
           <div className="my-4">
-            <People people={people} type="movie" />
+            {people && <People people={people} type="movie" />}
           </div>
 
           <div className="my-4">

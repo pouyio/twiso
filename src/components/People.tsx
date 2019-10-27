@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Emoji from './Emoji';
+import { IPeople } from '../models/IPeople';
 
 interface IPeopleProps {
-  people: { cast: any[]; crew?: any };
+  people: IPeople;
   type: 'movie' | 'show';
 }
 

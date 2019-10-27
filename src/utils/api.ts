@@ -15,6 +15,7 @@ import {
   Season,
 } from '../models/Item';
 import { IImgConfig } from '../models/IImgConfig';
+import { IPeople } from '../models/IPeople';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
 const client_secret = process.env.REACT_APP_CLIENT_SECRET;
@@ -222,7 +223,7 @@ export const removeWatchlistApi = (
 };
 
 export const getPeopleApi = (id: number, type: ItemType) => {
-  return axios.get(`${BASE_URL}/${type}s/${id}/people`, {
+  return axios.get<IPeople>(`${BASE_URL}/${type}s/${id}/people`, {
     headers: {
       ...base_headers,
     },
