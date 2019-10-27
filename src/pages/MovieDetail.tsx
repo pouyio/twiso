@@ -11,7 +11,7 @@ import People from '../components/People';
 import CollapsableText from '../components/CollapsableText';
 import { SearchMovie } from '../models/Item';
 import { useLocation, useParams } from 'react-router-dom';
-import { IPeople } from '../models/IPeople';
+import { IPeople, IPersonMovies } from '../models/IPeople';
 
 export default function MovieDetail() {
   const [item, setItem] = useState<SearchMovie>();

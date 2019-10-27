@@ -239,8 +239,8 @@ export const getPersonApi = (id: number) => {
   });
 };
 
-export const getPersonItemsApi = (person: string, type: ItemType) => {
-  return axios.get(`${BASE_URL}/people/${person}/${type}s?extended=full`, {
+export const getPersonItemsApi = <T>(person: string, type: ItemType) => {
+  return axios.get<T>(`${BASE_URL}/people/${person}/${type}s?extended=full`, {
     headers: {
       ...base_headers,
     },

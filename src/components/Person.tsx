@@ -7,11 +7,17 @@ import UserContext from '../utils/UserContext';
 import Emoji from './Emoji';
 import { useParams } from 'react-router-dom';
 import { IPerson } from '../models/IPerson';
+import { IPersonShows, IPersonMovies } from '../models/IPeople';
+import { Show, Movie } from '../models/Item';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
-  const [movieResults, setMovieResults] = useState<any[]>([]);
-  const [showResults, setShowResults] = useState<any[]>([]);
+  const [movieResults, setMovieResults] = useState<
+    { movie: Movie; type: string; title: string }[]
+  >([]);
+  const [showResults, setShowResults] = useState<
+    { show: Show; type: 'show'; title: string }[]
+  >([]);
 
   const { language } = useContext(UserContext);
 
@@ -19,29 +25,30 @@ const Person: React.FC = () => {
 
   useEffect(() => {
     getPersonApi(id).then(({ data }) => setLocalState(data));
-    getPersonItemsApi(id, 'show').then(({ data }) => {
+    getPersonItemsApi<IPersonShows>(id, 'show').then(({ data }) => {
       setShowResults(
         data.cast
-          .map((r: any) => ({ show: r.show, type: 'show', title: r.character }))
+          .filter(r => r.series_regular)
           .filter(
-            (r: any) => !(r.title === 'Himself' || r.title === 'Herself'),
-          ),
+            r => !(r.character === 'Himself' || r.character === 'Herself'),
+          )
+          .map(r => ({ show: r.show, type: 'show', title: r.character })),
       );
     });
-    getPersonItemsApi(id, 'movie').then(({ data }) => {
+    getPersonItemsApi<IPersonMovies>(id, 'movie').then(({ data }) => {
       setMovieResults([
         ...data.cast
-          .map((r: any) => ({
+          .filter(
+            r => !(r.character === 'Himself' || r.character === 'Herself'),
+          )
+          .map(r => ({
             movie: r.movie,
             type: 'movie',
             title: r.character,
-          }))
-          .filter((r: any) => r.title !== 'Himself'),
+          })),
         ...((data.crew || {}).directing || [])
-          .map((r: any) => ({ movie: r.movie, type: 'movie', title: r.job }))
-          .filter(
-            (r: any) => !(r.title === 'Himself' || r.title === 'Herself'),
-          ),
+          .map(r => ({ movie: r.movie, type: 'movie', title: r.job }))
+          .filter(r => !(r.title === 'Himself' || r.title === 'Herself')),
       ]);
     });
   }, [id, language]);
