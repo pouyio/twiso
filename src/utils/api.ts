@@ -16,6 +16,7 @@ import {
 } from '../models/Item';
 import { IImgConfig } from '../models/IImgConfig';
 import { IPeople } from '../models/IPeople';
+import { IPerson } from '../models/IPerson';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
 const client_secret = process.env.REACT_APP_CLIENT_SECRET;
@@ -231,7 +232,7 @@ export const getPeopleApi = (id: number, type: ItemType) => {
 };
 
 export const getPersonApi = (id: number) => {
-  return axios.get(`${BASE_URL}/people/${id}?extended=full`, {
+  return axios.get<IPerson>(`${BASE_URL}/people/${id}?extended=full`, {
     headers: {
       ...base_headers,
     },

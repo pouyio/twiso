@@ -1,4 +1,5 @@
 import { ItemType } from './ItemType';
+import { Ids } from './Ids';
 
 interface SearchItem {
   score: number;
@@ -57,13 +58,6 @@ export interface ShowProgress {
   next_episode: any;
   reset_at: string;
   seasons: Season[];
-}
-
-export interface Ids {
-  trakt: number;
-  slug: string;
-  imdb: any;
-  tmdb: number;
 }
 
 export interface Movie {

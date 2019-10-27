@@ -1,4 +1,4 @@
-import { Ids } from './Item';
+import { Ids } from './Ids';
 
 interface IPerson {
   ids: Ids;
