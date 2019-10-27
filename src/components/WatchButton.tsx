@@ -1,7 +1,11 @@
 import React, { useContext } from 'react';
 import UserContext from '../utils/UserContext';
 
-export default function WatchButton({ item }) {
+interface IWatchButtonProps {
+  item: any;
+}
+
+const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
   const {
     addMovieWatched,
     removeMovieWatched,
@@ -45,4 +49,6 @@ export default function WatchButton({ item }) {
       )}
     </div>
   );
-}
+};
+
+export default WatchButton;

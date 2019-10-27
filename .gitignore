@@ -27,3 +27,4 @@ todo.md
 now.json
 /migration/*
 /src/tailwind.css
+*.code-workspace

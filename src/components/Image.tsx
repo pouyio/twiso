@@ -1,16 +1,23 @@
 import React, { useEffect, useContext, useState } from 'react';
 import UserContext from '../utils/UserContext';
 import { useInView } from 'react-hook-inview';
-import Emoji from '../components/Emoji';
+import Emoji from './Emoji';
 import getImgUrl from '../utils/extractImg';
 
-export default function Image({
+interface IImageProps {
+  item: any;
+  type: 'movie' | 'show' | 'person';
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+const Image: React.FC<IImageProps> = ({
   item,
+  type,
   className = '',
-  type = '',
   style = {},
   ...props
-}) {
+}) => {
   const [imgUrl, setImgUrl] = useState('');
   const [message, setMessage] = useState('');
   const { config, language, isWatched, isWatchlist } = useContext(UserContext);
@@ -66,4 +73,6 @@ export default function Image({
       )}
     </div>
   );
-}
+};
+
+export default Image;

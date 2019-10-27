@@ -2,7 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Image from './Image';
 
-const ImageLink = ({ item, style, type, children = '' }) => {
+interface IImageLinkProps {
+  item: any;
+  style: React.CSSProperties;
+  type: 'movie' | 'show' | 'person';
+  children?: any;
+}
+
+const ImageLink: React.FC<IImageLinkProps> = ({
+  item,
+  style,
+  type,
+  children = '',
+}) => {
   return (
     <Link
       to={{

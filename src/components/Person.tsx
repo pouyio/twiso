@@ -1,39 +1,46 @@
 import React, { useEffect, useState, useContext } from 'react';
-import ImageLink from './ImageLink';
 import Image from './Image';
+import ImageLink from './ImageLink';
 import CollapsableText from './CollapsableText';
 import { getPersonItemsApi, getPersonApi } from '../utils/api';
 import UserContext from '../utils/UserContext';
 import Emoji from './Emoji';
+import { useParams } from 'react-router-dom';
 
-export default function Person({
-  match: {
-    params: { id },
-  },
-}) {
+const Person: React.FC = () => {
   const [localState, setLocalState] = useState();
-  const [movieResults, setMovieResults] = useState([]);
-  const [showResults, setShowResults] = useState([]);
+  const [movieResults, setMovieResults] = useState<any[]>([]);
+  const [showResults, setShowResults] = useState<any[]>([]);
 
   const { language } = useContext(UserContext);
+
+  const { id } = useParams();
 
   useEffect(() => {
     getPersonApi(id).then(({ data }) => setLocalState(data));
     getPersonItemsApi(id, 'show').then(({ data }) => {
       setShowResults(
         data.cast
-          .map(r => ({ show: r.show, type: 'show', title: r.character }))
-          .filter(r => !(r.title === 'Himself' || r.title === 'Herself')),
+          .map((r: any) => ({ show: r.show, type: 'show', title: r.character }))
+          .filter(
+            (r: any) => !(r.title === 'Himself' || r.title === 'Herself'),
+          ),
       );
     });
     getPersonItemsApi(id, 'movie').then(({ data }) => {
       setMovieResults([
         ...data.cast
-          .map(r => ({ movie: r.movie, type: 'movie', title: r.character }))
-          .filter(r => r.title !== 'Himself'),
+          .map((r: any) => ({
+            movie: r.movie,
+            type: 'movie',
+            title: r.character,
+          }))
+          .filter((r: any) => r.title !== 'Himself'),
         ...((data.crew || {}).directing || [])
-          .map(r => ({ movie: r.movie, type: 'movie', title: r.job }))
-          .filter(r => !(r.title === 'Himself' || r.title === 'Herself')),
+          .map((r: any) => ({ movie: r.movie, type: 'movie', title: r.job }))
+          .filter(
+            (r: any) => !(r.title === 'Himself' || r.title === 'Herself'),
+          ),
       ]);
     });
   }, [id, language]);
@@ -59,7 +66,6 @@ export default function Person({
         >
           <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
           <div className="flex items-start">
-
             <div className="hidden lg:block relative pr-4">
               {localState && (
                 <Image
@@ -171,6 +177,8 @@ export default function Person({
       </div>
     </div>
   ) : (
-      <Emoji emoji="⏳" rotating={true} />
-    );
-}
+    <Emoji emoji="⏳" rotating={true} />
+  );
+};
+
+export default Person;

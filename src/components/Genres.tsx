@@ -2,7 +2,11 @@ import React from 'react';
 import Emoji from './Emoji';
 import getGenre from '../utils/getGenre';
 
-const Genres = ({ genres }) => {
+interface IGenresProps {
+  genres: string[];
+}
+
+const Genres: React.FC<IGenresProps> = ({ genres }) => {
   return genres.length ? (
     <ul
       className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"

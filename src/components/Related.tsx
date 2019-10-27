@@ -3,8 +3,13 @@ import { getRelatedApi } from '../utils/api';
 import ImageLink from './ImageLink';
 import Emoji from './Emoji';
 
-export default function Related({ itemId, type }) {
-  const [results, setResults] = useState([]);
+interface IRelatedProps {
+  itemId: number;
+  type: 'movie' | 'show';
+}
+
+const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
+  const [results, setResults] = useState<any[]>([]);
 
   useEffect(() => {
     getRelatedApi(itemId, type).then(({ data }) => {
@@ -36,4 +41,6 @@ export default function Related({ itemId, type }) {
       )}
     </>
   );
-}
+};
+
+export default Related;

@@ -3,21 +3,26 @@ import ImageLink from './ImageLink';
 import { getPopularApi } from '../utils/api';
 import Emoji from './Emoji';
 
-export default function PopularMovies({ type }) {
+interface IPopularProps {
+  type: 'movie' | 'show';
+}
+
+const Popular: React.FC<IPopularProps> = ({ type }) => {
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<any[]>([]);
 
   useEffect(() => {
     let isSubscribed = true;
     setLoading(true);
     getPopularApi(type).then(({ data }) => {
-      if (!isSubscribed) {
-        return;
+      if (isSubscribed) {
+        setResults(data);
+        setLoading(false);
       }
-      setResults(data);
-      setLoading(false);
     });
-    return () => (isSubscribed = false);
+    return () => {
+      isSubscribed = false;
+    };
   }, [type]);
 
   const getTitle = () => {
@@ -54,4 +59,6 @@ export default function PopularMovies({ type }) {
       <div className="h-1 border-b-2 rounded-full my-8"></div>
     </>
   );
-}
+};
+
+export default Popular;

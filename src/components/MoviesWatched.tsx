@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import ImageLink from './ImageLink';
 import UserContext from '../utils/UserContext';
-import PaginationContainer from './PaginationContainer';
+import PaginationContainer from './Pagination/PaginationContainer';
 import usePagination from '../utils/usePagination';
 
-export default function MoviesWatched() {
-  const [movies, setMovies] = useState([]);
+const MoviesWatched: React.FC = () => {
+  const [movies, setMovies] = useState<any[]>([]);
   const { userInfo, globalError, PAGE_SIZE } = useContext(UserContext);
   const { currentPage } = usePagination(movies);
 
@@ -13,7 +13,7 @@ export default function MoviesWatched() {
     setMovies(userInfo.movies.watched);
   }, [userInfo.movies.watched]);
 
-  const getMoviesByPage = page =>
+  const getMoviesByPage = (page: number) =>
     movies.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
@@ -44,4 +44,6 @@ export default function MoviesWatched() {
       </PaginationContainer>
     </div>
   );
-}
+};
+
+export default MoviesWatched;

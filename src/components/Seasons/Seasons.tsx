@@ -1,7 +1,19 @@
 import React from 'react';
 import Emoji from '../Emoji';
 
-const Seasons = ({
+interface ISeasonsProps {
+  progress: any;
+  seasons: any[];
+  addEpisodeWatched: any;
+  removeEpisodeWatched: any;
+  addSeasonWatched: any;
+  removeSeasonWatched: any;
+  selectedSeason: any;
+  setSelectedSeason: any;
+  showModal: any;
+}
+
+const Seasons: React.FC<ISeasonsProps> = ({
   progress,
   seasons,
   addEpisodeWatched,
@@ -12,7 +24,7 @@ const Seasons = ({
   setSelectedSeason,
   showModal,
 }) => {
-  const selectedClass = season => {
+  const selectedClass = (season: any) => {
     if (!selectedSeason) {
       return 'bg-white text-gray-600';
     }
@@ -22,27 +34,29 @@ const Seasons = ({
     return 'bg-white text-gray-600';
   };
 
-  const isEpisodeWatched = episodeNumber => {
+  const isEpisodeWatched = (episodeNumber: number) => {
     if (!progress) {
       return false;
     }
     const foundSeasonProgress = progress.seasons.find(
-      s => s.number === selectedSeason.number,
+      (s: any) => s.number === selectedSeason.number,
     );
     if (!foundSeasonProgress) {
       return false;
     }
     return (
-      foundSeasonProgress.episodes.find(e => e.number === episodeNumber) || {}
+      foundSeasonProgress.episodes.find(
+        (e: any) => e.number === episodeNumber,
+      ) || {}
     ).completed;
   };
 
-  const isSeasonWatched = seasonNumber => {
+  const isSeasonWatched = (seasonNumber: number) => {
     if (!progress) {
       return false;
     }
     const foundSeasonProgress = progress.seasons.find(
-      s => s.number === seasonNumber,
+      (s: any) => s.number === seasonNumber,
     );
     if (!foundSeasonProgress) {
       return false;
@@ -52,7 +66,7 @@ const Seasons = ({
     );
   };
 
-  const toggleEpisode = episode => {
+  const toggleEpisode = (episode: any) => {
     if (isEpisodeWatched(episode.number)) {
       removeEpisodeWatched(episode);
     } else {
@@ -60,20 +74,24 @@ const Seasons = ({
     }
   };
 
-  const getTranslated = (string, episode) => {
+  const getTranslated = (string: string, episode: any) => {
     if (episode.translations.length) {
       return episode.translations[0][string];
     }
     return episode[string];
   };
 
-  const isEpisodeAvailable = episode => {
-    const seasonAvailable = progress.seasons.find(s => s.number === episode.season);
+  const isEpisodeAvailable = (episode: any) => {
+    const seasonAvailable = progress.seasons.find(
+      (s: any) => s.number === episode.season,
+    );
     if (!seasonAvailable) {
       return false;
     }
 
-    return seasonAvailable.episodes.some(e => e.number === episode.number);
+    return seasonAvailable.episodes.some(
+      (e: any) => e.number === episode.number,
+    );
   };
 
   return (
@@ -97,15 +115,15 @@ const Seasons = ({
               {isSeasonWatched(s.number) ? (
                 <span className="ml-2 text-gray-600">✓</span>
               ) : (
-                  ''
-                )}
+                ''
+              )}
             </li>
           ))}
       </ul>
       {selectedSeason && (
         <>
           <ul className="my-4">
-            {selectedSeason.episodes.map(e => (
+            {selectedSeason.episodes.map((e: any) => (
               <li
                 className="myt-6 mt-3 pb-4 text-sm leading-tight border-b"
                 key={e.ids.trakt}
@@ -114,33 +132,36 @@ const Seasons = ({
                   <span className="text-gray-600 text-xs font-bold mr-1">
                     {e.number}
                   </span>
-                  {isEpisodeAvailable(e) && <>
-                    {isEpisodeWatched(e.number) ? (
-                      <span className="text-gray-600 mr-2 ml-1">✓</span>
-                    ) : (
+                  {isEpisodeAvailable(e) && (
+                    <>
+                      {isEpisodeWatched(e.number) ? (
+                        <span className="text-gray-600 mr-2 ml-1">✓</span>
+                      ) : (
                         <span className="text-blue-400 mx-2">•</span>
                       )}
-                  </>}
+                    </>
+                  )}
                   <span
-                    onClick={() => showModal({
-                      title: getTranslated('title', e),
-                      overview: getTranslated('overview', e)
-                    })}
+                    onClick={() =>
+                      showModal({
+                        title: getTranslated('title', e),
+                        overview: getTranslated('overview', e),
+                      })
+                    }
                     className={`flex-grow ${
                       isEpisodeWatched(e.number) ? 'text-gray-600' : ''
-                      }`}
+                    }`}
                   >
                     {getTranslated('title', e)}
                   </span>
-                  {
-                    isEpisodeAvailable(e) &&
+                  {isEpisodeAvailable(e) && (
                     <button
                       className="px-5 text-right"
                       onClick={() => toggleEpisode(e)}
                     >
                       <Emoji emoji="▶️" />
                     </button>
-                  }
+                  )}
                 </div>
               </li>
             ))}
@@ -154,13 +175,13 @@ const Seasons = ({
                 Marcar todo como no vistos
               </button>
             ) : (
-                <button
-                  className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
-                  onClick={() => addSeasonWatched(selectedSeason)}
-                >
-                  Marcar todo como vistos
-                </button>
-              )}
+              <button
+                className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
+                onClick={() => addSeasonWatched(selectedSeason)}
+              >
+                Marcar todo como vistos
+              </button>
+            )}
           </div>
         </>
       )}

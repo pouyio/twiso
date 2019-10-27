@@ -1,14 +1,23 @@
 import React from 'react';
-import Emoji from './Emoji';
+import Emoji from '../Emoji';
 
-export default function Pagination({
+interface IPaginationProps {
+  setFirst: () => void;
+  setPrev: () => void;
+  setNext: () => void;
+  setLast: () => void;
+  page: number;
+  last: number;
+}
+
+const Pagination: React.FC<IPaginationProps> = ({
   setFirst,
   setPrev,
   setNext,
   setLast,
   page,
   last,
-}) {
+}) => {
   return (
     <div className="flex justify-center text-2xl">
       <button className="mr-10" onClick={setFirst}>
@@ -29,4 +38,6 @@ export default function Pagination({
       </button>
     </div>
   );
-}
+};
+
+export default Pagination;

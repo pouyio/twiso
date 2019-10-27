@@ -2,7 +2,15 @@ import React, { useState } from 'react';
 
 const MAX_LENGTH = 200;
 
-export default function CollapsableText({ children = '', className }) {
+interface ICollapsableTextProps {
+  className: string;
+  children: string;
+}
+
+const CollapsableText: React.FC<ICollapsableTextProps> = ({
+  children = '',
+  className,
+}) => {
   const [opened, setOpened] = useState(false);
 
   const toggleOpened = () => setOpened(o => !o);
@@ -23,4 +31,6 @@ export default function CollapsableText({ children = '', className }) {
       )}
     </div>
   );
-}
+};
+
+export default CollapsableText;

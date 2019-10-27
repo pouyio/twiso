@@ -1,7 +1,11 @@
 import React, { useContext } from 'react';
 import UserContext from '../utils/UserContext';
 
-export default function ShowWatchButton({ item }) {
+interface IShowWatchButtonProps {
+  item: any;
+}
+
+const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
   const { addShowWatchlist, removeShowWatchlist, isWatchlist } = useContext(
     UserContext,
   );
@@ -25,4 +29,6 @@ export default function ShowWatchButton({ item }) {
       )}
     </div>
   );
-}
+};
+
+export default ShowWatchButton;

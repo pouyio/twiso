@@ -1,8 +1,15 @@
 import React from 'react';
 import Pagination from './Pagination';
-import usePagination from '../utils/usePagination';
+import usePagination from '../../utils/usePagination';
 
-export default function PaginationContainer({ children, items }) {
+interface IPaginationContainerProps {
+  items: any[];
+}
+
+const PaginationContainer: React.FC<IPaginationContainerProps> = ({
+  children,
+  items,
+}) => {
   const {
     currentPage,
     lastPage,
@@ -30,4 +37,6 @@ export default function PaginationContainer({ children, items }) {
       {LocalPagination}
     </>
   );
-}
+};
+
+export default PaginationContainer;

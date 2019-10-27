@@ -2,7 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Emoji from './Emoji';
 
-const People = ({ people: { cast = [], crew = {} }, type }) => {
+interface IPeopleProps {
+  people: { cast: any[]; crew?: any };
+  type: 'movie' | 'show';
+}
+
+const People: React.FC<IPeopleProps> = ({
+  people: { cast = [], crew = {} },
+  type,
+}) => {
   return (
     <>
       <div className="my-4">
@@ -43,8 +51,8 @@ const People = ({ people: { cast = [], crew = {} }, type }) => {
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {(crew.directing || [])
-              .filter(crew => crew.job.toLowerCase() === 'director')
-              .map((crew, i) => (
+              .filter((crew: any) => crew.job.toLowerCase() === 'director')
+              .map((crew: any, i: number) => (
                 <li key={i} className="my-1">
                   <Link
                     to={{

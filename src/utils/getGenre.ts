@@ -1,4 +1,10 @@
-const genres = {
+interface IGenre {
+  name: string;
+  emoji: string;
+}
+const genres: {
+  [key: string]: IGenre;
+} = {
   action: {
     name: 'acción',
     emoji: '👊',
@@ -105,7 +111,7 @@ const genres = {
   },
 };
 
-export default function getGenre(genre) {
+export default function getGenre(genre: string) {
   return (
     genres[genre] || {
       name: genre,

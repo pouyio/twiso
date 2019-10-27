@@ -62,21 +62,48 @@ interface IUserContext {
   userInfo: IUserInfo;
   config: IImgConfig | boolean;
   language: string;
-  globalError:  boolean;
-  addMovieWatched: Function;
-  removeMovieWatched: Function;
-  addMovieWatchlist: Function;
-  addShowWatchlist: Function;
-  removeMovieWatchlist: Function;
-  removeShowWatchlist: Function;
-  isWatched: Function;
-  isWatchlist: Function;
-  showUpdated: Function;
-  removeWatchlistLocal: Function;
+  globalError: boolean;
+  addMovieWatched: (item: MovieWatched) => void;
+  removeMovieWatched: (item: MovieWatched) => void;
+  addMovieWatchlist: (item: MovieWatchlist) => void;
+  addShowWatchlist: (item: ShowWatchlist) => void;
+  removeMovieWatchlist: (item: MovieWatchlist) => void;
+  removeShowWatchlist: (item: ShowWatchlist) => void;
+  isWatched: (id: number, type: 'movie' | 'show') => boolean;
+  isWatchlist: (id: number, type: 'movie' | 'show') => boolean;
+  showUpdated: (show: Show) => void;
+  removeWatchlistLocal: (items: MovieWatchlist[] | ShowWatchlist[]) => void;
   PAGE_SIZE: number;
 }
 
-const UserContext = createContext<IUserContext | null>(null);
+const UserContextDefault: IUserContext = {
+  PAGE_SIZE,
+  userInfo: {
+    movies: {
+      watched: [],
+      watchlist: [],
+    },
+    shows: {
+      watched: [],
+      watchlist: [],
+    },
+  },
+  config: false,
+  language: '',
+  globalError: false,
+  addMovieWatched: () => {},
+  removeMovieWatched: () => {},
+  addMovieWatchlist: () => {},
+  addShowWatchlist: () => {},
+  removeMovieWatchlist: () => {},
+  removeShowWatchlist: () => {},
+  isWatched: () => false,
+  isWatchlist: () => false,
+  showUpdated: () => {},
+  removeWatchlistLocal: () => {},
+};
+
+const UserContext = createContext<IUserContext>(UserContextDefault);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [userInfo, setUserInfo] = useState<IUserInfo>({

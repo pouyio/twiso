@@ -9,7 +9,13 @@ import AuthContext from '../../utils/AuthContext';
 import Seasons from './Seasons';
 import UserContext from '../../utils/UserContext';
 import ModalContext from '../../utils/ModalContext';
-import { Show, ShowProgress, Season, Episode } from '../../models/Item';
+import {
+  Show,
+  ShowProgress,
+  Season,
+  Episode,
+  ShowWatchlist,
+} from '../../models/Item';
 
 interface ISeasonsContainerProps {
   show: Show;
@@ -92,7 +98,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const addEpisodeWatched = (episode: Episode) => {
     addWatchedApi(episode, session!, 'episode').then(() => {
       updateEpisode(episode, true);
-      removeWatchlistLocal([{ show: { ...show } }], 'show');
+      removeWatchlistLocal([{ show: { ...show } }] as ShowWatchlist[]);
       showUpdated(show);
     });
   };
@@ -107,7 +113,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const addSeasonWatched = (season: Season) => {
     addWatchedApi(season, session!, 'season').then(() => {
       updateSeason(season, true);
-      removeWatchlistLocal([{ show: { ...show } }], 'show');
+      removeWatchlistLocal([{ show: { ...show } }] as ShowWatchlist[]);
     });
   };
   const removeSeasonWatched = (season: Season) => {
