@@ -49,7 +49,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       progress.next_episode &&
       progress.next_episode.season &&
       progress.next_episode.season !== 1 &&
-      progress.next_episode.episode !== 1
+      progress.next_episode.number !== 1
     ) {
       setSelectedSeason(
         seasons.find(s => s.number === progress.next_episode.season),
