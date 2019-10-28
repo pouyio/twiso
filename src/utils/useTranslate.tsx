@@ -3,7 +3,7 @@ import { getTranslationsApi } from './api';
 import AuthContext from './AuthContext';
 import UserContext from './UserContext';
 
-export default function useTranslate(item) {
+export default function useTranslate<T extends any>(item: T) {
   const { session } = useContext(AuthContext);
   const { language } = useContext(UserContext);
   const [translation, setTranslation] = useState(item[item.type] || {});

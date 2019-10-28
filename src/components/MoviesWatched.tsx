@@ -3,9 +3,10 @@ import ImageLink from './ImageLink';
 import UserContext from '../utils/UserContext';
 import PaginationContainer from './Pagination/PaginationContainer';
 import usePagination from '../utils/usePagination';
+import { MovieWatched } from '../models/Item';
 
 const MoviesWatched: React.FC = () => {
-  const [movies, setMovies] = useState<any[]>([]);
+  const [movies, setMovies] = useState<MovieWatched[]>([]);
   const { userInfo, globalError, PAGE_SIZE } = useContext(UserContext);
   const { currentPage } = usePagination(movies);
 

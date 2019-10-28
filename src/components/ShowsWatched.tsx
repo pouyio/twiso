@@ -3,9 +3,10 @@ import ImageLink from './ImageLink';
 import UserContext from '../utils/UserContext';
 import PaginationContainer from './Pagination/PaginationContainer';
 import usePagination from '../utils/usePagination';
+import { ShowWatched } from '../models/Item';
 
 const ShowsWatched: React.FC = () => {
-  const [shows, setShows] = useState<any[]>([]);
+  const [shows, setShows] = useState<ShowWatched[]>([]);
   const { userInfo, PAGE_SIZE } = useContext(UserContext);
   const { currentPage } = usePagination(shows);
 
