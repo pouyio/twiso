@@ -9,6 +9,7 @@ const usePagination = (items: any[]) => {
 
   useEffect(() => {
     setCurrentPage(currentPage);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {

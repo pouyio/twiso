@@ -10,7 +10,7 @@ import Search from './pages/Search';
 import Login from './components/Login';
 import MovieDetail from './pages/MovieDetail';
 import ShowDetail from './pages/ShowDetail';
-import { ProtectedRoute } from './components/ProtectedRoute';
+import ProtectedRoute from './components/ProtectedRoute';
 import { UserProvider } from './utils/UserContext';
 import AuthContext, { AuthProvider } from './utils/AuthContext';
 import Emoji from './components/Emoji';
@@ -99,14 +99,30 @@ const App: React.FC = () => {
                       </Link>
                     </li>
                   </ul>
-                  <Route exact path="/" component={ParamsComponent} />
-                  <ProtectedRoute path="/movies" component={Movies} />
-                  <ProtectedRoute path="/shows" component={Shows} />
-                  <ProtectedRoute path="/search" component={Search} />
-                  <ProtectedRoute path="/movie/:id" component={MovieDetail} />
-                  <ProtectedRoute path="/show/:id" component={ShowDetail} />
-                  <ProtectedRoute path="/person/:id" component={Person} />
-                  <ProtectedRoute path="/user" component={User} />
+                  <Route exact path="/">
+                    <ParamsComponent />
+                  </Route>
+                  <ProtectedRoute path="/movies">
+                    <Movies />
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/shows">
+                    <Shows />
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/search">
+                    <Search />
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/movie/:id">
+                    <MovieDetail />
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/show/:id">
+                    <ShowDetail />
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/person/:id">
+                    <Person />
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/user">
+                    <User />
+                  </ProtectedRoute>
                   <ul className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden">
                     <li className="py-1">
                       <Emoji emoji="📺" />P
