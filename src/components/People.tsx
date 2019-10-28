@@ -52,8 +52,8 @@ const People: React.FC<IPeopleProps> = ({
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {(crew.directing || [])
-              .filter((crew: any) => crew.job.toLowerCase() === 'director')
-              .map((crew: any, i: number) => (
+              .filter(crew => crew.job.toLowerCase() === 'director')
+              .map((crew, i: number) => (
                 <li key={i} className="my-1">
                   <Link
                     to={{

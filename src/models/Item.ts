@@ -44,25 +44,39 @@ export interface ShowWatched {
   plays: number;
   reset_at: string;
   listed_at: string;
-  seasons: any[];
+  seasons: Array<{
+    episodes: Array<{
+      last_watched_at: string;
+      number: number;
+      plays: number;
+    }>;
+    number: number;
+  }>;
   show: Show;
   type: 'show';
+}
+
+interface SmallEpisode {
+  ids: Ids;
+  number: number;
+  season: number;
+  title: string;
 }
 
 export interface ShowProgress {
   aired: number;
   completed: number;
   hidden_seasons: any[];
-  last_episode: any;
+  last_episode: SmallEpisode;
   last_watched_at: string;
-  next_episode: any;
+  next_episode: SmallEpisode;
   reset_at: string;
   seasons: Season[];
 }
 
 export interface Movie {
   available_translations: string[];
-  certification: any;
+  certification: string;
   comment_count: number;
   country: string;
   genres: string[];
@@ -91,7 +105,7 @@ export interface Show {
     timezone: string;
   };
   available_translations: string[];
-  certification: any;
+  certification: string;
   comment_count: number;
   country: any;
   first_aired: any;

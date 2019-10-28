@@ -22,6 +22,7 @@ import {
   Show,
   MovieWatched,
   ShowWatched,
+  ShowProgress,
 } from '../models/Item';
 import { ItemType } from '../models/ItemType';
 import { IImgConfig } from '../models/IImgConfig';
@@ -31,7 +32,12 @@ export const PAGE_SIZE = 40;
 const MOVIE = 'movie';
 const SHOW = 'show';
 
-const sortShowsWatched = (a: any, b: any) => {
+interface SortableShow {
+  watched: ShowProgress;
+  item: ShowWatched;
+}
+
+const sortShowsWatched = (a: SortableShow, b: SortableShow) => {
   if (a.watched.next_episode === null && b.watched.next_episode === null) {
     return 0;
   }

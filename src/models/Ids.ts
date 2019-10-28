@@ -1,6 +1,6 @@
 export interface Ids {
   trakt: number;
   slug: string;
-  imdb: any;
+  imdb: string;
   tmdb: number;
 }

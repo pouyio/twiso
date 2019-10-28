@@ -177,7 +177,7 @@ export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
     })
     .then(res => {
       const ordered = res.data.sort(
-        (a: any, b: any) =>
+        (a, b) =>
           (new Date(b.listed_at) as any) - (new Date(a.listed_at) as any),
       );
       res.data = ordered;
