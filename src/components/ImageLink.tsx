@@ -6,7 +6,6 @@ interface IImageLinkProps {
   item: any;
   style: React.CSSProperties;
   type: 'movie' | 'show' | 'person';
-  children?: any;
 }
 
 const ImageLink: React.FC<IImageLinkProps> = ({
