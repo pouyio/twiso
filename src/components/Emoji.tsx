@@ -4,7 +4,6 @@ interface IEmojiProps {
   emoji: string;
   rotating?: boolean;
   className?: string;
-  onClick?: any;
 }
 
 export default function Emoji({

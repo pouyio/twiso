@@ -53,12 +53,13 @@ export default function Search() {
           onChange={e => setSearch(e.target.value)}
           value={search}
         />
-        <Emoji
-          className="ml-3 mr-2"
-          emoji={loading ? '⏳' : '❌'}
-          rotating={loading}
-          onClick={() => setSearch('')}
-        />
+        <button onClick={() => setSearch('')}>
+          <Emoji
+            className="ml-3 mr-2"
+            emoji={loading ? '⏳' : '❌'}
+            rotating={loading}
+          />
+        </button>
       </div>
 
       {search ? (
