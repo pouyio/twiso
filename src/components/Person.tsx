@@ -8,7 +8,8 @@ import Emoji from './Emoji';
 import { useParams } from 'react-router-dom';
 import { IPerson } from '../models/IPerson';
 import { IPersonShows, IPersonMovies } from '../models/IPeople';
-import { Show, Movie } from '../models/Item';
+import { Movie } from '../models/Item';
+import { Show } from '../models/Show';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();

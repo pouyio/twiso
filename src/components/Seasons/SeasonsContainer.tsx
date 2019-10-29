@@ -9,13 +9,8 @@ import AuthContext from '../../utils/AuthContext';
 import Seasons from './Seasons';
 import UserContext from '../../utils/UserContext';
 import ModalContext from '../../utils/ModalContext';
-import {
-  Show,
-  ShowProgress,
-  Season,
-  Episode,
-  ShowWatchlist,
-} from '../../models/Item';
+import { ShowWatchlist } from '../../models/Item';
+import { Show, ShowProgress, Season, Episode } from '../../models/Show';
 
 interface ISeasonsContainerProps {
   show: Show;

@@ -1,4 +1,5 @@
-import { Movie, Show } from './Item';
+import { Movie } from './Item';
+import { Show } from './Show';
 
 export interface IPopular {
   collected_count: number;

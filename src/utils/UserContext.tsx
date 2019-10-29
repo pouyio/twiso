@@ -19,11 +19,10 @@ import {
 import {
   MovieWatchlist,
   ShowWatchlist,
-  Show,
   MovieWatched,
   ShowWatched,
-  ShowProgress,
 } from '../models/Item';
+import { Show, ShowProgress } from '../models/Show';
 import { ItemType } from '../models/ItemType';
 import { IImgConfig } from '../models/IImgConfig';
 

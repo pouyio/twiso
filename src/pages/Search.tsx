@@ -26,15 +26,15 @@ export default function Search() {
     setLoading(true);
     let isSubscribed = true;
     searchApi(debouncedSearch, 'movie,show,person').then(({ data }) => {
-      const movies = data.filter(r => r.type === 'movie');
-      const shows = data.filter(r => r.type === 'show');
-      const person = data.filter(r => r.type === 'person');
+      const movies: SearchMovie[] = data.filter(r => r.type === 'movie');
+      const shows: SearchShow[] = data.filter(r => r.type === 'show');
+      const person: SearchPerson[] = data.filter(r => r.type === 'person');
       if (!isSubscribed) {
         return;
       }
-      setMovieResults(movies as SearchMovie[]);
-      setShowResults(shows as SearchShow[]);
-      setPeopleResults(person as SearchPerson[]);
+      setMovieResults(movies);
+      setShowResults(shows);
+      setPeopleResults(person);
       setLoading(false);
     });
     return () => {

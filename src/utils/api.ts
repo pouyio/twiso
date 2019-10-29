@@ -11,9 +11,8 @@ import {
   MovieWatchlist,
   ShowWatchlist,
   ShowWatched,
-  ShowProgress,
-  Season,
 } from '../models/Item';
+import { ShowProgress, Season } from '../models/Show';
 import { IImgConfig } from '../models/IImgConfig';
 import { IPeople } from '../models/IPeople';
 import { IPerson } from '../models/IPerson';
@@ -102,7 +101,7 @@ export const getTranslationsApi = (id: number, type: ItemType) => {
   });
 };
 
-export const searchApi = (query: string, type: ItemType) => {
+export const searchApi = (query: string, type: string) => {
   return axios.get<(SearchMovie & SearchShow & SearchPerson)[]>(
     `${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${PAGE_SIZE}`,
     {
@@ -266,14 +265,17 @@ export const getPopularApi = (type: ItemType) => {
     });
 };
 
-export const getRelatedApi = (id: number, type: ItemType) => {
+export const getRelatedApi = <T>(id: number, type: ItemType) => {
   return axios
-    .get(`${BASE_URL}/${type}s/${id}/related?extended=full&page=1&limit=10`, {
-      headers: {
-        ...base_headers,
+    .get<T[]>(
+      `${BASE_URL}/${type}s/${id}/related?extended=full&page=1&limit=10`,
+      {
+        headers: {
+          ...base_headers,
+        },
       },
-    })
-    .then(res => {
+    )
+    .then((res: any) => {
       const mapped = res.data.map((m: any) => ({ [type]: { ...m }, type }));
       res.data = mapped;
       return res;

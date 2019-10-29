@@ -3,5 +3,4 @@ export type ItemType =
   | 'movie'
   | 'person'
   | 'episode'
-  | 'season'
-  | 'movie,show,person';
+  | 'season';
