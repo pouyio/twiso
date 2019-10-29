@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ImageLink from './ImageLink';
 import { getPopularApi } from '../utils/api';
 import Emoji from './Emoji';
+import { IPopular } from '../models/IPopular';
 
 interface IPopularProps {
   type: 'movie' | 'show';
@@ -9,7 +10,7 @@ interface IPopularProps {
 
 const Popular: React.FC<IPopularProps> = ({ type }) => {
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<IPopular[]>([]);
 
   useEffect(() => {
     let isSubscribed = true;
@@ -48,7 +49,7 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
       >
         {results.map(r => (
           <li
-            key={r[type].ids.trakt}
+            key={r[type]!.ids.trakt}
             className="p-2"
             style={{ height: '13.5em', width: '9.5em' }}
           >

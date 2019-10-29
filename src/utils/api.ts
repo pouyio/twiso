@@ -17,6 +17,7 @@ import {
 import { IImgConfig } from '../models/IImgConfig';
 import { IPeople } from '../models/IPeople';
 import { IPerson } from '../models/IPerson';
+import { IPopular } from '../models/IPopular';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
 const client_secret = process.env.REACT_APP_CLIENT_SECRET;
@@ -250,7 +251,7 @@ export const getPersonItemsApi = <T>(person: string, type: ItemType) => {
 export const getPopularApi = (type: ItemType) => {
   const year = new Date().getFullYear();
   return axios
-    .get(
+    .get<IPopular[]>(
       `${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${PAGE_SIZE}&years=${year}`,
       {
         headers: {
