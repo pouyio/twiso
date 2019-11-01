@@ -16,7 +16,6 @@ import {
   People,
   Popular,
   Person,
-  Ids,
   RemovedWatched,
   AddedWatched,
   AddedWatchlist,
