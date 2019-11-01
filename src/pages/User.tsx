@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import Emoji from '../components/Emoji';
 import ThemeContext from '../utils/ThemeContext';
 import { getStatsApi } from '../utils/api';
+import { UserStats } from '../models';
 
 export default function User() {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const [stats, setStats] = useState();
+  const [stats, setStats] = useState<UserStats>();
 
   useEffect(() => {
     getStatsApi('pouyio').then(({ data }) => setStats(data));

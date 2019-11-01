@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useCallback } from 'react';
 import { getTranslationsApi } from './api';
 import AuthContext from './AuthContext';
 import UserContext from './UserContext';
-import { Movie, Show } from '../models';
+import { Movie, Show, Translation } from '../models';
 
 export default function useTranslate(
   type: 'movie' | 'show',
@@ -19,7 +19,7 @@ export default function useTranslate(
   });
 
   const mergeTranslation = useCallback(
-    translation => {
+    (translation: Translation) => {
       const mergedTranslation = JSON.parse(JSON.stringify(translation));
       if (!translation.overview) {
         mergedTranslation.overview = item!.overview;

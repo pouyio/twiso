@@ -7,3 +7,4 @@ export * from './ItemType';
 export * from './Movie';
 export * from './Show';
 export * from './Translation';
+export * from './Api';

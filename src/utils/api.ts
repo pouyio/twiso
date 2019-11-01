@@ -3,9 +3,6 @@ import { PAGE_SIZE } from './UserContext';
 import rateLimit from 'axios-rate-limit';
 import { Session } from './AuthContext';
 import {
-  SearchMovie,
-  SearchPerson,
-  SearchShow,
   MovieWatchlist,
   ShowWatchlist,
   Movie,
@@ -19,6 +16,12 @@ import {
   People,
   Popular,
   Person,
+  Ids,
+  RemovedWatched,
+  AddedWatched,
+  AddedWatchlist,
+  RemovedWatchlist,
+  UserStats,
 } from '../models';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
@@ -107,8 +110,8 @@ export const getTranslationsApi = (id: number, type: ItemType) => {
   );
 };
 
-export const searchApi = (query: string, type: string) => {
-  return axios.get<(SearchMovie & SearchShow & SearchPerson)[]>(
+export const searchApi = <T>(query: string, type: string) => {
+  return axios.get<T[]>(
     `${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${PAGE_SIZE}`,
     {
       headers: base_headers,
@@ -135,7 +138,7 @@ export const addWatchedApi = (
   session: Session,
   type: ItemType,
 ) => {
-  return axios.post(
+  return axios.post<AddedWatched>(
     `${BASE_URL}/sync/history`,
     {
       [`${type}s`]: [item],
@@ -154,7 +157,7 @@ export const removeWatchedApi = (
   session: Session,
   type: ItemType,
 ) => {
-  return axios.post(
+  return axios.post<RemovedWatched>(
     `${BASE_URL}/sync/history/remove`,
     {
       [`${type}s`]: [item],
@@ -195,7 +198,7 @@ export const addWatchlistApi = (
   session: Session,
   type: ItemType,
 ) => {
-  return axios.post(
+  return axios.post<AddedWatchlist>(
     `${BASE_URL}/sync/watchlist`,
     {
       [`${type}s`]: [item],
@@ -214,7 +217,7 @@ export const removeWatchlistApi = (
   session: Session,
   type: ItemType,
 ) => {
-  return axios.post(
+  return axios.post<RemovedWatchlist>(
     `${BASE_URL}/sync/watchlist/remove`,
     {
       [`${type}s`]: [item],
@@ -276,7 +279,7 @@ export const getRelatedApi = <T>(id: number, type: ItemType) => {
 };
 
 export const getStatsApi = (username: string) => {
-  return axios.get(`${BASE_URL}/users/${username}/stats`, {
+  return axios.get<UserStats>(`${BASE_URL}/users/${username}/stats`, {
     headers: {
       ...base_headers,
     },
