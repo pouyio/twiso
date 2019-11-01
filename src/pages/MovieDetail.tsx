@@ -9,9 +9,8 @@ import Related from '../components/Related';
 import Genres from '../components/Genres';
 import People from '../components/People';
 import CollapsableText from '../components/CollapsableText';
-import { SearchMovie, Movie } from '../models/Movie';
+import { SearchMovie, Movie, IPeople } from '../models';
 import { useLocation, useParams } from 'react-router-dom';
-import { IPeople } from '../models/IPeople';
 
 export default function MovieDetail() {
   const [item, setItem] = useState<Movie>();

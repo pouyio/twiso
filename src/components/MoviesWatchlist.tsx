@@ -3,7 +3,7 @@ import ImageLink from './ImageLink';
 import UserContext from '../utils/UserContext';
 import PaginationContainer from './Pagination/PaginationContainer';
 import usePagination from '../utils/usePagination';
-import { MovieWatchlist } from '../models/Movie';
+import { MovieWatchlist } from '../models';
 
 const MoviesWatchlist: React.FC = () => {
   const [movies, setMovies] = useState<MovieWatchlist[]>([]);

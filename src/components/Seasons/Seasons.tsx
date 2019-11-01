@@ -1,6 +1,6 @@
 import React from 'react';
 import Emoji from '../Emoji';
-import { Season, Episode, ShowProgress } from '../../models/Show';
+import { Season, Episode, ShowProgress } from '../../models';
 
 interface ISeasonsProps {
   progress?: ShowProgress;

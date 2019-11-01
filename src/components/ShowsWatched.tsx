@@ -3,7 +3,7 @@ import ImageLink from './ImageLink';
 import UserContext from '../utils/UserContext';
 import PaginationContainer from './Pagination/PaginationContainer';
 import usePagination from '../utils/usePagination';
-import { ShowWatched } from '../models/Movie';
+import { ShowWatched } from '../models';
 
 const ShowsWatched: React.FC = () => {
   const [shows, setShows] = useState<ShowWatched[]>([]);

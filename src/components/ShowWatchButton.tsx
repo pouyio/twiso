@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import UserContext from '../utils/UserContext';
-import { Show } from '../models/Show';
+import { Show } from '../models';
 
 interface IShowWatchButtonProps {
   item: Show;

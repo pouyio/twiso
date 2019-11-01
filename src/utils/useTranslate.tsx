@@ -2,8 +2,7 @@ import { useState, useEffect, useContext, useCallback } from 'react';
 import { getTranslationsApi } from './api';
 import AuthContext from './AuthContext';
 import UserContext from './UserContext';
-import { Movie } from '../models/Movie';
-import { Show } from '../models/Show';
+import { Movie, Show } from '../models';
 
 export default function useTranslate(
   type: 'movie' | 'show',

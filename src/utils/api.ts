@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { PAGE_SIZE } from './UserContext';
 import rateLimit from 'axios-rate-limit';
-import { ItemType } from '../models/ItemType';
 import { Session } from './AuthContext';
 import {
   SearchMovie,
@@ -10,12 +9,17 @@ import {
   MovieWatchlist,
   ShowWatchlist,
   Movie,
-} from '../models/Movie';
-import { ShowProgress, Season, Episode, Show } from '../models/Show';
-import { IImgConfig } from '../models/IImgConfig';
-import { IPeople } from '../models/IPeople';
-import { IPopular } from '../models/IPopular';
-import { IPerson } from '../models/IPerson';
+  Translation,
+  ShowProgress,
+  Season,
+  Episode,
+  Show,
+  ItemType,
+  IImgConfig,
+  IPeople,
+  IPopular,
+  IPerson,
+} from '../models';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
 const client_secret = process.env.REACT_APP_CLIENT_SECRET;
@@ -95,9 +99,12 @@ export const getProgressApi = (session: Session, id: number) => {
 };
 
 export const getTranslationsApi = (id: number, type: ItemType) => {
-  return axios.get(`${BASE_URL}/${type}s/${id}/translations/es`, {
-    headers: base_headers,
-  });
+  return axios.get<Translation[]>(
+    `${BASE_URL}/${type}s/${id}/translations/es`,
+    {
+      headers: base_headers,
+    },
+  );
 };
 
 export const searchApi = (query: string, type: string) => {

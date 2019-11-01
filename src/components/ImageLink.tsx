@@ -1,10 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Image from './Image';
-import { Movie } from '../models/Movie';
-import { Show } from '../models/Show';
-import { IPerson } from '../models/IPerson';
-import { Ids } from '../models/Ids';
+import { Movie, Show, IPerson, Ids } from '../models';
 
 interface IImageLinkProps {
   item: Show | Movie | IPerson;

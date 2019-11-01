@@ -5,7 +5,7 @@ import { searchApi } from '../utils/api';
 import Popular from '../components/Popular';
 import useSearch from '../utils/useSearch';
 import Emoji from '../components/Emoji';
-import { SearchMovie, SearchPerson, SearchShow } from '../models/Movie';
+import { SearchMovie, SearchPerson, SearchShow } from '../models';
 
 export default function Search() {
   const { search, setSearch } = useSearch();

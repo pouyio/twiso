@@ -3,7 +3,7 @@ import UserContext from '../utils/UserContext';
 import { useInView } from 'react-hook-inview';
 import Emoji from './Emoji';
 import getImgUrl from '../utils/extractImg';
-import { Ids } from '../models/Ids';
+import { Ids } from '../models';
 
 interface IImageProps {
   ids: Ids;

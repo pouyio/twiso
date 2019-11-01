@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import UserContext from '../utils/UserContext';
-import { Movie } from '../models/Movie';
+import { Movie } from '../models';
 
 interface IWatchButtonProps {
   item: Movie;

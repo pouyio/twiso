@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getRelatedApi } from '../utils/api';
 import ImageLink from './ImageLink';
 import Emoji from './Emoji';
-import { Show } from '../models/Show';
-import { Movie } from '../models/Movie';
+import { Show, Movie } from '../models';
 
 interface IRelatedProps {
   itemId: number;

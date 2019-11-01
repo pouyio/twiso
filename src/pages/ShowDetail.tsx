@@ -11,9 +11,7 @@ import People from '../components/People';
 import UserContext from '../utils/UserContext';
 import CollapsableText from '../components/CollapsableText';
 import { useLocation, useParams } from 'react-router-dom';
-import { SearchShow } from '../models/Movie';
-import { IPeople } from '../models/IPeople';
-import { Show } from '../models/Show';
+import { SearchShow, IPeople, Show } from '../models';
 
 enum status {
   'returning series' = 'en antena',

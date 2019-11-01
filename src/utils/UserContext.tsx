@@ -22,10 +22,11 @@ import {
   MovieWatched,
   ShowWatched,
   Movie,
-} from '../models/Movie';
-import { Show, ShowProgress } from '../models/Show';
-import { ItemType } from '../models/ItemType';
-import { IImgConfig } from '../models/IImgConfig';
+  Show,
+  ShowProgress,
+  ItemType,
+  IImgConfig,
+} from '../models';
 
 export const PAGE_SIZE = 40;
 

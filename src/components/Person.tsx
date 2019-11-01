@@ -6,10 +6,7 @@ import { getPersonItemsApi, getPersonApi } from '../utils/api';
 import UserContext from '../utils/UserContext';
 import Emoji from './Emoji';
 import { useParams } from 'react-router-dom';
-import { IPerson } from '../models/IPerson';
-import { IPersonShows, IPersonMovies } from '../models/IPeople';
-import { Movie } from '../models/Movie';
-import { Show } from '../models/Show';
+import { IPersonShows, IPersonMovies, IPerson, Movie, Show } from '../models';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
