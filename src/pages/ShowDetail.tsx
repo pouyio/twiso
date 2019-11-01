@@ -94,7 +94,10 @@ export default function ShowDetail() {
         >
           <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
           <div className="flex items-start">
-            <div className="hidden lg:block relative pr-4">
+            <div
+              className="hidden lg:block relative pr-4"
+              style={{ minWidth: '10em' }}
+            >
               <Image ids={item.ids} text={item.title} type="show" />
               {item.trailer && (
                 <a
@@ -109,7 +112,7 @@ export default function ShowDetail() {
               )}
             </div>
 
-            <div className="w-full">
+            <div className="w-full max-w-3xl">
               <h1
                 onClick={toggleShowOriginalTitle}
                 className="text-4xl leading-none text-center mb-4"
