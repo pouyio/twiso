@@ -36,14 +36,16 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   }, [show.ids.trakt]);
 
   useEffect(() => {
+    setSelectedSeason(undefined);
     if (!progress) {
       return;
     }
     if (
       progress.next_episode &&
       progress.next_episode.season &&
-      progress.next_episode.season !== 1 &&
-      progress.next_episode.number !== 1
+      !(
+        progress.next_episode.season === 1 && progress.next_episode.number === 1
+      )
     ) {
       setSelectedSeason(
         seasons.find(s => s.number === progress.next_episode.season),
