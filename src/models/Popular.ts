@@ -1,7 +1,7 @@
 import { Movie } from './Movie';
 import { Show } from './Show';
 
-export interface IPopular {
+export interface Popular {
   collected_count: number;
   play_count: number;
   watcher_count: number;

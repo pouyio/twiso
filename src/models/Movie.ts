@@ -1,7 +1,7 @@
 import { ItemType } from './ItemType';
 import { Ids } from './Ids';
 import { Show } from './Show';
-import { IPerson } from './IPerson';
+import { Person } from './Person';
 
 interface SearchItem {
   score: number;
@@ -17,7 +17,7 @@ export type SearchMovie = SearchItem & {
 };
 
 export type SearchPerson = SearchItem & {
-  person: IPerson;
+  person: Person;
 };
 
 export interface MovieWatchlist {

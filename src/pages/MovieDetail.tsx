@@ -9,7 +9,7 @@ import Related from '../components/Related';
 import Genres from '../components/Genres';
 import People from '../components/People';
 import CollapsableText from '../components/CollapsableText';
-import { SearchMovie, Movie, IPeople } from '../models';
+import { SearchMovie, Movie, People as IPeople } from '../models';
 import { useLocation, useParams } from 'react-router-dom';
 
 export default function MovieDetail() {

@@ -25,7 +25,7 @@ import {
   Show,
   ShowProgress,
   ItemType,
-  IImgConfig,
+  ImgConfig,
 } from '../models';
 
 export const PAGE_SIZE = 40;
@@ -67,7 +67,7 @@ interface IUserInfo {
 
 interface IUserContext {
   userInfo: IUserInfo;
-  config: IImgConfig | boolean;
+  config: ImgConfig | boolean;
   language: string;
   globalError: boolean;
   addMovieWatched: (item: Movie) => void;
@@ -124,7 +124,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     },
   });
   const [globalError, setGlobalError] = useState(false);
-  const [config, setConfig] = useState<IImgConfig | boolean>(false);
+  const [config, setConfig] = useState<ImgConfig | boolean>(false);
   const [language] = useState('es');
   const { session } = useContext(AuthContext);
 

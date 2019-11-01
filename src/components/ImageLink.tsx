@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Image from './Image';
-import { Movie, Show, IPerson, Ids } from '../models';
+import { Movie, Show, Person, Ids } from '../models';
 
 interface IImageLinkProps {
-  item: Show | Movie | IPerson;
+  item: Show | Movie | Person;
   ids: Ids;
   text: string;
   style: React.CSSProperties;

@@ -2,32 +2,32 @@ import { Ids } from './Ids';
 import { Movie } from './Movie';
 import { Show } from './Show';
 
-interface IPerson {
+interface Person {
   ids: Ids;
   name: string;
 }
 
-export interface IPeople {
-  cast: Array<{ character: string; characters: string[]; person: IPerson }>;
+export interface People {
+  cast: Array<{ character: string; characters: string[]; person: Person }>;
   crew: {
-    production: Array<{ job: string; jobs: string[]; person: IPerson }>;
-    art: Array<{ job: string; jobs: string[]; person: IPerson }>;
-    crew: Array<{ job: string; jobs: string[]; person: IPerson }>;
-    costume: Array<{ job: string; jobs: string[]; person: IPerson }>;
+    production: Array<{ job: string; jobs: string[]; person: Person }>;
+    art: Array<{ job: string; jobs: string[]; person: Person }>;
+    crew: Array<{ job: string; jobs: string[]; person: Person }>;
+    costume: Array<{ job: string; jobs: string[]; person: Person }>;
     'costume & make-up': Array<{
       job: string;
       jobs: string[];
-      person: IPerson;
+      person: Person;
     }>;
-    directing: Array<{ job: string; jobs: string[]; person: IPerson }>;
-    writing: Array<{ job: string; jobs: string[]; person: IPerson }>;
-    sound: Array<{ job: string; jobs: string[]; person: IPerson }>;
-    camera: Array<{ job: string; jobs: string[]; person: IPerson }>;
-    'visual effects': Array<{ job: string; jobs: string[]; person: IPerson }>;
+    directing: Array<{ job: string; jobs: string[]; person: Person }>;
+    writing: Array<{ job: string; jobs: string[]; person: Person }>;
+    sound: Array<{ job: string; jobs: string[]; person: Person }>;
+    camera: Array<{ job: string; jobs: string[]; person: Person }>;
+    'visual effects': Array<{ job: string; jobs: string[]; person: Person }>;
   };
 }
 
-export interface IPersonMovies {
+export interface PersonMovies {
   cast: Array<{ character: string; characters: string[]; movie: Movie }>;
   crew: {
     production: Array<{ job: string; jobs: string[]; movie: Movie }>;
@@ -47,7 +47,7 @@ export interface IPersonMovies {
   };
 }
 
-export interface IPersonShows {
+export interface PersonShows {
   cast: Array<{
     character: string;
     characters: string[];

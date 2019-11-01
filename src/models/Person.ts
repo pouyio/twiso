@@ -1,6 +1,6 @@
 import { Ids } from './Ids';
 
-export interface IPerson {
+export interface Person {
   name: string;
   ids: Ids;
   biography: string;

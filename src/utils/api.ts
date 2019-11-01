@@ -15,10 +15,10 @@ import {
   Episode,
   Show,
   ItemType,
-  IImgConfig,
-  IPeople,
-  IPopular,
-  IPerson,
+  ImgConfig,
+  People,
+  Popular,
+  Person,
 } from '../models';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
@@ -53,7 +53,7 @@ export const loginApi = (code: string) => {
 };
 
 export const getImgsConfigApi = () => {
-  return axios.get<IImgConfig>(
+  return axios.get<ImgConfig>(
     `${IMG_URL}/configuration?api_key=${tmbdb_api_key}`,
   );
 };
@@ -229,7 +229,7 @@ export const removeWatchlistApi = (
 };
 
 export const getPeopleApi = (id: number, type: ItemType) => {
-  return axios.get<IPeople>(`${BASE_URL}/${type}s/${id}/people`, {
+  return axios.get<People>(`${BASE_URL}/${type}s/${id}/people`, {
     headers: {
       ...base_headers,
     },
@@ -237,7 +237,7 @@ export const getPeopleApi = (id: number, type: ItemType) => {
 };
 
 export const getPersonApi = (id: number) => {
-  return axios.get<IPerson>(`${BASE_URL}/people/${id}?extended=full`, {
+  return axios.get<Person>(`${BASE_URL}/people/${id}?extended=full`, {
     headers: {
       ...base_headers,
     },
@@ -254,7 +254,7 @@ export const getPersonItemsApi = <T>(person: string, type: ItemType) => {
 
 export const getPopularApi = (type: ItemType) => {
   const year = new Date().getFullYear();
-  return axios.get<IPopular[]>(
+  return axios.get<Popular[]>(
     `${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${PAGE_SIZE}&years=${year}`,
     {
       headers: {

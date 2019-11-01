@@ -6,7 +6,13 @@ import { getPersonItemsApi, getPersonApi } from '../utils/api';
 import UserContext from '../utils/UserContext';
 import Emoji from './Emoji';
 import { useParams } from 'react-router-dom';
-import { IPersonShows, IPersonMovies, IPerson, Movie, Show } from '../models';
+import {
+  PersonShows,
+  PersonMovies,
+  Person as IPerson,
+  Movie,
+  Show,
+} from '../models';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
@@ -23,7 +29,7 @@ const Person: React.FC = () => {
 
   useEffect(() => {
     getPersonApi(id).then(({ data }) => setLocalState(data));
-    getPersonItemsApi<IPersonShows>(id, 'show').then(({ data }) => {
+    getPersonItemsApi<PersonShows>(id, 'show').then(({ data }) => {
       setShowResults(
         data.cast
           .filter(r => r.series_regular)
@@ -33,7 +39,7 @@ const Person: React.FC = () => {
           .map(r => ({ show: r.show, type: 'show', title: r.character })),
       );
     });
-    getPersonItemsApi<IPersonMovies>(id, 'movie').then(({ data }) => {
+    getPersonItemsApi<PersonMovies>(id, 'movie').then(({ data }) => {
       setMovieResults([
         ...data.cast
           .filter(

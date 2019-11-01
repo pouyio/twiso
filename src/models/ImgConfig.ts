@@ -1,4 +1,4 @@
-export interface IImgConfig {
+export interface ImgConfig {
   images: {
     backdrop_sizes: string[];
     base_url: string;

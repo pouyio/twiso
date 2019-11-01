@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Emoji from './Emoji';
-import { IPeople } from '../models';
+import { People as IPeople } from '../models';
 
 interface IPeopleProps {
   people: IPeople;
