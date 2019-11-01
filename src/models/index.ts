@@ -8,3 +8,4 @@ export * from './Movie';
 export * from './Show';
 export * from './Translation';
 export * from './Api';
+export * from './Image';

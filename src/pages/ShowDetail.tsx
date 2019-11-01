@@ -73,7 +73,7 @@ export default function ShowDetail() {
           className="p-10 sticky top-0 z-0 lg:hidden"
           style={{ minHeight: '15em' }}
         >
-          <Image ids={item.ids} text={item.title} type="show" />
+          <Image ids={item.ids} text={item.title} type="show" size="big" />
           {item.trailer && (
             <a
               className="absolute"
@@ -94,9 +94,9 @@ export default function ShowDetail() {
           <div className="flex items-start">
             <div
               className="hidden lg:block relative pr-4"
-              style={{ minWidth: '10em' }}
+              style={{ minWidth: '10em', maxWidth: '10em' }}
             >
-              <Image ids={item.ids} text={item.title} type="show" />
+              <Image ids={item.ids} text={item.title} type="show" size="big" />
               {item.trailer && (
                 <a
                   className="absolute"

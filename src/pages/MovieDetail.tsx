@@ -62,7 +62,7 @@ export default function MovieDetail() {
           className="p-10 sticky top-0 z-0 lg:hidden"
           style={{ minHeight: '15em' }}
         >
-          <Image ids={item.ids} text={item.title} type="movie" />
+          <Image ids={item.ids} text={item.title} type="movie" size="big" />
           {item.trailer && (
             <a
               className="absolute"
@@ -82,7 +82,7 @@ export default function MovieDetail() {
           <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
           <div className="flex items-start">
             <div className="hidden lg:block relative pr-4">
-              <Image ids={item.ids} text={item.title} type="movie" />
+              <Image ids={item.ids} text={item.title} type="movie" size="big" />
               {item.trailer && (
                 <a
                   className="absolute"

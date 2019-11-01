@@ -67,7 +67,7 @@ interface IUserInfo {
 
 interface IUserContext {
   userInfo: IUserInfo;
-  config: ImgConfig | boolean;
+  config?: ImgConfig;
   language: string;
   globalError: boolean;
   addMovieWatched: (item: Movie) => void;
@@ -95,7 +95,6 @@ const UserContextDefault: IUserContext = {
       watchlist: [],
     },
   },
-  config: false,
   language: '',
   globalError: false,
   addMovieWatched: () => {},
@@ -124,7 +123,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     },
   });
   const [globalError, setGlobalError] = useState(false);
-  const [config, setConfig] = useState<ImgConfig | boolean>(false);
+  const [config, setConfig] = useState<ImgConfig>();
   const [language] = useState('es');
   const { session } = useContext(AuthContext);
 

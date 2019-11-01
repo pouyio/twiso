@@ -11,6 +11,7 @@ interface IImageProps {
   type: 'movie' | 'show' | 'person';
   className?: string;
   style?: React.CSSProperties;
+  size?: 'small' | 'big';
 }
 
 const Image: React.FC<IImageProps> = ({
@@ -19,6 +20,7 @@ const Image: React.FC<IImageProps> = ({
   type,
   className = '',
   style = {},
+  size = 'small',
   ...props
 }) => {
   const [imgUrl, setImgUrl] = useState('');
@@ -31,10 +33,10 @@ const Image: React.FC<IImageProps> = ({
       return;
     }
 
-    getImgUrl(ids.tmdb, type, config, language)
+    getImgUrl(ids.tmdb, type, config, language, size)
       .then(url => setImgUrl(url))
       .catch(({ message }) => setMessage(message));
-  }, [config, ids, language, inView, type]);
+  }, [config, ids, language, inView, type, size]);
 
   const getBorderClass = () => {
     if (type === 'person') return '';

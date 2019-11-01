@@ -21,6 +21,7 @@ import {
   AddedWatchlist,
   RemovedWatchlist,
   UserStats,
+  ImageResponse,
 } from '../models';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
@@ -60,12 +61,12 @@ export const getImgsConfigApi = () => {
   );
 };
 
-export const getImgsApi = (id: number, type: ItemType): Promise<string> => {
+export const getImgsApi = (id: number, type: ItemType) => {
   let newType: string = type;
   if (type === 'show') {
     newType = 'tv';
   }
-  return limitAxios.get(
+  return limitAxios.get<ImageResponse>(
     `${IMG_URL}/${newType}/${id}/images?api_key=${tmbdb_api_key}&include_image_language=es,en`,
   );
 };

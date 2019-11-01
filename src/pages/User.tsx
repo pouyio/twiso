@@ -3,6 +3,7 @@ import Emoji from '../components/Emoji';
 import ThemeContext from '../utils/ThemeContext';
 import { getStatsApi } from '../utils/api';
 import { UserStats } from '../models';
+import { removeCaches } from '../utils/cache';
 
 export default function User() {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -66,6 +67,15 @@ export default function User() {
             <p className="text-center">
               Vistos: {stats.episodes.watched} en{' '}
               {convertMinutes(stats.episodes.minutes)}{' '}
+            </p>
+            <p className="text-center mt-8">
+              <button
+                onClick={removeCaches}
+                className="bg-gray-200 px-2 py-1 rounded-full"
+              >
+                <Emoji emoji="♻️" />
+                Remove images from cache
+              </button>
             </p>
           </>
         )}
