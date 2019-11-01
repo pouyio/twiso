@@ -1,5 +1,5 @@
 import { Ids } from './Ids';
-import { Movie } from './Item';
+import { Movie } from './Movie';
 import { Show } from './Show';
 
 interface IPerson {

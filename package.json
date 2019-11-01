@@ -9,7 +9,7 @@
     "react-dom": "^16.8.6",
     "react-hook-inview": "^4.0.0",
     "react-router-dom": "^5.1.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "^3.2.0",
     "typescript": "^3.6.2",
     "use-query-params": "^0.4.1"
   },

@@ -21,7 +21,8 @@ import {
   ShowWatchlist,
   MovieWatched,
   ShowWatched,
-} from '../models/Item';
+  Movie,
+} from '../models/Movie';
 import { Show, ShowProgress } from '../models/Show';
 import { ItemType } from '../models/ItemType';
 import { IImgConfig } from '../models/IImgConfig';
@@ -68,16 +69,16 @@ interface IUserContext {
   config: IImgConfig | boolean;
   language: string;
   globalError: boolean;
-  addMovieWatched: (item: MovieWatched) => void;
-  removeMovieWatched: (item: MovieWatched) => void;
-  addMovieWatchlist: (item: MovieWatchlist) => void;
-  addShowWatchlist: (item: ShowWatchlist) => void;
-  removeMovieWatchlist: (item: MovieWatchlist) => void;
-  removeShowWatchlist: (item: ShowWatchlist) => void;
+  addMovieWatched: (item: Movie) => void;
+  removeMovieWatched: (item: Movie) => void;
+  addMovieWatchlist: (item: Movie) => void;
+  addShowWatchlist: (item: Show) => void;
+  removeMovieWatchlist: (item: Movie) => void;
+  removeShowWatchlist: (item: Show) => void;
   isWatched: (id: number, type: 'movie' | 'show') => boolean;
   isWatchlist: (id: number, type: 'movie' | 'show') => boolean;
   showUpdated: (show: Show) => void;
-  removeWatchlistLocal: (items: MovieWatchlist[] | ShowWatchlist[]) => void;
+  removeWatchlistShow: (items: Show[]) => void;
   PAGE_SIZE: number;
 }
 
@@ -105,7 +106,7 @@ const UserContextDefault: IUserContext = {
   isWatched: () => false,
   isWatchlist: () => false,
   showUpdated: () => {},
-  removeWatchlistLocal: () => {},
+  removeWatchlistShow: () => {},
 };
 
 const UserContext = createContext<IUserContext>(UserContextDefault);
@@ -132,16 +133,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     });
   }, []);
 
-  const setWatched = (items: MovieWatched[] | ShowWatched[]) => {
-    const type = items[0].type;
-    if (type === MOVIE) {
-      setWatchedMovie(items as MovieWatched[]);
-    }
-    if (type === SHOW) {
-      setWatchedShow(items as ShowWatched[]);
-    }
-  };
-
   const setWatchedMovie = (items: MovieWatched[]) => {
     setUserInfo(prev => {
       prev.movies.watched = [...items, ...prev.movies.watched];
@@ -154,16 +145,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       prev.shows.watched = [...items, ...prev.shows.watched];
       return { ...prev };
     });
-  };
-
-  const setWatchlist = (items: MovieWatchlist[] | ShowWatchlist[]) => {
-    const type = items[0].type;
-    if (type === MOVIE) {
-      setWatchlistMovie(items as MovieWatchlist[]);
-    }
-    if (type === SHOW) {
-      setWatchlistShow(items as ShowWatchlist[]);
-    }
   };
 
   const setWatchlistMovie = (items: MovieWatchlist[]) => {
@@ -196,19 +177,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const removeWatchlist = (items: MovieWatchlist[] | ShowWatchlist[]) => {
-    const type = items[0].type;
-    if (type === MOVIE) {
-      removeWatchlistMovie(items as MovieWatchlist[]);
-    }
-    if (type === SHOW) {
-      removeWatchlistShow(items as ShowWatchlist[]);
-    }
-  };
-
-  const removeWatchlistMovie = (items: MovieWatchlist[]) => {
+  const removeWatchlistMovie = (items: Movie[]) => {
     const oldItems = userInfo.movies.watchlist.filter(
-      om => !items.some(m => m.movie.ids.trakt === om.movie.ids.trakt),
+      om => !items.some(m => m.ids.trakt === om.movie.ids.trakt),
     );
     setUserInfo(prev => {
       prev.movies.watchlist = [...oldItems];
@@ -216,9 +187,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const removeWatchlistShow = (items: ShowWatchlist[]) => {
+  const removeWatchlistShow = (items: Show[]) => {
     const oldItems = userInfo.shows.watchlist.filter(
-      om => !items.some(m => m.show.ids.trakt === om.show.ids.trakt),
+      om => !items.some(m => m.ids.trakt === om.show.ids.trakt),
     );
     setUserInfo(prev => {
       prev.shows.watchlist = [...oldItems];
@@ -226,20 +197,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const removeWatched = (items: MovieWatchlist[] | ShowWatchlist[]) => {
-    const type = items[0].type;
-    if (type === MOVIE) {
-      removeWatchedtMovie(items as MovieWatchlist[]);
-    }
-    if (type === SHOW) {
-      removeWatchedtShow(items as ShowWatchlist[]);
-    }
-  };
-
-  const removeWatchedtMovie = (items: MovieWatchlist[]) => {
+  const removeWatchedMovie = (items: Movie[]) => {
     const oldItems = userInfo.movies.watched;
     const newItems = oldItems.filter(
-      om => !items.some(m => m.movie.ids.trakt === om.movie.ids.trakt),
+      om => !items.some(m => m.ids.trakt === om.movie.ids.trakt),
     );
     setUserInfo(prev => {
       prev.movies.watched = [...newItems];
@@ -247,10 +208,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const removeWatchedtShow = (items: ShowWatchlist[]) => {
+  const removeWatchedShow = (items: Show[]) => {
     const oldItems = userInfo.shows.watched;
     const newItems = oldItems.filter(
-      om => !items.some(m => m.show.ids.trakt === om.show.ids.trakt),
+      om => !items.some(m => m.ids.trakt === om.show.ids.trakt),
     );
     setUserInfo(prev => {
       prev.shows.watched = [...newItems];
@@ -263,15 +224,15 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
-    getWatchedApi(session, MOVIE)
-      .then(({ data }) => setWatched(data))
+    getWatchedApi<MovieWatched>(session, MOVIE)
+      .then(({ data }) => setWatchedMovie(data))
       .catch(data => setGlobalError(data));
 
     getWatchlistApi<MovieWatchlist>(session, MOVIE)
-      .then(({ data }) => setWatchlist(data))
+      .then(({ data }) => setWatchlistMovie(data))
       .catch(data => setGlobalError(data));
 
-    getWatchedApi(session, SHOW)
+    getWatchedApi<ShowWatched>(session, SHOW)
       .then(({ data }) => {
         const watchedPromises = data.map(i =>
           getProgressApi(session, i.show.ids.trakt),
@@ -282,60 +243,62 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             .map((item, index: number) => ({ watched: datas[index], item }))
             .sort(sortShowsWatched)
             .map(({ item }) => item);
-          setWatched(orderedShows);
+          setWatchedShow(orderedShows);
         });
       })
       .catch(data => setGlobalError(data));
 
     getWatchlistApi<ShowWatchlist>(session, SHOW)
-      .then(({ data }) => setWatchlist(data))
+      .then(({ data }) => setWatchlistShow(data))
       .catch(data => setGlobalError(data));
   }, [session]);
 
-  const addMovieWatched = (item: MovieWatched) => {
-    addWatchedApi(item.movie, session!, MOVIE).then(({ data }) => {
+  const addMovieWatched = (item: Movie) => {
+    addWatchedApi(item, session!, MOVIE).then(({ data }) => {
       if (data.added.movies) {
-        setWatched([item]);
-        removeWatchlist([item]);
+        setWatchedMovie([
+          { movie: item, type: 'movie', watched_at: new Date().toISOString() },
+        ]);
+        removeWatchlistMovie([item]);
       }
     });
   };
-  const removeMovieWatched = (item: MovieWatched) => {
-    removeWatchedApi(item.movie, session!, MOVIE).then(({ data }) => {
+  const removeMovieWatched = (item: Movie) => {
+    removeWatchedApi(item, session!, MOVIE).then(({ data }) => {
       if (data.deleted.movies) {
-        removeWatched([item]);
+        removeWatchedMovie([item]);
       }
     });
   };
 
-  const addMovieWatchlist = (item: MovieWatchlist) => {
-    addWatchlistApi(item.movie, session!, MOVIE).then(({ data }) => {
+  const addMovieWatchlist = (item: Movie) => {
+    addWatchlistApi(item, session!, MOVIE).then(({ data }) => {
       if (data.added.movies) {
-        setWatchlist([item]);
-        removeWatched([item]);
+        setWatchlistMovie([{ movie: item, type: 'movie' } as MovieWatchlist]);
+        removeWatchedMovie([item]);
       }
     });
   };
 
-  const addShowWatchlist = (item: ShowWatchlist) => {
-    addWatchlistApi(item.show, session!, SHOW).then(({ data }) => {
+  const addShowWatchlist = (item: Show) => {
+    addWatchlistApi(item, session!, SHOW).then(({ data }) => {
       if (data.added.shows) {
-        setWatchlist([item]);
-        removeWatched([item]);
+        setWatchlistShow([{ show: item, type: 'show' }]);
+        removeWatchedShow([item]);
       }
     });
   };
-  const removeMovieWatchlist = (item: MovieWatchlist) => {
-    removeWatchlistApi(item.movie, session!, MOVIE).then(({ data }) => {
+  const removeMovieWatchlist = (item: Movie) => {
+    removeWatchlistApi(item, session!, MOVIE).then(({ data }) => {
       if (data.deleted.movies) {
-        removeWatchlist([item]);
+        removeWatchlistMovie([item]);
       }
     });
   };
-  const removeShowWatchlist = (item: ShowWatchlist) => {
-    removeWatchlistApi(item.show, session!, SHOW).then(({ data }) => {
+  const removeShowWatchlist = (item: Show) => {
+    removeWatchlistApi(item, session!, SHOW).then(({ data }) => {
       if (data.deleted.shows) {
-        removeWatchlist([item]);
+        removeWatchlistShow([item]);
       }
     });
   };
@@ -387,7 +350,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         isWatched,
         isWatchlist,
         showUpdated,
-        removeWatchlistLocal: removeWatchlist,
+        removeWatchlistShow,
         PAGE_SIZE,
       }}
     >

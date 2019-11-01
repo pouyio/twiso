@@ -2,20 +2,31 @@ import { useState, useEffect, useContext, useCallback } from 'react';
 import { getTranslationsApi } from './api';
 import AuthContext from './AuthContext';
 import UserContext from './UserContext';
+import { Movie } from '../models/Movie';
+import { Show } from '../models/Show';
 
-export default function useTranslate<T extends any>(item: T) {
+export default function useTranslate(
+  type: 'movie' | 'show',
+  item?: Show | Movie,
+) {
   const { session } = useContext(AuthContext);
   const { language } = useContext(UserContext);
-  const [translation, setTranslation] = useState(item[item.type] || {});
+  const [translation, setTranslation] = useState<{
+    title: string;
+    overview: string;
+  }>({
+    title: '',
+    overview: '',
+  });
 
   const mergeTranslation = useCallback(
     translation => {
       const mergedTranslation = JSON.parse(JSON.stringify(translation));
       if (!translation.overview) {
-        mergedTranslation.overview = item[item.type].overview;
+        mergedTranslation.overview = item!.overview;
       }
       if (!translation.title) {
-        mergedTranslation.overview = item[item.type].title;
+        mergedTranslation.overview = item!.title;
       }
       return mergedTranslation;
     },
@@ -26,19 +37,14 @@ export default function useTranslate<T extends any>(item: T) {
     if (!item) {
       return;
     }
-    setTranslation(item[item.type]);
-    if (
-      language === 'en' ||
-      !item[item.type].available_translations.includes(language)
-    ) {
+    setTranslation(item);
+    if (language === 'en' || !item.available_translations.includes(language)) {
       return;
     }
-    getTranslationsApi(item[item.type].ids.trakt, item.type).then(
-      ({ data }) => {
-        setTranslation(mergeTranslation(data[0]));
-      },
-    );
-  }, [item, session, language, mergeTranslation]);
+    getTranslationsApi(item.ids.trakt, type).then(({ data }) => {
+      setTranslation(mergeTranslation(data[0]));
+    });
+  }, [item, session, language, mergeTranslation, type]);
 
   return translation;
 }

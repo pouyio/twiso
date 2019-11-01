@@ -4,19 +4,18 @@ import rateLimit from 'axios-rate-limit';
 import { ItemType } from '../models/ItemType';
 import { Session } from './AuthContext';
 import {
-  Item,
   SearchMovie,
   SearchPerson,
   SearchShow,
   MovieWatchlist,
   ShowWatchlist,
-  ShowWatched,
-} from '../models/Item';
-import { ShowProgress, Season } from '../models/Show';
+  Movie,
+} from '../models/Movie';
+import { ShowProgress, Season, Episode, Show } from '../models/Show';
 import { IImgConfig } from '../models/IImgConfig';
 import { IPeople } from '../models/IPeople';
-import { IPerson } from '../models/IPerson';
 import { IPopular } from '../models/IPopular';
+import { IPerson } from '../models/IPerson';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
 const client_secret = process.env.REACT_APP_CLIENT_SECRET;
@@ -110,27 +109,25 @@ export const searchApi = (query: string, type: string) => {
   );
 };
 
-export const getWatchedApi = (session: Session, type: ItemType) => {
+export const getWatchedApi = <T>(session: Session, type: ItemType) => {
   const url =
     type === 'movie'
       ? `${BASE_URL}/sync/history/movies?page=1&limit=10000&extended=full`
       : `${BASE_URL}/sync/watched/shows?extended=full`;
 
-  return axios
-    .get<ShowWatched[]>(url, {
-      headers: {
-        ...base_headers,
-        Authorization: `Bearer ${session.access_token}`,
-      },
-    })
-    .then(res => {
-      const mapped = res.data.map((s: any) => ({ ...s, type }));
-      res.data = mapped;
-      return res;
-    });
+  return axios.get<T[]>(url, {
+    headers: {
+      ...base_headers,
+      Authorization: `Bearer ${session.access_token}`,
+    },
+  });
 };
 
-export const addWatchedApi = (item: Item, session: Session, type: ItemType) => {
+export const addWatchedApi = (
+  item: Episode | Season | Movie,
+  session: Session,
+  type: ItemType,
+) => {
   return axios.post(
     `${BASE_URL}/sync/history`,
     {
@@ -146,7 +143,7 @@ export const addWatchedApi = (item: Item, session: Session, type: ItemType) => {
 };
 
 export const removeWatchedApi = (
-  item: Item,
+  item: Episode | Season | Movie,
   session: Session,
   type: ItemType,
 ) => {
@@ -178,7 +175,8 @@ export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
     .then(res => {
       const ordered = res.data.sort(
         (a, b) =>
-          (new Date(b.listed_at) as any) - (new Date(a.listed_at) as any),
+          (new Date(b.listed_at as string) as any) -
+          (new Date(a.listed_at as string) as any),
       );
       res.data = ordered;
       return res;
@@ -186,7 +184,7 @@ export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
 };
 
 export const addWatchlistApi = (
-  item: Item,
+  item: Show | Movie,
   session: Session,
   type: ItemType,
 ) => {
@@ -205,7 +203,7 @@ export const addWatchlistApi = (
 };
 
 export const removeWatchlistApi = (
-  item: Item,
+  item: Show | Movie,
   session: Session,
   type: ItemType,
 ) => {
@@ -249,37 +247,25 @@ export const getPersonItemsApi = <T>(person: string, type: ItemType) => {
 
 export const getPopularApi = (type: ItemType) => {
   const year = new Date().getFullYear();
-  return axios
-    .get<IPopular[]>(
-      `${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${PAGE_SIZE}&years=${year}`,
-      {
-        headers: {
-          ...base_headers,
-        },
+  return axios.get<IPopular[]>(
+    `${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${PAGE_SIZE}&years=${year}`,
+    {
+      headers: {
+        ...base_headers,
       },
-    )
-    .then(res => {
-      const mapped = res.data.map((m: any) => ({ ...m, type }));
-      res.data = mapped;
-      return res;
-    });
+    },
+  );
 };
 
 export const getRelatedApi = <T>(id: number, type: ItemType) => {
-  return axios
-    .get<T[]>(
-      `${BASE_URL}/${type}s/${id}/related?extended=full&page=1&limit=10`,
-      {
-        headers: {
-          ...base_headers,
-        },
+  return axios.get<T[]>(
+    `${BASE_URL}/${type}s/${id}/related?extended=full&page=1&limit=10`,
+    {
+      headers: {
+        ...base_headers,
       },
-    )
-    .then((res: any) => {
-      const mapped = res.data.map((m: any) => ({ [type]: { ...m }, type }));
-      res.data = mapped;
-      return res;
-    });
+    },
+  );
 };
 
 export const getStatsApi = (username: string) => {

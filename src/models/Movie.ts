@@ -1,13 +1,12 @@
 import { ItemType } from './ItemType';
 import { Ids } from './Ids';
 import { Show } from './Show';
+import { IPerson } from './IPerson';
 
 interface SearchItem {
   score: number;
   type: ItemType;
 }
-
-export type Item = any;
 
 export type SearchShow = SearchItem & {
   show: Show;
@@ -18,7 +17,7 @@ export type SearchMovie = SearchItem & {
 };
 
 export type SearchPerson = SearchItem & {
-  person: Person;
+  person: IPerson;
 };
 
 export interface MovieWatchlist {
@@ -30,14 +29,20 @@ export interface MovieWatchlist {
 }
 
 export interface ShowWatchlist {
-  id: number;
-  listed_at: string;
-  rank: number;
+  id?: number;
+  listed_at?: string;
+  rank?: number;
   type: 'show';
   show: Show;
 }
 
-export type MovieWatched = MovieWatchlist;
+export type MovieWatched = {
+  action?: string;
+  id?: number;
+  movie: Movie;
+  type: 'movie';
+  watched_at: string;
+};
 
 export interface ShowWatched {
   last_updated_at: string;
@@ -77,5 +82,3 @@ export interface Movie {
   votes: number;
   year: number;
 }
-
-export type Person = any;

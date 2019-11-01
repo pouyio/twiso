@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { getRelatedApi } from '../utils/api';
 import ImageLink from './ImageLink';
 import Emoji from './Emoji';
+import { Show } from '../models/Show';
+import { Movie } from '../models/Movie';
 
 interface IRelatedProps {
   itemId: number;
@@ -9,10 +11,10 @@ interface IRelatedProps {
 }
 
 const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<(Show | Movie)[]>([]);
 
   useEffect(() => {
-    getRelatedApi(itemId, type).then(({ data }) => {
+    getRelatedApi<Show | Movie>(itemId, type).then(({ data }) => {
       setResults(data);
     });
   }, [itemId, type]);
@@ -26,11 +28,17 @@ const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
         >
           {results.map(r => (
             <li
-              key={r[type].ids.trakt}
+              key={r.ids.trakt}
               className="p-2"
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >
-              <ImageLink item={r} type={type} style={{ minHeight: '13.5em' }} />
+              <ImageLink
+                item={r}
+                text={r.title}
+                ids={r.ids}
+                type={type}
+                style={{ minHeight: '13.5em' }}
+              />
             </li>
           ))}
         </ul>

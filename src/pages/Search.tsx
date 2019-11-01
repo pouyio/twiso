@@ -5,7 +5,7 @@ import { searchApi } from '../utils/api';
 import Popular from '../components/Popular';
 import useSearch from '../utils/useSearch';
 import Emoji from '../components/Emoji';
-import { SearchMovie, SearchPerson, SearchShow } from '../models/Item';
+import { SearchMovie, SearchPerson, SearchShow } from '../models/Movie';
 
 export default function Search() {
   const { search, setSearch } = useSearch();
@@ -80,7 +80,9 @@ export default function Search() {
                     style={{ height: '13.5em', width: '9.5em' }}
                   >
                     <ImageLink
-                      item={r}
+                      ids={r.movie.ids}
+                      text={r.movie.title}
+                      item={r.movie}
                       style={{ minHeight: '10em' }}
                       type="movie"
                     />
@@ -108,7 +110,9 @@ export default function Search() {
                     style={{ height: '13.5em', width: '9.5em' }}
                   >
                     <ImageLink
-                      item={r}
+                      ids={r.show.ids}
+                      text={r.show.title}
+                      item={r.show}
                       style={{ minHeight: '10em' }}
                       type="show"
                     />
@@ -136,7 +140,9 @@ export default function Search() {
                     style={{ height: '13.5em', width: '9.5em' }}
                   >
                     <ImageLink
-                      item={r}
+                      ids={r.person.ids}
+                      text={r.person.name}
+                      item={r.person}
                       style={{ minHeight: '10em' }}
                       type="person"
                     />

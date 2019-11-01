@@ -3,16 +3,19 @@ import UserContext from '../utils/UserContext';
 import { useInView } from 'react-hook-inview';
 import Emoji from './Emoji';
 import getImgUrl from '../utils/extractImg';
+import { Ids } from '../models/Ids';
 
 interface IImageProps {
-  item: any;
+  ids: Ids;
+  text: string;
   type: 'movie' | 'show' | 'person';
   className?: string;
   style?: React.CSSProperties;
 }
 
 const Image: React.FC<IImageProps> = ({
-  item,
+  ids,
+  text,
   type,
   className = '',
   style = {},
@@ -28,23 +31,21 @@ const Image: React.FC<IImageProps> = ({
       return;
     }
 
-    getImgUrl(item[item.type].ids.tmdb, item.type, config, language)
+    getImgUrl(ids.tmdb, type, config, language)
       .then(url => setImgUrl(url))
       .catch(({ message }) => setMessage(message));
-  }, [config, item, language, inView]);
+  }, [config, ids, language, inView, type]);
 
   const getBorderClass = () => {
     if (type === 'person') return '';
-    if (isWatched(item[item.type].ids.trakt, type)) {
+    if (isWatched(ids.trakt, type)) {
       return 'border-2 border-green-400';
     }
-    if (isWatchlist(item[item.type].ids.trakt, type)) {
+    if (isWatchlist(ids.trakt, type)) {
       return 'border-2 border-blue-400';
     }
     return '';
   };
-
-  const getTitle = () => item[item.type].title || item[item.type].name;
 
   return (
     <div
@@ -59,17 +60,13 @@ const Image: React.FC<IImageProps> = ({
     >
       {(!inView || !imgUrl) && (
         <h1 className="justify-center items-center p-2">
-          {getTitle()}
+          {text}
           <br />
           {message || <Emoji className="ml-3" emoji="⏳" rotating={true} />}
         </h1>
       )}
       {inView && imgUrl && (
-        <img
-          className="m-auto md:max-w-md h-full"
-          src={imgUrl}
-          alt={getTitle()}
-        />
+        <img className="m-auto md:max-w-md h-full" src={imgUrl} alt={text} />
       )}
     </div>
   );

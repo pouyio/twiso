@@ -8,7 +8,7 @@ import Emoji from './Emoji';
 import { useParams } from 'react-router-dom';
 import { IPerson } from '../models/IPerson';
 import { IPersonShows, IPersonMovies } from '../models/IPeople';
-import { Movie } from '../models/Item';
+import { Movie } from '../models/Movie';
 import { Show } from '../models/Show';
 
 const Person: React.FC = () => {
@@ -62,10 +62,7 @@ const Person: React.FC = () => {
           style={{ minHeight: '15em' }}
         >
           {localState && (
-            <Image
-              item={{ person: localState, type: 'person' }}
-              type="person"
-            />
+            <Image ids={localState.ids} text={localState.name} type="person" />
           )}
         </div>
 
@@ -78,7 +75,8 @@ const Person: React.FC = () => {
             <div className="hidden lg:block relative pr-4">
               {localState && (
                 <Image
-                  item={{ person: localState, type: 'person' }}
+                  ids={localState.ids}
+                  text={localState.name}
                   type="person"
                 />
               )}
@@ -134,7 +132,9 @@ const Person: React.FC = () => {
                   >
                     <div className="bg-gray-300 rounded-lg">
                       <ImageLink
-                        item={r}
+                        ids={r.movie.ids}
+                        text={r.movie.title}
+                        item={r.movie}
                         type="movie"
                         style={{ minHeight: '13.5em' }}
                       >
@@ -166,7 +166,9 @@ const Person: React.FC = () => {
                   >
                     <div className="bg-gray-300 rounded-lg">
                       <ImageLink
-                        item={r}
+                        ids={r.show.ids}
+                        text={r.show.title}
+                        item={r.show}
                         type="show"
                         style={{ minHeight: '13.5em' }}
                       >

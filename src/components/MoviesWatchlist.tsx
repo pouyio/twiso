@@ -3,7 +3,7 @@ import ImageLink from './ImageLink';
 import UserContext from '../utils/UserContext';
 import PaginationContainer from './Pagination/PaginationContainer';
 import usePagination from '../utils/usePagination';
-import { MovieWatchlist } from '../models/Item';
+import { MovieWatchlist } from '../models/Movie';
 
 const MoviesWatchlist: React.FC = () => {
   const [movies, setMovies] = useState<MovieWatchlist[]>([]);
@@ -26,7 +26,13 @@ const MoviesWatchlist: React.FC = () => {
             className="p-2"
             style={{ flex: '1 0 50%', maxWidth: '10em' }}
           >
-            <ImageLink item={m} style={{ minHeight: '13.5em' }} type="movie" />
+            <ImageLink
+              text={m.movie.title}
+              ids={m.movie.ids}
+              item={m.movie}
+              style={{ minHeight: '13.5em' }}
+              type="movie"
+            />
           </li>
         ))}
       </ul>

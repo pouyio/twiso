@@ -3,7 +3,7 @@ import ImageLink from './ImageLink';
 import UserContext from '../utils/UserContext';
 import PaginationContainer from './Pagination/PaginationContainer';
 import usePagination from '../utils/usePagination';
-import { ShowWatchlist } from '../models/Item';
+import { ShowWatchlist } from '../models/Movie';
 
 const ShowsWatchlist: React.FC = () => {
   const [shows, setShows] = useState<ShowWatchlist[]>([]);
@@ -27,7 +27,13 @@ const ShowsWatchlist: React.FC = () => {
               className="p-2"
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >
-              <ImageLink item={m} style={{ minHeight: '13.5em' }} type="show" />
+              <ImageLink
+                item={m.show}
+                ids={m.show.ids}
+                text={m.show.title}
+                style={{ minHeight: '13.5em' }}
+                type="show"
+              />
             </li>
           ))}
         </ul>

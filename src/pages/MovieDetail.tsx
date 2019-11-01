@@ -9,16 +9,16 @@ import Related from '../components/Related';
 import Genres from '../components/Genres';
 import People from '../components/People';
 import CollapsableText from '../components/CollapsableText';
-import { SearchMovie } from '../models/Item';
+import { SearchMovie, Movie } from '../models/Movie';
 import { useLocation, useParams } from 'react-router-dom';
 import { IPeople } from '../models/IPeople';
 
 export default function MovieDetail() {
-  const [item, setItem] = useState<SearchMovie>();
+  const [item, setItem] = useState<Movie>();
   const [showOriginalTitle, setShowOriginalTitle] = useState(false);
   const [people, setPeople] = useState<IPeople>();
   const { language, isWatched, isWatchlist } = useContext(UserContext)!;
-  const { title, overview } = useTranslate(item || false);
+  const { title = '', overview = '' } = useTranslate('movie', item);
   const { state } = useLocation();
   const { id } = useParams();
 
@@ -26,7 +26,7 @@ export default function MovieDetail() {
     if (!state) {
       getApi<SearchMovie>(id, 'movie').then(({ data }) => {
         const item = data[0];
-        setItem(item);
+        setItem(item.movie);
       });
       return;
     }
@@ -43,10 +43,10 @@ export default function MovieDetail() {
     if (!item) {
       return;
     }
-    if (isWatched(item.movie.ids.trakt, 'movie')) {
+    if (isWatched(item.ids.trakt, 'movie')) {
       return 'bg-green-400';
     }
-    if (isWatchlist(item.movie.ids.trakt, 'movie')) {
+    if (isWatchlist(item.ids.trakt, 'movie')) {
       return 'bg-blue-400';
     }
     return 'bg-gray-300';
@@ -63,12 +63,12 @@ export default function MovieDetail() {
           className="p-10 sticky top-0 z-0 lg:hidden"
           style={{ minHeight: '15em' }}
         >
-          <Image item={item} type="movie" />
-          {item.movie.trailer && (
+          <Image ids={item.ids} text={item.title} type="movie" />
+          {item.trailer && (
             <a
               className="absolute"
               style={{ right: '4em', bottom: '4em' }}
-              href={item.movie.trailer}
+              href={item.trailer}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -83,12 +83,12 @@ export default function MovieDetail() {
           <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
           <div className="flex items-start">
             <div className="hidden lg:block relative pr-4">
-              <Image item={item} type="movie" />
-              {item.movie.trailer && (
+              <Image ids={item.ids} text={item.title} type="movie" />
+              {item.trailer && (
                 <a
                   className="absolute"
                   style={{ right: '4em', bottom: '4em' }}
-                  href={item.movie.trailer}
+                  href={item.trailer}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -102,17 +102,17 @@ export default function MovieDetail() {
                 onClick={toggleShowOriginalTitle}
                 className="text-4xl leading-none text-center mb-4"
               >
-                {showOriginalTitle ? item.movie.title : title}
+                {showOriginalTitle ? item.title : title}
               </h1>
               <div className="flex mb-4 justify-between items-center text-gray-600">
                 <h2>
-                  {new Date(item.movie.released).toLocaleDateString(language, {
+                  {new Date(item.released).toLocaleDateString(language, {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
                   })}
                 </h2>
-                <h2>{item.movie.runtime || '?'} mins</h2>
+                <h2>{item.runtime || '?'} mins</h2>
               </div>
               <WatchButton item={item} />
             </div>
@@ -126,7 +126,7 @@ export default function MovieDetail() {
 
           <div className="my-4">
             <p>Géneros:</p>
-            <Genres genres={item.movie.genres} />
+            <Genres genres={item.genres} />
           </div>
 
           <div className="my-4">
@@ -135,7 +135,7 @@ export default function MovieDetail() {
 
           <div className="my-4">
             <p>Relacionados:</p>
-            <Related itemId={item.movie.ids.trakt} type="movie" />
+            <Related itemId={item.ids.trakt} type="movie" />
           </div>
         </article>
       </div>

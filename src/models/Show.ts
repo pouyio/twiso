@@ -4,21 +4,21 @@ export interface Show {
   aired_episodes: number;
   airs: {
     day: string;
-    time: any;
+    time: string;
     timezone: string;
   };
   available_translations: string[];
   certification: string;
   comment_count: number;
-  country: any;
-  first_aired: any;
+  country: string;
+  first_aired: string;
   genres: string[];
   homepage: string;
   ids: Ids & {
     tvrage: any;
   };
   language: string;
-  network: any;
+  network: string;
   overview: string;
   rating: number;
   runtime: number;
@@ -47,7 +47,12 @@ export interface Episode {
   number: number;
   season: number;
   title: string;
-  translations: any[];
+  translations: {
+    title: string;
+    overview: string;
+    tagline: string;
+    language: string;
+  }[];
   completed: boolean;
 }
 

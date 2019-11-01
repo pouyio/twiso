@@ -3,7 +3,7 @@ import ImageLink from './ImageLink';
 import UserContext from '../utils/UserContext';
 import PaginationContainer from './Pagination/PaginationContainer';
 import usePagination from '../utils/usePagination';
-import { MovieWatched } from '../models/Item';
+import { MovieWatched } from '../models/Movie';
 
 const MoviesWatched: React.FC = () => {
   const [movies, setMovies] = useState<MovieWatched[]>([]);
@@ -35,7 +35,9 @@ const MoviesWatched: React.FC = () => {
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >
               <ImageLink
-                item={m}
+                item={m.movie}
+                ids={m.movie.ids}
+                text={m.movie.title}
                 style={{ minHeight: '13.5em' }}
                 type="movie"
               />

@@ -1,15 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Image from './Image';
+import { Movie } from '../models/Movie';
+import { Show } from '../models/Show';
+import { IPerson } from '../models/IPerson';
+import { Ids } from '../models/Ids';
 
 interface IImageLinkProps {
-  item: any;
+  item: Show | Movie | IPerson;
+  ids: Ids;
+  text: string;
   style: React.CSSProperties;
   type: 'movie' | 'show' | 'person';
 }
 
 const ImageLink: React.FC<IImageLinkProps> = ({
   item,
+  ids,
+  text,
   style,
   type,
   children = '',
@@ -17,12 +25,12 @@ const ImageLink: React.FC<IImageLinkProps> = ({
   return (
     <Link
       to={{
-        pathname: `/${type}/${item[type].ids.trakt}`,
-        search: `?slug=${item[type].ids.slug}`,
+        pathname: `/${type}/${ids.trakt}`,
+        search: `?slug=${ids.slug}`,
         state: item,
       }}
     >
-      <Image item={item} style={style} type={type} />
+      <Image ids={ids} text={text} style={style} type={type} />
       {children}
     </Link>
   );

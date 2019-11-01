@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import UserContext from '../utils/UserContext';
+import { Show } from '../models/Show';
 
 interface IShowWatchButtonProps {
-  item: any;
+  item: Show;
 }
 
 const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
@@ -12,7 +13,7 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
 
   return (
     <div className="flex justify-around my-8">
-      {isWatchlist(item.show.ids.trakt, 'show') ? (
+      {isWatchlist(item.ids.trakt, 'show') ? (
         <button
           className="bg-blue-400 py-3 px-12 rounded-full text-white font-bold"
           onClick={() => removeShowWatchlist(item)}

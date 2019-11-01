@@ -1,16 +1,17 @@
 import React from 'react';
 import Emoji from '../Emoji';
+import { Season, Episode, ShowProgress } from '../../models/Show';
 
 interface ISeasonsProps {
-  progress: any;
-  seasons: any[];
-  addEpisodeWatched: any;
-  removeEpisodeWatched: any;
-  addSeasonWatched: any;
-  removeSeasonWatched: any;
-  selectedSeason: any;
-  setSelectedSeason: any;
-  showModal: any;
+  progress?: ShowProgress;
+  seasons: Season[];
+  addEpisodeWatched: (episode: Episode) => void;
+  removeEpisodeWatched: (episode: Episode) => void;
+  addSeasonWatched: (season: Season) => void;
+  removeSeasonWatched: (season: Season) => void;
+  selectedSeason?: Season;
+  setSelectedSeason: (season: Season) => void;
+  showModal: (data: { title: string; overview: string }) => void;
 }
 
 const Seasons: React.FC<ISeasonsProps> = ({
@@ -24,7 +25,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
   setSelectedSeason,
   showModal,
 }) => {
-  const selectedClass = (season: any) => {
+  const selectedClass = (season: Season) => {
     if (!selectedSeason) {
       return 'bg-white text-gray-600';
     }
@@ -39,15 +40,13 @@ const Seasons: React.FC<ISeasonsProps> = ({
       return false;
     }
     const foundSeasonProgress = progress.seasons.find(
-      (s: any) => s.number === selectedSeason.number,
+      s => s.number === selectedSeason!.number,
     );
     if (!foundSeasonProgress) {
       return false;
     }
     return (
-      foundSeasonProgress.episodes.find(
-        (e: any) => e.number === episodeNumber,
-      ) || {}
+      foundSeasonProgress.episodes.find(e => e.number === episodeNumber) || {}
     ).completed;
   };
 
@@ -56,7 +55,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
       return false;
     }
     const foundSeasonProgress = progress.seasons.find(
-      (s: any) => s.number === seasonNumber,
+      s => s.number === seasonNumber,
     );
     if (!foundSeasonProgress) {
       return false;
@@ -66,7 +65,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
     );
   };
 
-  const toggleEpisode = (episode: any) => {
+  const toggleEpisode = (episode: Episode) => {
     if (isEpisodeWatched(episode.number)) {
       removeEpisodeWatched(episode);
     } else {
@@ -74,24 +73,22 @@ const Seasons: React.FC<ISeasonsProps> = ({
     }
   };
 
-  const getTranslated = (string: string, episode: any) => {
+  const getTranslated = (string: 'title' | 'overview', episode: Episode) => {
     if (episode.translations.length) {
       return episode.translations[0][string];
     }
-    return episode[string];
+    return string === 'title' ? episode.title : '';
   };
 
-  const isEpisodeAvailable = (episode: any) => {
-    const seasonAvailable = progress.seasons.find(
-      (s: any) => s.number === episode.season,
+  const isEpisodeAvailable = (episode: Episode) => {
+    const seasonAvailable = progress!.seasons.find(
+      s => s.number === episode.season,
     );
     if (!seasonAvailable) {
       return false;
     }
 
-    return seasonAvailable.episodes.some(
-      (e: any) => e.number === episode.number,
-    );
+    return seasonAvailable.episodes.some(e => e.number === episode.number);
   };
 
   return (
@@ -123,7 +120,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
       {selectedSeason && (
         <>
           <ul className="my-4">
-            {selectedSeason.episodes.map((e: any) => (
+            {selectedSeason.episodes.map((e: Episode) => (
               <li
                 className="myt-6 mt-3 pb-4 text-sm leading-tight border-b"
                 key={e.ids.trakt}

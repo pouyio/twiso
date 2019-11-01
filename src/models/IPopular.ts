@@ -1,4 +1,4 @@
-import { Movie } from './Item';
+import { Movie } from './Movie';
 import { Show } from './Show';
 
 export interface IPopular {

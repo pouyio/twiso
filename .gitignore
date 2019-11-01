@@ -25,6 +25,7 @@ yarn-error.log*
 
 todo.md
 now.json
-/migration/*
+/migration
 /src/tailwind.css
 *.code-workspace
+.vscode

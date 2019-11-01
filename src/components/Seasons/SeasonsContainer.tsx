@@ -9,7 +9,6 @@ import AuthContext from '../../utils/AuthContext';
 import Seasons from './Seasons';
 import UserContext from '../../utils/UserContext';
 import ModalContext from '../../utils/ModalContext';
-import { ShowWatchlist } from '../../models/Item';
 import { Show, ShowProgress, Season, Episode } from '../../models/Show';
 
 interface ISeasonsContainerProps {
@@ -21,11 +20,11 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   show,
   showId,
 }) => {
-  const [selectedSeason, setSelectedSeason] = useState<Season | false>();
+  const [selectedSeason, setSelectedSeason] = useState<Season>();
   const [progress, setProgress] = useState<ShowProgress>();
   const [seasons, setSeasons] = useState<Season[]>([]);
   const { session } = useContext(AuthContext);
-  const { removeWatchlistLocal, showUpdated } = useContext(UserContext)!;
+  const { removeWatchlistShow, showUpdated } = useContext(UserContext)!;
   const { toggle } = useContext(ModalContext);
 
   useEffect(() => {
@@ -93,7 +92,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const addEpisodeWatched = (episode: Episode) => {
     addWatchedApi(episode, session!, 'episode').then(() => {
       updateEpisode(episode, true);
-      removeWatchlistLocal([{ show: { ...show } }] as ShowWatchlist[]);
+      removeWatchlistShow([show]);
       showUpdated(show);
     });
   };
@@ -108,7 +107,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const addSeasonWatched = (season: Season) => {
     addWatchedApi(season, session!, 'season').then(() => {
       updateSeason(season, true);
-      removeWatchlistLocal([{ show: { ...show } }] as ShowWatchlist[]);
+      removeWatchlistShow([show]);
     });
   };
   const removeSeasonWatched = (season: Season) => {
@@ -137,7 +136,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
         return;
       }
       if (selectedSeason.ids.trakt === season.ids.trakt) {
-        setSelectedSeason(false);
+        setSelectedSeason(undefined);
         return;
       }
       setSelectedSeason(season);
