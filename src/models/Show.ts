@@ -45,8 +45,11 @@ interface SmallEpisode {
 export interface Episode {
   ids: Ids;
   number: number;
+  number_abs: 14;
   season: number;
   title: string;
+  overview: string;
+  available_translations: string[];
   translations: {
     title: string;
     overview: string;
@@ -54,6 +57,12 @@ export interface Episode {
     language: string;
   }[];
   completed: boolean;
+  comment_count: number;
+  first_aired: string;
+  rating: number;
+  runtime: number;
+  updated_at: string;
+  votes: string;
 }
 
 export interface Season {

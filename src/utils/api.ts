@@ -82,7 +82,16 @@ export const getApi = <T>(id: number, type: ItemType) => {
 
 export const getSeasonsApi = (id: number) => {
   return axios.get<Season[]>(
-    `${BASE_URL}/shows/${id}/seasons?extended=episodes&translations=es`,
+    `${BASE_URL}/shows/${id}/seasons?translations=es`,
+    {
+      headers: base_headers,
+    },
+  );
+};
+
+export const getSeasonEpisodesApi = (id: number, season: number) => {
+  return axios.get<Episode[]>(
+    `${BASE_URL}/shows/${id}/seasons/${season}?extended=full&translations=es`,
     {
       headers: base_headers,
     },

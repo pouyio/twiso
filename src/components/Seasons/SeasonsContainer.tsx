@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   getSeasonsApi,
   addWatchedApi,
   removeWatchedApi,
   getProgressApi,
+  getSeasonEpisodesApi,
 } from '../../utils/api';
 import AuthContext from '../../utils/AuthContext';
 import Seasons from './Seasons';
@@ -36,6 +37,24 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   }, [show.ids.trakt]);
 
   useEffect(() => {
+    if (!selectedSeason) {
+      return;
+    }
+    if (selectedSeason && selectedSeason.episodes) {
+      return;
+    }
+    getSeasonEpisodesApi(show.ids.trakt, selectedSeason.number).then(
+      ({ data }) => {
+        setSeasons(seas => {
+          const i = seas.findIndex(s => s.number === selectedSeason.number);
+          seas[i].episodes = data;
+          return [...seas];
+        });
+      },
+    );
+  }, [selectedSeason, show.ids.trakt]);
+
+  useEffect(() => {
     setSelectedSeason(undefined);
     if (!progress) {
       return;
@@ -51,7 +70,8 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
         seasons.find(s => s.number === progress.next_episode.season),
       );
     }
-  }, [progress, seasons]);
+    // eslint-disable-next-line
+  }, [progress]);
 
   const updateEpisode = (episode: Episode, completed: boolean) => {
     if (!progress) {
@@ -128,23 +148,20 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     toggle({ title, text: overview });
   };
 
-  const selectSeason = useCallback(
-    season => {
-      if (!season) {
-        return;
-      }
-      if (!selectedSeason) {
-        setSelectedSeason(season);
-        return;
-      }
-      if (selectedSeason.ids.trakt === season.ids.trakt) {
-        setSelectedSeason(undefined);
-        return;
-      }
+  const selectSeason = (season: Season) => {
+    if (!season) {
+      return;
+    }
+    if (!selectedSeason) {
       setSelectedSeason(season);
-    },
-    [selectedSeason],
-  );
+      return;
+    }
+    if (selectedSeason.ids.trakt === season.ids.trakt) {
+      setSelectedSeason(undefined);
+      return;
+    }
+    setSelectedSeason(season);
+  };
 
   return (
     <Seasons

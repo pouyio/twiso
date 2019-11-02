@@ -91,45 +91,53 @@ const Seasons: React.FC<ISeasonsProps> = ({
     return seasonAvailable.episodes.some(e => e.number === episode.number);
   };
 
+  const getFormattedDate = (date: string, size: 'long' | 'short') => {
+    return date
+      ? new Date(date).toLocaleDateString('es', {
+          year: 'numeric',
+          month: size,
+          day: 'numeric',
+        })
+      : '-';
+  };
+
   return (
     <>
       <ul
         className="flex overflow-x-auto my-5 -mr-3"
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
-        {seasons
-          .filter(s => s.episodes)
-          .map(s => (
-            <li
-              onClick={() => setSelectedSeason(s)}
-              key={s.ids.trakt}
-              className={
-                'whitespace-pre mx-1 rounded-full text-sm px-3 py-2 cursor-pointer ' +
-                selectedClass(s)
-              }
-            >
-              {s.number ? `Temporada ${s.number}` : 'Especiales'}
-              {isSeasonWatched(s.number) ? (
-                <span className="ml-2 text-gray-600">✓</span>
-              ) : (
-                ''
-              )}
-            </li>
-          ))}
+        {seasons.map(s => (
+          <li
+            onClick={() => setSelectedSeason(s)}
+            key={s.ids.trakt}
+            className={
+              'whitespace-pre mx-1 rounded-full text-sm px-3 py-2 cursor-pointer ' +
+              selectedClass(s)
+            }
+          >
+            {s.number ? `Temporada ${s.number}` : 'Especiales'}
+            {isSeasonWatched(s.number) ? (
+              <span className="ml-2 text-gray-600">✓</span>
+            ) : (
+              ''
+            )}
+          </li>
+        ))}
       </ul>
-      {selectedSeason && (
+      {selectedSeason && selectedSeason.episodes && (
         <>
           <ul className="my-4">
-            {selectedSeason.episodes.map((e: Episode) => (
+            {selectedSeason.episodes.map(e => (
               <li
-                className="myt-6 mt-3 pb-4 text-sm leading-tight border-b"
+                className="myt-6 py-3 text-sm leading-tight border-b"
                 key={e.ids.trakt}
               >
                 <div className="mb-2 flex items-center">
                   <span className="text-gray-600 text-xs font-bold mr-1">
                     {e.number}
                   </span>
-                  {isEpisodeAvailable(e) && (
+                  {isEpisodeAvailable(e) ? (
                     <>
                       {isEpisodeWatched(e.number) ? (
                         <span className="text-gray-600 mr-2 ml-1">✓</span>
@@ -137,20 +145,28 @@ const Seasons: React.FC<ISeasonsProps> = ({
                         <span className="text-blue-400 mx-2">•</span>
                       )}
                     </>
+                  ) : (
+                    <span className="text-blue-400 mx-2 opacity-0	">•</span>
                   )}
-                  <span
+                  <div
                     onClick={() =>
                       showModal({
                         title: getTranslated('title', e),
-                        overview: getTranslated('overview', e),
+                        overview: `${getFormattedDate(
+                          e.first_aired,
+                          'long',
+                        )}\n${getTranslated('overview', e)}`,
                       })
                     }
-                    className={`flex-grow ${
+                    className={`flex-grow flex flex-col ${
                       isEpisodeWatched(e.number) ? 'text-gray-600' : ''
                     }`}
                   >
-                    {getTranslated('title', e)}
-                  </span>
+                    <span>{getTranslated('title', e)}</span>
+                    <span className="text-xs">
+                      {getFormattedDate(e.first_aired, 'short')}
+                    </span>
+                  </div>
                   {isEpisodeAvailable(e) && (
                     <button
                       className="px-5 text-right"
