@@ -20,7 +20,7 @@ export const removeCaches = () => {
   keys.forEach(key => {
     if (
       key[0].includes('-show-') ||
-      key[0].includes('-show-') ||
+      key[0].includes('-movie-') ||
       key[0].includes('-person-')
     ) {
       localStorage.removeItem(key[0]);
