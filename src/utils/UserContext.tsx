@@ -237,6 +237,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         const watchedPromises = data.map(i =>
           getProgressApi(session, i.show.ids.trakt),
         );
+        // TODO only for ordering, avoid all requests somehow
         Promise.all(watchedPromises).then(res => {
           const datas = res.map(r => r.data);
           const orderedShows = data
