@@ -12,6 +12,7 @@ import UserContext from '../utils/UserContext';
 import CollapsableText from '../components/CollapsableText';
 import { useLocation, useParams } from 'react-router-dom';
 import { SearchShow, People as IPeople, Show } from '../models';
+import Helmet from 'react-helmet';
 
 enum status {
   'returning series' = 'en antena',
@@ -68,6 +69,9 @@ export default function ShowDetail() {
 
   return item ? (
     <div className={getBgClassName()}>
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
       <div className="lg:max-w-5xl lg:mx-auto lg:pt-2">
         <div
           className="p-10 sticky top-0 z-0 lg:hidden"

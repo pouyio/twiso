@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Helmet from 'react-helmet';
 import useDebounce from '../utils/debounce';
 import ImageLink from '../components/ImageLink';
 import { searchApi } from '../utils/api';
@@ -47,6 +48,9 @@ export default function Search() {
 
   return (
     <div className="p-4 lg:max-w-5xl lg:mx-auto">
+      <Helmet>
+        <title>Search</title>
+      </Helmet>
       <div className="w-full bg-gray-300 rounded flex items-center m-auto lg:max-w-lg">
         <input
           className="bg-gray-300 rounded text-black px-2 py-1 outline-none flex-grow text-gray-700 "

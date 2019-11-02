@@ -11,6 +11,7 @@ import People from '../components/People';
 import CollapsableText from '../components/CollapsableText';
 import { SearchMovie, Movie, People as IPeople } from '../models';
 import { useLocation, useParams } from 'react-router-dom';
+import Helmet from 'react-helmet';
 
 export default function MovieDetail() {
   const [item, setItem] = useState<Movie>();
@@ -57,6 +58,9 @@ export default function MovieDetail() {
 
   return item ? (
     <div className={getBgClassName()}>
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
       <div className="lg:max-w-5xl lg:mx-auto lg:pt-2">
         <div
           className="p-10 sticky top-0 z-0 lg:hidden"

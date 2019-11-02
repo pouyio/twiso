@@ -4,12 +4,14 @@ import ThemeContext from '../utils/ThemeContext';
 import { getStatsApi } from '../utils/api';
 import { UserStats } from '../models';
 import { removeCaches } from '../utils/cache';
+import Helmet from 'react-helmet';
 
 export default function User() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [stats, setStats] = useState<UserStats>();
 
   useEffect(() => {
+    // TODO change
     getStatsApi('pouyio').then(({ data }) => setStats(data));
   }, []);
 
@@ -32,6 +34,9 @@ export default function User() {
 
   return (
     <div className="p-4 lg:max-w-5xl lg:mx-auto">
+      <Helmet>
+        <title>Profile</title>
+      </Helmet>
       <div className="lg:max-w-lg m-auto">
         <ul className="flex justify-between">
           <li className="py-1">
