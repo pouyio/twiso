@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import Helmet from 'react-helmet';
 import useDebounce from '../utils/debounce';
 import ImageLink from '../components/ImageLink';
 import { searchApi } from '../utils/api';
 import Popular from '../components/Popular';
 import useSearch from '../utils/useSearch';
 import Emoji from '../components/Emoji';
-import { SearchMovie, SearchPerson, SearchShow } from '../models/Item';
+import { SearchMovie, SearchPerson, SearchShow } from '../models';
 
 export default function Search() {
   const { search, setSearch } = useSearch();
@@ -25,16 +26,19 @@ export default function Search() {
 
     setLoading(true);
     let isSubscribed = true;
-    searchApi(debouncedSearch, 'movie,show,person').then(({ data }) => {
-      const movies = data.filter(r => r.type === 'movie');
-      const shows = data.filter(r => r.type === 'show');
-      const person = data.filter(r => r.type === 'person');
+    searchApi<SearchMovie & SearchShow & SearchPerson>(
+      debouncedSearch,
+      'movie,show,person',
+    ).then(({ data }) => {
+      const movies: SearchMovie[] = data.filter(r => r.type === 'movie');
+      const shows: SearchShow[] = data.filter(r => r.type === 'show');
+      const person: SearchPerson[] = data.filter(r => r.type === 'person');
       if (!isSubscribed) {
         return;
       }
-      setMovieResults(movies as SearchMovie[]);
-      setShowResults(shows as SearchShow[]);
-      setPeopleResults(person as SearchPerson[]);
+      setMovieResults(movies);
+      setShowResults(shows);
+      setPeopleResults(person);
       setLoading(false);
     });
     return () => {
@@ -44,6 +48,9 @@ export default function Search() {
 
   return (
     <div className="p-4 lg:max-w-5xl lg:mx-auto">
+      <Helmet>
+        <title>Search</title>
+      </Helmet>
       <div className="w-full bg-gray-300 rounded flex items-center m-auto lg:max-w-lg">
         <input
           className="bg-gray-300 rounded text-black px-2 py-1 outline-none flex-grow text-gray-700 "
@@ -53,12 +60,13 @@ export default function Search() {
           onChange={e => setSearch(e.target.value)}
           value={search}
         />
-        <Emoji
-          className="ml-3 mr-2"
-          emoji={loading ? '⏳' : '❌'}
-          rotating={loading}
-          onClick={() => setSearch('')}
-        />
+        <button onClick={() => setSearch('')}>
+          <Emoji
+            className="ml-3 mr-2"
+            emoji={loading ? '⏳' : '❌'}
+            rotating={loading}
+          />
+        </button>
       </div>
 
       {search ? (
@@ -79,7 +87,9 @@ export default function Search() {
                     style={{ height: '13.5em', width: '9.5em' }}
                   >
                     <ImageLink
-                      item={r}
+                      ids={r.movie.ids}
+                      text={r.movie.title}
+                      item={r.movie}
                       style={{ minHeight: '10em' }}
                       type="movie"
                     />
@@ -107,7 +117,9 @@ export default function Search() {
                     style={{ height: '13.5em', width: '9.5em' }}
                   >
                     <ImageLink
-                      item={r}
+                      ids={r.show.ids}
+                      text={r.show.title}
+                      item={r.show}
                       style={{ minHeight: '10em' }}
                       type="show"
                     />
@@ -135,7 +147,9 @@ export default function Search() {
                     style={{ height: '13.5em', width: '9.5em' }}
                   >
                     <ImageLink
-                      item={r}
+                      ids={r.person.ids}
+                      text={r.person.name}
+                      item={r.person}
                       style={{ minHeight: '10em' }}
                       type="person"
                     />

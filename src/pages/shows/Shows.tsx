@@ -4,13 +4,14 @@ import Emoji from '../../components/Emoji';
 import ShowsWatchlist from '../../components/ShowsWatchlist';
 import ShowsWatched from '../../components/ShowsWatched';
 import { StringParam, useQueryParam } from 'use-query-params';
+import Helmet from 'react-helmet';
 
 export default function Shows() {
   const [mode, setMode] = useQueryParam('mode', StringParam);
 
   const {
     userInfo: { shows },
-  } = useContext(UserContext);
+  } = useContext(UserContext)!;
 
   useEffect(() => {
     if (!mode) {
@@ -21,6 +22,9 @@ export default function Shows() {
 
   return (
     <div className="lg:mx-auto">
+      <Helmet>
+        <title>Shows</title>
+      </Helmet>
       <div className="flex w-full pt-2 justify-around border-gray-200 text-gray-600 lg:max-w-xl lg:m-auto">
         <button
           className={`border-b-2 pb-2 w-full ${

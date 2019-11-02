@@ -2,12 +2,16 @@ import React, { useContext, useEffect, useState } from 'react';
 import Emoji from '../components/Emoji';
 import ThemeContext from '../utils/ThemeContext';
 import { getStatsApi } from '../utils/api';
+import { UserStats } from '../models';
+import { removeCaches } from '../utils/cache';
+import Helmet from 'react-helmet';
 
 export default function User() {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const [stats, setStats] = useState();
+  const [stats, setStats] = useState<UserStats>();
 
   useEffect(() => {
+    // TODO change
     getStatsApi('pouyio').then(({ data }) => setStats(data));
   }, []);
 
@@ -30,6 +34,9 @@ export default function User() {
 
   return (
     <div className="p-4 lg:max-w-5xl lg:mx-auto">
+      <Helmet>
+        <title>Profile</title>
+      </Helmet>
       <div className="lg:max-w-lg m-auto">
         <ul className="flex justify-between">
           <li className="py-1">
@@ -65,6 +72,15 @@ export default function User() {
             <p className="text-center">
               Vistos: {stats.episodes.watched} en{' '}
               {convertMinutes(stats.episodes.minutes)}{' '}
+            </p>
+            <p className="text-center mt-8">
+              <button
+                onClick={removeCaches}
+                className="bg-gray-200 px-2 py-1 rounded-full"
+              >
+                <Emoji emoji="♻️" />
+                Remove images from cache
+              </button>
             </p>
           </>
         )}
