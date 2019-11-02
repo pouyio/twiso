@@ -65,7 +65,12 @@ const Person: React.FC = () => {
           style={{ minHeight: '15em' }}
         >
           {localState && (
-            <Image ids={localState.ids} text={localState.name} type="person" />
+            <Image
+              ids={localState.ids}
+              text={localState.name}
+              type="person"
+              size="big"
+            />
           )}
         </div>
 
@@ -75,12 +80,16 @@ const Person: React.FC = () => {
         >
           <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
           <div className="flex items-start">
-            <div className="hidden lg:block relative pr-4">
+            <div
+              className="hidden lg:block relative pr-4"
+              style={{ minWidth: '10em', maxWidth: '10em' }}
+            >
               {localState && (
                 <Image
                   ids={localState.ids}
                   text={localState.name}
                   type="person"
+                  size="big"
                 />
               )}
             </div>
