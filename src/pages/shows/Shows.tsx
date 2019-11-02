@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import UserContext from '../../utils/UserContext';
 import Emoji from '../../components/Emoji';
-import ShowsWatchlist from '../../components/ShowsWatchlist';
-import ShowsWatched from '../../components/ShowsWatched';
+import ShowsWatchlist from './ShowsWatchlist';
+import ShowsWatched from './ShowsWatched';
 import { StringParam, useQueryParam } from 'use-query-params';
 import Helmet from 'react-helmet';
 

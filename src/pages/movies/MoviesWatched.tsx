@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
-import ImageLink from './ImageLink';
-import UserContext from '../utils/UserContext';
-import PaginationContainer from './Pagination/PaginationContainer';
-import usePagination from '../utils/usePagination';
-import { MovieWatched } from '../models';
+import ImageLink from '../../components/ImageLink';
+import UserContext from '../../utils/UserContext';
+import PaginationContainer from '../../components/Pagination/PaginationContainer';
+import usePagination from '../../utils/usePagination';
+import { MovieWatched } from '../../models';
 
 const MoviesWatched: React.FC = () => {
   const [movies, setMovies] = useState<MovieWatched[]>([]);

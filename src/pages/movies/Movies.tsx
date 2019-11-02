@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
-import MoviesWatchlist from '../../components/MoviesWatchlist';
-import MoviesWatched from '../../components/MoviesWatched';
+import MoviesWatchlist from './MoviesWatchlist';
+import MoviesWatched from './MoviesWatched';
 import UserContext from '../../utils/UserContext';
 import Emoji from '../../components/Emoji';
 import { StringParam, useQueryParam } from 'use-query-params';

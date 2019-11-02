@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
-import ImageLink from './ImageLink';
-import UserContext from '../utils/UserContext';
-import PaginationContainer from './Pagination/PaginationContainer';
-import usePagination from '../utils/usePagination';
-import { ShowWatchlist } from '../models';
+import ImageLink from '../../components/ImageLink';
+import UserContext from '../../utils/UserContext';
+import PaginationContainer from '../../components/Pagination/PaginationContainer';
+import usePagination from '../../utils/usePagination';
+import { ShowWatchlist } from '../../models';
 
 const ShowsWatchlist: React.FC = () => {
   const [shows, setShows] = useState<ShowWatchlist[]>([]);
