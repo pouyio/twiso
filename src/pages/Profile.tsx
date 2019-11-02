@@ -5,15 +5,16 @@ import { getStatsApi } from '../utils/api';
 import { UserStats } from '../models';
 import { removeCaches } from '../utils/cache';
 import Helmet from 'react-helmet';
+import AuthContext from '../utils/AuthContext';
 
 export default function Profile() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [stats, setStats] = useState<UserStats>();
+  const { session } = useContext(AuthContext);
 
   useEffect(() => {
-    // TODO change
-    getStatsApi('pouyio').then(({ data }) => setStats(data));
-  }, []);
+    getStatsApi(session!).then(({ data }) => setStats(data));
+  }, [session]);
 
   const logout = () => {
     localStorage.removeItem('session');

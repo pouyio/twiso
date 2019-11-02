@@ -278,10 +278,11 @@ export const getRelatedApi = <T>(id: number, type: ItemType) => {
   );
 };
 
-export const getStatsApi = (username: string) => {
-  return axios.get<UserStats>(`${BASE_URL}/users/${username}/stats`, {
+export const getStatsApi = (session: Session) => {
+  return axios.get<UserStats>(`${BASE_URL}/users/me/stats`, {
     headers: {
       ...base_headers,
+      Authorization: `Bearer ${session.access_token}`,
     },
   });
 };
