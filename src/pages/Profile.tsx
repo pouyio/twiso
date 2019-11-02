@@ -6,7 +6,7 @@ import { UserStats } from '../models';
 import { removeCaches } from '../utils/cache';
 import Helmet from 'react-helmet';
 
-export default function User() {
+export default function Profile() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [stats, setStats] = useState<UserStats>();
 

@@ -18,7 +18,7 @@ import { ModalProvider } from './utils/ModalContext';
 import Person from './components/Person';
 import Movies from './pages/movies/Movies';
 import Shows from './pages/shows/Shows';
-import User from './pages/User';
+import Profile from './pages/Profile';
 import { QueryParamProvider } from 'use-query-params';
 import { ThemeProvider } from './utils/ThemeContext';
 const redirect_url = process.env.REACT_APP_REDIRECT_URL;
@@ -91,7 +91,7 @@ const App: React.FC = () => {
                       </Link>
                     </li>
                     <li className="py-1">
-                      <Link to="/user" className="flex items-center">
+                      <Link to="/profile" className="flex items-center">
                         <Emoji emoji="👤" />
                         <span className="ml-2 text-base hidden lg:inline">
                           Perfil
@@ -120,8 +120,8 @@ const App: React.FC = () => {
                   <ProtectedRoute path="/person/:id">
                     <Person />
                   </ProtectedRoute>
-                  <ProtectedRoute path="/user">
-                    <User />
+                  <ProtectedRoute path="/profile">
+                    <Profile />
                   </ProtectedRoute>
                   <ul className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden">
                     <li className="py-1">
