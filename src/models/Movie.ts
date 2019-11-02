@@ -28,14 +28,6 @@ export interface MovieWatchlist {
   movie: Movie;
 }
 
-export interface ShowWatchlist {
-  id?: number;
-  listed_at?: string;
-  rank?: number;
-  type: 'show';
-  show: Show;
-}
-
 export type MovieWatched = {
   action?: string;
   id?: number;
@@ -43,24 +35,6 @@ export type MovieWatched = {
   type: 'movie';
   watched_at: string;
 };
-
-export interface ShowWatched {
-  last_updated_at: string;
-  last_watched_at: string;
-  plays: number;
-  reset_at: string;
-  listed_at: string;
-  seasons: Array<{
-    episodes: Array<{
-      last_watched_at: string;
-      number: number;
-      plays: number;
-    }>;
-    number: number;
-  }>;
-  show: Show;
-  type: 'show';
-}
 
 export interface Movie {
   available_translations: string[];
