@@ -67,7 +67,7 @@ export const getImgsApi = (id: number, type: ItemType) => {
     newType = 'tv';
   }
   return limitAxios.get<ImageResponse>(
-    `${IMG_URL}/${newType}/${id}/images?api_key=${tmbdb_api_key}&include_image_language=es,en`,
+    `${IMG_URL}/${newType}/${id}/images?api_key=${tmbdb_api_key}`,
   );
 };
 
