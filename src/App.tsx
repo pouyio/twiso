@@ -11,7 +11,6 @@ import Login from './components/Login';
 import MovieDetail from './pages/MovieDetail';
 import ShowDetail from './pages/ShowDetail';
 import ProtectedRoute from './components/ProtectedRoute';
-import { UserProvider } from './utils/UserContext';
 import AuthContext, { AuthProvider } from './utils/AuthContext';
 import Emoji from './components/Emoji';
 import { ModalProvider } from './utils/ModalContext';
@@ -21,6 +20,7 @@ import Shows from './pages/shows/Shows';
 import Profile from './pages/Profile';
 import { QueryParamProvider } from 'use-query-params';
 import { ThemeProvider } from './utils/ThemeContext';
+import { StoreProvider } from './state/store';
 const redirect_url = process.env.REACT_APP_REDIRECT_URL;
 
 const ParamsComponent: React.FC = () => {
@@ -54,7 +54,7 @@ const App: React.FC = () => {
       <BrowserRouter>
         <QueryParamProvider ReactRouterRoute={Route}>
           <AuthProvider>
-            <UserProvider>
+            <StoreProvider>
               <ThemeProvider>
                 <ModalProvider modalRef={ref}>
                   <ul className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block">
@@ -130,7 +130,7 @@ const App: React.FC = () => {
                   </ul>
                 </ModalProvider>
               </ThemeProvider>
-            </UserProvider>
+            </StoreProvider>
           </AuthProvider>
         </QueryParamProvider>
       </BrowserRouter>

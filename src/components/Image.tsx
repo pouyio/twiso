@@ -1,9 +1,10 @@
-import React, { useEffect, useContext, useState } from 'react';
-import UserContext from '../utils/UserContext';
+import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-hook-inview';
 import Emoji from './Emoji';
 import getImgUrl from '../utils/extractImg';
 import { Ids } from '../models';
+import { useGlobalState } from '../state/store';
+import useIsWatch from '../utils/useIsWatch';
 
 interface IImageProps {
   ids: Ids;
@@ -25,7 +26,10 @@ const Image: React.FC<IImageProps> = ({
 }) => {
   const [imgUrl, setImgUrl] = useState('');
   const [message, setMessage] = useState('');
-  const { config, language, isWatched, isWatchlist } = useContext(UserContext);
+  const { isWatchlist, isWatched } = useIsWatch();
+  const {
+    state: { language, config },
+  } = useGlobalState();
   const [ref, inView] = useInView({ unobserveOnEnter: true });
 
   useEffect(() => {

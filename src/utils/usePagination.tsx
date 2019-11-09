@@ -1,11 +1,13 @@
-import { useEffect, useState, useContext } from 'react';
-import UserContext from './UserContext';
+import { useEffect, useState } from 'react';
 import { useQueryParam, NumberParam } from 'use-query-params';
+import { useGlobalState } from '../state/store';
 
 const usePagination = (items: any[]) => {
   const [currentPage = 1, setCurrentPage] = useQueryParam('page', NumberParam);
   const [lastPage, setLastPage] = useState(1);
-  const { PAGE_SIZE } = useContext(UserContext);
+  const {
+    state: { PAGE_SIZE },
+  } = useGlobalState();
 
   useEffect(() => {
     setCurrentPage(currentPage);

@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { PAGE_SIZE } from './UserContext';
 import rateLimit from 'axios-rate-limit';
-import { Session } from './AuthContext';
+import AuthContext, { Session } from './AuthContext';
 import {
   MovieWatchlist,
   ShowWatchlist,
@@ -23,6 +22,7 @@ import {
   UserStats,
   ImageResponse,
 } from '../models';
+import { useContext } from 'react';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
 const client_secret = process.env.REACT_APP_CLIENT_SECRET;
@@ -119,9 +119,13 @@ export const getTranslationsApi = (id: number, type: ItemType) => {
   );
 };
 
-export const searchApi = <T>(query: string, type: string) => {
+export const searchApi = <T>(
+  query: string,
+  type: string,
+  limit: number = 40,
+) => {
   return axios.get<T[]>(
-    `${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${PAGE_SIZE}`,
+    `${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${limit}`,
     {
       headers: base_headers,
     },
@@ -264,10 +268,10 @@ export const getPersonItemsApi = <T>(person: string, type: ItemType) => {
   });
 };
 
-export const getPopularApi = (type: ItemType) => {
+export const getPopularApi = (type: ItemType, limit: number = 40) => {
   const year = new Date().getFullYear();
   return axios.get<Popular[]>(
-    `${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${PAGE_SIZE}&years=${year}`,
+    `${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${limit}&years=${year}`,
     {
       headers: {
         ...base_headers,

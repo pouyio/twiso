@@ -1,32 +1,26 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React from 'react';
 import ImageLink from '../../components/ImageLink';
-import UserContext from '../../utils/UserContext';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import usePagination from '../../utils/usePagination';
-import { MovieWatched } from '../../models';
+import { useGlobalState } from '../../state/store';
 
 const MoviesWatched: React.FC = () => {
-  const [movies, setMovies] = useState<MovieWatched[]>([]);
-  const { userInfo, globalError, PAGE_SIZE } = useContext(UserContext);
-  const { currentPage } = usePagination(movies);
-
-  useEffect(() => {
-    setMovies(userInfo.movies.watched);
-  }, [userInfo.movies.watched]);
+  const {
+    state: {
+      PAGE_SIZE,
+      userInfo: {
+        movies: { watched },
+      },
+    },
+  } = useGlobalState();
+  const { currentPage } = usePagination(watched);
 
   const getMoviesByPage = (page: number) =>
-    movies.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+    watched.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div>
-      {globalError && (
-        <div>
-          <pre className="overflow-scroll text-xs text-red-700 whitespace-pre-wrap">
-            {JSON.stringify(globalError)}
-          </pre>
-        </div>
-      )}
-      <PaginationContainer items={movies}>
+      <PaginationContainer items={watched}>
         <ul className="flex flex-wrap p-2 items-stretch justify-center">
           {getMoviesByPage(currentPage).map((m, i) => (
             <li

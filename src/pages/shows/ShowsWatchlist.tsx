@@ -1,25 +1,26 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React from 'react';
 import ImageLink from '../../components/ImageLink';
-import UserContext from '../../utils/UserContext';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import usePagination from '../../utils/usePagination';
-import { ShowWatchlist } from '../../models';
+import { useGlobalState } from '../../state/store';
 
 const ShowsWatchlist: React.FC = () => {
-  const [shows, setShows] = useState<ShowWatchlist[]>([]);
-  const { userInfo, PAGE_SIZE } = useContext(UserContext);
-  const { currentPage } = usePagination(shows);
-
-  useEffect(() => {
-    setShows(userInfo.shows.watchlist);
-  }, [userInfo.shows.watchlist]);
+  const {
+    state: {
+      PAGE_SIZE,
+      userInfo: {
+        shows: { watchlist },
+      },
+    },
+  } = useGlobalState();
+  const { currentPage } = usePagination(watchlist);
 
   const getShowsByPage = (page: number) =>
-    shows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+    watchlist.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div>
-      <PaginationContainer items={shows}>
+      <PaginationContainer items={watchlist}>
         <ul className="flex flex-wrap p-2 items-stretch justify-center">
           {getShowsByPage(currentPage).map(m => (
             <li

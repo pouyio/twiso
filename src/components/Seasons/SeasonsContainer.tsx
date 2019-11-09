@@ -8,9 +8,9 @@ import {
 } from '../../utils/api';
 import AuthContext from '../../utils/AuthContext';
 import Seasons from './Seasons';
-import UserContext from '../../utils/UserContext';
 import ModalContext from '../../utils/ModalContext';
 import { Show, ShowProgress, Season, Episode } from '../../models';
+import { useGlobalState } from '../../state/store';
 
 interface ISeasonsContainerProps {
   show: Show;
@@ -25,8 +25,10 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const [progress, setProgress] = useState<ShowProgress>();
   const [seasons, setSeasons] = useState<Season[]>([]);
   const { session } = useContext(AuthContext);
-  const { removeWatchlistShow, showUpdated } = useContext(UserContext)!;
   const { toggle } = useContext(ModalContext);
+  const {
+    actions: { removeShowWatchlist, updateShow },
+  } = useGlobalState();
 
   useEffect(() => {
     getProgressApi(session!, showId).then(({ data }) => setProgress(data));
@@ -112,24 +114,25 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   };
 
   const addEpisodeWatched = (episode: Episode) => {
+    // TODO update progress because if show isnt watched, it fails
     addWatchedApi(episode, session!, 'episode').then(() => {
       updateEpisode(episode, true);
-      removeWatchlistShow([show]);
-      showUpdated(show);
+      removeShowWatchlist(show, session!);
+      updateShow(show);
     });
   };
 
   const removeEpisodeWatched = (episode: Episode) => {
     removeWatchedApi(episode, session!, 'episode').then(() => {
       updateEpisode(episode, false);
-      showUpdated(show);
+      updateShow(show);
     });
   };
 
   const addSeasonWatched = (season: Season) => {
     addWatchedApi(season, session!, 'season').then(() => {
       updateSeason(season, true);
-      removeWatchlistShow([show]);
+      removeShowWatchlist(show, session!);
     });
   };
   const removeSeasonWatched = (season: Season) => {

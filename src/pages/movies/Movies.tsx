@@ -1,17 +1,19 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import MoviesWatchlist from './MoviesWatchlist';
 import MoviesWatched from './MoviesWatched';
-import UserContext from '../../utils/UserContext';
 import Emoji from '../../components/Emoji';
 import { StringParam, useQueryParam } from 'use-query-params';
 import Helmet from 'react-helmet';
+import { useGlobalState } from '../../state/store';
 
 export default function Movies() {
   const [mode, setMode] = useQueryParam('mode', StringParam);
 
   const {
-    userInfo: { movies },
-  } = useContext(UserContext)!;
+    state: {
+      userInfo: { movies },
+    },
+  } = useGlobalState();
 
   useEffect(() => {
     if (!mode) {

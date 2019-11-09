@@ -1,24 +1,25 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React from 'react';
 import ImageLink from '../../components/ImageLink';
-import UserContext from '../../utils/UserContext';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import usePagination from '../../utils/usePagination';
-import { MovieWatchlist } from '../../models';
+import { useGlobalState } from '../../state/store';
 
 const MoviesWatchlist: React.FC = () => {
-  const [movies, setMovies] = useState<MovieWatchlist[]>([]);
-  const { userInfo, PAGE_SIZE } = useContext(UserContext);
-  const { currentPage } = usePagination(movies);
-
-  useEffect(() => {
-    setMovies(userInfo.movies.watchlist);
-  }, [userInfo.movies.watchlist]);
+  const {
+    state: {
+      PAGE_SIZE,
+      userInfo: {
+        movies: { watchlist },
+      },
+    },
+  } = useGlobalState();
+  const { currentPage } = usePagination(watchlist);
 
   const getMoviesByPage = (page: number) =>
-    movies.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+    watchlist.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
-    <PaginationContainer items={movies}>
+    <PaginationContainer items={watchlist}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
         {getMoviesByPage(currentPage).map(m => (
           <li

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getApi, getPeopleApi } from '../utils/api';
 import Image from '../components/Image';
 import useTranslate from '../utils/useTranslate';
@@ -8,11 +8,11 @@ import SeasonsContainer from '../components/Seasons/SeasonsContainer';
 import Genres from '../components/Genres';
 import ShowWatchButton from '../components/ShowWatchButton';
 import People from '../components/People';
-import UserContext from '../utils/UserContext';
 import CollapsableText from '../components/CollapsableText';
 import { useLocation, useParams } from 'react-router-dom';
 import { SearchShow, People as IPeople, Show } from '../models';
 import Helmet from 'react-helmet';
+import useIsWatch from '../utils/useIsWatch';
 
 enum status {
   'returning series' = 'en antena',
@@ -26,10 +26,11 @@ export default function ShowDetail() {
   const [item, setItem] = useState<Show>();
   const [showOriginalTitle, setShowOriginalTitle] = useState(false);
   const [people, setPeople] = useState<IPeople>();
-  const { isWatched, isWatchlist } = useContext(UserContext)!;
   const { title, overview } = useTranslate('show', item);
   const { state } = useLocation();
   const { id } = useParams();
+
+  const { isWatchlist, isWatched } = useIsWatch();
 
   useEffect(() => {
     if (!state) {
@@ -54,10 +55,10 @@ export default function ShowDetail() {
     if (!item) {
       return;
     }
-    if (isWatched(item.ids.trakt, 'show')) {
+    if (isWatched(+id, 'show')) {
       return 'bg-green-400';
     }
-    if (isWatchlist(item.ids.trakt, 'show')) {
+    if (isWatchlist(+id, 'show')) {
       return 'bg-blue-400';
     }
     return 'bg-gray-300';
@@ -129,7 +130,7 @@ export default function ShowDetail() {
                 <h2>{item.runtime || '?'} mins</h2>
               </div>
 
-              {!isWatched(item.ids.trakt, 'show') && (
+              {!isWatched(+id, 'show') && (
                 <div className="my-4">
                   <ShowWatchButton item={item} />
                 </div>

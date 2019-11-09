@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import WatchButton from '../components/WatchButton';
 import { getApi, getPeopleApi } from '../utils/api';
 import Image from '../components/Image';
 import useTranslate from '../utils/useTranslate';
 import Emoji from '../components/Emoji';
-import UserContext from '../utils/UserContext';
 import Related from '../components/Related';
 import Genres from '../components/Genres';
 import People from '../components/People';
@@ -12,15 +11,21 @@ import CollapsableText from '../components/CollapsableText';
 import { SearchMovie, Movie, People as IPeople } from '../models';
 import { useLocation, useParams } from 'react-router-dom';
 import Helmet from 'react-helmet';
+import { useGlobalState } from '../state/store';
+import useIsWatch from '../utils/useIsWatch';
 
 export default function MovieDetail() {
   const [item, setItem] = useState<Movie>();
   const [showOriginalTitle, setShowOriginalTitle] = useState(false);
   const [people, setPeople] = useState<IPeople>();
-  const { language, isWatched, isWatchlist } = useContext(UserContext)!;
+  const {
+    state: { language },
+  } = useGlobalState();
   const { title = '', overview = '' } = useTranslate('movie', item);
   const { state } = useLocation();
   const { id } = useParams();
+
+  const { isWatchlist, isWatched } = useIsWatch();
 
   useEffect(() => {
     if (!state) {
@@ -43,10 +48,10 @@ export default function MovieDetail() {
     if (!item) {
       return;
     }
-    if (isWatched(item.ids.trakt, 'movie')) {
+    if (isWatched(+id, 'movie')) {
       return 'bg-green-400';
     }
-    if (isWatchlist(item.ids.trakt, 'movie')) {
+    if (isWatchlist(+id, 'movie')) {
       return 'bg-blue-400';
     }
     return 'bg-gray-300';
