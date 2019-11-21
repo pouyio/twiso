@@ -15,4 +15,3 @@ jobs:
         uses: amondnet/now-deployment@v1
         with: 
           zeit-token: ${{ secrets.ZEIT_TOKEN }}
-          now-args: '-e REACT_APP_TRAKT_API_KEY=${{ secrets.REACT_APP_TRAKT_API_KEY }} -e REACT_APP_CLIENT_SECRET=${{ secrets.REACT_APP_CLIENT_SECRET }} -e REACT_APP_TMDB_API_KEY=${{ secrets.REACT_APP_TMDB_API_KEY }} -e REACT_APP_REDIRECT_URL=${{ secrets.REACT_APP_REDIRECT_URL }}'
