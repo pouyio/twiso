@@ -15,3 +15,4 @@ jobs:
         uses: amondnet/now-deployment@v1
         with: 
           zeit-token: ${{ secrets.ZEIT_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
