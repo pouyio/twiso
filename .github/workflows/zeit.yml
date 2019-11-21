@@ -1,37 +1,18 @@
 name: Deploy to Now
-on: [push]
+on: 
+  push:
+    branches: 
+      - master
 
 jobs:
-  filteroutmaster:
-    name: Filter out master branch
-    runs-on: ubuntu-latest
-    needs: [deploy]
-    steps:
-      - name: Filter out master branch
-        uses: actions/bin/filter@master
-        with:
-          args: "branch master"
-
-  publish:
-    name: Publish to prod
-    runs-on: ubuntu-latest
-    needs: [filteroutmaster]
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v1
-      - name: Deploy on Zeit - Prod
-        uses: actions/zeit-now@master
-        env:
-          ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
-
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v1
-      - name: Deploy on Zeit
-        uses: actions/zeit-now@master
+      - name: ZEIT Now Deployment
+        uses: amondnet/now-deployment@v1
         env:
           ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
           REACT_APP_TRAKT_API_KEY: ${{ secrets.REACT_APP_TRAKT_API_KEY }}
