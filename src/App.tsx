@@ -67,7 +67,7 @@ const App: React.FC = () => {
                     style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
                   >
                     <li className="py-1">
-                      <Link to="/movies" className="flex items-center">
+                      <Link to="/movies?mode=watchlist&page=1" className="flex items-center">
                         <Emoji emoji="🎬" />
                         <span className="ml-2 text-base hidden lg:inline">
                           Películas
@@ -75,7 +75,7 @@ const App: React.FC = () => {
                       </Link>
                     </li>
                     <li className="py-1">
-                      <Link to="/shows" className="flex items-center">
+                      <Link to="/shows?mode=watched&page=1" className="flex items-center">
                         <Emoji emoji="📺" />
                         <span className="ml-2 text-base hidden lg:inline">
                           Series
