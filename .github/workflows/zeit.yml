@@ -14,7 +14,7 @@ jobs:
       - name: ZEIT Now Deployment
         uses: amondnet/now-deployment@v1
         env:
-          ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
+          zeit-token: ${{ secrets.ZEIT_TOKEN }}
           REACT_APP_TRAKT_API_KEY: ${{ secrets.REACT_APP_TRAKT_API_KEY }}
           REACT_APP_CLIENT_SECRET: ${{ secrets.REACT_APP_CLIENT_SECRET }}
           REACT_APP_TMDB_API_KEY: ${{ secrets.REACT_APP_TMDB_API_KEY }}
