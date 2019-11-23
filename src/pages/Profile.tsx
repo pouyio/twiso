@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { version } from '../../package.json';
 import Emoji from '../components/Emoji';
 import ThemeContext from '../utils/ThemeContext';
 import { getStatsApi } from '../utils/api';
@@ -85,6 +86,9 @@ export default function Profile() {
             </p>
           </>
         )}
+        <div className="text-right pt-10 text-sm font-mono">
+          <h1>Version: {version}</h1>
+        </div>
       </div>
     </div>
   );
