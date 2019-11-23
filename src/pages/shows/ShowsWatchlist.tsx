@@ -7,22 +7,18 @@ import { useGlobalState } from '../../state/store';
 const ShowsWatchlist: React.FC = () => {
   const {
     state: {
-      PAGE_SIZE,
       userInfo: {
         shows: { watchlist },
       },
     },
   } = useGlobalState();
-  const { currentPage } = usePagination(watchlist);
-
-  const getShowsByPage = (page: number) =>
-    watchlist.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const { getItemsByPage } = usePagination(watchlist);
 
   return (
     <div>
       <PaginationContainer items={watchlist}>
         <ul className="flex flex-wrap p-2 items-stretch justify-center">
-          {getShowsByPage(currentPage).map(m => (
+          {getItemsByPage().map(m => (
             <li
               key={m.show.ids.trakt}
               className="p-2"

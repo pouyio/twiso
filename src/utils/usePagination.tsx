@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useQueryParam, NumberParam } from 'use-query-params';
 import { useGlobalState } from '../state/store';
 
-const usePagination = (items: any[]) => {
+const usePagination = <T,>(items: T[]) => {
   const [currentPage = 1, setCurrentPage] = useQueryParam('page', NumberParam);
   const [lastPage, setLastPage] = useState(1);
   const {
@@ -37,9 +37,14 @@ const usePagination = (items: any[]) => {
     setCurrentPage(localPage);
   };
 
+  const getItemsByPage = () => {
+    return items.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  };
+
   return {
     currentPage,
     lastPage,
+    getItemsByPage,
     setFirst: () => setSafePage('first'),
     setLast: () => setSafePage('last'),
     setPrev: () => turnSafePage(-1),

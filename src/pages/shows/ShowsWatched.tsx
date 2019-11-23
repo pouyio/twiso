@@ -7,22 +7,18 @@ import { useGlobalState } from '../../state/store';
 const ShowsWatched: React.FC = () => {
   const {
     state: {
-      PAGE_SIZE,
       userInfo: {
         shows: { watched },
       },
     },
   } = useGlobalState();
-  const { currentPage } = usePagination(watched);
-
-  const getShowsByPage = (page: number) =>
-    watched.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const { getItemsByPage } = usePagination(watched);
 
   return (
     <div>
       <PaginationContainer items={watched}>
         <ul className="flex flex-wrap p-2 items-stretch justify-center">
-          {getShowsByPage(currentPage).map(m => (
+          {getItemsByPage().map(m => (
             <li
               key={m.show.ids.trakt}
               className="p-2"

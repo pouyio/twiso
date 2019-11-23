@@ -1,28 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import usePagination from '../../utils/usePagination';
 import { useGlobalState } from '../../state/store';
+import { MovieWatched } from 'models';
 
 const MoviesWatched: React.FC = () => {
   const {
     state: {
-      PAGE_SIZE,
       userInfo: {
         movies: { watched },
       },
     },
   } = useGlobalState();
-  const { currentPage } = usePagination(watched);
+  const { getItemsByPage } = usePagination(watched);
+  const [orderedMovies, setOrderedMovies] = useState<MovieWatched[]>([]);
 
-  const getMoviesByPage = (page: number) =>
-    watched.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  useEffect(() => {
+    const nearFuture = new Date();
+    nearFuture.setDate(nearFuture.getDate() + 7);
+    const newItems = watched.sort((a, b) =>
+      new Date(a.watched_at) < new Date(b.watched_at) ? 1 : -1,
+    );
+    setOrderedMovies(newItems);
+  }, [watched]);
 
   return (
     <div>
-      <PaginationContainer items={watched}>
+      <PaginationContainer items={orderedMovies}>
         <ul className="flex flex-wrap p-2 items-stretch justify-center">
-          {getMoviesByPage(currentPage).map((m, i) => (
+          {getItemsByPage().map((m, i) => (
             <li
               key={`${m.movie.ids.trakt}_${i}`}
               className="p-2"
