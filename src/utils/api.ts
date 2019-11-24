@@ -1,6 +1,6 @@
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
-import AuthContext, { Session } from './AuthContext';
+import { Session } from './AuthContext';
 import {
   MovieWatchlist,
   ShowWatchlist,
@@ -22,7 +22,6 @@ import {
   UserStats,
   ImageResponse,
 } from '../models';
-import { useContext } from 'react';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
 const client_secret = process.env.REACT_APP_CLIENT_SECRET;
