@@ -14,7 +14,7 @@ const ShowsWatchlist: React.FC = () => {
       },
     },
   } = useGlobalState();
-  const { getItemsByPage } = usePagination(watchlist);
+  const { getItemsByPage } = usePagination(orderedShows);
 
   useEffect(() => {
     const nearFuture = new Date();
@@ -23,15 +23,15 @@ const ShowsWatchlist: React.FC = () => {
       .sort((a, b) =>
         new Date(a.listed_at!) < new Date(b.listed_at!) ? -1 : 1,
       )
-      .reduce((acc: ShowWatchlist[], m) => {
-        if (!m.show.first_aired) {
-          return [...acc, m];
+      .reduce((acc: ShowWatchlist[], s) => {
+        if (!s.show.first_aired) {
+          return [...acc, s];
         }
-        const released = new Date(m.show.first_aired);
+        const released = new Date(s.show.first_aired);
         if (released < nearFuture) {
-          return [m, ...acc];
+          return [s, ...acc];
         } else {
-          return [...acc, m];
+          return [...acc, s];
         }
       }, []);
     setOrderedShows(newItems);
