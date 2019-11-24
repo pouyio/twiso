@@ -1,6 +1,5 @@
 import { IState } from './state';
 import {
-  getImgsConfigApi,
   addWatchedApi,
   removeWatchedApi,
   addWatchlistApi,
@@ -16,26 +15,28 @@ import {
   Show,
 } from '../models';
 import { Session } from '../utils/AuthContext';
+import load from './firstLoadAction';
 
 export type Action =
   | {
       type: 'GET_IMG_CONFIG';
       payload: ImgConfig;
     }
-  | { type: 'ADD_WATCHED_MOVIES'; payload: MovieWatched[] }
+  | { type: 'SET_WATCHED_MOVIES'; payload: MovieWatched[] }
+  | { type: 'ADD_WATCHED_MOVIE'; payload: MovieWatched }
   | { type: 'REMOVE_WATCHED_MOVIE'; payload: Movie }
-  | { type: 'ADD_WATCHLIST_MOVIES'; payload: MovieWatchlist[] }
+  | { type: 'SET_WATCHLIST_MOVIES'; payload: MovieWatchlist[] }
   | { type: 'ADD_WATCHLIST_MOVIE'; payload: MovieWatchlist }
   | { type: 'REMOVE_WATCHLIST_MOVIE'; payload: Movie }
   | { type: 'ADD_WATCHLIST_SHOW'; payload: ShowWatchlist }
   | { type: 'REMOVE_WATCHED_SHOW'; payload: Show }
   | { type: 'REMOVE_WATCHLIST_SHOW'; payload: Show }
-  | { type: 'ADD_WATCHED_SHOWS'; payload: ShowWatched[] }
-  | { type: 'ADD_WATCHLIST_SHOWS'; payload: ShowWatchlist[] }
+  | { type: 'SET_WATCHED_SHOWS'; payload: ShowWatched[] }
+  | { type: 'SET_WATCHLIST_SHOWS'; payload: ShowWatchlist[] }
   | { type: 'UPDATE_SHOW'; payload: ShowWatched };
 
 export interface IDispatchFunctions {
-  getImgConfig: () => void;
+  firstLoad: (session: Session) => void;
   addMovieWatched: (movie: Movie, session: Session) => void;
   removeMovieWatched: (movie: Movie, session: Session) => void;
   addMovieWatchlist: (movie: Movie, session: Session) => void;
@@ -48,21 +49,16 @@ export const dispatchFunctions = (
   state: IState,
   dispatch: (action: Action) => void,
 ): IDispatchFunctions => {
-  const getImgConfig = () => {
-    getImgsConfigApi().then(({ data }) => {
-      dispatch({ type: 'GET_IMG_CONFIG', payload: data });
-    });
-  };
+  const firstLoad = load(dispatch);
+
   const addMovieWatched = async (movie: Movie, session: Session) => {
     const { data } = await addWatchedApi(movie, session, 'movie');
     if (data.added.movies) {
-      dispatch({
-        type: 'ADD_WATCHED_MOVIES',
-        payload: [
-          { movie, type: 'movie', watched_at: new Date().toISOString() },
-        ],
-      });
       dispatch({ type: 'REMOVE_WATCHLIST_MOVIE', payload: movie });
+      dispatch({
+        type: 'ADD_WATCHED_MOVIE',
+        payload: { movie, type: 'movie', watched_at: new Date().toISOString() },
+      });
     }
   };
   const removeMovieWatched = async (movie: Movie, session: Session) => {
@@ -76,7 +72,11 @@ export const dispatchFunctions = (
     if (data.added.movies) {
       dispatch({
         type: 'ADD_WATCHLIST_MOVIE',
-        payload: { movie, type: 'movie' } as MovieWatchlist,
+        payload: {
+          movie,
+          type: 'movie',
+          listed_at: new Date().toISOString(),
+        } as MovieWatchlist,
       });
       dispatch({ type: 'REMOVE_WATCHED_MOVIE', payload: movie });
     }
@@ -90,11 +90,11 @@ export const dispatchFunctions = (
   const addShowWatchlist = async (show: Show, session: Session) => {
     const { data } = await addWatchlistApi(show, session, 'show');
     if (data.added.shows) {
+      dispatch({ type: 'REMOVE_WATCHED_SHOW', payload: show });
       dispatch({
         type: 'ADD_WATCHLIST_SHOW',
-        payload: { show, type: 'show' },
+        payload: { show, type: 'show', listed_at: new Date().toISOString() },
       });
-      dispatch({ type: 'REMOVE_WATCHED_SHOW', payload: show });
     }
   };
   const removeShowWatchlist = async (show: Show, session: Session) => {
@@ -122,7 +122,7 @@ export const dispatchFunctions = (
   };
 
   return {
-    getImgConfig,
+    firstLoad,
     addMovieWatched,
     removeMovieWatched,
     addMovieWatchlist,

@@ -1,37 +1,21 @@
 import { IState } from './state';
 import { Action } from './action';
-import { MovieWatchlist } from '../models';
 
 export function reducer(state: IState, action: Action): IState {
   switch (action.type) {
     case 'GET_IMG_CONFIG':
       return { ...state, config: action.payload };
-    case 'ADD_WATCHED_MOVIES': {
-      const prevMovies = state.userInfo.movies.watched;
-      state.userInfo.movies.watched = [...action.payload, ...prevMovies];
+    case 'SET_WATCHED_MOVIES': {
+      state.userInfo.movies.watched = action.payload;
       return { ...state };
     }
-    case 'ADD_WATCHLIST_MOVIES': {
-      const nearFuture = new Date();
-      nearFuture.setDate(nearFuture.getDate() + 7);
-      const newItems = action.payload
-        .reverse()
-        .reduce((acc: MovieWatchlist[], m: MovieWatchlist) => {
-          if (!m.movie.released) {
-            return [...acc, m];
-          }
-          const released = new Date(m.movie.released);
-          if (released < nearFuture) {
-            return [m, ...acc];
-          } else {
-            return [...acc, m];
-          }
-        }, []);
-      state.userInfo.movies.watchlist = [
-        ...newItems,
-        ...state.userInfo.movies.watchlist,
-      ];
-
+    case 'ADD_WATCHED_MOVIE': {
+      const prevMovies = state.userInfo.movies.watched;
+      state.userInfo.movies.watched = [action.payload, ...prevMovies];
+      return { ...state };
+    }
+    case 'SET_WATCHLIST_MOVIES': {
+      state.userInfo.movies.watchlist = action.payload;
       return { ...state };
     }
     case 'ADD_WATCHLIST_MOVIE': {
@@ -46,14 +30,12 @@ export function reducer(state: IState, action: Action): IState {
       state.userInfo.movies.watchlist = [...oldItems];
       return { ...state };
     }
-    case 'ADD_WATCHED_SHOWS': {
-      const prevShows = state.userInfo.shows.watched;
-      state.userInfo.shows.watched = [...action.payload, ...prevShows];
+    case 'SET_WATCHED_SHOWS': {
+      state.userInfo.shows.watched = action.payload;
       return { ...state };
     }
-    case 'ADD_WATCHLIST_SHOWS': {
-      const prevShows = state.userInfo.shows.watchlist;
-      state.userInfo.shows.watchlist = [...action.payload, ...prevShows];
+    case 'SET_WATCHLIST_SHOWS': {
+      state.userInfo.shows.watchlist = action.payload;
       return { ...state };
     }
     case 'ADD_WATCHLIST_SHOW': {

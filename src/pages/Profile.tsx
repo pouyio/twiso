@@ -4,7 +4,7 @@ import Emoji from '../components/Emoji';
 import ThemeContext from '../utils/ThemeContext';
 import { getStatsApi } from '../utils/api';
 import { UserStats } from '../models';
-import { removeCaches } from '../utils/cache';
+import { removeImgCaches, removeCaches } from '../utils/cache';
 import Helmet from 'react-helmet';
 import AuthContext from '../utils/AuthContext';
 
@@ -22,7 +22,7 @@ export default function Profile() {
     window.location.reload();
   };
 
-  const convertMinutes = (minutes: number) => {
+  const convertMinutes = (minutes: number = 0) => {
     const d = Math.floor(minutes / 1440);
     const h = Math.floor((minutes - d * 1440) / 60);
     const m = Math.round(minutes % 60);
@@ -59,6 +59,24 @@ export default function Profile() {
             </button>
           </li>
         </ul>
+        <p className="text-center mt-8">
+          <button
+            onClick={removeCaches}
+            className="bg-gray-200 px-2 py-1 rounded-full"
+          >
+            <Emoji emoji="♻️" />
+            Remove app cache
+          </button>
+        </p>
+        <p className="text-center mt-8">
+          <button
+            onClick={removeImgCaches}
+            className="bg-gray-200 px-2 py-1 rounded-full"
+          >
+            <Emoji emoji="♻️" />
+            Remove images from cache
+          </button>
+        </p>
         {stats && (
           <>
             <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
@@ -74,15 +92,6 @@ export default function Profile() {
             <p className="text-center">
               Vistos: {stats.episodes.watched} en{' '}
               {convertMinutes(stats.episodes.minutes)}{' '}
-            </p>
-            <p className="text-center mt-8">
-              <button
-                onClick={removeCaches}
-                className="bg-gray-200 px-2 py-1 rounded-full"
-              >
-                <Emoji emoji="♻️" />
-                Remove images from cache
-              </button>
             </p>
           </>
         )}

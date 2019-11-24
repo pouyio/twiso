@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import usePagination from '../../utils/usePagination';
 import { useGlobalState } from '../../state/store';
+import { ShowWatched } from 'models';
 
 const ShowsWatched: React.FC = () => {
+  const [orderedShows, setOrderedShows] = useState<ShowWatched[]>([]);
   const {
     state: {
       userInfo: {
@@ -12,11 +14,20 @@ const ShowsWatched: React.FC = () => {
       },
     },
   } = useGlobalState();
-  const { getItemsByPage } = usePagination(watched);
+  const { getItemsByPage } = usePagination(orderedShows);
+
+  useEffect(() => {
+    const nearFuture = new Date();
+    nearFuture.setDate(nearFuture.getDate() + 7);
+    const newItems = watched.sort((a, b) =>
+      new Date(a.last_watched_at) < new Date(b.last_watched_at) ? 1 : -1,
+    );
+    setOrderedShows(newItems);
+  }, [watched]);
 
   return (
     <div>
-      <PaginationContainer items={watched}>
+      <PaginationContainer items={orderedShows}>
         <ul className="flex flex-wrap p-2 items-stretch justify-center">
           {getItemsByPage().map(m => (
             <li
