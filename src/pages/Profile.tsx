@@ -77,24 +77,20 @@ export default function Profile() {
             Remove images from cache
           </button>
         </p>
-        {stats && (
-          <>
-            <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
-              <Emoji emoji="🎬" /> Películas
-            </h1>
-            <p className="text-center">
-              Vistas: {stats.movies.watched} en{' '}
-              {convertMinutes(stats.movies.minutes)}
-            </p>
-            <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
-              <Emoji emoji="📺" /> Episodios
-            </h1>
-            <p className="text-center">
-              Vistos: {stats.episodes.watched} en{' '}
-              {convertMinutes(stats.episodes.minutes)}{' '}
-            </p>
-          </>
-        )}
+        <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
+          <Emoji emoji="🎬" /> Películas
+        </h1>
+        <p className="text-center">
+          Vistas: {stats && stats.movies.watched} en{' '}
+          {convertMinutes(stats && stats.movies.minutes)}
+        </p>
+        <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
+          <Emoji emoji="📺" /> Episodios
+        </h1>
+        <p className="text-center">
+          Vistos: {stats && stats.episodes.watched} en{' '}
+          {convertMinutes(stats && stats.episodes.minutes)}{' '}
+        </p>
         <div className="text-right pt-10 text-sm font-mono">
           <h1>Version: {version}</h1>
         </div>
