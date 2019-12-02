@@ -25,12 +25,20 @@ export const ThemeProvider: React.FC<IThemeProviderProps> = ({ children }) => {
       return newTheme;
     });
   };
+  
+  const styles = () => {
+    return {
+      style: (window.navigator as any).standalone
+        ? { minHeight: '100vh', paddingTop: 'env(safe-area-inset-top)' }
+        : {},
+    };
+  };
 
   return (
     <ThemeContext.Provider value={{ theme: localTheme, toggleTheme }}>
       <div
         className={`theme-wrapper text-black bg-white ${localTheme}`}
-        style={{ minHeight: 'calc(100vh - env(safe-area-inset-bottom) - 2em)' }}
+        {...styles()}
       >
         {children}
       </div>
