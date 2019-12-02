@@ -1,4 +1,5 @@
 import React, { createContext, useState, ReactNode } from 'react';
+import Helmet from 'react-helmet';
 
 export type ThemeType = 'theme-light' | 'theme-dark';
 
@@ -40,6 +41,13 @@ export const ThemeProvider: React.FC<IThemeProviderProps> = ({ children }) => {
         className={`theme-wrapper text-black bg-white ${localTheme}`}
         {...styles()}
       >
+        <Helmet>
+          <style type="text/css">{`
+            body {
+              background: ${localTheme === 'theme-dark' ? 'black' : ''};
+            }
+          `}</style>
+        </Helmet>
         {children}
       </div>
     </ThemeContext.Provider>
