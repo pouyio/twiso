@@ -123,7 +123,9 @@ const App: React.FC = () => {
                   <ProtectedRoute path="/profile">
                     <Profile />
                   </ProtectedRoute>
-                  <ul className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden">
+                  <ul className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"
+                    style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+                   >
                     <li className="py-1">
                       <Emoji emoji="📺" />P
                     </li>
