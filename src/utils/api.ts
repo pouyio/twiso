@@ -21,6 +21,8 @@ import {
   RemovedWatchlist,
   UserStats,
   ImageResponse,
+  ShowWatched,
+  MovieWatched,
 } from '../models';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
@@ -131,7 +133,10 @@ export const searchApi = <T>(
   );
 };
 
-export const getWatchedApi = <T>(session: Session, type: ItemType) => {
+export const getWatchedApi = <T extends MovieWatched | ShowWatched>(
+  session: Session,
+  type: ItemType,
+) => {
   const url =
     type === 'movie'
       ? `${BASE_URL}/sync/history/movies?page=1&limit=10000&extended=full`
