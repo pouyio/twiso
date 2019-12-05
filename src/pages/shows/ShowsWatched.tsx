@@ -18,7 +18,10 @@ const ShowsWatched: React.FC = () => {
 
   useEffect(() => {
     const newItems = watched.sort((a, b) =>
-      new Date(a.last_watched_at) < new Date(b.last_watched_at) ? 1 : -1,
+      new Date(a.progress!.last_watched_at) <
+      new Date(b.progress!.last_watched_at)
+        ? 1
+        : -1,
     );
     setOrderedShows(newItems);
   }, [watched]);
