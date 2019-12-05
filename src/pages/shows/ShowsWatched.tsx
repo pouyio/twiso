@@ -17,8 +17,6 @@ const ShowsWatched: React.FC = () => {
   const { getItemsByPage } = usePagination(orderedShows);
 
   useEffect(() => {
-    const nearFuture = new Date();
-    nearFuture.setDate(nearFuture.getDate() + 7);
     const newItems = watched.sort((a, b) =>
       new Date(a.last_watched_at) < new Date(b.last_watched_at) ? 1 : -1,
     );
