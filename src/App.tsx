@@ -48,6 +48,7 @@ const ParamsComponent: React.FC = () => {
 
 const App: React.FC = () => {
   const [ref, setRef] = useState();
+  const [loading, setLoading] = useState(true);
 
   const {
     actions: { firstLoad },
@@ -56,9 +57,9 @@ const App: React.FC = () => {
   const { session } = useContext(AuthContext);
 
   useEffect(() => {
-    if (session) {
-      firstLoad(session);
-    }
+    firstLoad(session).then(() => {
+      setLoading(false);
+    });
     // eslint-disable-next-line
   }, [session]);
 
@@ -116,35 +117,44 @@ const App: React.FC = () => {
                   </Link>
                 </li>
               </ul>
-              <Route exact path="/">
-                <ParamsComponent />
-              </Route>
-              <ProtectedRoute path="/movies">
-                <Movies />
-              </ProtectedRoute>
-              <ProtectedRoute path="/shows">
-                <Shows />
-              </ProtectedRoute>
-              <ProtectedRoute path="/search">
-                <Search />
-              </ProtectedRoute>
-              <ProtectedRoute path="/movie/:id">
-                <MovieDetail />
-              </ProtectedRoute>
-              <ProtectedRoute path="/show/:id">
-                <ShowDetail />
-              </ProtectedRoute>
-              <ProtectedRoute path="/person/:id">
-                <Person />
-              </ProtectedRoute>
-              <ProtectedRoute path="/profile">
-                <Profile />
-              </ProtectedRoute>
-              <ul className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden">
-                <li className="py-1">
-                  <Emoji emoji="📺" />P
-                </li>
-              </ul>
+              {loading ? (
+                <h1>Cargando!</h1>
+              ) : (
+                <div>
+                  <Route exact path="/">
+                    <ParamsComponent />
+                  </Route>
+                  <ProtectedRoute path="/movies">
+                    <Movies />
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/shows">
+                    <Shows />
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/search">
+                    <Search />
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/movie/:id">
+                    <MovieDetail />
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/show/:id">
+                    <ShowDetail />
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/person/:id">
+                    <Person />
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/profile">
+                    <Profile />
+                  </ProtectedRoute>
+                  <ul
+                    className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"
+                    style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+                  >
+                    <li className="py-1">
+                      <Emoji emoji="📺" />P
+                    </li>
+                  </ul>
+                </div>
+              )}
             </ModalProvider>
           </ThemeProvider>
         </QueryParamProvider>

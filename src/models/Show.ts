@@ -16,6 +16,8 @@ export interface ShowWatched {
   }>;
   show: Show;
   type: 'show';
+  progress?: ShowProgress;
+  fullSeasons?: Season[];
 }
 
 export interface ShowWatchlist {

@@ -34,6 +34,13 @@ export function reducer(state: IState, action: Action): IState {
       state.userInfo.shows.watched = action.payload;
       return { ...state };
     }
+    case 'REMOVE_WATCHED_SHOW': {
+      const oldShows = state.userInfo.shows.watched.filter(
+        om => action.payload.ids.trakt !== om.show.ids.trakt,
+      );
+      state.userInfo.shows.watched = [...oldShows];
+      return { ...state };
+    }
     case 'SET_WATCHLIST_SHOWS': {
       state.userInfo.shows.watchlist = action.payload;
       return { ...state };
@@ -57,11 +64,24 @@ export function reducer(state: IState, action: Action): IState {
       state.userInfo.movies.watched = [...oldItems];
       return { ...state };
     }
-    case 'UPDATE_SHOW': {
+    case 'UPDATE_SHOW_PROGRESS': {
       const oldItems = state.userInfo.shows.watched.filter(
-        i => i.show.ids.trakt !== action.payload.show.ids.trakt,
+        i => i.show.ids.trakt !== action.payload.show.show.ids.trakt,
       );
-      state.userInfo.shows.watched = [action.payload, ...oldItems];
+      state.userInfo.shows.watched = [
+        ...oldItems,
+        { ...action.payload.show, progress: action.payload.progress },
+      ];
+      return { ...state };
+    }
+    case 'UPDATE_SHOW_SEASONS': {
+      const oldItems = state.userInfo.shows.watched.filter(
+        i => i.show.ids.trakt !== action.payload.show.show.ids.trakt,
+      );
+      state.userInfo.shows.watched = [
+        ...oldItems,
+        { ...action.payload.show, fullSeasons: action.payload.seasons },
+      ];
       return { ...state };
     }
     default:

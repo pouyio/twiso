@@ -1,4 +1,5 @@
 import React, { createContext, useState, ReactNode } from 'react';
+import Helmet from 'react-helmet';
 
 export type ThemeType = 'theme-light' | 'theme-dark';
 
@@ -26,12 +27,27 @@ export const ThemeProvider: React.FC<IThemeProviderProps> = ({ children }) => {
     });
   };
 
+  const styles = () => {
+    return {
+      style: (window.navigator as any).standalone
+        ? { minHeight: '100vh', paddingTop: 'env(safe-area-inset-top)' }
+        : {},
+    };
+  };
+
   return (
     <ThemeContext.Provider value={{ theme: localTheme, toggleTheme }}>
       <div
         className={`theme-wrapper text-black bg-white ${localTheme}`}
-        style={{ minHeight: 'calc(100vh - env(safe-area-inset-bottom) - 2em)' }}
+        {...styles()}
       >
+        <Helmet>
+          <style type="text/css">{`
+            body {
+              background: ${localTheme === 'theme-dark' ? 'black' : ''};
+            }
+          `}</style>
+        </Helmet>
         {children}
       </div>
     </ThemeContext.Provider>

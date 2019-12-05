@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
   getSeasonsApi,
-  addWatchedApi,
-  removeWatchedApi,
-  getProgressApi,
   getSeasonEpisodesApi,
+  getProgressApi,
 } from '../../utils/api';
 import AuthContext from '../../utils/AuthContext';
 import Seasons from './Seasons';
@@ -27,16 +25,35 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const { session } = useContext(AuthContext);
   const { toggle } = useContext(ModalContext);
   const {
-    actions: { removeShowWatchlist, updateShow },
+    state: {
+      userInfo: {
+        shows: { watched },
+      },
+    },
+    actions: {
+      addEpisodeWatched: addEpisodeWatchedAction,
+      removeEpisodeWatched: removeEpisodeWatchedAction,
+      addSeasonWatched: addSeasonWatchedAction,
+      removeSeasonWatched: removeSeasonWatchedAction,
+    },
   } = useGlobalState();
 
   useEffect(() => {
-    getProgressApi(session!, showId).then(({ data }) => setProgress(data));
-  }, [session, showId]);
-
-  useEffect(() => {
-    getSeasonsApi(show.ids.trakt).then(({ data }) => setSeasons(data));
-  }, [show.ids.trakt]);
+    const fullShow = watched.find(w => w.show.ids.trakt === +showId);
+    if (fullShow && fullShow.progress) {
+      setProgress(fullShow.progress);
+      if (fullShow && fullShow.fullSeasons) {
+        setSeasons(fullShow.fullSeasons);
+      } else {
+        getSeasonsApi(showId).then(({ data }) => setSeasons(data));
+      }
+    } else {
+      getProgressApi(session!, showId).then(({ data }) => {
+        setProgress(data);
+      });
+      getSeasonsApi(showId).then(({ data }) => setSeasons(data));
+    }
+  }, [session, showId, watched]);
 
   useEffect(() => {
     if (!selectedSeason) {
@@ -72,73 +89,42 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
         seasons.find(s => s.number === progress.next_episode.season),
       );
     }
-    // eslint-disable-next-line
-  }, [progress]);
-
-  const updateEpisode = (episode: Episode, completed: boolean) => {
-    if (!progress) {
-      return;
-    }
-    const seasonIndex = progress.seasons.findIndex(
-      s => s.number === episode.season,
-    );
-    const episodeIndex = progress.seasons[seasonIndex].episodes.findIndex(
-      e => e.number === episode.number,
-    );
-    setProgress(prev => {
-      if (!prev) {
-        return;
-      }
-      prev.seasons[seasonIndex].episodes[episodeIndex].completed = completed;
-      prev.seasons[seasonIndex].completed =
-        prev.seasons[seasonIndex].completed + (completed ? 1 : -1);
-      return { ...prev };
-    });
-  };
-
-  const updateSeason = (season: Season, completed: boolean) => {
-    const seasonIndex = progress!.seasons.findIndex(
-      s => s.number === season.number,
-    );
-    setProgress(prev => {
-      if (!prev) {
-        return;
-      }
-      prev.seasons[seasonIndex].episodes = prev.seasons[
-        seasonIndex
-      ].episodes.map(e => ({ ...e, completed }));
-      prev.seasons[seasonIndex].completed =
-        prev.seasons[seasonIndex].episodes.length;
-      return { ...prev };
-    });
-  };
+  }, [progress, seasons]);
 
   const addEpisodeWatched = (episode: Episode) => {
-    // TODO update progress because if show isnt watched, it fails
-    addWatchedApi(episode, session!, 'episode').then(() => {
-      updateEpisode(episode, true);
-      removeShowWatchlist(show, session!);
-      updateShow(show);
-    });
+    const fullShow = watched.find(w => w.show.ids.trakt === show.ids.trakt);
+    if (fullShow) {
+      addEpisodeWatchedAction(fullShow, episode, session!);
+    } else {
+      addEpisodeWatchedAction(
+        // TODO temporary fix when watching first episode
+        { show, progress, fullSeasons: seasons } as any,
+        episode,
+        session!,
+      );
+    }
   };
 
   const removeEpisodeWatched = (episode: Episode) => {
-    removeWatchedApi(episode, session!, 'episode').then(() => {
-      updateEpisode(episode, false);
-      updateShow(show);
-    });
+    const fullShow = watched.find(w => w.show.ids.trakt === show.ids.trakt);
+    removeEpisodeWatchedAction(fullShow!, episode, session!);
   };
 
   const addSeasonWatched = (season: Season) => {
-    addWatchedApi(season, session!, 'season').then(() => {
-      updateSeason(season, true);
-      removeShowWatchlist(show, session!);
-    });
+    const fullShow = watched.find(w => w.show.ids.trakt === show.ids.trakt);
+    if (fullShow) {
+      addSeasonWatchedAction(fullShow, season, session!);
+    } else {
+      addSeasonWatchedAction(
+        { show, progress, fullSeasons: seasons } as any,
+        season,
+        session!,
+      );
+    }
   };
   const removeSeasonWatched = (season: Season) => {
-    removeWatchedApi(season, session!, 'season').then(() =>
-      updateSeason(season, false),
-    );
+    const fullShow = watched.find(w => w.show.ids.trakt === show.ids.trakt);
+    removeSeasonWatchedAction(fullShow!, season, session!);
   };
 
   const showModal = ({

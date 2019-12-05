@@ -4,6 +4,7 @@ import {
   removeWatchedApi,
   addWatchlistApi,
   removeWatchlistApi,
+  getProgressApi,
 } from '../utils/api';
 import {
   ImgConfig,
@@ -13,6 +14,9 @@ import {
   ShowWatched,
   Movie,
   Show,
+  ShowProgress,
+  Season,
+  Episode,
 } from '../models';
 import { Session } from '../utils/AuthContext';
 import load from './firstLoadAction';
@@ -30,20 +34,48 @@ export type Action =
   | { type: 'REMOVE_WATCHLIST_MOVIE'; payload: Movie }
   | { type: 'ADD_WATCHLIST_SHOW'; payload: ShowWatchlist }
   | { type: 'REMOVE_WATCHED_SHOW'; payload: Show }
+  | { type: 'REMOVE_WATCHED_SHOWS'; payload: ShowWatched[] }
   | { type: 'REMOVE_WATCHLIST_SHOW'; payload: Show }
   | { type: 'SET_WATCHED_SHOWS'; payload: ShowWatched[] }
+  | { type: 'ADD_WATCHED_SHOW'; payload: ShowWatched }
   | { type: 'SET_WATCHLIST_SHOWS'; payload: ShowWatchlist[] }
-  | { type: 'UPDATE_SHOW'; payload: ShowWatched };
+  | {
+      type: 'UPDATE_SHOW_PROGRESS';
+      payload: { show: ShowWatched; progress: ShowProgress };
+    }
+  | {
+      type: 'UPDATE_SHOW_SEASONS';
+      payload: { show: ShowWatched; seasons: Season[] };
+    };
 
 export interface IDispatchFunctions {
-  firstLoad: (session: Session) => void;
+  firstLoad: (session: Session | null) => Promise<boolean>;
   addMovieWatched: (movie: Movie, session: Session) => void;
   removeMovieWatched: (movie: Movie, session: Session) => void;
   addMovieWatchlist: (movie: Movie, session: Session) => void;
   removeMovieWatchlist: (movie: Movie, session: Session) => void;
   addShowWatchlist: (show: Show, session: Session) => void;
   removeShowWatchlist: (show: Show, session: Session) => void;
-  updateShow: (show: Show) => void;
+  addEpisodeWatched: (
+    show: ShowWatched,
+    episode: Episode,
+    session: Session,
+  ) => void;
+  removeEpisodeWatched: (
+    show: ShowWatched,
+    episode: Episode,
+    session: Session,
+  ) => void;
+  addSeasonWatched: (
+    show: ShowWatched,
+    season: Season,
+    session: Session,
+  ) => void;
+  removeSeasonWatched: (
+    show: ShowWatched,
+    season: Season,
+    session: Session,
+  ) => void;
 }
 export const dispatchFunctions = (
   state: IState,
@@ -106,19 +138,87 @@ export const dispatchFunctions = (
       });
     }
   };
-  const updateShow = (show: Show) => {
-    const updatedShow = state.userInfo.shows.watched.find(
-      i => i.show.ids.trakt === show.ids.trakt,
-    );
-    // TODO: only works for shows that are already watched
-    // should add new shows too, probably should make a request to progress and then add it.
-    if (!updatedShow) {
-      return;
+
+  const addEpisodeWatched = async (
+    show: ShowWatched,
+    episode: Episode,
+    session: Session,
+  ) => {
+    const { data } = await addWatchedApi(episode, session, 'episode');
+    if (data.added.episodes) {
+      const { data } = await getProgressApi(session, show.show.ids.trakt);
+      dispatch({ type: 'REMOVE_WATCHLIST_SHOW', payload: show.show });
+      dispatch({
+        type: 'UPDATE_SHOW_PROGRESS',
+        payload: {
+          show: show,
+          progress: data,
+        },
+      });
     }
-    dispatch({
-      type: 'UPDATE_SHOW',
-      payload: updatedShow,
-    });
+  };
+
+  const removeEpisodeWatched = async (
+    show: ShowWatched,
+    episode: Episode,
+    session: Session,
+  ) => {
+    const { data } = await removeWatchedApi(episode, session!, 'episode');
+    if (data.deleted.episodes) {
+      const { data } = await getProgressApi(session, show.show.ids.trakt);
+      if (!data.last_episode) {
+        dispatch({ type: 'REMOVE_WATCHED_SHOW', payload: show.show });
+      } else {
+        dispatch({
+          type: 'UPDATE_SHOW_PROGRESS',
+          payload: {
+            show: show,
+            progress: data,
+          },
+        });
+      }
+    }
+  };
+
+  const addSeasonWatched = async (
+    show: ShowWatched,
+    season: Season,
+    session: Session,
+  ) => {
+    const { data } = await addWatchedApi(season, session!, 'season');
+    if (data.added.episodes) {
+      const { data } = await getProgressApi(session, show.show.ids.trakt);
+      dispatch({ type: 'REMOVE_WATCHLIST_SHOW', payload: show.show });
+      dispatch({
+        type: 'UPDATE_SHOW_PROGRESS',
+        payload: {
+          show: show,
+          progress: data,
+        },
+      });
+    }
+  };
+
+  const removeSeasonWatched = async (
+    show: ShowWatched,
+    season: Season,
+    session: Session,
+  ) => {
+    const { data } = await removeWatchedApi(season, session!, 'season');
+    if (data.deleted.episodes) {
+      const { data } = await getProgressApi(session, show.show.ids.trakt);
+      if (!data.last_episode) {
+        dispatch({ type: 'REMOVE_WATCHED_SHOW', payload: show.show });
+      } else {
+        dispatch({
+          type: 'UPDATE_SHOW_PROGRESS',
+          payload: {
+            show: show,
+            progress: data,
+          },
+        });
+      }
+    }
   };
 
   return {
@@ -129,6 +229,9 @@ export const dispatchFunctions = (
     removeMovieWatchlist,
     addShowWatchlist,
     removeShowWatchlist,
-    updateShow,
+    addEpisodeWatched,
+    removeEpisodeWatched,
+    addSeasonWatched,
+    removeSeasonWatched,
   };
 };

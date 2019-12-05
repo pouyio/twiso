@@ -8,11 +8,17 @@ export const customMiddleware = (store: MiddlewareApi) => (
   next(action);
   switch (action.type) {
     case 'SET_WATCHED_MOVIES': {
-      db.table('movies').bulkPut(
-        action.payload.map(m => {
-          return { ...m, localState: 'watched' };
-        }),
-      );
+      db.table('movies')
+        .where('localState')
+        .equals('watched')
+        .delete()
+        .then(() => {
+          db.table('movies').bulkPut(
+            action.payload.map(m => {
+              return { ...m, localState: 'watched' };
+            }),
+          );
+        });
       break;
     }
     case 'ADD_WATCHED_MOVIE': {
@@ -24,9 +30,15 @@ export const customMiddleware = (store: MiddlewareApi) => (
       break;
     }
     case 'SET_WATCHLIST_MOVIES': {
-      db.table('movies').bulkPut(
-        action.payload.map(m => ({ ...m, localState: 'watchlist' })),
-      );
+      db.table('movies')
+        .where('localState')
+        .equals('watchlist')
+        .delete()
+        .then(() => {
+          db.table('movies').bulkPut(
+            action.payload.map(m => ({ ...m, localState: 'watchlist' })),
+          );
+        });
       break;
     }
     case 'ADD_WATCHLIST_MOVIE': {
@@ -38,9 +50,15 @@ export const customMiddleware = (store: MiddlewareApi) => (
       break;
     }
     case 'SET_WATCHLIST_SHOWS': {
-      db.table('shows').bulkPut(
-        action.payload.map(s => ({ ...s, localState: 'watchlist' })),
-      );
+      db.table('shows')
+        .where('localState')
+        .equals('watchlist')
+        .delete()
+        .then(() => {
+          db.table('shows').bulkPut(
+            action.payload.map(s => ({ ...s, localState: 'watchlist' })),
+          );
+        });
       break;
     }
     case 'ADD_WATCHLIST_SHOW': {
@@ -51,18 +69,42 @@ export const customMiddleware = (store: MiddlewareApi) => (
       db.table('shows').delete(action.payload.ids.trakt);
       break;
     }
+    case 'REMOVE_WATCHED_SHOWS': {
+      db.table('shows').bulkDelete(action.payload.map(s => s.show.ids.trakt));
+      break;
+    }
     case 'REMOVE_WATCHLIST_SHOW': {
       db.table('shows').delete(action.payload.ids.trakt);
       break;
     }
     case 'SET_WATCHED_SHOWS': {
-      db.table('shows').bulkPut(
-        action.payload.map(s => ({ ...s, localState: 'watched' })),
-      );
+      db.table('shows')
+        .where('localState')
+        .equals('watched')
+        .delete()
+        .then(() => {
+          db.table('shows').bulkPut(
+            action.payload.map(s => ({ ...s, localState: 'watched' })),
+          );
+        });
       break;
     }
-    case 'UPDATE_SHOW': {
-      console.log(action.type);
+    case 'ADD_WATCHED_SHOW': {
+      db.table('shows').put({ ...action.payload, localState: 'watched' });
+      break;
+    }
+    case 'UPDATE_SHOW_PROGRESS': {
+      db.table('shows')
+        .where('show.ids.trakt')
+        .equals(action.payload.show.show.ids.trakt)
+        .modify({ progress: action.payload.progress });
+      break;
+    }
+    case 'UPDATE_SHOW_SEASONS': {
+      db.table('shows')
+        .where('show.ids.trakt')
+        .equals(action.payload.show.show.ids.trakt)
+        .modify({ fullSeasons: action.payload.seasons });
       break;
     }
   }
