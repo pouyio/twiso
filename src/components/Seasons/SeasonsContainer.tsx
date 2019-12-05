@@ -97,7 +97,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       addEpisodeWatchedAction(fullShow, episode, session!);
     } else {
       addEpisodeWatchedAction(
-        // TODO temporary fix when watching first episode
+        // fix for watching first episode and no ShowWatched is present yet
         { show, progress, fullSeasons: seasons } as any,
         episode,
         session!,

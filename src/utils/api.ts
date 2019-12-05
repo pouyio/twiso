@@ -183,17 +183,17 @@ export const removeWatchedApi = (
   );
 };
 
-export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
-  session: Session,
-  type: ItemType,
-) => {
+export const getWatchlistApi = (session: Session) => {
   return axios
-    .get<T[]>(`${BASE_URL}/sync/watchlist/${type}s?extended=full`, {
-      headers: {
-        ...base_headers,
-        Authorization: `Bearer ${session.access_token}`,
+    .get<(MovieWatchlist | ShowWatchlist)[]>(
+      `${BASE_URL}/sync/watchlist?extended=full`,
+      {
+        headers: {
+          ...base_headers,
+          Authorization: `Bearer ${session.access_token}`,
+        },
       },
-    })
+    )
     .then(res => {
       const ordered = res.data.sort(
         (a, b) =>

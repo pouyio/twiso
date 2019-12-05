@@ -47,9 +47,6 @@ const load = (dispatch: (action: Action) => void) => async (
       .toArray();
 
     dispatch({ type: 'SET_WATCHLIST_MOVIES', payload: moviesWatchlist });
-
-    const { data } = await getWatchlistApi<MovieWatchlist>(session, 'movie');
-    dispatch({ type: 'SET_WATCHLIST_MOVIES', payload: data });
   } catch (error) {
     console.error(error);
   }
@@ -61,9 +58,18 @@ const load = (dispatch: (action: Action) => void) => async (
       .toArray();
 
     dispatch({ type: 'SET_WATCHLIST_SHOWS', payload: showsWatchlist });
+  } catch (error) {
+    console.error(error);
+  }
 
-    const { data } = await getWatchlistApi<ShowWatchlist>(session, 'show');
-    dispatch({ type: 'SET_WATCHLIST_SHOWS', payload: data });
+  try {
+    const { data } = await getWatchlistApi(session);
+    const moviesReponse = data.filter(
+      e => e.type === 'movie',
+    ) as MovieWatchlist[];
+    const showsReponse = data.filter(e => e.type === 'show') as ShowWatchlist[];
+    dispatch({ type: 'SET_WATCHLIST_MOVIES', payload: moviesReponse });
+    dispatch({ type: 'SET_WATCHLIST_SHOWS', payload: showsReponse });
   } catch (error) {
     console.error(error);
   }
@@ -108,11 +114,6 @@ const load = (dispatch: (action: Action) => void) => async (
         },
       });
     });
-    // const orderedShows = data
-    //   .map((item, index: number) => ({ watched: datas[index], item }))
-    //   .sort(sortShowsWatched)
-    //   .map(({ item }) => item);
-    // setWatchedShow(orderedShows);
 
     const seasonsPromises = outdatedShows.map(i =>
       getSeasonsApi(i.show.ids.trakt),
