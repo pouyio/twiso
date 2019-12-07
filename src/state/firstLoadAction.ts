@@ -85,9 +85,9 @@ const load = (dispatch: (action: Action) => void) => async (
     const showsToUpdate = showsWatched.filter(s => {
       return data.some(
         sd =>
+          !s.progress ||
           (s.show.ids.trakt === sd.show.ids.trakt &&
-            s.last_updated_at !== sd.last_updated_at) ||
-          !s.progress,
+            s.last_updated_at !== sd.last_updated_at),
       );
     });
     const showsToAdd = data.filter(
