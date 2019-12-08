@@ -91,32 +91,25 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     );
   }, [selectedSeason, show.ids.trakt]);
 
+  const localShowFullSeasonsRef = localShow?.fullSeasons;
+  const localShowProgressRef = localShow?.progress;
   useEffect(() => {
-    debugger;
-    if (!localShow) {
+    if (
+      !localShowFullSeasonsRef ||
+      !localShowProgressRef ||
+      !localShowProgressRef.next_episode
+    ) {
       return;
     }
-    // setSelectedSeason(undefined);
-    // if (!progress) {
-    //   return;
-    // }
-    // if (
-    //   progress.next_episode &&
-    //   progress.next_episode.season &&
-    //   !(
-    //     progress.next_episode.season === 1 && progress.next_episode.number === 1
-    //   )
-    // ) {
     setSelectedSeason(
-      localShow.fullSeasons!.find(
-        s => s.number === localShow.progress!.next_episode.season,
+      localShowFullSeasonsRef.find(
+        s => s.number === localShowProgressRef.next_episode!.season,
       ),
     );
-    // }
-  }, [localShow]);
+  }, [localShowFullSeasonsRef, localShowProgressRef]);
 
   const addEpisodeWatched = (episode: Episode) => {
-    const fullShow = watched.find(w => w.show.ids.trakt === show.ids.trakt);
+    const fullShow = fullShowFn();
     if (fullShow) {
       addEpisodeWatchedAction(fullShow, episode, session!);
     } else {
@@ -130,12 +123,12 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   };
 
   const removeEpisodeWatched = (episode: Episode) => {
-    const fullShow = watched.find(w => w.show.ids.trakt === show.ids.trakt);
+    const fullShow = fullShowFn();
     removeEpisodeWatchedAction(fullShow!, episode, session!);
   };
 
   const addSeasonWatched = (season: Season) => {
-    const fullShow = watched.find(w => w.show.ids.trakt === show.ids.trakt);
+    const fullShow = fullShowFn();
     if (fullShow) {
       addSeasonWatchedAction(fullShow, season, session!);
     } else {
@@ -178,8 +171,8 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
 
   return fullShowFn() ? (
     <Seasons
-      seasons={fullShowFn()!.fullSeasons!}
-      progress={fullShowFn()!.progress}
+      seasons={fullShowFn()?.fullSeasons!}
+      progress={fullShowFn()?.progress}
       addEpisodeWatched={addEpisodeWatched}
       removeEpisodeWatched={removeEpisodeWatched}
       addSeasonWatched={addSeasonWatched}
