@@ -106,7 +106,7 @@ export interface ShowProgress {
   hidden_seasons: any[];
   last_episode: SmallEpisode;
   last_watched_at: string;
-  next_episode: SmallEpisode;
+  next_episode?: SmallEpisode;
   reset_at: string;
   seasons: Season[];
 }
