@@ -65,23 +65,43 @@ export function reducer(state: IState, action: Action): IState {
       return { ...state };
     }
     case 'UPDATE_SHOW_PROGRESS': {
-      const oldItems = state.userInfo.shows.watched.filter(
-        i => i.show.ids.trakt !== action.payload.show.show.ids.trakt,
+      const showIndex = state.userInfo.shows.watched.findIndex(
+        s => s.show.ids.trakt === action.payload.show.show.ids.trakt,
       );
-      state.userInfo.shows.watched = [
-        ...oldItems,
-        { ...action.payload.show, progress: action.payload.progress },
-      ];
+      let newShowsWatched;
+      if (showIndex === -1) {
+        newShowsWatched = [
+          ...state.userInfo.shows.watched,
+          { ...action.payload.show, progress: action.payload.progress },
+        ];
+      } else {
+        state.userInfo.shows.watched[showIndex] = {
+          ...state.userInfo.shows.watched[showIndex],
+          progress: action.payload.progress,
+        };
+        newShowsWatched = [...state.userInfo.shows.watched];
+      }
+      state.userInfo.shows.watched = newShowsWatched;
       return { ...state };
     }
     case 'UPDATE_SHOW_SEASONS': {
-      const oldItems = state.userInfo.shows.watched.filter(
-        i => i.show.ids.trakt !== action.payload.show.show.ids.trakt,
+      const showIndex = state.userInfo.shows.watched.findIndex(
+        s => s.show.ids.trakt === action.payload.show.show.ids.trakt,
       );
-      state.userInfo.shows.watched = [
-        ...oldItems,
-        { ...action.payload.show, fullSeasons: action.payload.seasons },
-      ];
+      let newShowsWatched;
+      if (showIndex === -1) {
+        newShowsWatched = [
+          ...state.userInfo.shows.watched,
+          { ...action.payload.show, fullSeasons: action.payload.seasons },
+        ];
+      } else {
+        state.userInfo.shows.watched[showIndex] = {
+          ...state.userInfo.shows.watched[showIndex],
+          fullSeasons: action.payload.seasons,
+        };
+        newShowsWatched = [...state.userInfo.shows.watched];
+      }
+      state.userInfo.shows.watched = newShowsWatched;
       return { ...state };
     }
     default:

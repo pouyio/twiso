@@ -20,8 +20,8 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   showId,
 }) => {
   const [selectedSeason, setSelectedSeason] = useState<Season>();
-  // const [progress, setProgress] = useState<ShowProgress>();
-  const [seasons, setSeasons] = useState<Season[]>([]);
+  const [unTrackedProgress, setUnTrackedProgress] = useState<ShowProgress>();
+  const [unTrackedSeasons, setUnTrackedSeasons] = useState<Season[]>([]);
   const [localShow, setLocalShow] = useState<ShowWatched>();
   const { session } = useContext(AuthContext);
   const { toggle } = useContext(ModalContext);
@@ -51,22 +51,15 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     }
   }, [fullShowFn]);
 
-  // useEffect(() => {
-  //   const fullShow = watched.find(w => w.show.ids.trakt === +showId);
-  //   if (fullShow && fullShow.progress) {
-  //     setProgress(fullShow.progress);
-  //     if (fullShow && fullShow.fullSeasons) {
-  //       setSeasons(fullShow.fullSeasons);
-  //     } else {
-  //       getSeasonsApi(showId).then(({ data }) => setSeasons(data));
-  //     }
-  //   } else {
-  //     getProgressApi(session!, showId).then(({ data }) => {
-  //       setProgress(data);
-  //     });
-  //     getSeasonsApi(showId).then(({ data }) => setSeasons(data));
-  //   }
-  // }, [session, showId, watched]);
+  useEffect(() => {
+    if (fullShowFn()) {
+      return;
+    }
+    getSeasonsApi(showId).then(({ data }) => setUnTrackedSeasons(data));
+    getProgressApi(session!, showId).then(({ data }) =>
+      setUnTrackedProgress(data),
+    );
+  }, [session, showId, fullShowFn]);
 
   useEffect(() => {
     if (!selectedSeason) {
@@ -75,8 +68,14 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     if (selectedSeason && selectedSeason.episodes) {
       return;
     }
-    getSeasonEpisodesApi(show.ids.trakt, selectedSeason.number).then(
-      ({ data }) => {
+    getSeasonEpisodesApi(showId, selectedSeason.number).then(({ data }) => {
+      if (!localShow) {
+        setUnTrackedSeasons(us => {
+          const i = us.findIndex(s => s.number === selectedSeason.number);
+          us[i].episodes = data;
+          return [...us];
+        });
+      } else {
         setLocalShow(ls => {
           if (!ls) {
             return;
@@ -87,26 +86,22 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
           ls!.fullSeasons![i].episodes = data;
           return { ...ls };
         });
-      },
-    );
-  }, [selectedSeason, show.ids.trakt]);
+      }
+    });
+  }, [selectedSeason, showId, localShow]);
 
   const localShowFullSeasonsRef = localShow?.fullSeasons;
-  const localShowProgressRef = localShow?.progress;
+  const localShowNextEpisodeRef = localShow?.progress?.next_episode;
   useEffect(() => {
-    if (
-      !localShowFullSeasonsRef ||
-      !localShowProgressRef ||
-      !localShowProgressRef.next_episode
-    ) {
+    if (!localShowFullSeasonsRef || !localShowNextEpisodeRef) {
       return;
     }
     setSelectedSeason(
       localShowFullSeasonsRef.find(
-        s => s.number === localShowProgressRef.next_episode!.season,
+        s => s.number === localShowNextEpisodeRef.season,
       ),
     );
-  }, [localShowFullSeasonsRef, localShowProgressRef]);
+  }, [localShowFullSeasonsRef, localShowNextEpisodeRef]);
 
   const addEpisodeWatched = (episode: Episode) => {
     const fullShow = fullShowFn();
@@ -115,7 +110,11 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     } else {
       addEpisodeWatchedAction(
         // fix for watching first episode and no ShowWatched is present yet
-        { show, progress: fullShow!.progress, fullSeasons: seasons } as any,
+        ({
+          show,
+          progress: unTrackedSeasons,
+          fullSeasons: unTrackedSeasons,
+        } as unknown) as ShowWatched,
         episode,
         session!,
       );
@@ -133,7 +132,11 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       addSeasonWatchedAction(fullShow, season, session!);
     } else {
       addSeasonWatchedAction(
-        { show, progress: fullShow!.progress, fullSeasons: seasons } as any,
+        ({
+          show,
+          progress: unTrackedProgress,
+          fullSeasons: unTrackedSeasons,
+        } as unknown) as ShowWatched,
         season,
         session!,
       );
@@ -169,10 +172,10 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     setSelectedSeason(season);
   };
 
-  return fullShowFn() ? (
+  return (
     <Seasons
-      seasons={fullShowFn()?.fullSeasons!}
-      progress={fullShowFn()?.progress}
+      seasons={fullShowFn()?.fullSeasons ?? unTrackedSeasons}
+      progress={fullShowFn()?.progress ?? unTrackedProgress}
       addEpisodeWatched={addEpisodeWatched}
       removeEpisodeWatched={removeEpisodeWatched}
       addSeasonWatched={addSeasonWatched}
@@ -181,8 +184,6 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       setSelectedSeason={selectSeason}
       showModal={showModal}
     />
-  ) : (
-    <h1>Esta no se sigue</h1>
   );
 };
 

@@ -17,13 +17,19 @@ const ShowsWatched: React.FC = () => {
   const { getItemsByPage } = usePagination(orderedShows);
 
   useEffect(() => {
-    const newItems = watched.sort((a, b) =>
-      new Date(a.progress!.last_watched_at) <
-      new Date(b.progress!.last_watched_at)
-        ? 1
-        : -1,
+    setOrderedShows(
+      watched.sort((a, b) => {
+        if (!a.progress?.next_episode) {
+          return 1;
+        }
+        if (!b.progress?.next_episode) {
+          return -1;
+        }
+        const aDate = new Date(a.progress?.last_watched_at ?? '');
+        const bDate = new Date(b.progress?.last_watched_at ?? '');
+        return aDate < bDate ? 1 : -1;
+      }),
     );
-    setOrderedShows(newItems);
   }, [watched]);
 
   return (
