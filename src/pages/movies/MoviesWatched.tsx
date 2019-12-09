@@ -17,8 +17,6 @@ const MoviesWatched: React.FC = () => {
   const [orderedMovies, setOrderedMovies] = useState<MovieWatched[]>([]);
 
   useEffect(() => {
-    const nearFuture = new Date();
-    nearFuture.setDate(nearFuture.getDate() + 7);
     const newItems = watched.sort((a, b) =>
       new Date(a.watched_at) < new Date(b.watched_at) ? 1 : -1,
     );
