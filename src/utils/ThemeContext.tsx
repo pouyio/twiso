@@ -26,7 +26,7 @@ export const ThemeProvider: React.FC<IThemeProviderProps> = ({ children }) => {
       return newTheme;
     });
   };
-  
+
   const styles = () => {
     return {
       style: (window.navigator as any).standalone

@@ -1,3 +1,5 @@
+import db from './db';
+
 export const saveToCache = (
   id: number,
   type: 'show' | 'movie' | 'person',
@@ -15,7 +17,7 @@ export const getFromCache = (
   return localStorage.getItem(`${id}-${type}-${language}`);
 };
 
-export const removeCaches = () => {
+export const removeImgCaches = () => {
   const keys = Object.entries(localStorage);
   keys.forEach(key => {
     if (
@@ -26,4 +28,9 @@ export const removeCaches = () => {
       localStorage.removeItem(key[0]);
     }
   });
+};
+
+export const removeCaches = () => {
+  db.table('movies').clear();
+  db.table('shows').clear();
 };

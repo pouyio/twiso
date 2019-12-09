@@ -81,7 +81,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
   };
 
   const isEpisodeAvailable = (episode: Episode) => {
-    const seasonAvailable = progress!.seasons.find(
+    const seasonAvailable = progress?.seasons.find(
       s => s.number === episode.season,
     );
     if (!seasonAvailable) {

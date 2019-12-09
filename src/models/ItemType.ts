@@ -1,6 +1,1 @@
-export type ItemType =
-  | 'show'
-  | 'movie'
-  | 'person'
-  | 'episode'
-  | 'season';
+export type ItemType = 'show' | 'movie' | 'person' | 'episode' | 'season';

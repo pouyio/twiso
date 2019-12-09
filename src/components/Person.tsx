@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from './Image';
 import ImageLink from './ImageLink';
 import CollapsableText from './CollapsableText';
 import { getPersonItemsApi, getPersonApi } from '../utils/api';
-import UserContext from '../utils/UserContext';
 import Emoji from './Emoji';
 import { useParams } from 'react-router-dom';
 import {
@@ -13,6 +12,7 @@ import {
   Movie,
   Show,
 } from '../models';
+import { useGlobalState } from '../state/store';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
@@ -23,7 +23,9 @@ const Person: React.FC = () => {
     { show: Show; type: 'show'; title: string }[]
   >([]);
 
-  const { language } = useContext(UserContext);
+  const {
+    state: { language },
+  } = useGlobalState();
 
   const { id } = useParams();
 

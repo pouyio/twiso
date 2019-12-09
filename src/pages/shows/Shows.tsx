@@ -1,17 +1,21 @@
-import React, { useContext, useEffect } from 'react';
-import UserContext from '../../utils/UserContext';
+import React, { useEffect } from 'react';
 import Emoji from '../../components/Emoji';
-import ShowsWatchlist from '../../components/ShowsWatchlist';
-import ShowsWatched from '../../components/ShowsWatched';
+import ShowsWatchlist from './ShowsWatchlist';
+import ShowsWatched from './ShowsWatched';
 import { StringParam, useQueryParam } from 'use-query-params';
 import Helmet from 'react-helmet';
+import { useGlobalState } from '../../state/store';
 
 export default function Shows() {
   const [mode, setMode] = useQueryParam('mode', StringParam);
 
   const {
-    userInfo: { shows },
-  } = useContext(UserContext)!;
+    state: {
+      userInfo: {
+        shows: { watchlist, watched },
+      },
+    },
+  } = useGlobalState();
 
   useEffect(() => {
     if (!mode) {
@@ -32,7 +36,7 @@ export default function Shows() {
           }`}
           onClick={() => setMode('watchlist')}
         >
-          <Emoji emoji="⏱" /> Pendientes ({shows.watchlist.length})
+          <Emoji emoji="⏱" /> Pendientes ({watchlist.length})
         </button>
         <button
           className={`border-b-2 pb-2 w-full ${
@@ -40,7 +44,7 @@ export default function Shows() {
           }`}
           onClick={() => setMode('watched')}
         >
-          <Emoji emoji="📚" /> Siguiendo ({shows.watched.length})
+          <Emoji emoji="📚" /> Siguiendo ({watched.length})
         </button>
       </div>
       <div className="py-3">

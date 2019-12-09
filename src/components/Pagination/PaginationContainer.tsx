@@ -1,6 +1,7 @@
 import React from 'react';
 import Pagination from './Pagination';
 import usePagination from '../../utils/usePagination';
+import { PAGE_SIZE } from 'state/state';
 
 interface IPaginationContainerProps {
   items: any[];
@@ -32,9 +33,9 @@ const PaginationContainer: React.FC<IPaginationContainerProps> = ({
 
   return (
     <>
-      {LocalPagination}
+      {items.length > PAGE_SIZE && LocalPagination}
       {children}
-      {LocalPagination}
+      {items.length > PAGE_SIZE && LocalPagination}
     </>
   );
 };

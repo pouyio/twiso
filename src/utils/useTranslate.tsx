@@ -1,15 +1,17 @@
 import { useState, useEffect, useContext, useCallback } from 'react';
 import { getTranslationsApi } from './api';
 import AuthContext from './AuthContext';
-import UserContext from './UserContext';
 import { Movie, Show, Translation } from '../models';
+import { useGlobalState } from '../state/store';
 
 export default function useTranslate(
   type: 'movie' | 'show',
   item?: Show | Movie,
 ) {
   const { session } = useContext(AuthContext);
-  const { language } = useContext(UserContext);
+  const {
+    state: { language },
+  } = useGlobalState();
   const [translation, setTranslation] = useState<{
     title: string;
     overview: string;

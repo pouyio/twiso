@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { PAGE_SIZE } from './UserContext';
 import rateLimit from 'axios-rate-limit';
 import { Session } from './AuthContext';
 import {
@@ -22,6 +21,8 @@ import {
   RemovedWatchlist,
   UserStats,
   ImageResponse,
+  ShowWatched,
+  MovieWatched,
 } from '../models';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
@@ -67,7 +68,7 @@ export const getImgsApi = (id: number, type: ItemType) => {
     newType = 'tv';
   }
   return limitAxios.get<ImageResponse>(
-    `${IMG_URL}/${newType}/${id}/images?api_key=${tmbdb_api_key}&include_image_language=es,en`,
+    `${IMG_URL}/${newType}/${id}/images?api_key=${tmbdb_api_key}`,
   );
 };
 
@@ -119,16 +120,23 @@ export const getTranslationsApi = (id: number, type: ItemType) => {
   );
 };
 
-export const searchApi = <T>(query: string, type: string) => {
+export const searchApi = <T>(
+  query: string,
+  type: string,
+  limit: number = 40,
+) => {
   return axios.get<T[]>(
-    `${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${PAGE_SIZE}`,
+    `${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${limit}`,
     {
       headers: base_headers,
     },
   );
 };
 
-export const getWatchedApi = <T>(session: Session, type: ItemType) => {
+export const getWatchedApi = <T extends MovieWatched | ShowWatched>(
+  session: Session,
+  type: ItemType,
+) => {
   const url =
     type === 'movie'
       ? `${BASE_URL}/sync/history/movies?page=1&limit=10000&extended=full`
@@ -180,17 +188,17 @@ export const removeWatchedApi = (
   );
 };
 
-export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
-  session: Session,
-  type: ItemType,
-) => {
+export const getWatchlistApi = (session: Session) => {
   return axios
-    .get<T[]>(`${BASE_URL}/sync/watchlist/${type}s?extended=full`, {
-      headers: {
-        ...base_headers,
-        Authorization: `Bearer ${session.access_token}`,
+    .get<(MovieWatchlist | ShowWatchlist)[]>(
+      `${BASE_URL}/sync/watchlist?extended=full`,
+      {
+        headers: {
+          ...base_headers,
+          Authorization: `Bearer ${session.access_token}`,
+        },
       },
-    })
+    )
     .then(res => {
       const ordered = res.data.sort(
         (a, b) =>
@@ -264,10 +272,10 @@ export const getPersonItemsApi = <T>(person: string, type: ItemType) => {
   });
 };
 
-export const getPopularApi = (type: ItemType) => {
+export const getPopularApi = (type: ItemType, limit: number = 40) => {
   const year = new Date().getFullYear();
   return axios.get<Popular[]>(
-    `${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${PAGE_SIZE}&years=${year}`,
+    `${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${limit}&years=${year}`,
     {
       headers: {
         ...base_headers,
