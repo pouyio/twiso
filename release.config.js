@@ -6,26 +6,32 @@ module.exports = {
         preset: 'atom',
         releaseRules: [
           {
+            //  🐛
             emoji: ':bug:',
             release: 'patch',
           },
           {
+            //   🚀
             emoji: ':rocket:',
             release: 'patch',
           },
           {
+            //   🚑
             emoji: ':ambulance:',
             release: 'patch',
           },
           {
+            //   🎨
             emoji: ':art:',
             release: 'patch',
           },
           {
+            //   ✨
             emoji: ':sparkles:',
             release: 'minor',
           },
           {
+            //   💥
             emoji: ':boom:',
             release: 'major',
           },
@@ -54,7 +60,7 @@ module.exports = {
     [
       '@semantic-release/git',
       {
-        assets: ['CHANGELOG.md', 'schemas.md', 'package.json'],
+        assets: ['CHANGELOG.md'],
         message:
           ':bookmark: Release ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
       },

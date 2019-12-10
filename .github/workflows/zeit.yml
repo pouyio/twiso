@@ -1,8 +1,8 @@
 name: Deploy to Now
 on:
-  push:
-    branches:
-      - master
+  created:
+    tags:
+      - v*
 
 jobs:
   deploy:
