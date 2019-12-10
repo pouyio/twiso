@@ -1,3 +1,10 @@
+## [1.0.14](https://github.com/pouyio/twiso/compare/v1.0.13...v1.0.14) (2019-12-10)
+
+
+### :rocket:
+
+* fix deploy ([65882be](https://github.com/pouyio/twiso/commit/65882be5328d34cc7a82692ab7f5431ad66eb0af))
+
 ## [1.0.12](https://github.com/pouyio/twiso/compare/v1.0.11...v1.0.12) (2019-12-10)
 
 
