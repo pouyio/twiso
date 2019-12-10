@@ -2,7 +2,7 @@ name: Deploy to Now
 on:
   push:
     tags:
-      - '*'
+      - *
 
 jobs:
   deploy:
