@@ -38,12 +38,7 @@ module.exports = {
         ],
       },
     ],
-    [
-      '@semantic-release/github',
-      {
-        assets: [],
-      },
-    ],
+    '@semantic-release/github',
     [
       '@semantic-release/npm',
       {
@@ -65,7 +60,7 @@ module.exports = {
     [
       '@semantic-release/git',
       {
-        assets: ['CHANGELOG.md'],
+        assets: ['CHANGELOG.md', 'package.json'],
         message:
           ':bookmark: Release ${nextRelease.version}\n\n${nextRelease.notes}',
       },
