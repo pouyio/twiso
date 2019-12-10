@@ -1,6 +1,6 @@
 name: Deploy to Now
 on:
-  create:
+  push:
     tags:
       - '*'
 
