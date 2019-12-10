@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/pouyio/twiso/compare/v1.0.0...v1.0.1) (2019-12-10)
+
+
+### :rocket:
+
+* deploy only on tag creation ([a3d1b2c](https://github.com/pouyio/twiso/commit/a3d1b2c49f8ad8a11da5a23b258e873ebb55296b))
+
 # [1.0.0](https://github.com/pouyio/twiso/compare/v0.1.0...v1.0.0) (2019-12-10)
 
 
