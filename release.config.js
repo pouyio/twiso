@@ -39,18 +39,6 @@ module.exports = {
       },
     ],
     [
-      '@semantic-release/github',
-      {
-        assets: [],
-      },
-    ],
-    [
-      '@semantic-release/npm',
-      {
-        npmPublish: false,
-      },
-    ],
-    [
       '@semantic-release/release-notes-generator',
       {
         preset: 'atom',
@@ -60,6 +48,18 @@ module.exports = {
       '@semantic-release/changelog',
       {
         changelogFile: 'CHANGELOG.md',
+      },
+    ],
+    [
+      '@semantic-release/npm',
+      {
+        npmPublish: false,
+      },
+    ],
+    [
+      '@semantic-release/github',
+      {
+        assets: [],
       },
     ],
     [
