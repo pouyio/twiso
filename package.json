@@ -1,6 +1,6 @@
 {
   "name": "twiso",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "private": true,
   "dependencies": {
     "axios": "^0.19.0",
