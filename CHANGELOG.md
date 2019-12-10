@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/pouyio/twiso/compare/v1.0.1...v1.0.2) (2019-12-10)
+
+
+### :rocket:
+
+* test deploy ([015e205](https://github.com/pouyio/twiso/commit/015e205fd530d2119f3ac5314719186ff777be4d))
+
 ## [1.0.1](https://github.com/pouyio/twiso/compare/v1.0.0...v1.0.1) (2019-12-10)
 
 
