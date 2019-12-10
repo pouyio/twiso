@@ -1,4 +1,4 @@
-name: Version and deploy
+name: Release
 on:
   push:
     branches:
@@ -22,17 +22,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
-
-  deploy:
-    needs: release
-    name: Deploy to Now
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v1
-      - name: ZEIT Now Deployment
-        uses: amondnet/now-deployment@v1
-        with:
-          zeit-token: ${{ secrets.ZEIT_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          now-args: '--prod'
