@@ -11,19 +11,9 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v1
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: install
-      - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
       - name: ZEIT Now Deployment
         uses: amondnet/now-deployment@v1
         with:
           zeit-token: ${{ secrets.ZEIT_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          now-args: '--prod'
