@@ -22,32 +22,12 @@ module.exports = {
             release: 'patch',
           },
           {
-            emoji: ':recycle:',
-            release: 'patch',
-          },
-          {
             emoji: ':sparkles:',
             release: 'minor',
           },
           {
-            emoji: ':tada:',
-            release: 'major',
-          },
-          {
-            emoji: ':fire:',
-            release: 'patch',
-          },
-          {
             emoji: ':boom:',
             release: 'major',
-          },
-          {
-            emoji: ':construction_worker:',
-            release: 'patch',
-          },
-          {
-            emoji: ':green_heart:',
-            release: 'patch',
           },
         ],
       },
