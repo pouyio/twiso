@@ -1,8 +1,10 @@
 name: Deploy
 on:
-  push:
+  create:
     tags:
       - '*'
+  release:
+    types: [published, created, edited]
 
 jobs:
   deploy:
