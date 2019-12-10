@@ -1,3 +1,10 @@
+## [1.0.10](https://github.com/pouyio/twiso/compare/v1.0.9...v1.0.10) (2019-12-10)
+
+
+### :rocket:
+
+* remove assets from release ([4b9021a](https://github.com/pouyio/twiso/commit/4b9021a608546c6174b257d1772042a001691e64))
+
 ## [1.0.9](https://github.com/pouyio/twiso/compare/v1.0.8...v1.0.9) (2019-12-10)
 
 
