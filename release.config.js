@@ -62,7 +62,7 @@ module.exports = {
       {
         assets: ['CHANGELOG.md'],
         message:
-          ':bookmark: Release ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
+          ':bookmark: Release ${nextRelease.version}\n\n${nextRelease.notes}',
       },
     ],
   ],
