@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/pouyio/twiso/compare/v1.0.2...v1.1.0) (2019-12-11)
+
+
+### :sparkles:
+
+* fix deploy ([f673cf0](https://github.com/pouyio/twiso/commit/f673cf0371f1b001b4a20f5345e873c14a8dfaaf))
+
 # [1.0.0](https://github.com/pouyio/twiso/compare/v0.1.0...v1.0.0) (2019-12-10)
 
 ### :boom:
