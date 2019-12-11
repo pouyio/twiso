@@ -24,6 +24,9 @@ jobs:
         run: npx semantic-release
       - name: Checkout the repository
         uses: actions/checkout@v1
+        with:
+          repository: pouyio/twiso
+          ref: refs/heads/master
       - name: ZEIT Now Deployment
         uses: amondnet/now-deployment@v1
         with:
