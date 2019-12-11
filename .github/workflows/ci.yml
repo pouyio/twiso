@@ -25,6 +25,7 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v1
         with:
+          clean: false
           repository: pouyio/twiso
           ref: refs/heads/master
       - name: ZEIT Now Deployment
