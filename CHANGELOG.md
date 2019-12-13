@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/pouyio/twiso/compare/v1.2.0...v1.2.1) (2019-12-13)
+
+
+### :rocket:
+
+* profile page opened ([1a5c1c9](https://github.com/pouyio/twiso/commit/1a5c1c990a24b615d5ff6d80e8bbf96bc7397b1e))
+
 # [1.2.0](https://github.com/pouyio/twiso/compare/v1.1.0...v1.2.0) (2019-12-13)
 
 
