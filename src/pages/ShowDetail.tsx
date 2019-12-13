@@ -127,6 +127,7 @@ export default function ShowDetail() {
                 <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200 capitalize">
                   {status[item.status]}
                 </h2>
+                <h2>{item.network}</h2>
                 <h2>{item.runtime || '?'} mins</h2>
               </div>
 
