@@ -7,6 +7,7 @@ import { UserStats } from '../models';
 import { removeImgCaches, removeCaches } from '../utils/cache';
 import Helmet from 'react-helmet';
 import AuthContext from '../utils/AuthContext';
+import LoginButton from '../components/LoginButton';
 
 export default function Profile() {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -14,7 +15,9 @@ export default function Profile() {
   const { session } = useContext(AuthContext);
 
   useEffect(() => {
-    getStatsApi(session!).then(({ data }) => setStats(data));
+    if (session) {
+      getStatsApi(session).then(({ data }) => setStats(data));
+    }
   }, [session]);
 
   const logout = () => {
@@ -51,12 +54,16 @@ export default function Profile() {
             </button>
           </li>
           <li className="py-1">
-            <button
-              onClick={logout}
-              className="bg-gray-200 px-2 py-1 rounded-full"
-            >
-              <Emoji emoji="❌" /> Logout
-            </button>
+            {session ? (
+              <button
+                onClick={logout}
+                className="bg-gray-200 px-2 py-1 rounded-full"
+              >
+                <Emoji emoji="❌" /> Logout
+              </button>
+            ) : (
+              <LoginButton small />
+            )}
           </li>
         </ul>
         <p className="text-center mt-8">

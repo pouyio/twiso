@@ -142,9 +142,9 @@ const App: React.FC = () => {
                   <Route path="/person/:id">
                     <Person />
                   </Route>
-                  <ProtectedRoute path="/profile">
+                  <Route path="/profile">
                     <Profile />
-                  </ProtectedRoute>
+                  </Route>
                   <ul
                     className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"
                     style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
