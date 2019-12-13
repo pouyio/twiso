@@ -77,7 +77,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
 
   const getTranslated = (string: 'title' | 'overview', episode: Episode) => {
     if (episode.translations.length) {
-      return episode.translations[0][string];
+      return episode.translations[0][string] ?? '';
     }
     return string === 'title' ? episode.title : '';
   };
