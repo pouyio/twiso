@@ -130,18 +130,18 @@ const App: React.FC = () => {
                   <ProtectedRoute path="/shows">
                     <Shows />
                   </ProtectedRoute>
-                  <ProtectedRoute path="/search">
+                  <Route path="/search">
                     <Search />
-                  </ProtectedRoute>
-                  <ProtectedRoute path="/movie/:id">
+                  </Route>
+                  <Route path="/movie/:id">
                     <MovieDetail />
-                  </ProtectedRoute>
-                  <ProtectedRoute path="/show/:id">
+                  </Route>
+                  <Route path="/show/:id">
                     <ShowDetail />
-                  </ProtectedRoute>
-                  <ProtectedRoute path="/person/:id">
+                  </Route>
+                  <Route path="/person/:id">
                     <Person />
-                  </ProtectedRoute>
+                  </Route>
                   <ProtectedRoute path="/profile">
                     <Profile />
                   </ProtectedRoute>

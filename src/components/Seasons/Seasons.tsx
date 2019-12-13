@@ -12,6 +12,7 @@ interface ISeasonsProps {
   selectedSeason?: Season;
   setSelectedSeason: (season: Season) => void;
   showModal: (data: { title: string; overview: string }) => void;
+  onlyView: boolean;
 }
 
 const Seasons: React.FC<ISeasonsProps> = ({
@@ -24,6 +25,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
   selectedSeason,
   setSelectedSeason,
   showModal,
+  onlyView,
 }) => {
   const selectedClass = (season: Season) => {
     if (!selectedSeason) {
@@ -179,23 +181,25 @@ const Seasons: React.FC<ISeasonsProps> = ({
               </li>
             ))}
           </ul>
-          <div className="flex justify-center">
-            {isSeasonWatched(selectedSeason.number) ? (
-              <button
-                className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
-                onClick={() => removeSeasonWatched(selectedSeason)}
-              >
-                Marcar todo como no vistos
-              </button>
-            ) : (
-              <button
-                className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
-                onClick={() => addSeasonWatched(selectedSeason)}
-              >
-                Marcar todo como vistos
-              </button>
-            )}
-          </div>
+          {!onlyView && (
+            <div className="flex justify-center">
+              {isSeasonWatched(selectedSeason.number) ? (
+                <button
+                  className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
+                  onClick={() => removeSeasonWatched(selectedSeason)}
+                >
+                  Marcar todo como no vistos
+                </button>
+              ) : (
+                <button
+                  className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
+                  onClick={() => addSeasonWatched(selectedSeason)}
+                >
+                  Marcar todo como vistos
+                </button>
+              )}
+            </div>
+          )}
         </>
       )}
     </>
