@@ -56,9 +56,11 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       return;
     }
     getSeasonsApi(showId).then(({ data }) => setUnTrackedSeasons(data));
-    getProgressApi(session!, showId).then(({ data }) =>
-      setUnTrackedProgress(data),
-    );
+    if (session) {
+      getProgressApi(session, showId).then(({ data }) =>
+        setUnTrackedProgress(data),
+      );
+    }
   }, [session, showId, fullShowFn]);
 
   useEffect(() => {
@@ -183,6 +185,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       selectedSeason={selectedSeason}
       setSelectedSeason={selectSeason}
       showModal={showModal}
+      onlyView={!session}
     />
   );
 };

@@ -7,7 +7,7 @@ interface ILoginProps {
   code: string;
 }
 
-const Login = ({ code }: ILoginProps) => {
+const Login: React.FC<ILoginProps> = ({ code }) => {
   const history = useHistory();
   const { persistSession } = useContext(AuthContext);
 
