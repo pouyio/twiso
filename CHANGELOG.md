@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/pouyio/twiso/compare/v1.1.0...v1.2.0) (2019-12-13)
+
+
+### :sparkles:
+
+* search movies/shows without account ([7975b7a](https://github.com/pouyio/twiso/commit/7975b7a4299bca8d3844ee358ca0fc241caed7b6))
+
 # [1.1.0](https://github.com/pouyio/twiso/compare/v1.0.2...v1.1.0) (2019-12-11)
 
 
