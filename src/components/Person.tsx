@@ -202,7 +202,12 @@ const Person: React.FC = () => {
       </div>
     </div>
   ) : (
-    <Emoji emoji="⏳" rotating={true} />
+    <Emoji
+      emoji="⏳"
+      className="absolute text-2xl"
+      rotating={true}
+      style={{ top: 'calc(50vh - 0.5em)', left: 'calc(50vw - 0.5em)' }}
+    />
   );
 };
 
