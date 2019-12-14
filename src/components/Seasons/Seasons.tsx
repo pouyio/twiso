@@ -174,7 +174,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
                       className="px-5 text-right"
                       onClick={() => toggleEpisode(e)}
                     >
-                      <Emoji emoji="▶️" />
+                      <Emoji emoji="▶️" className="text-xl" />
                     </button>
                   )}
                 </div>
