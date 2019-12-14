@@ -135,7 +135,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
                 className="myt-6 py-3 text-sm leading-tight border-b"
                 key={e.ids.trakt}
               >
-                <div className="mb-2 flex items-center">
+                <div className="flex items-center">
                   <span className="text-gray-600 text-xs font-bold mr-1">
                     {e.number}
                   </span>
