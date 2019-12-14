@@ -1,3 +1,21 @@
+# [1.3.0](https://github.com/pouyio/twiso/compare/v1.2.1...v1.3.0) (2019-12-14)
+
+
+### :art:
+
+* bigger episode watch button ([acb20bd](https://github.com/pouyio/twiso/commit/acb20bd47e9b276f6464a52c06b4349584757621))
+* improved style ([401fa2d](https://github.com/pouyio/twiso/commit/401fa2d6776b0fef704ebc476e2ae8ccba65f100))
+* show network in show ([cc17552](https://github.com/pouyio/twiso/commit/cc17552f1b102ce8283e21952b6074663230fe99))
+* updated translations ([54e95ef](https://github.com/pouyio/twiso/commit/54e95ef2f1ec84206b1e10b47da7d4352099d3dc))
+
+### :bug:
+
+* hide null when no description available ([8947f03](https://github.com/pouyio/twiso/commit/8947f039a123687aa81c4055b13103c9f44b6f18))
+
+### :sparkles:
+
+* added rating ([5b37c8b](https://github.com/pouyio/twiso/commit/5b37c8b5fec014f6a633dfe100bdaa05aa64142f))
+
 ## [1.2.1](https://github.com/pouyio/twiso/compare/v1.2.0...v1.2.1) (2019-12-13)
 
 
