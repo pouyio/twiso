@@ -3,7 +3,7 @@ import { Movie } from '../models';
 import { useGlobalState } from '../state/store';
 import AuthContext from '../utils/AuthContext';
 import useIsWatch from '../utils/useIsWatch';
-import RegisterButton from './LoginButton';
+import { LoginButton } from '../components/LoginButton';
 
 interface IWatchButtonProps {
   item: Movie;
@@ -58,7 +58,7 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
           )}
         </>
       ) : (
-        <RegisterButton />
+        <LoginButton small />
       )}
     </div>
   );

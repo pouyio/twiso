@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import WatchButton from '../components/WatchButton';
-import { getApi, getPeopleApi } from '../utils/api';
+import { getApi, getPeopleApi, getRatingsApi } from '../utils/api';
 import Image from '../components/Image';
 import useTranslate from '../utils/useTranslate';
 import Emoji from '../components/Emoji';
@@ -8,16 +8,18 @@ import Related from '../components/Related';
 import Genres from '../components/Genres';
 import People from '../components/People';
 import CollapsableText from '../components/CollapsableText';
-import { SearchMovie, Movie, People as IPeople } from '../models';
+import { SearchMovie, Movie, People as IPeople, Ratings } from '../models';
 import { useLocation, useParams } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import { useGlobalState } from '../state/store';
 import useIsWatch from '../utils/useIsWatch';
+import Rating from 'components/Rating';
 
 export default function MovieDetail() {
   const [item, setItem] = useState<Movie>();
   const [showOriginalTitle, setShowOriginalTitle] = useState(false);
   const [people, setPeople] = useState<IPeople>();
+  const [ratings, setRatings] = useState<Ratings>();
   const {
     state: { language },
   } = useGlobalState();
@@ -38,12 +40,16 @@ export default function MovieDetail() {
     setItem(state);
     window.scrollTo(0, 0);
   }, [state, id]);
+
   useEffect(() => {
     getPeopleApi(id, 'movie').then(({ data }) => {
       setPeople(data);
     });
-    return;
+    getRatingsApi(id, 'movie').then(({ data }) => {
+      setRatings(data);
+    });
   }, [id]);
+
   const getBgClassName = () => {
     if (!item) {
       return;
@@ -111,17 +117,23 @@ export default function MovieDetail() {
             <div className="w-full">
               <h1
                 onClick={toggleShowOriginalTitle}
-                className="text-4xl leading-none text-center mb-4"
+                className="text-4xl leading-none text-center"
               >
                 {showOriginalTitle ? item.title : title}
               </h1>
+              <h1 className="text-xl leading-none text-center mb-4 text-gray-300">
+                {new Date(item.released).toLocaleDateString(language, {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </h1>
               <div className="flex mb-4 justify-between items-center text-gray-600">
                 <h2>
-                  {new Date(item.released).toLocaleDateString(language, {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
+                  <Rating
+                    rating={ratings?.rating ?? 0}
+                    votes={ratings?.votes ?? 0}
+                  />
                 </h2>
                 <h2>{item.runtime || '?'} mins</h2>
               </div>

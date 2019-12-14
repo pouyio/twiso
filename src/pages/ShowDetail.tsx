@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getApi, getPeopleApi } from '../utils/api';
+import { getApi, getPeopleApi, getRatingsApi } from '../utils/api';
 import Image from '../components/Image';
 import useTranslate from '../utils/useTranslate';
 import Emoji from '../components/Emoji';
@@ -10,9 +10,10 @@ import ShowWatchButton from '../components/ShowWatchButton';
 import People from '../components/People';
 import CollapsableText from '../components/CollapsableText';
 import { useLocation, useParams } from 'react-router-dom';
-import { SearchShow, People as IPeople, Show } from '../models';
+import { SearchShow, People as IPeople, Show, Ratings } from '../models';
 import Helmet from 'react-helmet';
 import useIsWatch from '../utils/useIsWatch';
+import Rating from 'components/Rating';
 
 enum status {
   'returning series' = 'en antena',
@@ -26,6 +27,7 @@ export default function ShowDetail() {
   const [item, setItem] = useState<Show>();
   const [showOriginalTitle, setShowOriginalTitle] = useState(false);
   const [people, setPeople] = useState<IPeople>();
+  const [ratings, setRatings] = useState<Ratings>();
   const { title, overview } = useTranslate('show', item);
   const { state } = useLocation();
   const { id } = useParams();
@@ -48,7 +50,9 @@ export default function ShowDetail() {
     getPeopleApi(id, 'show').then(({ data }) => {
       setPeople(data);
     });
-    return;
+    getRatingsApi(id, 'show').then(({ data }) => {
+      setRatings(data);
+    });
   }, [id]);
 
   const getBgClassName = () => {
@@ -127,8 +131,16 @@ export default function ShowDetail() {
                 <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200 capitalize">
                   {status[item.status]}
                 </h2>
-                <h2>{item.network}</h2>
                 <h2>{item.runtime || '?'} mins</h2>
+              </div>
+              <div className="flex mb-4 justify-between items-center text-gray-600">
+                <h2>
+                  <Rating
+                    rating={ratings?.rating ?? 0}
+                    votes={ratings?.votes ?? 0}
+                  />
+                </h2>
+                <h2>{item.network}</h2>
               </div>
 
               {!isWatched(+id, 'show') && (

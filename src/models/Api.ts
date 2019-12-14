@@ -34,6 +34,19 @@ export interface RemovedWatchlist {
   not_found: BaseNotFound;
 }
 
+interface Distribution {
+  '1': number;
+  '2': number;
+  '3': number;
+  '4': number;
+  '5': number;
+  '6': number;
+  '7': number;
+  '8': number;
+  '9': number;
+  '10': number;
+}
+
 export interface UserStats {
   movies: {
     plays: number;
@@ -68,17 +81,12 @@ export interface UserStats {
   };
   ratings: {
     total: number;
-    distribution: {
-      '1': number;
-      '2': number;
-      '3': number;
-      '4': number;
-      '5': number;
-      '6': number;
-      '7': number;
-      '8': number;
-      '9': number;
-      '10': number;
-    };
+    distribution: Distribution;
   };
+}
+
+export interface Ratings {
+  rating: number;
+  votes: number;
+  distribution: Distribution;
 }

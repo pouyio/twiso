@@ -1,7 +1,7 @@
 import React from 'react';
 const redirect_url = process.env.REACT_APP_REDIRECT_URL;
 
-const LoginButton: React.FC<{ small?: boolean }> = ({ small }) => {
+export const LoginButton: React.FC<{ small?: boolean }> = ({ small }) => {
   return (
     <a
       className={`bg-gray-300 rounded-full text-white ${
@@ -14,5 +14,3 @@ const LoginButton: React.FC<{ small?: boolean }> = ({ small }) => {
     </a>
   );
 };
-
-export default LoginButton;

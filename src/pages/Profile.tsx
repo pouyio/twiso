@@ -7,7 +7,7 @@ import { UserStats } from '../models';
 import { removeImgCaches, removeCaches } from '../utils/cache';
 import Helmet from 'react-helmet';
 import AuthContext from '../utils/AuthContext';
-import LoginButton from '../components/LoginButton';
+import { LoginButton } from '../components/LoginButton';
 
 export default function Profile() {
   const { theme, toggleTheme } = useContext(ThemeContext);

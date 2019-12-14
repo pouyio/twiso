@@ -104,7 +104,7 @@ const Person: React.FC = () => {
                 <h2>
                   {new Date(localState.birthday).toLocaleDateString(language, {
                     year: 'numeric',
-                    month: 'long',
+                    month: 'short',
                     day: 'numeric',
                   })}{' '}
                 </h2>
@@ -114,7 +114,7 @@ const Person: React.FC = () => {
                     <Emoji emoji="✝️" />{' '}
                     {new Date(localState.death).toLocaleDateString(language, {
                       year: 'numeric',
-                      month: 'long',
+                      month: 'short',
                       day: 'numeric',
                     })}
                   </h2>

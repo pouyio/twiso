@@ -23,6 +23,8 @@ import {
   ImageResponse,
   ShowWatched,
   MovieWatched,
+  Ids,
+  Ratings,
 } from '../models';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
@@ -300,6 +302,14 @@ export const getStatsApi = (session: Session) => {
     headers: {
       ...base_headers,
       Authorization: `Bearer ${session.access_token}`,
+    },
+  });
+};
+
+export const getRatingsApi = (id: Ids, type: ItemType) => {
+  return axios.get<Ratings>(`${BASE_URL}/${type}s/${id}/ratings`, {
+    headers: {
+      ...base_headers,
     },
   });
 };

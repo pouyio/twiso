@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Show } from '../models';
 import { useGlobalState } from '../state/store';
 import AuthContext from '../utils/AuthContext';
-import RegisterButton from './LoginButton';
+import { LoginButton } from './LoginButton';
 
 interface IShowWatchButtonProps {
   item: Show;
@@ -45,7 +45,7 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
           )}
         </>
       ) : (
-        <RegisterButton />
+        <LoginButton />
       )}
     </div>
   );
