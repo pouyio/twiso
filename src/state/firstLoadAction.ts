@@ -34,8 +34,9 @@ const load = (dispatch: (action: Action) => void) => async (
 
     dispatch({ type: 'SET_WATCHED_MOVIES', payload: moviesWatched });
 
-    const { data } = await getWatchedApi<MovieWatched>(session, 'movie');
-    dispatch({ type: 'SET_WATCHED_MOVIES', payload: data });
+    getWatchedApi<MovieWatched>(session, 'movie').then(({ data }) => {
+      dispatch({ type: 'SET_WATCHED_MOVIES', payload: data });
+    });
   } catch (error) {
     console.error(error);
   }
@@ -63,13 +64,16 @@ const load = (dispatch: (action: Action) => void) => async (
   }
 
   try {
-    const { data } = await getWatchlistApi(session);
-    const moviesReponse = data.filter(
-      e => e.type === 'movie',
-    ) as MovieWatchlist[];
-    const showsReponse = data.filter(e => e.type === 'show') as ShowWatchlist[];
-    dispatch({ type: 'SET_WATCHLIST_MOVIES', payload: moviesReponse });
-    dispatch({ type: 'SET_WATCHLIST_SHOWS', payload: showsReponse });
+    getWatchlistApi(session).then(({ data }) => {
+      const moviesReponse = data.filter(
+        e => e.type === 'movie',
+      ) as MovieWatchlist[];
+      const showsReponse = data.filter(
+        e => e.type === 'show',
+      ) as ShowWatchlist[];
+      dispatch({ type: 'SET_WATCHLIST_MOVIES', payload: moviesReponse });
+      dispatch({ type: 'SET_WATCHLIST_SHOWS', payload: showsReponse });
+    });
   } catch (error) {
     console.error(error);
   }
@@ -81,52 +85,54 @@ const load = (dispatch: (action: Action) => void) => async (
       .toArray();
     dispatch({ type: 'SET_WATCHED_SHOWS', payload: showsWatched });
 
-    const { data } = await getWatchedApi<ShowWatched>(session, 'show');
-    const showsToUpdate = showsWatched.filter(s => {
-      return data.some(
-        sd =>
-          !s.progress ||
-          (s.show.ids.trakt === sd.show.ids.trakt &&
-            s.last_updated_at !== sd.last_updated_at),
-      );
-    });
-    const showsToAdd = data.filter(
-      d => !showsWatched.some(s => s.show.ids.trakt === d.show.ids.trakt),
-    );
-    showsToAdd.forEach(s => dispatch({ type: 'ADD_WATCHED_SHOW', payload: s }));
-    const outdatedShows = [...showsToAdd, ...showsToUpdate];
-    const showsToDelete = showsWatched.filter(
-      s => !data.some(d => d.show.ids.trakt === s.show.ids.trakt),
-    );
-    dispatch({ type: 'REMOVE_WATCHED_SHOWS', payload: showsToDelete });
-
-    const progressPromises = outdatedShows.map(i =>
-      getProgressApi(session, i.show.ids.trakt),
-    );
-    const progressResponses = await Promise.all(progressPromises);
-    const progressData = progressResponses.map(r => r.data);
-    progressData.forEach((s, index) => {
-      dispatch({
-        type: 'UPDATE_SHOW_PROGRESS',
-        payload: {
-          show: outdatedShows[index],
-          progress: s,
-        },
+    getWatchedApi<ShowWatched>(session, 'show').then(async ({ data }) => {
+      const showsToUpdate = showsWatched.filter(s => {
+        return data.some(
+          sd =>
+            !s.progress ||
+            (s.show.ids.trakt === sd.show.ids.trakt &&
+              s.last_updated_at !== sd.last_updated_at),
+        );
       });
-    });
+      const showsToAdd = data.filter(
+        d => !showsWatched.some(s => s.show.ids.trakt === d.show.ids.trakt),
+      );
+      showsToAdd.forEach(s =>
+        dispatch({ type: 'ADD_WATCHED_SHOW', payload: s }),
+      );
+      const outdatedShows = [...showsToAdd, ...showsToUpdate];
+      const showsToDelete = showsWatched.filter(
+        s => !data.some(d => d.show.ids.trakt === s.show.ids.trakt),
+      );
+      dispatch({ type: 'REMOVE_WATCHED_SHOWS', payload: showsToDelete });
+      const progressPromises = outdatedShows.map(i =>
+        getProgressApi(session, i.show.ids.trakt),
+      );
+      const progressResponses = await Promise.all(progressPromises);
+      const progressData = progressResponses.map(r => r.data);
+      progressData.forEach((s, index) => {
+        dispatch({
+          type: 'UPDATE_SHOW_PROGRESS',
+          payload: {
+            show: outdatedShows[index],
+            progress: s,
+          },
+        });
+      });
 
-    const seasonsPromises = outdatedShows.map(i =>
-      getSeasonsApi(i.show.ids.trakt),
-    );
-    const seasonResponses = await Promise.all(seasonsPromises);
-    const seasonsData = seasonResponses.map(r => r.data);
-    seasonsData.forEach((s, index) => {
-      dispatch({
-        type: 'UPDATE_SHOW_SEASONS',
-        payload: {
-          show: outdatedShows[index],
-          seasons: s,
-        },
+      const seasonsPromises = outdatedShows.map(i =>
+        getSeasonsApi(i.show.ids.trakt),
+      );
+      const seasonResponses = await Promise.all(seasonsPromises);
+      const seasonsData = seasonResponses.map(r => r.data);
+      seasonsData.forEach((s, index) => {
+        dispatch({
+          type: 'UPDATE_SHOW_SEASONS',
+          payload: {
+            show: outdatedShows[index],
+            seasons: s,
+          },
+        });
       });
     });
   } catch (error) {
