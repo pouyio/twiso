@@ -27,7 +27,7 @@ const load = (dispatch: (action: Action) => void) => async (
   }
 
   try {
-    let moviesWatched = await db
+    const moviesWatched = await db
       .table<MovieWatched>('movies')
       .where({ localState: 'watched' })
       .toArray();
