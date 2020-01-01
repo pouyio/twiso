@@ -46,10 +46,12 @@ export type Action =
   | {
       type: 'UPDATE_SHOW_SEASONS';
       payload: { show: ShowWatched; seasons: Season[] };
-    };
+    }
+  | { type: 'MOVIES_READY' }
+  | { type: 'SHOWS_READY' };
 
 export interface IDispatchFunctions {
-  firstLoad: (session: Session | null) => Promise<boolean>;
+  firstLoad: (session: Session | null) => Promise<void>;
   addMovieWatched: (movie: Movie, session: Session) => void;
   removeMovieWatched: (movie: Movie, session: Session) => void;
   addMovieWatchlist: (movie: Movie, session: Session) => void;
