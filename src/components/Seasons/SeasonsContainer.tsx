@@ -45,11 +45,8 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   );
 
   useEffect(() => {
-    const localS = fullShowFn();
-    if (localS) {
-      setLocalShow(localS);
-    }
-  }, [fullShowFn]);
+    setLocalShow(fullShowFn());
+  }, [fullShowFn, showId, watched]);
 
   useEffect(() => {
     if (fullShowFn()) {
