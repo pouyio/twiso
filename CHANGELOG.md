@@ -1,3 +1,14 @@
+## [1.3.3](https://github.com/pouyio/twiso/compare/v1.3.2...v1.3.3) (2020-01-01)
+
+
+### :ambulance:
+
+* parallelize first load to speed it up ([55d7a37](https://github.com/pouyio/twiso/commit/55d7a3737b15482e0d9809afe7133fa37448d6ab))
+
+### :bug:
+
+* close season on show change ([1d71fc4](https://github.com/pouyio/twiso/commit/1d71fc4c9f8a4dc8afbc29db32cd6bb7e34e717e))
+
 ## [1.3.2](https://github.com/pouyio/twiso/compare/v1.3.1...v1.3.2) (2020-01-01)
 
 
