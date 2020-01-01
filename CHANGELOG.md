@@ -1,3 +1,14 @@
+## [1.3.2](https://github.com/pouyio/twiso/compare/v1.3.1...v1.3.2) (2020-01-01)
+
+
+### :arrow_up:
+
+* Bump handlebars from 4.1.2 to 4.5.3 ([9c1a7a4](https://github.com/pouyio/twiso/commit/9c1a7a4a4b73f08f4f6324c15a14ce0220559fbf))
+
+### :bug:
+
+* fix infinite loop on season selected ([6a1d5bb](https://github.com/pouyio/twiso/commit/6a1d5bb9ec1cf5f2e09d154e2532f163f49a8647))
+
 ## [1.3.1](https://github.com/pouyio/twiso/compare/v1.3.0...v1.3.1) (2019-12-22)
 
 
