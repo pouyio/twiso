@@ -10,10 +10,12 @@ export const PAGE_SIZE = 40;
 
 interface IUserInfo {
   movies: {
+    ready: boolean;
     watched: MovieWatched[];
     watchlist: MovieWatchlist[];
   };
   shows: {
+    ready: boolean;
     watched: ShowWatched[];
     watchlist: ShowWatchlist[];
   };
@@ -30,10 +32,12 @@ export const initialState: IState = {
   PAGE_SIZE,
   userInfo: {
     movies: {
+      ready: false,
       watched: [],
       watchlist: [],
     },
     shows: {
+      ready: false,
       watched: [],
       watchlist: [],
     },

@@ -48,18 +48,16 @@ const ParamsComponent: React.FC = () => {
 
 const App: React.FC = () => {
   const [ref, setRef] = useState();
-  const [loading, setLoading] = useState(true);
 
   const {
     actions: { firstLoad },
+    state: { userInfo },
   } = useGlobalState();
 
   const { session } = useContext(AuthContext);
 
   useEffect(() => {
-    firstLoad(session).then(() => {
-      setLoading(false);
-    });
+    firstLoad(session);
     // eslint-disable-next-line
   }, [session]);
 
@@ -117,44 +115,44 @@ const App: React.FC = () => {
                   </Link>
                 </li>
               </ul>
-              {loading ? (
-                <h1>Cargando!</h1>
-              ) : (
-                <div>
-                  <Route exact path="/">
-                    <ParamsComponent />
-                  </Route>
-                  <ProtectedRoute path="/movies">
+              <>
+                <Route exact path="/">
+                  <ParamsComponent />
+                </Route>
+                <ProtectedRoute path="/movies">
+                  {userInfo.movies.ready ? (
                     <Movies />
-                  </ProtectedRoute>
-                  <ProtectedRoute path="/shows">
-                    <Shows />
-                  </ProtectedRoute>
-                  <Route path="/search">
-                    <Search />
-                  </Route>
-                  <Route path="/movie/:id">
-                    <MovieDetail />
-                  </Route>
-                  <Route path="/show/:id">
-                    <ShowDetail />
-                  </Route>
-                  <Route path="/person/:id">
-                    <Person />
-                  </Route>
-                  <Route path="/profile">
-                    <Profile />
-                  </Route>
-                  <ul
-                    className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"
-                    style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-                  >
-                    <li className="py-1">
-                      <Emoji emoji="📺" />P
-                    </li>
-                  </ul>
-                </div>
-              )}
+                  ) : (
+                    <h1>Cargando películas!</h1>
+                  )}
+                </ProtectedRoute>
+                <ProtectedRoute path="/shows">
+                  {userInfo.shows.ready ? <Shows /> : <h1>Cargando series!</h1>}
+                </ProtectedRoute>
+                <Route path="/search">
+                  <Search />
+                </Route>
+                <Route path="/movie/:id">
+                  <MovieDetail />
+                </Route>
+                <Route path="/show/:id">
+                  <ShowDetail />
+                </Route>
+                <Route path="/person/:id">
+                  <Person />
+                </Route>
+                <Route path="/profile">
+                  <Profile />
+                </Route>
+                <ul
+                  className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"
+                  style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+                >
+                  <li className="py-1">
+                    <Emoji emoji="📺" />P
+                  </li>
+                </ul>
+              </>
             </ModalProvider>
           </ThemeProvider>
         </QueryParamProvider>

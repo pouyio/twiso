@@ -104,6 +104,14 @@ export function reducer(state: IState, action: Action): IState {
       state.userInfo.shows.watched = newShowsWatched;
       return { ...state };
     }
+    case 'MOVIES_READY': {
+      state.userInfo.movies.ready = true;
+      return { ...state };
+    }
+    case 'SHOWS_READY': {
+      state.userInfo.shows.ready = true;
+      return { ...state };
+    }
     default:
       return state;
   }
