@@ -68,6 +68,15 @@ export default function Profile() {
         </ul>
         <p className="text-center mt-8">
           <button
+            onClick={() => window.location.reload()}
+            className="bg-gray-200 px-2 py-1 rounded-full"
+          >
+            <Emoji emoji="🌎" />
+            Force Reload
+          </button>
+        </p>
+        <p className="text-center mt-8">
+          <button
             onClick={removeCaches}
             className="bg-gray-200 px-2 py-1 rounded-full"
           >
