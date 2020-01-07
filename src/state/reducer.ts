@@ -112,6 +112,15 @@ export function reducer(state: IState, action: Action): IState {
       state.userInfo.shows.ready = true;
       return { ...state };
     }
+    case 'SET_TOTAL_LOADING_SHOWS': {
+      state.loading.shows.total = action.payload;
+      return { ...state };
+    }
+    case 'UPDATE_TOTAL_LOADING_SHOWS': {
+      state.loading.shows.current =
+        action.payload ?? ++state.loading.shows.current;
+      return { ...state };
+    }
     default:
       return state;
   }

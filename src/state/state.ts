@@ -22,6 +22,9 @@ interface IUserInfo {
 }
 
 export interface IState {
+  loading: {
+    shows: { current: number; total: number };
+  };
   userInfo: IUserInfo;
   config?: ImgConfig;
   language: string;
@@ -30,6 +33,9 @@ export interface IState {
 
 export const initialState: IState = {
   PAGE_SIZE,
+  loading: {
+    shows: { current: 0, total: 0 },
+  },
   userInfo: {
     movies: {
       ready: false,

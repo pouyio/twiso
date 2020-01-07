@@ -48,7 +48,9 @@ export type Action =
       payload: { show: ShowWatched; seasons: Season[] };
     }
   | { type: 'MOVIES_READY' }
-  | { type: 'SHOWS_READY' };
+  | { type: 'SHOWS_READY' }
+  | { type: 'SET_TOTAL_LOADING_SHOWS'; payload: number }
+  | { type: 'UPDATE_TOTAL_LOADING_SHOWS'; payload?: number };
 
 export interface IDispatchFunctions {
   firstLoad: (session: Session | null) => Promise<void>;

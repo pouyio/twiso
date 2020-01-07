@@ -8,11 +8,17 @@ import { removeImgCaches, removeCaches } from '../utils/cache';
 import Helmet from 'react-helmet';
 import AuthContext from '../utils/AuthContext';
 import { LoginButton } from '../components/LoginButton';
+import { useGlobalState } from '../state/store';
 
 export default function Profile() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [stats, setStats] = useState<UserStats>();
   const { session } = useContext(AuthContext);
+  const {
+    state: {
+      loading: { shows },
+    },
+  } = useGlobalState();
 
   useEffect(() => {
     if (session) {
@@ -66,6 +72,18 @@ export default function Profile() {
             )}
           </li>
         </ul>
+        <p className="text-center mt-8">
+          Loading shows: {shows.current} / {shows.total}
+        </p>
+        <p className="text-center mt-8">
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-gray-200 px-2 py-1 rounded-full"
+          >
+            <Emoji emoji="🌎" />
+            Force Reload
+          </button>
+        </p>
         <p className="text-center mt-8">
           <button
             onClick={removeCaches}
