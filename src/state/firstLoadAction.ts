@@ -88,38 +88,46 @@ const refreshWatchedShows = async (
     );
     showsToAdd.forEach(s => dispatch({ type: 'ADD_WATCHED_SHOW', payload: s }));
     const outdatedShows = [...showsToAdd, ...showsToUpdate];
+
+    dispatch({
+      type: 'SET_TOTAL_LOADING_SHOWS',
+      payload: outdatedShows.length,
+    });
+
     const showsToDelete = showsWatched.filter(
       s => !data.some(d => d.show.ids.trakt === s.show.ids.trakt),
     );
     dispatch({ type: 'REMOVE_WATCHED_SHOWS', payload: showsToDelete });
-    const progressPromises = outdatedShows.map(i =>
-      getProgressApi(session, i.show.ids.trakt),
-    );
-    const progressResponses = await Promise.all(progressPromises);
-    const progressData = progressResponses.map(r => r.data);
-    progressData.forEach((s, index) => {
-      dispatch({
-        type: 'UPDATE_SHOW_PROGRESS',
-        payload: {
-          show: outdatedShows[index],
-          progress: s,
-        },
-      });
+    dispatch({
+      type: 'UPDATE_TOTAL_LOADING_SHOWS',
+      payload: showsToDelete.length,
     });
 
-    const seasonsPromises = outdatedShows.map(i =>
-      getSeasonsApi(i.show.ids.trakt),
-    );
-    const seasonResponses = await Promise.all(seasonsPromises);
-    const seasonsData = seasonResponses.map(r => r.data);
-    seasonsData.forEach((s, index) => {
-      dispatch({
-        type: 'UPDATE_SHOW_SEASONS',
-        payload: {
-          show: outdatedShows[index],
-          seasons: s,
-        },
-      });
+    outdatedShows.forEach(async outdated => {
+      try {
+        const [seasons, progress] = await Promise.all([
+          getSeasonsApi(outdated.show.ids.trakt),
+          getProgressApi(session, outdated.show.ids.trakt),
+        ]);
+        dispatch({
+          type: 'UPDATE_SHOW_SEASONS',
+          payload: {
+            show: outdated,
+            seasons: seasons.data,
+          },
+        });
+        dispatch({
+          type: 'UPDATE_SHOW_PROGRESS',
+          payload: {
+            show: outdated,
+            progress: progress.data,
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        dispatch({ type: 'UPDATE_TOTAL_LOADING_SHOWS' });
+      }
     });
   });
 };
