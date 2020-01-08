@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/pouyio/twiso/compare/v1.3.3...v1.4.0) (2020-01-08)
+
+
+### :sparkles:
+
+* added loading bar for shows in background ([9ed63fe](https://github.com/pouyio/twiso/commit/9ed63fea5ebd723c14a171869471e32c9b51cb44))
+
 ## [1.3.3](https://github.com/pouyio/twiso/compare/v1.3.2...v1.3.3) (2020-01-01)
 
 
