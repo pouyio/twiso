@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/pouyio/twiso/compare/v1.4.0...v1.4.1) (2020-01-08)
+
+
+### :ambulance:
+
+* fix regresion ([dd2d70f](https://github.com/pouyio/twiso/commit/dd2d70fe83ef1222cfb9e5a244a50db04dd11e0b))
+
 # [1.4.0](https://github.com/pouyio/twiso/compare/v1.3.3...v1.4.0) (2020-01-08)
 
 
