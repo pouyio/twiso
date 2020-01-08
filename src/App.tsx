@@ -73,12 +73,12 @@ const App: React.FC = () => {
                   <Emoji emoji="📺" /> P
                 </li>
               </ul>
-              <nav
-                className="w-full flex flex-col fixed bottom-0 z-50 justify-around text-2xl lg:top-0 lg:bottom-auto"
-                style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-              >
+              <nav className="w-full flex flex-col fixed bottom-0 z-50 justify-around text-2xl lg:top-0 lg:bottom-auto">
                 <ProgressBar />
-                <ul className="flex justify-around px-2 text-center bg-gray-200">
+                <ul
+                  className="flex justify-around px-2 text-center bg-gray-200"
+                  style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+                >
                   <li className="py-1">
                     <Link
                       to="/movies?mode=watchlist&page=1"
