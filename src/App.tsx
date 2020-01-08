@@ -18,6 +18,7 @@ import Person from './components/Person';
 import Movies from './pages/movies/Movies';
 import Shows from './pages/shows/Shows';
 import Profile from './pages/Profile';
+import { ProgressBar } from './components/ProgressBar';
 import { QueryParamProvider } from 'use-query-params';
 import { ThemeProvider } from './utils/ThemeContext';
 import { useGlobalState } from './state/store';
@@ -72,49 +73,52 @@ const App: React.FC = () => {
                   <Emoji emoji="📺" /> P
                 </li>
               </ul>
-              <ul
-                className="flex w-full bg-gray-200 fixed bottom-0 px-2 z-50 text-center justify-around text-2xl lg:top-0 lg:bottom-auto"
+              <nav
+                className="w-full flex flex-col fixed bottom-0 z-50 justify-around text-2xl lg:top-0 lg:bottom-auto"
                 style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
               >
-                <li className="py-1">
-                  <Link
-                    to="/movies?mode=watchlist&page=1"
-                    className="flex items-center"
-                  >
-                    <Emoji emoji="🎬" />
-                    <span className="ml-2 text-base hidden lg:inline">
-                      Películas
-                    </span>
-                  </Link>
-                </li>
-                <li className="py-1">
-                  <Link
-                    to="/shows?mode=watched&page=1"
-                    className="flex items-center"
-                  >
-                    <Emoji emoji="📺" />
-                    <span className="ml-2 text-base hidden lg:inline">
-                      Series
-                    </span>
-                  </Link>
-                </li>
-                <li className="py-1">
-                  <Link to="/search" className="flex items-center">
-                    <Emoji emoji="🔍" />
-                    <span className="ml-2 text-base hidden lg:inline">
-                      Buscar
-                    </span>
-                  </Link>
-                </li>
-                <li className="py-1">
-                  <Link to="/profile" className="flex items-center">
-                    <Emoji emoji="👤" />
-                    <span className="ml-2 text-base hidden lg:inline">
-                      Perfil
-                    </span>
-                  </Link>
-                </li>
-              </ul>
+                <ProgressBar />
+                <ul className="flex justify-around px-2 text-center bg-gray-200">
+                  <li className="py-1">
+                    <Link
+                      to="/movies?mode=watchlist&page=1"
+                      className="flex items-center"
+                    >
+                      <Emoji emoji="🎬" />
+                      <span className="ml-2 text-base hidden lg:inline">
+                        Películas
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="py-1">
+                    <Link
+                      to="/shows?mode=watched&page=1"
+                      className="flex items-center"
+                    >
+                      <Emoji emoji="📺" />
+                      <span className="ml-2 text-base hidden lg:inline">
+                        Series
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="py-1">
+                    <Link to="/search" className="flex items-center">
+                      <Emoji emoji="🔍" />
+                      <span className="ml-2 text-base hidden lg:inline">
+                        Buscar
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="py-1">
+                    <Link to="/profile" className="flex items-center">
+                      <Emoji emoji="👤" />
+                      <span className="ml-2 text-base hidden lg:inline">
+                        Perfil
+                      </span>
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
               <>
                 <Route exact path="/">
                   <ParamsComponent />
