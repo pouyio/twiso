@@ -5,6 +5,7 @@ import getImgUrl from '../utils/extractImg';
 import { Ids } from '../models';
 import { useGlobalState } from '../state/store';
 import useIsWatch from '../utils/useIsWatch';
+import Helmet from 'react-helmet';
 
 interface IImageProps {
   ids: Ids;
@@ -72,7 +73,12 @@ const Image: React.FC<IImageProps> = ({
         </h1>
       )}
       {inView && imgUrl && (
-        <img className="m-auto md:max-w-md h-full" src={imgUrl} alt={text} />
+        <>
+          <Helmet>
+            <meta property="og:image" content={imgUrl} />
+          </Helmet>
+          <img className="m-auto md:max-w-md h-full" src={imgUrl} alt={text} />
+        </>
       )}
     </div>
   );
