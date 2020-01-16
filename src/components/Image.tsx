@@ -65,7 +65,7 @@ const Image: React.FC<IImageProps> = ({
       }
     >
       {(!inView || !imgUrl) && (
-        <h1 className="justify-center items-center p-2">
+        <h1 className="justify-center items-center p-2 text-center">
           {text}
           <br />
           {message || <Emoji className="ml-3" emoji="⏳" rotating={true} />}
