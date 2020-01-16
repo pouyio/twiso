@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { getApi, getPeopleApi, getRatingsApi } from '../utils/api';
 import Image from '../components/Image';
 import useTranslate from '../utils/useTranslate';
@@ -14,6 +14,8 @@ import { SearchShow, People as IPeople, Show, Ratings } from '../models';
 import Helmet from 'react-helmet';
 import useIsWatch from '../utils/useIsWatch';
 import Rating from 'components/Rating';
+import AlertContext from 'utils/AlertContext';
+import { useShare } from 'utils/hooks/useShare';
 
 enum status {
   'returning series' = 'en antena',
@@ -31,6 +33,8 @@ export default function ShowDetail() {
   const { title, overview } = useTranslate('show', item);
   const { state } = useLocation();
   const { id } = useParams();
+  const { showAlert } = useContext(AlertContext);
+  const { share } = useShare();
 
   const { isWatchlist, isWatched } = useIsWatch();
 
@@ -72,6 +76,14 @@ export default function ShowDetail() {
     setShowOriginalTitle(!showOriginalTitle);
   };
 
+  const onShare = () => {
+    share(item!.title).then(action => {
+      if (action === 'copied') {
+        showAlert(`Enlace a "${item!.title}" copiado`);
+      }
+    });
+  };
+
   return item ? (
     <div className={getBgClassName()}>
       <Helmet>
@@ -94,6 +106,13 @@ export default function ShowDetail() {
               <Emoji emoji="▶️" className="text-4xl" />
             </a>
           )}
+          <button
+            className="absolute"
+            style={{ left: '4em', bottom: '4em' }}
+            onClick={onShare}
+          >
+            <Emoji emoji="📤" className="text-4xl" />
+          </button>
         </div>
         <article
           className="relative p-4 lg:p-8 bg-white rounded-t-lg"
@@ -109,14 +128,21 @@ export default function ShowDetail() {
               {item.trailer && (
                 <a
                   className="absolute"
-                  style={{ right: '4em', bottom: '4em' }}
+                  style={{ right: '15%', bottom: '5%' }}
                   href={item.trailer}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Emoji emoji="▶️" className="text-4xl" />
+                  <Emoji emoji="▶️" className="text-2xl" />
                 </a>
               )}
+              <button
+                className="absolute"
+                style={{ left: '10%', bottom: '5%' }}
+                onClick={onShare}
+              >
+                <Emoji emoji="📤" className="text-2xl" />
+              </button>
             </div>
 
             <div className="w-full max-w-3xl">

@@ -22,6 +22,8 @@ import { ProgressBar } from './components/ProgressBar';
 import { QueryParamProvider } from 'use-query-params';
 import { ThemeProvider } from './utils/ThemeContext';
 import { useGlobalState } from './state/store';
+import { Alert } from 'components/Alert/Alert';
+import { AlertProvider } from 'utils/AlertContext';
 const redirect_url = process.env.REACT_APP_REDIRECT_URL;
 
 const ParamsComponent: React.FC = () => {
@@ -67,97 +69,104 @@ const App: React.FC = () => {
       <BrowserRouter>
         <QueryParamProvider ReactRouterRoute={Route}>
           <ThemeProvider>
-            <ModalProvider modalRef={ref}>
-              <ul className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block">
-                <li className="py-1">
-                  <Emoji emoji="📺" /> P
-                </li>
-              </ul>
-              <nav className="w-full flex flex-col fixed bottom-0 z-50 justify-around text-2xl lg:top-0 lg:bottom-auto">
-                <ProgressBar />
-                <ul
-                  className="flex justify-around px-2 text-center bg-gray-200"
-                  style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-                >
+            <AlertProvider>
+              <Alert />
+              <ModalProvider modalRef={ref}>
+                <ul className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block">
                   <li className="py-1">
-                    <Link
-                      to="/movies?mode=watchlist&page=1"
-                      className="flex items-center"
-                    >
-                      <Emoji emoji="🎬" />
-                      <span className="ml-2 text-base hidden lg:inline">
-                        Películas
-                      </span>
-                    </Link>
-                  </li>
-                  <li className="py-1">
-                    <Link
-                      to="/shows?mode=watched&page=1"
-                      className="flex items-center"
-                    >
-                      <Emoji emoji="📺" />
-                      <span className="ml-2 text-base hidden lg:inline">
-                        Series
-                      </span>
-                    </Link>
-                  </li>
-                  <li className="py-1">
-                    <Link to="/search" className="flex items-center">
-                      <Emoji emoji="🔍" />
-                      <span className="ml-2 text-base hidden lg:inline">
-                        Buscar
-                      </span>
-                    </Link>
-                  </li>
-                  <li className="py-1">
-                    <Link to="/profile" className="flex items-center">
-                      <Emoji emoji="👤" />
-                      <span className="ml-2 text-base hidden lg:inline">
-                        Perfil
-                      </span>
-                    </Link>
+                    <Emoji emoji="📺" /> P
                   </li>
                 </ul>
-              </nav>
-              <>
-                <Route exact path="/">
-                  <ParamsComponent />
-                </Route>
-                <ProtectedRoute path="/movies">
-                  {userInfo.movies.ready ? (
-                    <Movies />
-                  ) : (
-                    <h1>Cargando películas!</h1>
-                  )}
-                </ProtectedRoute>
-                <ProtectedRoute path="/shows">
-                  {userInfo.shows.ready ? <Shows /> : <h1>Cargando series!</h1>}
-                </ProtectedRoute>
-                <Route path="/search">
-                  <Search />
-                </Route>
-                <Route path="/movie/:id">
-                  <MovieDetail />
-                </Route>
-                <Route path="/show/:id">
-                  <ShowDetail />
-                </Route>
-                <Route path="/person/:id">
-                  <Person />
-                </Route>
-                <Route path="/profile">
-                  <Profile />
-                </Route>
-                <ul
-                  className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"
-                  style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-                >
-                  <li className="py-1">
-                    <Emoji emoji="📺" />P
-                  </li>
-                </ul>
-              </>
-            </ModalProvider>
+                <nav className="w-full flex flex-col fixed bottom-0 z-50 justify-around text-2xl lg:top-0 lg:bottom-auto">
+                  <ProgressBar />
+                  <ul
+                    className="flex justify-around px-2 text-center bg-gray-200"
+                    style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+                  >
+                    <li className="py-1">
+                      <Link
+                        to="/movies?mode=watchlist&page=1"
+                        className="flex items-center"
+                      >
+                        <Emoji emoji="🎬" />
+                        <span className="ml-2 text-base hidden lg:inline">
+                          Películas
+                        </span>
+                      </Link>
+                    </li>
+                    <li className="py-1">
+                      <Link
+                        to="/shows?mode=watched&page=1"
+                        className="flex items-center"
+                      >
+                        <Emoji emoji="📺" />
+                        <span className="ml-2 text-base hidden lg:inline">
+                          Series
+                        </span>
+                      </Link>
+                    </li>
+                    <li className="py-1">
+                      <Link to="/search" className="flex items-center">
+                        <Emoji emoji="🔍" />
+                        <span className="ml-2 text-base hidden lg:inline">
+                          Buscar
+                        </span>
+                      </Link>
+                    </li>
+                    <li className="py-1">
+                      <Link to="/profile" className="flex items-center">
+                        <Emoji emoji="👤" />
+                        <span className="ml-2 text-base hidden lg:inline">
+                          Perfil
+                        </span>
+                      </Link>
+                    </li>
+                  </ul>
+                </nav>
+                <>
+                  <Route exact path="/">
+                    <ParamsComponent />
+                  </Route>
+                  <ProtectedRoute path="/movies">
+                    {userInfo.movies.ready ? (
+                      <Movies />
+                    ) : (
+                      <h1>Cargando películas!</h1>
+                    )}
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/shows">
+                    {userInfo.shows.ready ? (
+                      <Shows />
+                    ) : (
+                      <h1>Cargando series!</h1>
+                    )}
+                  </ProtectedRoute>
+                  <Route path="/search">
+                    <Search />
+                  </Route>
+                  <Route path="/movie/:id">
+                    <MovieDetail />
+                  </Route>
+                  <Route path="/show/:id">
+                    <ShowDetail />
+                  </Route>
+                  <Route path="/person/:id">
+                    <Person />
+                  </Route>
+                  <Route path="/profile">
+                    <Profile />
+                  </Route>
+                  <ul
+                    className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"
+                    style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+                  >
+                    <li className="py-1">
+                      <Emoji emoji="📺" />P
+                    </li>
+                  </ul>
+                </>
+              </ModalProvider>
+            </AlertProvider>
           </ThemeProvider>
         </QueryParamProvider>
       </BrowserRouter>
