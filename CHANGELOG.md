@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/pouyio/twiso/compare/v1.5.0...v1.6.0) (2020-01-16)
+
+
+### :sparkles:
+
+* improved sharing meta tags ([30c5235](https://github.com/pouyio/twiso/commit/30c52356e2224f868e7b0c323a173b66102cea65))
+
 # [1.5.0](https://github.com/pouyio/twiso/compare/v1.4.1...v1.5.0) (2020-01-16)
 
 
