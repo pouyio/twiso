@@ -1,3 +1,14 @@
+# [1.5.0](https://github.com/pouyio/twiso/compare/v1.4.1...v1.5.0) (2020-01-16)
+
+
+### :art:
+
+* centerd image loader ([c6bd6c1](https://github.com/pouyio/twiso/commit/c6bd6c10233b2e0cdc87df6248ea215012ccbaf2))
+
+### :sparkles:
+
+* added share button ([040aff0](https://github.com/pouyio/twiso/commit/040aff0e3b559226d292dcf71e55675b31b85d5d))
+
 ## [1.4.1](https://github.com/pouyio/twiso/compare/v1.4.0...v1.4.1) (2020-01-08)
 
 
