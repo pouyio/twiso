@@ -63,11 +63,12 @@ const Person: React.FC = () => {
     <div className="bg-gray-300">
       <div className="lg:max-w-5xl lg:mx-auto lg:pt-2">
         <div
-          className="p-10 sticky top-0 z-0 lg:hidden"
-          style={{ minHeight: '15em' }}
+          className="sticky top-0 z-0 lg:hidden"
+          style={{ minHeight: '15em', paddingTop: 'env(safe-area-inset-top)' }}
         >
           {localState && (
             <Image
+              className="p-10 pt-5"
               ids={localState.ids}
               text={localState.name}
               type="person"

@@ -29,9 +29,7 @@ export const ThemeProvider: React.FC<IThemeProviderProps> = ({ children }) => {
 
   const styles = () => {
     return {
-      style: (window.navigator as any).standalone
-        ? { minHeight: '100vh', paddingTop: 'env(safe-area-inset-top)' }
-        : {},
+      style: (window.navigator as any).standalone ? { minHeight: '100vh' } : {},
     };
   };
 

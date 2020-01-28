@@ -77,7 +77,11 @@ const Image: React.FC<IImageProps> = ({
           <Helmet>
             <meta property="og:image" content={imgUrl} />
           </Helmet>
-          <img className="m-auto md:max-w-md h-full" src={imgUrl} alt={text} />
+          <img
+            className="m-auto md:max-w-md h-full rounded-lg"
+            src={imgUrl}
+            alt={text}
+          />
         </>
       )}
     </div>

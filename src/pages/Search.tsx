@@ -47,7 +47,10 @@ export default function Search() {
   }, [debouncedSearch]);
 
   return (
-    <div className="p-4 lg:max-w-5xl lg:mx-auto">
+    <div
+      className="p-4 lg:max-w-5xl lg:mx-auto"
+      style={{ paddingTop: 'env(safe-area-inset-top)' }}
+    >
       <Helmet>
         <title>Search</title>
       </Helmet>

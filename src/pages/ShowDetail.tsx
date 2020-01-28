@@ -97,10 +97,16 @@ export default function ShowDetail() {
       </Helmet>
       <div className="lg:max-w-5xl lg:mx-auto lg:pt-2">
         <div
-          className="p-10 sticky top-0 z-0 lg:hidden"
-          style={{ minHeight: '15em' }}
+          className="sticky top-0 z-0 lg:hidden"
+          style={{ minHeight: '15em', paddingTop: 'env(safe-area-inset-top)' }}
         >
-          <Image ids={item.ids} text={item.title} type="show" size="big" />
+          <Image
+            className="p-10 pt-5"
+            ids={item.ids}
+            text={item.title}
+            type="show"
+            size="big"
+          />
           {item.trailer && (
             <a
               className="absolute"
