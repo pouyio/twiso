@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/pouyio/twiso/compare/v1.6.0...v1.6.1) (2020-01-28)
+
+
+### :art:
+
+* fix top padding on pwa ([1cbe899](https://github.com/pouyio/twiso/commit/1cbe89992e6d8449e9496302b0023b0983f1c2f3))
+
 # [1.6.0](https://github.com/pouyio/twiso/compare/v1.5.0...v1.6.0) (2020-01-16)
 
 
