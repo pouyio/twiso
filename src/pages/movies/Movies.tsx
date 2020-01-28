@@ -27,7 +27,10 @@ export default function Movies() {
       <Helmet>
         <title>Movies</title>
       </Helmet>
-      <div className="flex w-full pt-2 justify-around border-gray-200 text-gray-600 lg:max-w-xl lg:m-auto">
+      <div
+        className="flex w-full pt-2 justify-around border-gray-200 text-gray-600 lg:max-w-xl lg:m-auto"
+        style={{ paddingTop: 'env(safe-area-inset-top)' }}
+      >
         <button
           className={`border-b-2 pb-2 w-full ${
             mode === 'watchlist' ? 'border-blue-300' : 'border-transparent'

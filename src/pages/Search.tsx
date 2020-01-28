@@ -48,7 +48,7 @@ export default function Search() {
 
   return (
     <div
-      className="p-4 lg:max-w-5xl lg:mx-auto"
+      className="m-4 lg:max-w-5xl lg:mx-auto"
       style={{ paddingTop: 'env(safe-area-inset-top)' }}
     >
       <Helmet>
