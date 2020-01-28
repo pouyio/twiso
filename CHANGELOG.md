@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/pouyio/twiso/compare/v1.6.2...v1.6.3) (2020-01-28)
+
+
+### :ambulance:
+
+* fix styles ([4e961f6](https://github.com/pouyio/twiso/commit/4e961f610c0aa7620f52cf3f88510407e34ac2a1))
+
 ## [1.6.2](https://github.com/pouyio/twiso/compare/v1.6.1...v1.6.2) (2020-01-28)
 
 
