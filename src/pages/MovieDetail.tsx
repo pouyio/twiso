@@ -92,15 +92,12 @@ export default function MovieDetail() {
       </Helmet>
       <div className="lg:max-w-5xl lg:mx-auto lg:pt-2">
         <div
-          className="sticky top-0 z-0 lg:hidden"
-          style={{
-            minHeight: '15em',
-            paddingTop: 'env(safe-area-inset-top)',
-          }}
+          className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
+          style={{ minHeight: '15em' }}
         >
           <Image
-            className="p-10 pt-5"
             ids={item.ids}
+            style={{ paddingTop: 'env(safe-area-inset-top)' }}
             text={item.title}
             type="movie"
             size="big"
