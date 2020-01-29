@@ -1,3 +1,12 @@
+## [1.6.4](https://github.com/pouyio/twiso/compare/v1.6.3...v1.6.4) (2020-01-29)
+
+
+### :art:
+
+* added basic tooltips ([a2680a2](https://github.com/pouyio/twiso/commit/a2680a22eb1fae48091cc3a561b38e585b33b6a9))
+* fixed top padding on images ([c78b042](https://github.com/pouyio/twiso/commit/c78b042b3f403ba010be671238ade78cef826e69))
+* improved login button ([5c2183e](https://github.com/pouyio/twiso/commit/5c2183e1026dd055fbe671d42a0e1534f9542183))
+
 ## [1.6.3](https://github.com/pouyio/twiso/compare/v1.6.2...v1.6.3) (2020-01-28)
 
 
