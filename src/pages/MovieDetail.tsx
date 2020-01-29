@@ -202,7 +202,10 @@ export default function MovieDetail() {
       </div>
     </div>
   ) : (
-    <div className="flex justify-center text-6xl items-center">
+    <div
+      className="flex justify-center text-6xl items-center"
+      style={{ marginTop: 'env(safe-area-inset-top)' }}
+    >
       <Emoji emoji="⏳" rotating={true} />
     </div>
   );
