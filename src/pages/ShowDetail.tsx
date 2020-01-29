@@ -115,7 +115,7 @@ export default function ShowDetail() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Emoji emoji="▶️" className="text-4xl" />
+              <Emoji emoji="▶️" className="text-4xl" title="Youtube trailer" />
             </a>
           )}
           <button
@@ -123,7 +123,7 @@ export default function ShowDetail() {
             style={{ left: '4em', bottom: '4em' }}
             onClick={onShare}
           >
-            <Emoji emoji="📤" className="text-4xl" />
+            <Emoji emoji="📤" className="text-4xl" title="Share" />
           </button>
         </div>
         <article
