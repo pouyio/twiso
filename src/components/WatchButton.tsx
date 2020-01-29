@@ -58,7 +58,7 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
           )}
         </>
       ) : (
-        <LoginButton small />
+        <LoginButton />
       )}
     </div>
   );
