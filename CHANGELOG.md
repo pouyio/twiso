@@ -1,3 +1,14 @@
+## [1.6.5](https://github.com/pouyio/twiso/compare/v1.6.4...v1.6.5) (2020-01-29)
+
+
+### :art:
+
+* improved loading indicator ([30b14ef](https://github.com/pouyio/twiso/commit/30b14ef8cdd2d34b0ea7fc23b179a791b2b204b4))
+
+### :rocket:
+
+* removed click delay ([6dfb1f5](https://github.com/pouyio/twiso/commit/6dfb1f5ac13700ed575c4cf11de397735fb5a447))
+
 ## [1.6.4](https://github.com/pouyio/twiso/compare/v1.6.3...v1.6.4) (2020-01-29)
 
 
