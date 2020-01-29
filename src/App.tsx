@@ -14,7 +14,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AuthContext from './utils/AuthContext';
 import Emoji from './components/Emoji';
 import { ModalProvider } from './utils/ModalContext';
-import Person from './components/Person';
+import Person from './pages/Person';
 import Movies from './pages/movies/Movies';
 import Shows from './pages/shows/Shows';
 import Profile from './pages/Profile';

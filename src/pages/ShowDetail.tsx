@@ -216,6 +216,8 @@ export default function ShowDetail() {
       </div>
     </div>
   ) : (
-    <Emoji emoji="⏳" rotating={true} />
+    <div className="flex justify-center text-6xl items-center">
+      <Emoji emoji="⏳" rotating={true} />
+    </div>
   );
 }

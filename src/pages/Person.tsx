@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Image from './Image';
-import ImageLink from './ImageLink';
-import CollapsableText from './CollapsableText';
+import Image from '../components/Image';
+import ImageLink from '../components/ImageLink';
+import CollapsableText from '../components/CollapsableText';
 import { getPersonItemsApi, getPersonApi } from '../utils/api';
-import Emoji from './Emoji';
+import Emoji from '../components/Emoji';
 import { useParams } from 'react-router-dom';
 import {
   PersonShows,
@@ -203,12 +203,9 @@ const Person: React.FC = () => {
       </div>
     </div>
   ) : (
-    <Emoji
-      emoji="⏳"
-      className="absolute text-2xl"
-      rotating={true}
-      style={{ top: 'calc(50vh - 0.5em)', left: 'calc(50vw - 0.5em)' }}
-    />
+    <div className="flex justify-center text-6xl items-center">
+      <Emoji emoji="⏳" rotating={true} />
+    </div>
   );
 };
 
