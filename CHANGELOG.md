@@ -1,3 +1,10 @@
+## [1.6.6](https://github.com/pouyio/twiso/compare/v1.6.5...v1.6.6) (2020-01-29)
+
+
+### :art:
+
+* improved loading indicator ([e0e5450](https://github.com/pouyio/twiso/commit/e0e5450c582eb88f994a2984a43be3a7c325b8ab))
+
 ## [1.6.5](https://github.com/pouyio/twiso/compare/v1.6.4...v1.6.5) (2020-01-29)
 
 
