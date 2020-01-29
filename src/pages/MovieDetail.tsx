@@ -97,7 +97,7 @@ export default function MovieDetail() {
         >
           <Image
             ids={item.ids}
-            style={{ paddingTop: 'env(safe-area-inset-top)' }}
+            style={{ marginTop: 'env(safe-area-inset-top)' }}
             text={item.title}
             type="movie"
             size="big"

@@ -102,7 +102,7 @@ export default function ShowDetail() {
         >
           <Image
             ids={item.ids}
-            style={{ paddingTop: 'env(safe-area-inset-top)' }}
+            style={{ marginTop: 'env(safe-area-inset-top)' }}
             text={item.title}
             type="show"
             size="big"
