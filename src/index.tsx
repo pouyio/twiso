@@ -6,6 +6,9 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { AuthProvider } from 'utils/AuthContext';
 import { StoreProvider } from 'state/store';
+import initReactFastclick from 'react-fastclick';
+
+initReactFastclick();
 
 ReactDOM.render(
   <AuthProvider>
