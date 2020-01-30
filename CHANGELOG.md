@@ -1,3 +1,10 @@
+## [1.6.7](https://github.com/pouyio/twiso/compare/v1.6.6...v1.6.7) (2020-01-30)
+
+
+### :bug:
+
+* added tooltip to buttons ([60b006a](https://github.com/pouyio/twiso/commit/60b006a29b0a4b1f48f36f565b14323c72e86f60))
+
 ## [1.6.6](https://github.com/pouyio/twiso/compare/v1.6.5...v1.6.6) (2020-01-29)
 
 
