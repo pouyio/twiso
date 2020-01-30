@@ -140,7 +140,11 @@ export default function MovieDetail() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Emoji emoji="▶️" className="text-2xl" />
+                  <Emoji
+                    emoji="▶️"
+                    className="text-2xl"
+                    title="Youtube trailer"
+                  />
                 </a>
               )}
               <button
@@ -148,7 +152,7 @@ export default function MovieDetail() {
                 style={{ left: '10%', bottom: '5%' }}
                 onClick={onShare}
               >
-                <Emoji emoji="📤" className="text-2xl" />
+                <Emoji emoji="📤" className="text-2xl" title="Share" />
               </button>
             </div>
 
