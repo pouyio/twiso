@@ -8,17 +8,11 @@ import { removeImgCaches, removeCaches } from '../utils/cache';
 import Helmet from 'react-helmet';
 import AuthContext from '../utils/AuthContext';
 import { LoginButton } from '../components/LoginButton';
-import { useGlobalState } from '../state/store';
 
 export default function Profile() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [stats, setStats] = useState<UserStats>();
   const { session } = useContext(AuthContext);
-  const {
-    state: {
-      loading: { shows },
-    },
-  } = useGlobalState();
 
   useEffect(() => {
     if (session) {
@@ -75,9 +69,24 @@ export default function Profile() {
             )}
           </li>
         </ul>
-        <p className="text-center mt-8">
-          Loading shows: {shows.current} / {shows.total}
-        </p>
+        {session ? (
+          <>
+            <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
+              <Emoji emoji="🎬" /> Películas
+            </h1>
+            <p className="text-center">
+              Vistas: {stats && stats.movies.watched} en{' '}
+              {convertMinutes(stats && stats.movies.minutes)}
+            </p>
+            <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
+              <Emoji emoji="📺" /> Episodios
+            </h1>
+            <p className="text-center">
+              Vistos: {stats && stats.episodes.watched} en{' '}
+              {convertMinutes(stats && stats.episodes.minutes)}{' '}
+            </p>{' '}
+          </>
+        ) : null}
         <p className="text-center mt-8">
           <button
             onClick={() => window.location.reload()}
@@ -104,20 +113,6 @@ export default function Profile() {
             <Emoji emoji="♻️" />
             Remove images from cache
           </button>
-        </p>
-        <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
-          <Emoji emoji="🎬" /> Películas
-        </h1>
-        <p className="text-center">
-          Vistas: {stats && stats.movies.watched} en{' '}
-          {convertMinutes(stats && stats.movies.minutes)}
-        </p>
-        <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
-          <Emoji emoji="📺" /> Episodios
-        </h1>
-        <p className="text-center">
-          Vistos: {stats && stats.episodes.watched} en{' '}
-          {convertMinutes(stats && stats.episodes.minutes)}{' '}
         </p>
         <div className="text-right pt-10 text-sm font-mono">
           <h1>Version: {version}</h1>
