@@ -1,3 +1,10 @@
+## [1.6.8](https://github.com/pouyio/twiso/compare/v1.6.7...v1.6.8) (2020-02-06)
+
+
+### :rocket:
+
+* little improvements to profile ([377ecdc](https://github.com/pouyio/twiso/commit/377ecdc9f3c2803790e815885504ae2fff71b8f5))
+
 ## [1.6.7](https://github.com/pouyio/twiso/compare/v1.6.6...v1.6.7) (2020-01-30)
 
 
