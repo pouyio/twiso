@@ -26,6 +26,10 @@ export const useImage = (
     if (!config) {
       return;
     }
+    if (!id) {
+      setMessage('No id');
+      return;
+    }
 
     const cachedUrl = getFromCache(id, type, language);
     const imgArrSize = size === 'small' ? 1 : 2;

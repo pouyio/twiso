@@ -64,6 +64,13 @@ const Image: React.FC<IImageProps> = ({
         src={imgUrl}
         className="m-auto md:max-w-md h-full rounded-lg"
         alt={text}
+        unloader={
+          <h1 className="justify-center items-center p-2 text-center">
+            {text}
+            <br />
+            {message}
+          </h1>
+        }
         loader={
           <Img
             className="m-auto md:max-w-md h-full rounded-lg"

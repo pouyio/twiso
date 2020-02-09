@@ -7,7 +7,7 @@ interface IImageLinkProps {
   item: Show | Movie | Person;
   ids: Ids;
   text: string;
-  style: React.CSSProperties;
+  style?: React.CSSProperties;
   type: 'movie' | 'show' | 'person';
 }
 

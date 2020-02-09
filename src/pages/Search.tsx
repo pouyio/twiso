@@ -93,7 +93,6 @@ export default function Search() {
                       ids={r.movie.ids}
                       text={r.movie.title}
                       item={r.movie}
-                      style={{ minHeight: '10em' }}
                       type="movie"
                     />
                   </li>
@@ -123,7 +122,6 @@ export default function Search() {
                       ids={r.show.ids}
                       text={r.show.title}
                       item={r.show}
-                      style={{ minHeight: '10em' }}
                       type="show"
                     />
                   </li>
@@ -153,7 +151,6 @@ export default function Search() {
                       ids={r.person.ids}
                       text={r.person.name}
                       item={r.person}
-                      style={{ minHeight: '10em' }}
                       type="person"
                     />
                   </li>
