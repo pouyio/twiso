@@ -11188,7 +11188,7 @@ promzard@^0.3.0:
   dependencies:
     read "1"
 
-prop-types@^15.5.4, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@15.7.2, prop-types@^15.5.4, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -11493,6 +11493,13 @@ react-hook-inview@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/react-hook-inview/-/react-hook-inview-4.0.0.tgz#0faa65335448ce7ad726b6d1b445fc6885e87ab2"
   integrity sha512-EXreF6CfMDT2S0vXN5f/BzMljerRJ3o+sg6WmTPJ2IJ8A6wjXweoIZbr5qrZ3TrlNkVep62KC96I9s1asOXXaQ==
+
+react-image@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-image/-/react-image-2.3.0.tgz#160abd648a39f1c5869c75e8c1c29115e27ef1f2"
+  integrity sha512-Ia+aj32iheGuK2jy5xGahCD5/xUSrO9V3Ca1UdmpreNYpHx1KO0H/hPoerzR6iaJ+qTlv+lxDpEQceJduUY6zg==
+  dependencies:
+    prop-types "15.7.2"
 
 react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.10.0"

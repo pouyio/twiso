@@ -61,7 +61,7 @@ const Person: React.FC = () => {
 
   return localState ? (
     <div className="bg-gray-300">
-      <div className="lg:max-w-5xl lg:mx-auto lg:pt-2">
+      <div className="lg:max-w-5xl lg:mx-auto">
         <div
           className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
           style={{ minHeight: '15em' }}
@@ -78,10 +78,10 @@ const Person: React.FC = () => {
         </div>
 
         <article
-          className="relative p-4 lg:p-8 bg-white rounded-t-lg"
+          className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none"
           style={{ transform: 'translate3d(0,0,0)' }}
         >
-          <div className="bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
+          <div className="lg:hidden bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
           <div className="flex items-start">
             <div
               className="hidden lg:block relative pr-4"
@@ -92,7 +92,7 @@ const Person: React.FC = () => {
                   ids={localState.ids}
                   text={localState.name}
                   type="person"
-                  size="big"
+                  size="small"
                 />
               )}
             </div>

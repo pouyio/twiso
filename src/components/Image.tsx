@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useInView } from 'react-hook-inview';
 import Emoji from './Emoji';
-import getImgUrl from '../utils/extractImg';
 import { Ids } from '../models';
-import { useGlobalState } from '../state/store';
 import useIsWatch from '../utils/useIsWatch';
 import Helmet from 'react-helmet';
+import { useImage } from 'utils/hooks/useImage';
+import Img from 'react-image';
 
 interface IImageProps {
   ids: Ids;
@@ -25,23 +25,15 @@ const Image: React.FC<IImageProps> = ({
   size = 'small',
   ...props
 }) => {
-  const [imgUrl, setImgUrl] = useState('');
-  const [message, setMessage] = useState('');
   const { isWatchlist, isWatched } = useIsWatch();
-  const {
-    state: { language, config },
-  } = useGlobalState();
   const [ref, inView] = useInView({ unobserveOnEnter: true });
 
-  useEffect(() => {
-    if (!config || !inView) {
-      return;
-    }
-
-    getImgUrl(ids.tmdb, type, config, language, size)
-      .then(url => setImgUrl(url))
-      .catch(({ message }) => setMessage(message));
-  }, [config, ids, language, inView, type, size]);
+  const { imgUrl, imgPreview, message } = useImage(
+    ids.tmdb,
+    type,
+    size,
+    inView,
+  );
 
   const getBorderClass = () => {
     if (type === 'person') return '';
@@ -65,25 +57,31 @@ const Image: React.FC<IImageProps> = ({
         getBorderClass()
       }
     >
-      {(!inView || !imgUrl) && (
-        <h1 className="justify-center items-center p-2 text-center">
-          {text}
-          <br />
-          {message || <Emoji className="ml-3" emoji="⏳" rotating={true} />}
-        </h1>
-      )}
-      {inView && imgUrl && (
-        <>
-          <Helmet>
-            <meta property="og:image" content={imgUrl} />
-          </Helmet>
-          <img
+      <Helmet>
+        <meta property="og:image" content={imgUrl} />
+      </Helmet>
+      <Img
+        src={imgUrl}
+        className="m-auto md:max-w-md h-full rounded-lg"
+        alt={text}
+        loader={
+          <Img
             className="m-auto md:max-w-md h-full rounded-lg"
-            src={imgUrl}
+            style={{ filter: 'blur(5px)' }}
+            src={imgPreview}
             alt={text}
+            loader={
+              <h1 className="justify-center items-center p-2 text-center">
+                {text}
+                <br />
+                {message || (
+                  <Emoji className="ml-3" emoji="⏳" rotating={true} />
+                )}
+              </h1>
+            }
           />
-        </>
-      )}
+        }
+      />
     </div>
   );
 };

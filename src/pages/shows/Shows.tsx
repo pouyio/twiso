@@ -25,16 +25,16 @@ export default function Shows() {
   }, []);
 
   return (
-    <div className="lg:mx-auto">
+    <>
       <Helmet>
         <title>Shows</title>
       </Helmet>
       <div
-        className="flex w-full pt-2 justify-around border-gray-200 text-gray-600 lg:max-w-xl lg:m-auto"
+        className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto"
         style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
         <button
-          className={`border-b-2 pb-2 w-full ${
+          className={`border-b-2 py-2 w-full ${
             mode === 'watchlist' ? 'border-blue-300' : 'border-transparent'
           }`}
           onClick={() => setMode('watchlist')}
@@ -42,7 +42,7 @@ export default function Shows() {
           <Emoji emoji="⏱" /> Pendientes ({watchlist.length})
         </button>
         <button
-          className={`border-b-2 pb-2 w-full ${
+          className={`border-b-2 py-2 w-full ${
             mode === 'watched' ? 'border-blue-300' : 'border-transparent'
           }`}
           onClick={() => setMode('watched')}
@@ -53,6 +53,6 @@ export default function Shows() {
       <div className="py-3">
         {mode === 'watchlist' ? <ShowsWatchlist /> : <ShowsWatched />}
       </div>
-    </div>
+    </>
   );
 }
