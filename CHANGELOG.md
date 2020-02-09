@@ -1,3 +1,10 @@
+## [1.6.9](https://github.com/pouyio/twiso/compare/v1.6.8...v1.6.9) (2020-02-09)
+
+
+### :art:
+
+* improve images loads ([441cf5e](https://github.com/pouyio/twiso/commit/441cf5e2abd56484680c31e5237dcf3436ae4ae4))
+
 ## [1.6.8](https://github.com/pouyio/twiso/compare/v1.6.7...v1.6.8) (2020-02-06)
 
 
