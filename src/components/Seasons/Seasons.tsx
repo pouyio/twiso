@@ -114,7 +114,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
             onClick={() => setSelectedSeason(s)}
             key={s.ids.trakt}
             className={
-              'whitespace-pre mx-1 rounded-full text-sm px-3 py-2 cursor-pointer ' +
+              'whitespace-pre mx-1 rounded-full text-sm px-3 py-2 cursor-pointer border-gray-200 border ' +
               selectedClass(s)
             }
           >
