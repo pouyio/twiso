@@ -2,9 +2,8 @@ import React from 'react';
 import { useInView } from 'react-hook-inview';
 import Emoji from './Emoji';
 import { Ids } from '../models';
-import useIsWatch from '../utils/useIsWatch';
+import { useIsWatch, useImage } from '../hooks';
 import Helmet from 'react-helmet';
-import { useImage } from 'utils/hooks/useImage';
 import Img from 'react-image';
 
 interface IImageProps {

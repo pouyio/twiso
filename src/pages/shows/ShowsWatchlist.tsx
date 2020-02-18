@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
-import usePagination from '../../utils/usePagination';
+import { usePagination } from '../../hooks';
 import { useGlobalState } from '../../state/store';
 import { ShowWatchlist } from 'models';
 

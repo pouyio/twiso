@@ -1,6 +1,6 @@
 import { useGlobalState } from '../state/store';
 
-const useIsWatch = () => {
+export const useIsWatch = () => {
   const {
     state: { userInfo },
   } = useGlobalState();
@@ -24,5 +24,3 @@ const useIsWatch = () => {
     isWatchlist,
   };
 };
-
-export default useIsWatch;

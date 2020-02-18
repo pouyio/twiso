@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
-export default function useSearch() {
+export const useSearch = () => {
   const history = useHistory();
   const location = useLocation();
   const [localSearch, setLocalSearch] = useState('');
@@ -27,4 +27,4 @@ export default function useSearch() {
     setSearch,
     search: localSearch,
   };
-}
+};

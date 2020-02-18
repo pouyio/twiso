@@ -9,7 +9,7 @@ export interface Session {
   created_at: number;
 }
 
-const AuthContext = createContext<{
+export const AuthContext = createContext<{
   session: Session | null;
   persistSession: (session: Session) => void;
 }>({
@@ -34,4 +34,3 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </AuthContext.Provider>
   );
 };
-export default AuthContext;

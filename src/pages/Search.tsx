@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
-import useDebounce from '../utils/debounce';
 import ImageLink from '../components/ImageLink';
 import { searchApi } from '../utils/api';
 import Popular from '../components/Popular';
-import useSearch from '../utils/useSearch';
+import { useSearch, useDebounce } from '../hooks';
 import Emoji from '../components/Emoji';
 import { SearchMovie, SearchPerson, SearchShow } from '../models';
 

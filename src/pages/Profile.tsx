@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { version } from '../../package.json';
 import Emoji from '../components/Emoji';
-import ThemeContext from '../utils/ThemeContext';
 import { getStatsApi } from '../utils/api';
 import { UserStats } from '../models';
 import { removeImgCaches, removeCaches } from '../utils/cache';
 import Helmet from 'react-helmet';
-import AuthContext from '../utils/AuthContext';
+import { AuthContext, ThemeContext } from '../contexts';
 import { LoginButton } from '../components/LoginButton';
 
 export default function Profile() {

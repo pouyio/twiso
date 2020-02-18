@@ -1,6 +1,6 @@
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
-import { Session } from './AuthContext';
+import { Session } from '../contexts/AuthContext';
 import {
   MovieWatchlist,
   ShowWatchlist,

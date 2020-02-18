@@ -8,7 +8,7 @@ interface IModalContext {
   text: string;
 }
 
-const ModalContext = createContext<IModalContext>({
+export const ModalContext = createContext<IModalContext>({
   toggle: (text?: { title: string; text: string }) => {},
   isShowing: false,
   title: '',
@@ -41,5 +41,3 @@ export const ModalProvider = ({
     </ModalContext.Provider>
   );
 };
-
-export default ModalContext;

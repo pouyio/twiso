@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Movie } from '../models';
 import { useGlobalState } from '../state/store';
-import AuthContext from '../utils/AuthContext';
-import useIsWatch from '../utils/useIsWatch';
+import { AuthContext } from '../contexts';
+import { useIsWatch } from '../hooks';
 import { LoginButton } from '../components/LoginButton';
 
 interface IWatchButtonProps {

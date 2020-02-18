@@ -11,19 +11,21 @@ import Login from './components/Login';
 import MovieDetail from './pages/MovieDetail';
 import ShowDetail from './pages/ShowDetail';
 import ProtectedRoute from './components/ProtectedRoute';
-import AuthContext from './utils/AuthContext';
 import Emoji from './components/Emoji';
-import { ModalProvider } from './utils/ModalContext';
+import {
+  ModalProvider,
+  AuthContext,
+  ThemeProvider,
+  AlertProvider,
+} from './contexts';
 import Person from './pages/Person';
 import Movies from './pages/movies/Movies';
 import Shows from './pages/shows/Shows';
 import Profile from './pages/Profile';
 import { ProgressBar } from './components/ProgressBar';
 import { QueryParamProvider } from 'use-query-params';
-import { ThemeProvider } from './utils/ThemeContext';
 import { useGlobalState } from './state/store';
 import { Alert } from 'components/Alert/Alert';
-import { AlertProvider } from 'utils/AlertContext';
 const redirect_url = process.env.REACT_APP_REDIRECT_URL;
 
 const ParamsComponent: React.FC = () => {

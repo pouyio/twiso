@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useQueryParam, NumberParam } from 'use-query-params';
 import { PAGE_SIZE } from 'state/state';
 
-const usePagination = <T,>(items: T[]) => {
+export const usePagination = <T,>(items: T[]) => {
   const [currentPage = 1, setCurrentPage] = useQueryParam('page', NumberParam);
   const [lastPage, setLastPage] = useState(1);
 
@@ -48,5 +48,3 @@ const usePagination = <T,>(items: T[]) => {
     setNext: () => turnSafePage(1),
   };
 };
-
-export default usePagination;

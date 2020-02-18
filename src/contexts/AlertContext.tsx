@@ -2,7 +2,7 @@ import React, { createContext, ReactNode, useState } from 'react';
 
 export const DEFAULT_TIME = 5000;
 
-const AlertContext = createContext<{
+export const AlertContext = createContext<{
   showAlert: (text: string) => void;
   opened: boolean;
   text: string;
@@ -39,4 +39,3 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
     </AlertContext.Provider>
   );
 };
-export default AlertContext;

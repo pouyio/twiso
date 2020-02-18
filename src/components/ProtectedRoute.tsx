@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import AuthContext from '../utils/AuthContext';
+import { AuthContext } from '../contexts';
 import { RouteProps } from 'react-router';
 
 const ProtectedRoute: React.FC<RouteProps> = ({ children, ...props }) => {

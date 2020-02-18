@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Show } from '../models';
 import { useGlobalState } from '../state/store';
-import AuthContext from '../utils/AuthContext';
+import { AuthContext } from '../contexts';
 import { LoginButton } from './LoginButton';
 
 interface IShowWatchButtonProps {

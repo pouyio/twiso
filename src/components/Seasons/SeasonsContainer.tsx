@@ -4,9 +4,8 @@ import {
   getSeasonEpisodesApi,
   getProgressApi,
 } from '../../utils/api';
-import AuthContext from '../../utils/AuthContext';
 import Seasons from './Seasons';
-import ModalContext from '../../utils/ModalContext';
+import { ModalContext, AuthContext } from '../../contexts';
 import { Show, ShowProgress, Season, Episode, ShowWatched } from '../../models';
 import { useGlobalState } from '../../state/store';
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { getApi, getPeopleApi, getRatingsApi } from '../utils/api';
 import Image from '../components/Image';
-import useTranslate from '../utils/useTranslate';
+import { useTranslate, useIsWatch, useShare } from '../hooks';
 import Emoji from '../components/Emoji';
 import Related from '../components/Related';
 import SeasonsContainer from '../components/Seasons/SeasonsContainer';
@@ -12,10 +12,8 @@ import CollapsableText from '../components/CollapsableText';
 import { useLocation, useParams } from 'react-router-dom';
 import { SearchShow, People as IPeople, Show, Ratings } from '../models';
 import Helmet from 'react-helmet';
-import useIsWatch from '../utils/useIsWatch';
 import Rating from 'components/Rating';
-import AlertContext from 'utils/AlertContext';
-import { useShare } from 'utils/hooks/useShare';
+import { AlertContext } from '../contexts';
 
 enum status {
   'returning series' = 'en antena',

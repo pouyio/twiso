@@ -8,7 +8,7 @@ interface ThemeContextProps {
   toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<Partial<ThemeContextProps>>({});
+export const ThemeContext = createContext<Partial<ThemeContextProps>>({});
 
 interface IThemeProviderProps {
   children: ReactNode;
@@ -51,4 +51,3 @@ export const ThemeProvider: React.FC<IThemeProviderProps> = ({ children }) => {
     </ThemeContext.Provider>
   );
 };
-export default ThemeContext;

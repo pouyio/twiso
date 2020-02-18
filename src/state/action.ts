@@ -18,7 +18,7 @@ import {
   Season,
   Episode,
 } from '../models';
-import { Session } from '../utils/AuthContext';
+import { Session } from '../contexts/AuthContext';
 import load from './firstLoadAction';
 
 export type Action =

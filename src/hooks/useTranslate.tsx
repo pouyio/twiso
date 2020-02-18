@@ -1,13 +1,10 @@
 import { useState, useEffect, useContext, useCallback } from 'react';
-import { getTranslationsApi } from './api';
-import AuthContext from './AuthContext';
+import { getTranslationsApi } from '../utils/api';
+import { AuthContext } from '../contexts';
 import { Movie, Show, Translation } from '../models';
 import { useGlobalState } from '../state/store';
 
-export default function useTranslate(
-  type: 'movie' | 'show',
-  item?: Show | Movie,
-) {
+export const useTranslate = (type: 'movie' | 'show', item?: Show | Movie) => {
   const { session } = useContext(AuthContext);
   const {
     state: { language },
@@ -48,4 +45,4 @@ export default function useTranslate(
   }, [item, session, language, mergeTranslation, type]);
 
   return translation;
-}
+};

@@ -1,6 +1,6 @@
-import { getImgsApi } from '../api';
-import { getFromCache, saveToCache } from '../cache';
-import { BaseImage } from '../../models';
+import { getImgsApi } from '../utils/api';
+import { getFromCache, saveToCache } from '../utils/cache';
+import { BaseImage } from '../models';
 import { useState, useEffect } from 'react';
 import { useGlobalState } from 'state/store';
 

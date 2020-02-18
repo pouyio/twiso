@@ -4,7 +4,7 @@ import './tailwind.css';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { AuthProvider } from 'utils/AuthContext';
+import { AuthProvider } from 'contexts/AuthContext';
 import { StoreProvider } from 'state/store';
 import initReactFastclick from 'react-fastclick';
 

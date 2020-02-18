@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import AuthContext from '../utils/AuthContext';
+import { AuthContext } from '../contexts';
 import { loginApi } from '../utils/api';
 
 interface ILoginProps {

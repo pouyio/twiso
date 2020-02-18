@@ -1,4 +1,4 @@
-import { Session } from '../utils/AuthContext';
+import { Session } from '../contexts/AuthContext';
 import {
   getImgsConfigApi,
   getWatchedApi,

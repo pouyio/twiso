@@ -1,6 +1,6 @@
 import React from 'react';
 import Pagination from './Pagination';
-import usePagination from '../../utils/usePagination';
+import { usePagination } from '../../hooks';
 import { PAGE_SIZE } from 'state/state';
 
 interface IPaginationContainerProps {

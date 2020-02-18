@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import WatchButton from '../components/WatchButton';
 import { getApi, getPeopleApi, getRatingsApi } from '../utils/api';
 import Image from '../components/Image';
-import useTranslate from '../utils/useTranslate';
+import { useTranslate, useIsWatch, useShare } from '../hooks';
 import Emoji from '../components/Emoji';
 import Related from '../components/Related';
 import Genres from '../components/Genres';
@@ -12,10 +12,8 @@ import { SearchMovie, Movie, People as IPeople, Ratings } from '../models';
 import { useLocation, useParams } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import { useGlobalState } from '../state/store';
-import useIsWatch from '../utils/useIsWatch';
 import Rating from 'components/Rating';
-import AlertContext from 'utils/AlertContext';
-import { useShare } from 'utils/hooks/useShare';
+import { AlertContext } from '../contexts';
 
 export default function MovieDetail() {
   const [item, setItem] = useState<Movie>();
