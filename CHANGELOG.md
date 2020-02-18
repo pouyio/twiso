@@ -1,3 +1,10 @@
+## [1.6.11](https://github.com/pouyio/twiso/compare/v1.6.10...v1.6.11) (2020-02-18)
+
+
+### :art:
+
+* improve seasons button style ([a3b5d44](https://github.com/pouyio/twiso/commit/a3b5d44cec9fe0345145595b0ccfed57b13aeaaf))
+
 ## [1.6.10](https://github.com/pouyio/twiso/compare/v1.6.9...v1.6.10) (2020-02-09)
 
 
