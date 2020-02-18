@@ -2,24 +2,22 @@ import React, { useState, useEffect } from 'react';
 import ImageLink from 'components/ImageLink';
 import PaginationContainer from 'components/Pagination/PaginationContainer';
 import usePagination from 'utils/usePagination';
-import { useGlobalState } from 'state/store';
 import { MovieWatchlist } from 'models';
 
-const MoviesWatchlist: React.FC = () => {
+interface IMoviesWatchlistProps {
+  movies: MovieWatchlist[];
+}
+
+export const MoviesWatchlist: React.FC<IMoviesWatchlistProps> = ({
+  movies,
+}) => {
   const [orderedMovies, setOrderedMovies] = useState<MovieWatchlist[]>([]);
-  const {
-    state: {
-      userInfo: {
-        movies: { watchlist },
-      },
-    },
-  } = useGlobalState();
   const { getItemsByPage } = usePagination(orderedMovies);
 
   useEffect(() => {
     const nearFuture = new Date();
     nearFuture.setDate(nearFuture.getDate() + 7);
-    const newItems = watchlist
+    const newItems = movies
       .sort((a, b) => (new Date(a.listed_at) < new Date(b.listed_at) ? -1 : 1))
       .reduce((acc: MovieWatchlist[], m) => {
         if (!m.movie.released) {
@@ -33,14 +31,14 @@ const MoviesWatchlist: React.FC = () => {
         }
       }, []);
     setOrderedMovies(newItems);
-  }, [watchlist]);
+  }, [movies]);
 
   return (
     <PaginationContainer items={orderedMovies}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
-        {getItemsByPage().map(m => (
+        {getItemsByPage().map((m, i) => (
           <li
-            key={m.movie.ids.trakt}
+            key={`${m.movie.ids.trakt}_${i}`}
             className="p-2"
             style={{ flex: '1 0 50%', maxWidth: '10em' }}
           >
@@ -57,5 +55,3 @@ const MoviesWatchlist: React.FC = () => {
     </PaginationContainer>
   );
 };
-
-export default MoviesWatchlist;

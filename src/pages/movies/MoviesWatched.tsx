@@ -2,26 +2,22 @@ import React, { useEffect, useState } from 'react';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import usePagination from '../../utils/usePagination';
-import { useGlobalState } from '../../state/store';
 import { MovieWatched } from 'models';
 
-const MoviesWatched: React.FC = () => {
-  const {
-    state: {
-      userInfo: {
-        movies: { watched },
-      },
-    },
-  } = useGlobalState();
-  const { getItemsByPage } = usePagination(watched);
+interface IMoviesWatchedProps {
+  movies: MovieWatched[];
+}
+
+export const MoviesWatched: React.FC<IMoviesWatchedProps> = ({ movies }) => {
+  const { getItemsByPage } = usePagination(movies);
   const [orderedMovies, setOrderedMovies] = useState<MovieWatched[]>([]);
 
   useEffect(() => {
-    const newItems = watched.sort((a, b) =>
+    const newItems = movies.sort((a, b) =>
       new Date(a.watched_at) < new Date(b.watched_at) ? 1 : -1,
     );
     setOrderedMovies(newItems);
-  }, [watched]);
+  }, [movies]);
 
   return (
     <PaginationContainer items={orderedMovies}>
@@ -45,5 +41,3 @@ const MoviesWatched: React.FC = () => {
     </PaginationContainer>
   );
 };
-
-export default MoviesWatched;

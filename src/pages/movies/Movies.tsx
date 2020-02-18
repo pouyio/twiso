@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import MoviesWatchlist from './MoviesWatchlist';
-import MoviesWatched from './MoviesWatched';
+import { MoviesWatchlist } from './MoviesWatchlist';
+import { MoviesWatched } from './MoviesWatched';
 import Emoji from '../../components/Emoji';
 import { StringParam, useQueryParam } from 'use-query-params';
 import Helmet from 'react-helmet';
@@ -49,7 +49,11 @@ export default function Movies() {
         </button>
       </div>
       <div className="py-3">
-        {mode === 'watchlist' ? <MoviesWatchlist /> : <MoviesWatched />}
+        {mode === 'watchlist' ? (
+          <MoviesWatchlist movies={movies.watchlist} />
+        ) : (
+          <MoviesWatched movies={movies.watched} />
+        )}
       </div>
     </>
   );
