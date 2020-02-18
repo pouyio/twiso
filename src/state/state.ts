@@ -28,11 +28,9 @@ export interface IState {
   userInfo: IUserInfo;
   config?: ImgConfig;
   language: string;
-  PAGE_SIZE: number;
 }
 
 export const initialState: IState = {
-  PAGE_SIZE,
   loading: {
     shows: { current: 0, total: 0 },
   },

@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useQueryParam, NumberParam } from 'use-query-params';
-import { useGlobalState } from '../state/store';
+import { PAGE_SIZE } from 'state/state';
 
 const usePagination = <T,>(items: T[]) => {
   const [currentPage = 1, setCurrentPage] = useQueryParam('page', NumberParam);
   const [lastPage, setLastPage] = useState(1);
-  const {
-    state: { PAGE_SIZE },
-  } = useGlobalState();
 
   useEffect(() => {
     setCurrentPage(currentPage);
@@ -17,7 +14,7 @@ const usePagination = <T,>(items: T[]) => {
   useEffect(() => {
     const localLastPage = Math.ceil(items.length / PAGE_SIZE);
     setLastPage(localLastPage);
-  }, [items.length, PAGE_SIZE]);
+  }, [items.length]);
 
   const turnSafePage = (direction: 1 | -1) => {
     if (currentPage === 1 && direction === -1) {
