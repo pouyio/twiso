@@ -24,27 +24,25 @@ const MoviesWatched: React.FC = () => {
   }, [watched]);
 
   return (
-    <div>
-      <PaginationContainer items={orderedMovies}>
-        <ul className="flex flex-wrap p-2 items-stretch justify-center">
-          {getItemsByPage().map((m, i) => (
-            <li
-              key={`${m.movie.ids.trakt}_${i}`}
-              className="p-2"
-              style={{ flex: '1 0 50%', maxWidth: '10em' }}
-            >
-              <ImageLink
-                item={m.movie}
-                ids={m.movie.ids}
-                text={m.movie.title}
-                style={{ minHeight: '13.5em' }}
-                type="movie"
-              />
-            </li>
-          ))}
-        </ul>
-      </PaginationContainer>
-    </div>
+    <PaginationContainer items={orderedMovies}>
+      <ul className="flex flex-wrap p-2 items-stretch justify-center">
+        {getItemsByPage().map((m, i) => (
+          <li
+            key={`${m.movie.ids.trakt}_${i}`}
+            className="p-2"
+            style={{ flex: '1 0 50%', maxWidth: '10em' }}
+          >
+            <ImageLink
+              item={m.movie}
+              ids={m.movie.ids}
+              text={m.movie.title}
+              style={{ minHeight: '13.5em' }}
+              type="movie"
+            />
+          </li>
+        ))}
+      </ul>
+    </PaginationContainer>
   );
 };
 
