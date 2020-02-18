@@ -1,14 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import Emoji from '../Emoji';
 import './Alert.css';
 import AlertContext from 'utils/AlertContext';
 
 export const Alert: React.FC = () => {
   const { text, opened, close } = useContext(AlertContext);
-
-  useEffect(() => {
-    console.log(opened);
-  }, [opened]);
 
   return (
     <>
