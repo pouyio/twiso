@@ -1,3 +1,10 @@
+## [1.6.13](https://github.com/pouyio/twiso/compare/v1.6.12...v1.6.13) (2020-02-19)
+
+
+### :rocket:
+
+* updated gh action ([b969417](https://github.com/pouyio/twiso/commit/b9694179469846514ed4f4e0199aed948bbd2983))
+
 ## [1.6.12](https://github.com/pouyio/twiso/compare/v1.6.11...v1.6.12) (2020-02-19)
 
 
