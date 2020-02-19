@@ -1,3 +1,10 @@
+## [1.6.14](https://github.com/pouyio/twiso/compare/v1.6.13...v1.6.14) (2020-02-19)
+
+
+### :rocket:
+
+* updated secrets ([7e6233f](https://github.com/pouyio/twiso/commit/7e6233f73429f3bcb6028e5cfb2f87e8580ad7a7))
+
 ## [1.6.13](https://github.com/pouyio/twiso/compare/v1.6.12...v1.6.13) (2020-02-19)
 
 
