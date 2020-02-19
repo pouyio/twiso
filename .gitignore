@@ -29,3 +29,4 @@ now.json
 /src/tailwind.css
 *.code-workspace
 .vscode
+.now
