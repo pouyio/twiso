@@ -1,3 +1,10 @@
+## [1.6.15](https://github.com/pouyio/twiso/compare/v1.6.14...v1.6.15) (2020-02-21)
+
+
+### :art:
+
+* improve button/tags visuals ([e219073](https://github.com/pouyio/twiso/commit/e219073e64bdbb5f6c3af3539cc4132fc0314bad))
+
 ## [1.6.14](https://github.com/pouyio/twiso/compare/v1.6.13...v1.6.14) (2020-02-19)
 
 
