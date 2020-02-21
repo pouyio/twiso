@@ -173,7 +173,7 @@ export default function ShowDetail() {
               </h1>
 
               <div className="flex mb-4 justify-between items-center text-gray-600">
-                <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200 capitalize">
+                <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-100 capitalize">
                   {status[item.status]}
                 </h2>
                 <h2>{item.runtime || '?'} mins</h2>
