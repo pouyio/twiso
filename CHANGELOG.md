@@ -1,3 +1,10 @@
+## [1.6.16](https://github.com/pouyio/twiso/compare/v1.6.15...v1.6.16) (2020-02-25)
+
+
+### :rocket:
+
+* removed unused env variable ([f91ed9a](https://github.com/pouyio/twiso/commit/f91ed9a310f23e9f52656ef8b4544edb6efae01b))
+
 ## [1.6.15](https://github.com/pouyio/twiso/compare/v1.6.14...v1.6.15) (2020-02-21)
 
 
