@@ -28,7 +28,6 @@ import {
 } from '../models';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
-const client_secret = process.env.REACT_APP_CLIENT_SECRET;
 const tmbdb_api_key = process.env.REACT_APP_TMDB_API_KEY;
 const redirect_url = process.env.REACT_APP_REDIRECT_URL;
 const content_type = 'application/json';
@@ -51,7 +50,7 @@ const limitAxios = rateLimit(axios.create(), {
 export const loginApi = (code: string) => {
   return axios.post<Session>(LOGIN_URL, {
     code,
-    client_secret,
+    // client_secret,
     client_id: trakt_api_key,
     redirect_uri: redirect_url,
     grant_type: 'authorization_code',
