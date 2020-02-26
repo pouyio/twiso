@@ -25,6 +25,7 @@ import {
   MovieWatched,
   Ids,
   Ratings,
+  Profile,
 } from '../models';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
@@ -298,6 +299,15 @@ export const getRelatedApi = <T>(id: number, type: ItemType) => {
 
 export const getStatsApi = (session: Session) => {
   return axios.get<UserStats>(`${BASE_URL}/users/me/stats`, {
+    headers: {
+      ...base_headers,
+      Authorization: `Bearer ${session.access_token}`,
+    },
+  });
+};
+
+export const getProfileApi = (session: Session) => {
+  return axios.get<Profile>(`${BASE_URL}/users/me`, {
     headers: {
       ...base_headers,
       Authorization: `Bearer ${session.access_token}`,

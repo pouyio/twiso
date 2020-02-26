@@ -90,3 +90,14 @@ export interface Ratings {
   votes: number;
   distribution: Distribution;
 }
+
+export interface Profile {
+  username: string;
+  private: boolean;
+  name: string;
+  vip: boolean;
+  vip_ep: boolean;
+  ids: {
+    slug: string;
+  };
+}

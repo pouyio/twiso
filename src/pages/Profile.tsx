@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { version } from '../../package.json';
 import Emoji from '../components/Emoji';
-import { getStatsApi } from '../utils/api';
+import { getStatsApi, getProfileApi } from '../utils/api';
 import { UserStats } from '../models';
 import { removeImgCaches, removeCaches } from '../utils/cache';
 import Helmet from 'react-helmet';
@@ -11,11 +11,15 @@ import { LoginButton } from '../components/LoginButton';
 export default function Profile() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [stats, setStats] = useState<UserStats>();
+  const [dev, setDev] = useState(false);
   const { session } = useContext(AuthContext);
 
   useEffect(() => {
     if (session) {
       getStatsApi(session).then(({ data }) => setStats(data));
+      getProfileApi(session).then(({ data }) =>
+        setDev(data.ids.slug === 'pouyio' || data.ids.slug === 'pouyio-test'),
+      );
     }
   }, [session]);
 
@@ -86,36 +90,42 @@ export default function Profile() {
             </p>{' '}
           </>
         ) : null}
-        <p className="text-center mt-8">
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-gray-200 px-2 py-1 rounded-full"
-          >
-            <Emoji emoji="🌎" />
-            Force Reload
-          </button>
-        </p>
-        <p className="text-center mt-8">
-          <button
-            onClick={removeCaches}
-            className="bg-gray-200 px-2 py-1 rounded-full"
-          >
-            <Emoji emoji="♻️" />
-            Remove app cache
-          </button>
-        </p>
-        <p className="text-center mt-8">
-          <button
-            onClick={removeImgCaches}
-            className="bg-gray-200 px-2 py-1 rounded-full"
-          >
-            <Emoji emoji="♻️" />
-            Remove images from cache
-          </button>
-        </p>
+
         <div className="text-right pt-10 text-sm font-mono">
           <h1>Version: {version}</h1>
         </div>
+
+        {dev ? (
+          <>
+            <p className="text-center py-4">
+              <button
+                onClick={() => window.location.reload()}
+                className="bg-gray-200 px-2 py-1 rounded-full"
+              >
+                <Emoji emoji="🌎" />
+                Force Reload
+              </button>
+            </p>
+            <p className="text-center py-4">
+              <button
+                onClick={removeCaches}
+                className="bg-gray-200 px-2 py-1 rounded-full"
+              >
+                <Emoji emoji="♻️" />
+                Remove app cache
+              </button>
+            </p>
+            <p className="text-center py-4">
+              <button
+                onClick={removeImgCaches}
+                className="bg-gray-200 px-2 py-1 rounded-full"
+              >
+                <Emoji emoji="♻️" />
+                Remove images from cache
+              </button>
+            </p>
+          </>
+        ) : null}
       </div>
     </div>
   );
