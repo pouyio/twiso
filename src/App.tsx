@@ -85,30 +85,34 @@ const App: React.FC = () => {
                     className="flex justify-around px-2 text-center bg-gray-200"
                     style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
                   >
-                    <li className="py-1">
-                      <NavLink
-                        activeClassName="selected-nav-item"
-                        to="/movies?mode=watchlist&page=1"
-                        className="flex items-center"
-                      >
-                        <Emoji emoji="🎬" />
-                        <span className="ml-2 text-base hidden lg:inline">
-                          Películas
-                        </span>
-                      </NavLink>
-                    </li>
-                    <li className="py-1">
-                      <NavLink
-                        activeClassName="selected-nav-item"
-                        to="/shows?mode=watched&page=1"
-                        className="flex items-center"
-                      >
-                        <Emoji emoji="📺" />
-                        <span className="ml-2 text-base hidden lg:inline">
-                          Series
-                        </span>
-                      </NavLink>
-                    </li>
+                    {session ? (
+                      <>
+                        <li className="py-1">
+                          <NavLink
+                            activeClassName="selected-nav-item"
+                            to="/movies?mode=watchlist&page=1"
+                            className="flex items-center"
+                          >
+                            <Emoji emoji="🎬" />
+                            <span className="ml-2 text-base hidden lg:inline">
+                              Películas
+                            </span>
+                          </NavLink>
+                        </li>
+                        <li className="py-1">
+                          <NavLink
+                            activeClassName="selected-nav-item"
+                            to="/shows?mode=watched&page=1"
+                            className="flex items-center"
+                          >
+                            <Emoji emoji="📺" />
+                            <span className="ml-2 text-base hidden lg:inline">
+                              Series
+                            </span>
+                          </NavLink>
+                        </li>
+                      </>
+                    ) : null}
                     <li className="py-1">
                       <NavLink
                         activeClassName="selected-nav-item"
