@@ -2,9 +2,9 @@ import React, { useContext, useState, useEffect } from 'react';
 import {
   BrowserRouter,
   Route,
-  Link,
   Redirect,
   useLocation,
+  NavLink,
 } from 'react-router-dom';
 import Search from './pages/Search';
 import Login from './components/Login';
@@ -86,7 +86,8 @@ const App: React.FC = () => {
                     style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
                   >
                     <li className="py-1">
-                      <Link
+                      <NavLink
+                        activeClassName="selected-nav-item"
                         to="/movies?mode=watchlist&page=1"
                         className="flex items-center"
                       >
@@ -94,10 +95,11 @@ const App: React.FC = () => {
                         <span className="ml-2 text-base hidden lg:inline">
                           Películas
                         </span>
-                      </Link>
+                      </NavLink>
                     </li>
                     <li className="py-1">
-                      <Link
+                      <NavLink
+                        activeClassName="selected-nav-item"
                         to="/shows?mode=watched&page=1"
                         className="flex items-center"
                       >
@@ -105,23 +107,31 @@ const App: React.FC = () => {
                         <span className="ml-2 text-base hidden lg:inline">
                           Series
                         </span>
-                      </Link>
+                      </NavLink>
                     </li>
                     <li className="py-1">
-                      <Link to="/search" className="flex items-center">
+                      <NavLink
+                        activeClassName="selected-nav-item"
+                        to="/search"
+                        className="flex items-center"
+                      >
                         <Emoji emoji="🔍" />
                         <span className="ml-2 text-base hidden lg:inline">
                           Buscar
                         </span>
-                      </Link>
+                      </NavLink>
                     </li>
                     <li className="py-1">
-                      <Link to="/profile" className="flex items-center">
+                      <NavLink
+                        activeClassName="selected-nav-item"
+                        to="/profile"
+                        className="flex items-center"
+                      >
                         <Emoji emoji="👤" />
                         <span className="ml-2 text-base hidden lg:inline">
                           Perfil
                         </span>
-                      </Link>
+                      </NavLink>
                     </li>
                   </ul>
                 </nav>
