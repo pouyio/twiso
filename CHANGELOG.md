@@ -1,3 +1,10 @@
+## [1.6.18](https://github.com/pouyio/twiso/compare/v1.6.17...v1.6.18) (2020-02-26)
+
+
+### :art:
+
+* added page indicator in nav bar ([0427f57](https://github.com/pouyio/twiso/commit/0427f57ec2b550e716f58443a2c1a4c1d2c19aa7))
+
 ## [1.6.17](https://github.com/pouyio/twiso/compare/v1.6.16...v1.6.17) (2020-02-26)
 
 
