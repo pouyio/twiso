@@ -1,3 +1,10 @@
+## [1.6.17](https://github.com/pouyio/twiso/compare/v1.6.16...v1.6.17) (2020-02-26)
+
+
+### :ambulance:
+
+* dev menu hidden ([17ad7c3](https://github.com/pouyio/twiso/commit/17ad7c3e4c8f911e2e79c7d34f2bd5ec91a4b493))
+
 ## [1.6.16](https://github.com/pouyio/twiso/compare/v1.6.15...v1.6.16) (2020-02-25)
 
 
