@@ -1,3 +1,10 @@
+## [1.6.19](https://github.com/pouyio/twiso/compare/v1.6.18...v1.6.19) (2020-02-26)
+
+
+### :art:
+
+* hide menu items if not logged in ([68b8e9b](https://github.com/pouyio/twiso/commit/68b8e9b7b9ba72b179bee403cb701f5f666eeeb1))
+
 ## [1.6.18](https://github.com/pouyio/twiso/compare/v1.6.17...v1.6.18) (2020-02-26)
 
 
