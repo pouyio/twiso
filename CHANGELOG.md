@@ -1,3 +1,10 @@
+## [1.6.20](https://github.com/pouyio/twiso/compare/v1.6.19...v1.6.20) (2020-02-27)
+
+
+### :rocket:
+
+* added image cache with service worker ([8de2d1a](https://github.com/pouyio/twiso/commit/8de2d1a433092a264e749304ff616982c4ec83b1))
+
 ## [1.6.19](https://github.com/pouyio/twiso/compare/v1.6.18...v1.6.19) (2020-02-26)
 
 
