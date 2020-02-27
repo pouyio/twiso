@@ -30,7 +30,7 @@ export default function ShowDetail() {
   const [ratings, setRatings] = useState<Ratings>();
   const { title, overview } = useTranslate('show', item);
   const { state } = useLocation();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
 
@@ -38,7 +38,7 @@ export default function ShowDetail() {
 
   useEffect(() => {
     if (!state) {
-      getApi<SearchShow>(id, 'show').then(({ data }) => {
+      getApi<SearchShow>(+id, 'show').then(({ data }) => {
         const item = data[0];
         setItem(item.show);
       });
@@ -49,10 +49,10 @@ export default function ShowDetail() {
   }, [state, id]);
 
   useEffect(() => {
-    getPeopleApi(id, 'show').then(({ data }) => {
+    getPeopleApi(+id, 'show').then(({ data }) => {
       setPeople(data);
     });
-    getRatingsApi(id, 'show').then(({ data }) => {
+    getRatingsApi(+id, 'show').then(({ data }) => {
       setRatings(data);
     });
   }, [id]);
@@ -194,7 +194,7 @@ export default function ShowDetail() {
                 </div>
               )}
               <div className="my-4">
-                <SeasonsContainer show={item} showId={id} />
+                <SeasonsContainer show={item} showId={+id} />
               </div>
             </div>
           </div>

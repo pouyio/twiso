@@ -13,7 +13,7 @@
     "react-hook-inview": "^4.0.0",
     "react-image": "^2.3.0",
     "react-router-dom": "^5.1.1",
-    "react-scripts": "3.3.0",
+    "react-scripts": "3.4.0",
     "use-query-params": "^0.4.1"
   },
   "scripts": {

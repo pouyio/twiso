@@ -23,7 +23,6 @@ import {
   ImageResponse,
   ShowWatched,
   MovieWatched,
-  Ids,
   Ratings,
   Profile,
 } from '../models';
@@ -315,7 +314,7 @@ export const getProfileApi = (session: Session) => {
   });
 };
 
-export const getRatingsApi = (id: Ids, type: ItemType) => {
+export const getRatingsApi = (id: number, type: ItemType) => {
   return axios.get<Ratings>(`${BASE_URL}/${type}s/${id}/ratings`, {
     headers: {
       ...base_headers,

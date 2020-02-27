@@ -25,7 +25,7 @@ export default function MovieDetail() {
   } = useGlobalState();
   const { title = '', overview = '' } = useTranslate('movie', item);
   const { state } = useLocation();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
 
@@ -33,7 +33,7 @@ export default function MovieDetail() {
 
   useEffect(() => {
     if (!state) {
-      getApi<SearchMovie>(id, 'movie').then(({ data }) => {
+      getApi<SearchMovie>(+id, 'movie').then(({ data }) => {
         const item = data[0];
         setItem(item.movie);
       });
@@ -44,10 +44,10 @@ export default function MovieDetail() {
   }, [state, id]);
 
   useEffect(() => {
-    getPeopleApi(id, 'movie').then(({ data }) => {
+    getPeopleApi(+id, 'movie').then(({ data }) => {
       setPeople(data);
     });
-    getRatingsApi(id, 'movie').then(({ data }) => {
+    getRatingsApi(+id, 'movie').then(({ data }) => {
       setRatings(data);
     });
   }, [id]);

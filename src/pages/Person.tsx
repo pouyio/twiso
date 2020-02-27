@@ -27,10 +27,10 @@ const Person: React.FC = () => {
     state: { language },
   } = useGlobalState();
 
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    getPersonApi(id).then(({ data }) => setLocalState(data));
+    getPersonApi(+id).then(({ data }) => setLocalState(data));
     getPersonItemsApi<PersonShows>(id, 'show').then(({ data }) => {
       setShowResults(
         data.cast
