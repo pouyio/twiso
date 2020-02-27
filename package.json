@@ -19,8 +19,9 @@
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
     "tailwind:css": "tailwind build src/tailwind.src.css -c tailwind.js -o src/tailwind.css",
+    "custom-sw": "cra-append-sw src/custom-sw.js -s",
     "start": "npm run tailwind:css && react-scripts start",
-    "build": "npm run tailwind:css && postcss ./src/tailwind.css -r --env production && react-scripts build",
+    "build": "npm run tailwind:css && postcss ./src/tailwind.css -r --env production && react-scripts build && npm run custom-sw",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -50,6 +51,7 @@
     "@types/react-helmet": "^5.0.14",
     "@types/react-router-dom": "^5.1.0",
     "conventional-changelog-atom": "^2.0.3",
+    "cra-append-sw": "^2.7.0",
     "eslint-config-prettier": "^6.2.0",
     "eslint-plugin-prettier": "^3.1.0",
     "postcss-cli": "^6.1.3",
