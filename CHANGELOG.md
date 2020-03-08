@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/pouyio/twiso/compare/v1.7.0...v1.7.1) (2020-03-08)
+
+
+### :bug:
+
+* update open-graph image ([4b0a2a9](https://github.com/pouyio/twiso/commit/4b0a2a9494ab50262cfc4fb7873ebcb9c4f3cef0))
+
 # [1.7.0](https://github.com/pouyio/twiso/compare/v1.6.20...v1.7.0) (2020-03-08)
 
 
