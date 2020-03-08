@@ -1,3 +1,11 @@
+## [1.7.2](https://github.com/pouyio/twiso/compare/v1.7.1...v1.7.2) (2020-03-08)
+
+
+### :bug:
+
+* rollback ([757a28f](https://github.com/pouyio/twiso/commit/757a28f3a9607d1f8bd32883e7e9548a24c82508))
+* update meta ([2ef25ba](https://github.com/pouyio/twiso/commit/2ef25baf1ab6f5dcdb9b39436ff51949258e6e99))
+
 ## [1.7.1](https://github.com/pouyio/twiso/compare/v1.7.0...v1.7.1) (2020-03-08)
 
 
