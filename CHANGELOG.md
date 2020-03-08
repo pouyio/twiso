@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/pouyio/twiso/compare/v1.6.20...v1.7.0) (2020-03-08)
+
+
+### :sparkles:
+
+* added open graph tags ([ed7963f](https://github.com/pouyio/twiso/commit/ed7963f9803dc66f48479123429f251081761db0))
+
 ## [1.6.20](https://github.com/pouyio/twiso/compare/v1.6.19...v1.6.20) (2020-02-27)
 
 
