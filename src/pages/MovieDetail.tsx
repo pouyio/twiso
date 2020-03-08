@@ -81,12 +81,6 @@ export default function MovieDetail() {
     <div className={getBgClassName()}>
       <Helmet>
         <title>{title}</title>
-        <meta property="og:title" content={title || item.title} />
-        <meta
-          property="og:description"
-          content={(overview || 'Sin descripción').slice(0, 140)}
-        />
-        <meta property="og:url" content={window.location.href} />
       </Helmet>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
