@@ -3,7 +3,6 @@ import { useInView } from 'react-hook-inview';
 import Emoji from './Emoji';
 import { Ids } from '../models';
 import { useIsWatch, useImage } from '../hooks';
-import Helmet from 'react-helmet';
 import Img from 'react-image';
 
 interface IImageProps {
@@ -56,9 +55,6 @@ const Image: React.FC<IImageProps> = ({
         getBorderClass()
       }
     >
-      <Helmet>
-        <meta property="og:image" content={imgUrl} />
-      </Helmet>
       <Img
         src={imgUrl}
         className="m-auto md:max-w-md h-full rounded-lg"
