@@ -11,6 +11,7 @@
     "@fullhuman/postcss-purgecss": "^2.1.0",
     "autoprefixer": "^9.7.5",
     "axios": "^0.19.2",
+    "axios-rate-limit": "^1.2.1",
     "dexie": "^2.0.4",
     "isomorphic-unfetch": "^3.0.0",
     "next": "latest",
