@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/pouyio/twiso/compare/v2.0.0...v2.0.1) (2020-04-29)
+
+
+### :art:
+
+* fixed min-height ([69015ca](https://github.com/pouyio/twiso/commit/69015caae000f4c19c169bb804805d42832f5481))
+
 # [2.0.0](https://github.com/pouyio/twiso/compare/v1.7.2...v2.0.0) (2020-04-29)
 
 
