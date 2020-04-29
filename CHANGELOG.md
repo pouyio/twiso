@@ -1,3 +1,18 @@
+# [2.0.0](https://github.com/pouyio/twiso/compare/v1.7.2...v2.0.0) (2020-04-29)
+
+
+### :arrow_up:
+
+* Bump acorn from 5.7.3 to 5.7.4 ([0b94704](https://github.com/pouyio/twiso/commit/0b94704a53a2ca8d1f7cc8a7953d844229ec2ef7))
+
+### :boom:
+
+* moved to nextjs, SSR + PWA ([e804172](https://github.com/pouyio/twiso/commit/e80417212e211e4c2668ded33e2068c69b281b64))
+
+### :rocket:
+
+* added missing dep ([751f590](https://github.com/pouyio/twiso/commit/751f590b3850085539d118cb8a908968bef7d77a))
+
 ## [1.7.2](https://github.com/pouyio/twiso/compare/v1.7.1...v1.7.2) (2020-03-08)
 
 
