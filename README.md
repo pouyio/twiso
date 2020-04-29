@@ -1,4 +1,4 @@
-# [Twiso](https://twiso.pouyio.now.sh)
+# [Twiso](https://twiso.now.sh)
 
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/pouyio/twiso)](https://github.com/pouyio/twiso/blob/master/CHANGELOG.md)
 [![Actions Status](https://github.com/pouyio/twiso/workflows/Deploy/badge.svg)](https://github.com/pouyio/twiso/actions)
