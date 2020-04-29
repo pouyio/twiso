@@ -1,6 +1,5 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import Head from 'next/head';
-import { isServer } from '../utils/isServer';
 
 export type ThemeType = 'theme-light' | 'theme-dark';
 
@@ -33,20 +32,11 @@ export const ThemeProvider: React.FC<IThemeProviderProps> = ({ children }) => {
     });
   };
 
-  const styles = () => {
-    if (isServer()) {
-      return {};
-    }
-    return {
-      style: (window.navigator as any).standalone ? { minHeight: '100vh' } : {},
-    };
-  };
-
   return (
     <ThemeContext.Provider value={{ theme: localTheme, toggleTheme }}>
       <div
         className={`theme-wrapper text-black bg-white ${localTheme}`}
-        {...styles()}
+        style={{ minHeight: '100vh' }}
       >
         <Head>
           <style type="text/css">{`
