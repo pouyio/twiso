@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 export const TappableLi: React.FC<any> = ({ children, ...rest }) => {
   return (
     <motion.li
+      positionTransition
       whileTap={{ scale: 1.03, transition: { duration: 0.02 } }}
       whileHover={{ scale: 1.03, transition: { duration: 0.05 } }}
       {...rest}

@@ -23,9 +23,9 @@ export const MoviesWatched: React.FC<IMoviesWatchedProps> = ({ movies }) => {
   return (
     <PaginationContainer items={orderedMovies}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
-        {getItemsByPage().map((m, i) => (
+        {getItemsByPage().map((m) => (
           <TappableLi
-            key={`${m.movie.ids.trakt}_${i}`}
+            key={`${m.movie.ids.trakt}`}
             className="p-2"
             style={{ flex: '1 0 50%', maxWidth: '10em' }}
           >
