@@ -25,7 +25,6 @@ export default function Shows() {
     if (!mode) {
       push({ pathname, query: { mode: 'watched' } });
     }
-    // eslint-disable-next-line
   }, []);
 
   return (
