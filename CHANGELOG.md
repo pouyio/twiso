@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/pouyio/twiso/compare/v2.0.1...v2.0.2) (2020-05-01)
+
+
+### :art:
+
+* faster transition to movie, show, person ([895200d](https://github.com/pouyio/twiso/commit/895200ded6c8a1ca4289b3fbd40b196901e41fff))
+
 ## [2.0.1](https://github.com/pouyio/twiso/compare/v2.0.0...v2.0.1) (2020-04-29)
 
 
