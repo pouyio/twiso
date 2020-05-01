@@ -4,7 +4,7 @@ import CollapsableText from '../../components/CollapsableText';
 import Emoji from '../../components/Emoji';
 import Image from '../../components/Image';
 import ImageLink from '../../components/ImageLink';
-import { findFirstValid } from '../../hooks';
+import { findFirstValid, useDeleteQueryData } from '../../hooks';
 import {
   Movie,
   Person as IPerson,
@@ -42,6 +42,8 @@ const Person: React.FC<IPersonProps> = ({ id, initialItem, initialImgUrl }) => {
   const {
     state: { language },
   } = useGlobalState();
+
+  useDeleteQueryData('person');
 
   useEffect(() => {
     getPersonApi(+id).then(({ data }) => setLocalState(data));
@@ -233,7 +235,29 @@ const Person: React.FC<IPersonProps> = ({ id, initialItem, initialImgUrl }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  query: { data },
+}) => {
+  let initialImgUrl = '';
+  try {
+    if (data) {
+      const parsedData = JSON.parse(data as string);
+      if (parsedData) {
+        return {
+          props: {
+            initialItem: parsedData,
+            id: params!.id,
+            initialImgUrl,
+            key: `show/${params!.id}`,
+          },
+        };
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
   const searchResponses = await getApi<SearchPerson>(+params!.id, 'person');
   const imgResponse = await getImgsApi(
     searchResponses.data[0].person.ids.tmdb,
@@ -245,15 +269,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     'en',
   );
 
-  let initialImgUrl = 'https://via.placeholder.com/185x330';
+  initialImgUrl = 'https://via.placeholder.com/185x330';
   if (poster) {
     initialImgUrl = `https://image.tmdb.org/t/p/w185${poster.file_path}`;
   }
 
   return {
     props: {
-      id: params!.id,
       initialItem: searchResponses.data[0].person,
+      id: params!.id,
       initialImgUrl,
       key: `person/${params!.id}`,
     },

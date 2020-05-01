@@ -6,3 +6,4 @@ export * from './useTranslate';
 export * from './useImage';
 export * from './useDebounce';
 export * from './useQueryParams';
+export * from './useDeleteQueryData';

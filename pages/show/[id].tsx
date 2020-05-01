@@ -16,6 +16,7 @@ import {
   useIsWatch,
   useShare,
   useTranslate,
+  useDeleteQueryData,
 } from '../../hooks';
 import { People as IPeople, Ratings, SearchShow, Show } from '../../models';
 import {
@@ -49,6 +50,8 @@ const ShowPage: React.FC<IShowProps> = ({ id, initialItem, initialImgUrl }) => {
   const { share } = useShare();
 
   const { isWatchlist, isWatched } = useIsWatch();
+
+  useDeleteQueryData('show');
 
   useEffect(() => {
     if (!initialItem) {
@@ -245,7 +248,29 @@ const ShowPage: React.FC<IShowProps> = ({ id, initialItem, initialImgUrl }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  query: { data },
+}) => {
+  let initialImgUrl = '';
+  try {
+    if (data) {
+      const parsedData = JSON.parse(data as string);
+      if (parsedData) {
+        return {
+          props: {
+            initialItem: parsedData,
+            id: params!.id,
+            initialImgUrl,
+            key: `show/${params!.id}`,
+          },
+        };
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
   const searchResponses = await getApi<SearchShow>(+params!.id, 'show');
   const imgResponse = await getImgsApi(
     searchResponses.data[0].show.ids.tmdb,
@@ -257,15 +282,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     'en',
   );
 
-  let initialImgUrl = 'https://via.placeholder.com/185x330';
+  initialImgUrl = 'https://via.placeholder.com/185x330';
   if (poster) {
     initialImgUrl = `https://image.tmdb.org/t/p/w185${poster.file_path}`;
   }
 
   return {
     props: {
-      id: params!.id,
       initialItem: searchResponses.data[0].show,
+      id: params!.id,
       initialImgUrl,
       key: `show/${params!.id}`,
     },

@@ -26,9 +26,18 @@ const People: React.FC<IPeopleProps> = ({
                 <Link
                   href={{
                     pathname: '/person/[id]',
-                    search: `?slug=${character.person.ids.slug}`,
+                    query: {
+                      slug: character.person.ids.slug,
+                      data: JSON.stringify(character.person),
+                    },
                   }}
-                  as={`/person/${character.person.ids.trakt}?slug=${character.person.ids.slug}`}
+                  as={{
+                    pathname: `/person/${character.person.ids.trakt}`,
+                    query: {
+                      slug: character.person.ids.slug,
+                      data: JSON.stringify(character.person),
+                    },
+                  }}
                 >
                   <div className="bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre flex flex-col text-center">
                     <span>{character.person.name}</span>

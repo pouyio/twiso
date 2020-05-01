@@ -12,6 +12,7 @@ import WatchButton from '../../components/WatchButton';
 import { AlertContext } from '../../contexts';
 import {
   findFirstValid,
+  useDeleteQueryData,
   useIsWatch,
   useShare,
   useTranslate,
@@ -49,6 +50,8 @@ const MoviePage: React.FC<IMovieProps> = ({
   const { share } = useShare();
 
   const { isWatchlist, isWatched } = useIsWatch();
+
+  useDeleteQueryData('movie');
 
   useEffect(() => {
     if (!initialItem) {
@@ -235,8 +238,31 @@ const MoviePage: React.FC<IMovieProps> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  query: { data },
+}) => {
+  let initialImgUrl = '';
+  try {
+    if (data) {
+      const parsedData = JSON.parse(data as string);
+      if (parsedData) {
+        return {
+          props: {
+            initialItem: parsedData,
+            id: params!.id,
+            initialImgUrl,
+            key: `movie/${params!.id}`,
+          },
+        };
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
   const searchResponses = await getApi<SearchMovie>(+params!.id, 'movie');
+
   const imgResponse = await getImgsApi(
     searchResponses.data[0].movie.ids.tmdb,
     'movie',
@@ -247,15 +273,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     'en',
   );
 
-  let initialImgUrl = 'https://via.placeholder.com/185x330';
+  initialImgUrl = 'https://via.placeholder.com/185x330';
   if (poster) {
     initialImgUrl = `https://image.tmdb.org/t/p/w185${poster.file_path}`;
   }
 
   return {
     props: {
-      id: params!.id,
       initialItem: searchResponses.data[0].movie,
+      id: params!.id,
       initialImgUrl,
       key: `movie/${params!.id}`,
     },

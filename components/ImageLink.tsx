@@ -5,8 +5,6 @@ import { Movie, Show, Person, Ids } from '../models';
 import Link from 'next/link';
 
 interface IImageLinkProps {
-  // TODO check if it can be removed, not used
-  // https://spectrum.chat/next-js/general/how-to-get-react-router-location-state-feature-with-next-router~fc327910-21e1-42f7-8ebc-a960fe94ba31
   item: Show | Movie | Person;
   ids: Ids;
   text: string;
@@ -15,6 +13,7 @@ interface IImageLinkProps {
 }
 
 const ImageLink: React.FC<IImageLinkProps> = ({
+  item,
   ids,
   text,
   style,
@@ -26,9 +25,12 @@ const ImageLink: React.FC<IImageLinkProps> = ({
       passHref
       href={{
         pathname: `/${type}/[id]`,
-        search: `?slug=${ids.slug}`,
+        query: { slug: ids.slug, data: JSON.stringify(item) },
       }}
-      as={`/${type}/${ids.trakt}?slug=${ids.slug}`}
+      as={{
+        pathname: `/${type}/${ids.trakt}`,
+        query: { slug: ids.slug, data: JSON.stringify(item) },
+      }}
     >
       <a>
         <Image ids={ids} text={text} style={style} type={type} />
