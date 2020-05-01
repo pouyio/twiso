@@ -3,6 +3,7 @@ import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
 import { MovieWatched } from '../../models';
+import { TappableLi } from '../Animated/TappableLi';
 
 interface IMoviesWatchedProps {
   movies: MovieWatched[];
@@ -23,7 +24,7 @@ export const MoviesWatched: React.FC<IMoviesWatchedProps> = ({ movies }) => {
     <PaginationContainer items={orderedMovies}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
         {getItemsByPage().map((m, i) => (
-          <li
+          <TappableLi
             key={`${m.movie.ids.trakt}_${i}`}
             className="p-2"
             style={{ flex: '1 0 50%', maxWidth: '10em' }}
@@ -35,7 +36,7 @@ export const MoviesWatched: React.FC<IMoviesWatchedProps> = ({ movies }) => {
               style={{ minHeight: '13.5em' }}
               type="movie"
             />
-          </li>
+          </TappableLi>
         ))}
       </ul>
     </PaginationContainer>

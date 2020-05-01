@@ -4,6 +4,7 @@ import PaginationContainer from '../Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
 import { useGlobalState } from '../../state/store';
 import { ShowWatchlist } from '../../models';
+import { TappableLi } from '../Animated/TappableLi';
 
 const ShowsWatchlist: React.FC = () => {
   const [orderedShows, setOrderedShows] = useState<ShowWatchlist[]>([]);
@@ -41,7 +42,7 @@ const ShowsWatchlist: React.FC = () => {
     <PaginationContainer items={orderedShows}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
         {getItemsByPage().map((m) => (
-          <li
+          <TappableLi
             key={m.show.ids.trakt}
             className="p-2"
             style={{ flex: '1 0 50%', maxWidth: '10em' }}
@@ -53,7 +54,7 @@ const ShowsWatchlist: React.FC = () => {
               style={{ minHeight: '13.5em' }}
               type="show"
             />
-          </li>
+          </TappableLi>
         ))}
       </ul>
     </PaginationContainer>

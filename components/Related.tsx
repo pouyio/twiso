@@ -3,6 +3,7 @@ import { getRelatedApi } from '../utils/api';
 import ImageLink from './ImageLink';
 import Emoji from './Emoji';
 import { Show, Movie } from '../models';
+import { TappableLi } from './Animated/TappableLi';
 
 interface IRelatedProps {
   itemId: number;
@@ -25,8 +26,8 @@ const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
           className="flex overflow-x-auto -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-center"
           style={{ WebkitOverflowScrolling: 'touch' }}
         >
-          {results.map(r => (
-            <li
+          {results.map((r) => (
+            <TappableLi
               key={r.ids.trakt}
               className="p-2"
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
@@ -38,7 +39,7 @@ const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
                 type={type}
                 style={{ minHeight: '13.5em' }}
               />
-            </li>
+            </TappableLi>
           ))}
         </ul>
       ) : (

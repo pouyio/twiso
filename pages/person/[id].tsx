@@ -21,6 +21,10 @@ import {
   getPersonItemsApi,
 } from '../../utils/api';
 import Head from 'next/head';
+import {
+  EnteringBottom,
+  EnteringTop,
+} from '../../components/Animated/Entering';
 
 interface IPersonProps {
   id: string;
@@ -85,7 +89,7 @@ const Person: React.FC<IPersonProps> = ({ id, initialItem, initialImgUrl }) => {
         <meta property="og:image" content={initialImgUrl} />
       </Head>
       <div className="lg:max-w-5xl lg:mx-auto">
-        <div
+        <EnteringTop
           className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
           style={{ minHeight: '15em' }}
         >
@@ -98,9 +102,9 @@ const Person: React.FC<IPersonProps> = ({ id, initialItem, initialImgUrl }) => {
               size="big"
             />
           )}
-        </div>
+        </EnteringTop>
 
-        <article
+        <EnteringBottom
           className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none"
           style={{ transform: 'translate3d(0,0,0)' }}
         >
@@ -222,7 +226,7 @@ const Person: React.FC<IPersonProps> = ({ id, initialItem, initialImgUrl }) => {
               </ul>
             </>
           ) : null}
-        </article>
+        </EnteringBottom>
       </div>
     </div>
   ) : (

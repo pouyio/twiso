@@ -7,6 +7,7 @@ import Popular from '../components/Popular';
 import { useDebounce } from '../hooks';
 import { SearchMovie, SearchPerson, SearchShow } from '../models';
 import { searchApi } from '../utils/api';
+import { TappableLi } from '../components/Animated/TappableLi';
 
 export default function Search() {
   const {
@@ -90,7 +91,7 @@ export default function Search() {
                 style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
               >
                 {movieResults.map((r) => (
-                  <li
+                  <TappableLi
                     key={r.movie.ids.slug}
                     className="p-2"
                     style={{ height: '13.5em', width: '9.5em' }}
@@ -101,7 +102,7 @@ export default function Search() {
                       item={r.movie}
                       type="movie"
                     />
-                  </li>
+                  </TappableLi>
                 ))}
               </ul>
             </>
@@ -119,7 +120,7 @@ export default function Search() {
                 style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
               >
                 {showResults.map((r) => (
-                  <li
+                  <TappableLi
                     key={r.show.ids.slug}
                     className="p-2"
                     style={{ height: '13.5em', width: '9.5em' }}
@@ -130,7 +131,7 @@ export default function Search() {
                       item={r.show}
                       type="show"
                     />
-                  </li>
+                  </TappableLi>
                 ))}
               </ul>
             </>
@@ -148,7 +149,7 @@ export default function Search() {
                 style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
               >
                 {peopleResults.map((r) => (
-                  <li
+                  <TappableLi
                     key={r.person.ids.slug}
                     className="p-2"
                     style={{ height: '13.5em', width: '9.5em' }}
@@ -159,7 +160,7 @@ export default function Search() {
                       item={r.person}
                       type="person"
                     />
-                  </li>
+                  </TappableLi>
                 ))}
               </ul>
             </>

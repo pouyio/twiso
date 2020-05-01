@@ -1,6 +1,10 @@
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import React, { useContext, useEffect, useState } from 'react';
+import {
+  EnteringBottom,
+  EnteringTop,
+} from '../../components/Animated/Entering';
 import CollapsableText from '../../components/CollapsableText';
 import Emoji from '../../components/Emoji';
 import Genres from '../../components/Genres';
@@ -109,7 +113,7 @@ const MoviePage: React.FC<IMovieProps> = ({
         <meta property="og:image" content={initialImgUrl} />
       </Head>
       <div className="lg:max-w-5xl lg:mx-auto">
-        <div
+        <EnteringTop
           className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
           style={{ minHeight: '15em' }}
         >
@@ -138,8 +142,8 @@ const MoviePage: React.FC<IMovieProps> = ({
           >
             <Emoji emoji="📤" className="text-4xl" title="Share" />
           </button>
-        </div>
-        <article
+        </EnteringTop>
+        <EnteringBottom
           className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none"
           style={{ transform: 'translate3d(0,0,0)' }}
         >
@@ -225,7 +229,7 @@ const MoviePage: React.FC<IMovieProps> = ({
             <p>Relacionados:</p>
             <Related itemId={item.ids.trakt} type="movie" />
           </div>
-        </article>
+        </EnteringBottom>
       </div>
     </div>
   ) : (

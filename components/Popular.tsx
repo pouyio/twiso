@@ -3,6 +3,7 @@ import ImageLink from './ImageLink';
 import { getPopularApi } from '../utils/api';
 import Emoji from './Emoji';
 import { Popular as IPopular } from '../models';
+import { TappableLi } from './Animated/TappableLi';
 
 interface IPopularProps {
   type: 'movie' | 'show';
@@ -47,8 +48,8 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
         className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto"
         style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
       >
-        {results.map(r => (
-          <li
+        {results.map((r) => (
+          <TappableLi
             key={r[type]!.ids.trakt}
             className="p-2"
             style={{ height: '13.5em', width: '9.5em' }}
@@ -60,7 +61,7 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
               style={{ minHeight: '10em' }}
               type={type}
             />
-          </li>
+          </TappableLi>
         ))}
       </ul>
       <div className="h-1 border-b-2 rounded-full my-8"></div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { usePagination } from '../../hooks';
 import { MovieWatchlist } from '../../models';
+import { TappableLi } from '../Animated/TappableLi';
 import ImageLink from '../ImageLink';
 import PaginationContainer from '../Pagination/PaginationContainer';
 
@@ -37,7 +38,7 @@ export const MoviesWatchlist: React.FC<IMoviesWatchlistProps> = ({
     <PaginationContainer items={orderedMovies}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
         {getItemsByPage().map((m, i) => (
-          <li
+          <TappableLi
             key={`${m.movie.ids.trakt}_${i}`}
             className="p-2"
             style={{ flex: '1 0 50%', maxWidth: '10em' }}
@@ -49,7 +50,7 @@ export const MoviesWatchlist: React.FC<IMoviesWatchlistProps> = ({
               style={{ minHeight: '13.5em' }}
               type="movie"
             />
-          </li>
+          </TappableLi>
         ))}
       </ul>
     </PaginationContainer>
