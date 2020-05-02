@@ -65,7 +65,6 @@ const MoviePage: React.FC<IMovieProps> = ({
       });
       return;
     }
-    window.scrollTo(0, 0);
   }, [initialItem, id]);
 
   useEffect(() => {

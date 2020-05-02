@@ -66,7 +66,6 @@ const ShowPage: React.FC<IShowProps> = ({ id, initialItem, initialImgUrl }) => {
       return;
     }
     setItem(initialItem);
-    window.scrollTo(0, 0);
   }, [initialItem, id]);
 
   useEffect(() => {
