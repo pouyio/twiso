@@ -79,7 +79,7 @@ const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
 
   return (
     <ul
-      className="flex overflow-x-auto -mx-4 lg:mx-0 lg:overflow-hidden lg:flex-wrap lg:justify-center"
+      className="flex overflow-y-hidden overflow-x-auto -mx-4 lg:mx-0 lg:overflow-hidden lg:flex-wrap lg:justify-center"
       style={{ WebkitOverflowScrolling: 'touch' }}
     >
       {results ? (
