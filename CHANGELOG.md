@@ -1,3 +1,21 @@
+## [2.0.3](https://github.com/pouyio/twiso/compare/v2.0.2...v2.0.3) (2020-05-02)
+
+
+### :art:
+
+* added animations when list is updated ([345c226](https://github.com/pouyio/twiso/commit/345c22674235202504a63336a61ea69805b64864))
+* added placeholders for people and related ([8f048b1](https://github.com/pouyio/twiso/commit/8f048b113ccec900b6c52dd6c43c83226b70f417))
+* added some animations ([02c1f4a](https://github.com/pouyio/twiso/commit/02c1f4a16501cefb7b51ac4b493294d7df7073d6))
+* fix overflow on hover ([04424d9](https://github.com/pouyio/twiso/commit/04424d910ff19590b28836dc695fbebf569201a7))
+
+### :bug:
+
+* fix navigation back/forth not re-rendering ([dda8c1f](https://github.com/pouyio/twiso/commit/dda8c1f9ef0ec12709b242bfc000e3f8cee577fc))
+
+### :rocket:
+
+* update node version to avoid console error ([72881a3](https://github.com/pouyio/twiso/commit/72881a3b38d7a31d57b3a33a0177326d3b22fac7))
+
 ## [2.0.2](https://github.com/pouyio/twiso/compare/v2.0.1...v2.0.2) (2020-05-01)
 
 
