@@ -17,9 +17,6 @@ export const useDeleteQueryData = (type: 'movie' | 'show' | 'person') => {
           pathname: `/${type}/${query.id}`,
           query: rest,
         },
-        {
-          shallow: true,
-        },
       );
     }
   }, []);
