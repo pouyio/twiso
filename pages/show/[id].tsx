@@ -145,7 +145,7 @@ const ShowPage: React.FC<IShowProps> = ({ id, initialItem, initialImgUrl }) => {
           </button>
         </EnteringTop>
         <EnteringBottom
-          className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none"
+          className="relative p-4 z-10 lg:p-8 bg-white rounded-t-lg lg:rounded-none"
           style={{ transform: 'translate3d(0,0,0)' }}
         >
           <div className="lg:hidden bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
