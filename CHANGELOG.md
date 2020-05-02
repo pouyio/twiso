@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/pouyio/twiso/compare/v2.0.3...v2.0.4) (2020-05-02)
+
+
+### :bug:
+
+* fix image overlap on detail ([0b46089](https://github.com/pouyio/twiso/commit/0b46089ed78366e572a72cf16ed35ea632562043))
+
 ## [2.0.3](https://github.com/pouyio/twiso/compare/v2.0.2...v2.0.3) (2020-05-02)
 
 
