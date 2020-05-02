@@ -232,7 +232,7 @@ const ShowPage: React.FC<IShowProps> = ({ id, initialItem, initialImgUrl }) => {
           </div>
 
           <div className="my-4">
-            {people && <People people={people} type="show" />}
+            <People people={people} type="show" />
           </div>
 
           <div className="my-4">

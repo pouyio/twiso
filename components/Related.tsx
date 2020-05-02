@@ -10,8 +10,66 @@ interface IRelatedProps {
   type: 'movie' | 'show';
 }
 
+const placeholderStyle = {
+  minHeight: '13.5em',
+  flex: '1 0 50%',
+  maxWidth: '10em',
+};
+const placeholders = [
+  <li
+    key="placeholder-1"
+    className=" h-full bg-gray-300 rounded-lg m-2"
+    style={placeholderStyle}
+  ></li>,
+  <li
+    key="placeholder-2"
+    className=" h-full bg-gray-300 rounded-lg m-2"
+    style={placeholderStyle}
+  ></li>,
+  <li
+    key="placeholder-3"
+    className=" h-full bg-gray-300 rounded-lg m-2"
+    style={placeholderStyle}
+  ></li>,
+  <li
+    key="placeholder-4"
+    className=" h-full bg-gray-300 rounded-lg m-2"
+    style={placeholderStyle}
+  ></li>,
+  <li
+    key="placeholder-5"
+    className=" h-full bg-gray-300 rounded-lg m-2"
+    style={placeholderStyle}
+  ></li>,
+  <li
+    key="placeholder-6"
+    className=" h-full bg-gray-300 rounded-lg m-2"
+    style={placeholderStyle}
+  ></li>,
+  <li
+    key="placeholder-7"
+    className=" h-full bg-gray-300 rounded-lg m-2"
+    style={placeholderStyle}
+  ></li>,
+  <li
+    key="placeholder-8"
+    className=" h-full bg-gray-300 rounded-lg m-2"
+    style={placeholderStyle}
+  ></li>,
+  <li
+    key="placeholder-9"
+    className=" h-full bg-gray-300 rounded-lg m-2"
+    style={placeholderStyle}
+  ></li>,
+  <li
+    key="placeholder-10"
+    className=" h-full bg-gray-300 rounded-lg m-2"
+    style={placeholderStyle}
+  ></li>,
+];
+
 const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
-  const [results, setResults] = useState<(Show | Movie)[]>([]);
+  const [results, setResults] = useState<(Show | Movie)[]>();
 
   useEffect(() => {
     getRelatedApi<Show | Movie>(itemId, type).then(({ data }) => {
@@ -20,13 +78,13 @@ const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
   }, [itemId, type]);
 
   return (
-    <>
-      {results.length ? (
-        <ul
-          className="flex overflow-x-auto -mx-4 lg:mx-0 lg:overflow-hidden lg:flex-wrap lg:justify-center"
-          style={{ WebkitOverflowScrolling: 'touch' }}
-        >
-          {results.map((r) => (
+    <ul
+      className="flex overflow-x-auto -mx-4 lg:mx-0 lg:overflow-hidden lg:flex-wrap lg:justify-center"
+      style={{ WebkitOverflowScrolling: 'touch' }}
+    >
+      {results ? (
+        results.length ? (
+          results.map((r) => (
             <TappableLi
               key={r.ids.trakt}
               className="p-2"
@@ -40,14 +98,16 @@ const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
                 style={{ minHeight: '13.5em' }}
               />
             </TappableLi>
-          ))}
-        </ul>
+          ))
+        ) : (
+          <li className="bg-gray-200 inline-block my-2 font-light px-3 py-2 rounded-full">
+            Ninguno <Emoji emoji="😵" />
+          </li>
+        )
       ) : (
-        <span className="bg-gray-200 inline-block my-2 font-light px-3 py-2 rounded-full">
-          Ninguno <Emoji emoji="😵" />
-        </span>
+        placeholders
       )}
-    </>
+    </ul>
   );
 };
 

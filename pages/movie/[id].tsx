@@ -222,7 +222,7 @@ const MoviePage: React.FC<IMovieProps> = ({
           </div>
 
           <div className="my-4">
-            {people && <People people={people} type="movie" />}
+            <People people={people} type="movie" />
           </div>
 
           <div className="my-4">
