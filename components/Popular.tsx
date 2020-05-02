@@ -45,7 +45,7 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
         <span className="mx-2">{getTitle()} populares</span>
       </h1>
       <ul
-        className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto"
+        className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto overflow-y-hidden"
         style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
       >
         {results.map((r) => (
