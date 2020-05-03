@@ -1,3 +1,10 @@
+## [2.0.7](https://github.com/pouyio/twiso/compare/v2.0.6...v2.0.7) (2020-05-03)
+
+
+### :rocket:
+
+* added sentry ([91eacfd](https://github.com/pouyio/twiso/commit/91eacfd0f2b92e414706e4fea0c767d1d14cd3f3))
+
 ## [2.0.6](https://github.com/pouyio/twiso/compare/v2.0.5...v2.0.6) (2020-05-03)
 
 
