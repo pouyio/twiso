@@ -1,17 +1,22 @@
 import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
+import {
+  EnteringBottom,
+  EnteringTop,
+} from '../../components/Animated/Entering';
 import CollapsableText from '../../components/CollapsableText';
 import Emoji from '../../components/Emoji';
 import Image from '../../components/Image';
 import ImageLink from '../../components/ImageLink';
-import { findFirstValid, useDeleteQueryData } from '../../hooks';
+import { findFirstValid } from '../../hooks';
 import {
   Movie,
   Person as IPerson,
   PersonMovies,
   PersonShows,
-  Show,
   SearchPerson,
+  Show,
 } from '../../models';
 import { useGlobalState } from '../../state/store';
 import {
@@ -20,11 +25,6 @@ import {
   getPersonApi,
   getPersonItemsApi,
 } from '../../utils/api';
-import Head from 'next/head';
-import {
-  EnteringBottom,
-  EnteringTop,
-} from '../../components/Animated/Entering';
 
 interface IPersonProps {
   id: string;
@@ -46,8 +46,6 @@ const Person: React.FC<IPersonProps> = ({ id, initialItem, initialImgUrl }) => {
   const {
     state: { language },
   } = useGlobalState();
-
-  useDeleteQueryData('person');
 
   useEffect(() => {
     getPersonApi(+id).then(({ data }) => setLocalState(data));
@@ -239,28 +237,8 @@ const Person: React.FC<IPersonProps> = ({ id, initialItem, initialImgUrl }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-  query: { data },
-}) => {
-  let initialImgUrl = '';
-  try {
-    if (data) {
-      const parsedData = JSON.parse(data as string);
-      if (parsedData) {
-        return {
-          props: {
-            initialItem: parsedData,
-            id: params!.id,
-            initialImgUrl,
-            key: `show/${params!.id}`,
-          },
-        };
-      }
-    }
-  } catch (error) {
-    console.error(error);
-  }
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  let initialImgUrl = 'https://via.placeholder.com/185x330';
 
   const searchResponses = await getApi<SearchPerson>(+params!.id, 'person');
   const imgResponse = await getImgsApi(
@@ -273,7 +251,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     'en',
   );
 
-  initialImgUrl = 'https://via.placeholder.com/185x330';
   if (poster) {
     initialImgUrl = `https://image.tmdb.org/t/p/w185${poster.file_path}`;
   }

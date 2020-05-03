@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import { parseCookies } from 'nookies';
 import React, { useContext, useEffect, useState } from 'react';
 import {
   EnteringBottom,
@@ -16,7 +17,6 @@ import WatchButton from '../../components/WatchButton';
 import { AlertContext } from '../../contexts';
 import {
   findFirstValid,
-  useDeleteQueryData,
   useIsWatch,
   useShare,
   useTranslate,
@@ -29,6 +29,7 @@ import {
   getPeopleApi,
   getRatingsApi,
 } from '../../utils/api';
+import db from '../../utils/db';
 
 interface IMovieProps {
   id: string;
@@ -55,16 +56,32 @@ const MoviePage: React.FC<IMovieProps> = ({
 
   const { isWatchlist, isWatched } = useIsWatch();
 
-  useDeleteQueryData('movie');
-
   useEffect(() => {
-    if (!initialItem) {
-      getApi<SearchMovie>(+id, 'movie').then(({ data }) => {
-        const item = data[0];
-        setItem(item.movie);
-      });
+    if (initialItem) {
+      setItem(initialItem);
       return;
     }
+    db.table('movies')
+      .get(+id)
+      .then((result?: { movie: Movie }) => {
+        if (result) {
+          setItem(result.movie);
+          console.log('in DB');
+          return;
+        }
+        const sessionItem = sessionStorage.getItem(`movie_${id}`);
+        if (sessionItem) {
+          setItem(JSON.parse(sessionItem) as Movie);
+          console.log('in State');
+          return;
+        }
+        getApi<SearchMovie>(+id, 'movie').then(({ data }) => {
+          console.log('requested');
+          const item = data[0];
+          setItem(item.movie);
+        });
+      });
+
     window.scrollTo(0, 0);
   }, [initialItem, id]);
 
@@ -243,26 +260,18 @@ const MoviePage: React.FC<IMovieProps> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
+  req,
   params,
-  query: { data },
 }) => {
   let initialImgUrl = '';
-  try {
-    if (data) {
-      const parsedData = JSON.parse(data as string);
-      if (parsedData) {
-        return {
-          props: {
-            initialItem: parsedData,
-            id: params!.id,
-            initialImgUrl,
-            key: `movie/${params!.id}`,
-          },
-        };
-      }
-    }
-  } catch (error) {
-    console.error(error);
+  const cookies = parseCookies({ req });
+  if (cookies.appClient) {
+    return {
+      props: {
+        id: params!.id,
+        key: `movie/${params!.id}`,
+      },
+    };
   }
 
   const searchResponses = await getApi<SearchMovie>(+params!.id, 'movie');

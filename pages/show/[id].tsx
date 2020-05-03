@@ -1,6 +1,10 @@
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import React, { useContext, useEffect, useState } from 'react';
+import {
+  EnteringBottom,
+  EnteringTop,
+} from '../../components/Animated/Entering';
 import CollapsableText from '../../components/CollapsableText';
 import Emoji from '../../components/Emoji';
 import Genres from '../../components/Genres';
@@ -16,7 +20,6 @@ import {
   useIsWatch,
   useShare,
   useTranslate,
-  useDeleteQueryData,
 } from '../../hooks';
 import { People as IPeople, Ratings, SearchShow, Show } from '../../models';
 import {
@@ -25,10 +28,8 @@ import {
   getPeopleApi,
   getRatingsApi,
 } from '../../utils/api';
-import {
-  EnteringBottom,
-  EnteringTop,
-} from '../../components/Animated/Entering';
+import { parseCookies } from 'nookies';
+import db from '../../utils/db';
 
 enum status {
   'returning series' = 'en antena',
@@ -55,17 +56,31 @@ const ShowPage: React.FC<IShowProps> = ({ id, initialItem, initialImgUrl }) => {
 
   const { isWatchlist, isWatched } = useIsWatch();
 
-  useDeleteQueryData('show');
-
   useEffect(() => {
-    if (!initialItem) {
-      getApi<SearchShow>(+id, 'show').then(({ data }) => {
-        const item = data[0];
-        setItem(item.show);
-      });
+    if (initialItem) {
+      setItem(initialItem);
       return;
     }
-    setItem(initialItem);
+    db.table('shows')
+      .get(+id)
+      .then((result?: { show: Show }) => {
+        if (result) {
+          setItem(result.show);
+          console.log('in DB');
+          return;
+        }
+        const sessionItem = sessionStorage.getItem(`show_${id}`);
+        if (sessionItem) {
+          setItem(JSON.parse(sessionItem) as Show);
+          console.log('in State');
+          return;
+        }
+        getApi<SearchShow>(+id, 'show').then(({ data }) => {
+          console.log('requested');
+          const item = data[0];
+          setItem(item.show);
+        });
+      });
     window.scrollTo(0, 0);
   }, [initialItem, id]);
 
@@ -253,26 +268,18 @@ const ShowPage: React.FC<IShowProps> = ({ id, initialItem, initialImgUrl }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
+  req,
   params,
-  query: { data },
 }) => {
   let initialImgUrl = '';
-  try {
-    if (data) {
-      const parsedData = JSON.parse(data as string);
-      if (parsedData) {
-        return {
-          props: {
-            initialItem: parsedData,
-            id: params!.id,
-            initialImgUrl,
-            key: `show/${params!.id}`,
-          },
-        };
-      }
-    }
-  } catch (error) {
-    console.error(error);
+  const cookies = parseCookies({ req });
+  if (cookies.appClient) {
+    return {
+      props: {
+        id: params!.id,
+        key: `show/${params!.id}`,
+      },
+    };
   }
 
   const searchResponses = await getApi<SearchShow>(+params!.id, 'show');

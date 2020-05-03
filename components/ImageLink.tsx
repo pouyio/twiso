@@ -1,8 +1,7 @@
+import { useRouter } from 'next/router';
 import React from 'react';
-
+import { Ids, Movie, Person, Show } from '../models';
 import Image from './Image';
-import { Movie, Show, Person, Ids } from '../models';
-import Link from 'next/link';
 
 interface IImageLinkProps {
   item: Show | Movie | Person;
@@ -20,23 +19,28 @@ const ImageLink: React.FC<IImageLinkProps> = ({
   type,
   children = '',
 }) => {
-  return (
-    <Link
-      passHref
-      href={{
+  const { push } = useRouter();
+
+  const handleNavigation = () => {
+    if (type !== 'person') {
+      sessionStorage.setItem(`${type}_${ids.trakt}`, JSON.stringify(item));
+    }
+    push(
+      {
         pathname: `/${type}/[id]`,
-        query: { slug: ids.slug, data: JSON.stringify(item) },
-      }}
-      as={{
+        query: { slug: ids.slug },
+      },
+      {
         pathname: `/${type}/${ids.trakt}`,
-        query: { slug: ids.slug, data: JSON.stringify(item) },
-      }}
-    >
-      <a>
-        <Image ids={ids} text={text} style={style} type={type} />
-        {children}
-      </a>
-    </Link>
+        query: { slug: ids.slug },
+      },
+    );
+  };
+  return (
+    <a className="cursor-pointer" onClick={handleNavigation}>
+      <Image ids={ids} text={text} style={style} type={type} />
+      {children}
+    </a>
   );
 };
 

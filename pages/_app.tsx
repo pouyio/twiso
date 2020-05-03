@@ -1,6 +1,6 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert } from '../components/Alert/Alert';
 import '../components/Alert/Alert.css';
 import { App } from '../components/App';
@@ -13,6 +13,9 @@ import { HeadTags } from '../components/HeadTags';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [ref, setRef] = useState<HTMLDivElement | null>();
+  useEffect(() => {
+    document.cookie = `appClient=true; path=/; SameSite=Strict`;
+  }, []);
 
   return (
     <>
