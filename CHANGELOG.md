@@ -1,3 +1,14 @@
+## [2.0.5](https://github.com/pouyio/twiso/compare/v2.0.4...v2.0.5) (2020-05-03)
+
+
+### :art:
+
+* hide scrollbar ([e86981f](https://github.com/pouyio/twiso/commit/e86981ffdc2e386afc9b3f92b972ed46c9b73bee))
+
+### :bug:
+
+* remove auto scroll ([186362d](https://github.com/pouyio/twiso/commit/186362d5335249f2df13ff45c4c1a0bae0ad68ab))
+
 ## [2.0.4](https://github.com/pouyio/twiso/compare/v2.0.3...v2.0.4) (2020-05-02)
 
 
