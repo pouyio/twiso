@@ -1,4 +1,4 @@
-name: Create Sentry release
+name: Sentry
 
 on:
   release:
