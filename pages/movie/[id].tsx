@@ -66,17 +66,14 @@ const MoviePage: React.FC<IMovieProps> = ({
       .then((result?: { movie: Movie }) => {
         if (result) {
           setItem(result.movie);
-          console.log('in DB');
           return;
         }
         const sessionItem = sessionStorage.getItem(`movie_${id}`);
         if (sessionItem) {
           setItem(JSON.parse(sessionItem) as Movie);
-          console.log('in State');
           return;
         }
         getApi<SearchMovie>(+id, 'movie').then(({ data }) => {
-          console.log('requested');
           const item = data[0];
           setItem(item.movie);
         });

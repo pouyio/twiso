@@ -66,17 +66,14 @@ const ShowPage: React.FC<IShowProps> = ({ id, initialItem, initialImgUrl }) => {
       .then((result?: { show: Show }) => {
         if (result) {
           setItem(result.show);
-          console.log('in DB');
           return;
         }
         const sessionItem = sessionStorage.getItem(`show_${id}`);
         if (sessionItem) {
           setItem(JSON.parse(sessionItem) as Show);
-          console.log('in State');
           return;
         }
         getApi<SearchShow>(+id, 'show').then(({ data }) => {
-          console.log('requested');
           const item = data[0];
           setItem(item.show);
         });
