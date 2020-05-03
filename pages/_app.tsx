@@ -10,6 +10,13 @@ import '../css/index.css';
 import '../css/tailwind.src.css';
 import { StoreProvider } from '../state/store';
 import { HeadTags } from '../components/HeadTags';
+import * as Sentry from '@sentry/browser';
+import { version } from '../package.json';
+
+Sentry.init({
+  release: `twiso@${version}`,
+  dsn: process.env.SENTRY_DSN,
+});
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [ref, setRef] = useState<HTMLDivElement | null>();

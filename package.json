@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^2.1.0",
+    "@sentry/browser": "^5.15.5",
     "autoprefixer": "^9.7.5",
     "axios": "^0.19.2",
     "axios-rate-limit": "^1.2.1",
