@@ -1,3 +1,10 @@
+## [2.0.8](https://github.com/pouyio/twiso/compare/v2.0.7...v2.0.8) (2020-05-03)
+
+
+### :rocket:
+
+* added token to launch another workflow ([5de2586](https://github.com/pouyio/twiso/commit/5de25865da6b34b33c8a6b995ce8a29529b1ccab))
+
 ## [2.0.7](https://github.com/pouyio/twiso/compare/v2.0.6...v2.0.7) (2020-05-03)
 
 
