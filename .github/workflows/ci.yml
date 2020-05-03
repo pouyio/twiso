@@ -18,7 +18,7 @@ jobs:
       - run: yarn install
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TWISO_DEPLOY_TOKEN }}
         run: npx semantic-release
       - name: Checkout the repository
         uses: actions/checkout@v1
