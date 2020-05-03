@@ -1,3 +1,10 @@
+## [2.0.9](https://github.com/pouyio/twiso/compare/v2.0.8...v2.0.9) (2020-05-03)
+
+
+### :rocket:
+
+* refactor deploy ([ccd444d](https://github.com/pouyio/twiso/commit/ccd444d7fc7789f73b50396c2aab92bed0463432))
+
 ## [2.0.8](https://github.com/pouyio/twiso/compare/v2.0.7...v2.0.8) (2020-05-03)
 
 
