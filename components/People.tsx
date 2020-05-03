@@ -76,14 +76,12 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
                       pathname: '/person/[id]',
                       query: {
                         slug: character.person.ids.slug,
-                        data: JSON.stringify(character.person),
                       },
                     }}
                     as={{
                       pathname: `/person/${character.person.ids.trakt}`,
                       query: {
                         slug: character.person.ids.slug,
-                        data: JSON.stringify(character.person),
                       },
                     }}
                   >
