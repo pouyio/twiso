@@ -1,3 +1,12 @@
+## [2.0.6](https://github.com/pouyio/twiso/compare/v2.0.5...v2.0.6) (2020-05-03)
+
+
+### :bug:
+
+* fixed navigation nor re rendering ([bff99be](https://github.com/pouyio/twiso/commit/bff99be2ba2622a7409370acd26a2b5254423149))
+* remove overflow on popular ([ca77e71](https://github.com/pouyio/twiso/commit/ca77e713174cc88af3d549ae14606a81df997073))
+* remove overflow on related ([ec96bc8](https://github.com/pouyio/twiso/commit/ec96bc8e9312f58f9257811e070a50edb6bc8890))
+
 ## [2.0.5](https://github.com/pouyio/twiso/compare/v2.0.4...v2.0.5) (2020-05-03)
 
 
