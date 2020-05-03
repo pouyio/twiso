@@ -1,4 +1,5 @@
-name: Release and deploy
+name: CI
+
 on:
   push:
     branches:
@@ -20,17 +21,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TWISO_DEPLOY_TOKEN }}
         run: npx semantic-release
-      - name: Checkout the repository
-        uses: actions/checkout@v1
-        with:
-          clean: false
-          repository: pouyio/twiso
-          ref: refs/heads/master
-      - name: ZEIT Now Deployment
-        uses: amondnet/now-deployment@v2
-        with:
-          zeit-token: ${{ secrets.ZEIT_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          now-args: '--prod'
-          now-org-id: ${{ secrets.NOW_ORG_ID }}
-          now-project-id: ${{ secrets.NOW_PROJECT_ID }}
