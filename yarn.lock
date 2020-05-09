@@ -11158,6 +11158,11 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.0.tgz#0f37c3613c34fe6b37cd7f763a0d6293ab15c527"
   integrity sha512-GFMtL0vHkiBv9HluwNZTggSn/sCyEt9n02aM0dSAjGGyqyNlAyftYm4phPxdvCigG15JreC5biwxCgTAJZ7yAA==
 
+react-router-cache-route@^1.8.4:
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/react-router-cache-route/-/react-router-cache-route-1.8.4.tgz#57523803f14edd1e04c2de951451d97c5d27c971"
+  integrity sha512-cj84gIDqQdNMMKVFD66V4Tc2FKEEq5DvARFpyEbrrBFWn54HsVkZxFRsjkgVZtTNiYqXSp7pP0N8tuoHEtUj6Q==
+
 react-router-dom@^5.1.1:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-5.1.2.tgz#06701b834352f44d37fbb6311f870f84c76b9c18"

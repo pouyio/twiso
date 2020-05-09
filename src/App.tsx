@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Route, Redirect, useLocation, NavLink } from 'react-router-dom';
+import CacheRoute from 'react-router-cache-route';
 import Search from './pages/Search';
 import Login from './components/Login';
 import MovieDetail from './pages/MovieDetail';
@@ -130,9 +131,9 @@ const App: React.FC = () => {
           <ProtectedRoute path="/shows">
             {userInfo.shows.ready ? <Shows /> : <h1>Cargando series!</h1>}
           </ProtectedRoute>
-          <Route path="/search">
+          <CacheRoute path="/search">
             <Search />
-          </Route>
+          </CacheRoute>
           <Route path="/movie/:id">
             <MovieDetail />
           </Route>

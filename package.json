@@ -12,6 +12,7 @@
     "react-helmet": "^5.2.1",
     "react-hook-inview": "^4.0.0",
     "react-image": "^2.3.0",
+    "react-router-cache-route": "^1.8.4",
     "react-router-dom": "^5.1.1",
     "react-scripts": "3.4.0",
     "use-query-params": "^0.4.1"
