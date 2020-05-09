@@ -16,7 +16,6 @@ import { ProgressBar } from './components/ProgressBar';
 import { useGlobalState } from './state/store';
 import { Alert } from 'components/Alert/Alert';
 import { Providers } from 'components/Providers';
-const redirect_url = process.env.REACT_APP_REDIRECT_URL;
 
 const ParamsComponent: React.FC = () => {
   const location = useLocation();
@@ -30,12 +29,7 @@ const ParamsComponent: React.FC = () => {
       {params.get('code') ? (
         <Login code={params.get('code') || ''} />
       ) : (
-        <a
-          className="bg-purple-700 py-3 px-12 rounded-full text-white"
-          href={`https://trakt.tv/oauth/authorize?response_type=code&client_id=61afe7ed7ef7a2b6b2193254dd1cca580ba8dee91490df454d78fd68aed7e5f9&redirect_uri=${redirect_url}`}
-        >
-          Login
-        </a>
+        <Redirect to="/search" />
       )}
     </div>
   );
