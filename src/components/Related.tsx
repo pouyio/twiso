@@ -15,7 +15,7 @@ const placeholderStyle = {
   maxWidth: '10em',
 };
 
-const placeholders = [
+export const placeholders = [
   <li
     key="placeholder-1"
     className=" h-full bg-gray-300 rounded-lg m-2"
@@ -80,7 +80,7 @@ const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
 
   return (
     <ul
-      className="flex overflow-x-auto -mx-4 my-2 lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-center"
+      className="flex overflow-x-auto -mx-4 my-2 lg:mx-0 lg:overflow-auto lg:flex-wrap"
       style={{ WebkitOverflowScrolling: 'touch' }}
     >
       {results ? (

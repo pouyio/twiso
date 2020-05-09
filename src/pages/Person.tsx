@@ -13,15 +13,17 @@ import {
   Show,
 } from '../models';
 import { useGlobalState } from '../state/store';
+import { placeholders } from 'components/Related';
+import { Empty } from 'components/Empty';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
   const [movieResults, setMovieResults] = useState<
     { movie: Movie; type: string; title: string }[]
-  >([]);
+  >();
   const [showResults, setShowResults] = useState<
     { show: Show; type: 'show'; title: string }[]
-  >([]);
+  >();
 
   const {
     state: { language },
@@ -30,6 +32,8 @@ const Person: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
+    setShowResults(undefined);
+    setMovieResults(undefined);
     getPersonApi(+id).then(({ data }) => setLocalState(data));
     getPersonItemsApi<PersonShows>(id, 'show').then(({ data }) => {
       setShowResults(
@@ -126,20 +130,20 @@ const Person: React.FC = () => {
           </div>
 
           <div className="my-4 relative">
-            <p>Biografía:</p>
+            <p className="block-underline">Biografía:</p>
             <CollapsableText className="leading-tight font-light">
               {localState.biography || 'Sin descripción'}
             </CollapsableText>
           </div>
 
-          {movieResults.length ? (
-            <>
-              <h1 className="text-3xl mt-3 text-gray-700">Películas </h1>
-              <ul
-                className="-mx-2 -mt-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
-                style={{ WebkitOverflowScrolling: 'touch' }}
-              >
-                {movieResults.map((r, i) => (
+          <h1 className="text-3xl mt-3 text-gray-700">Películas </h1>
+          <ul
+            className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {movieResults ? (
+              movieResults.length ? (
+                movieResults.map((r, i) => (
                   <li
                     key={`${r.movie.ids.trakt}-movie-${i}`}
                     className="p-2 h-full"
@@ -161,19 +165,23 @@ const Person: React.FC = () => {
                       </ImageLink>
                     </div>
                   </li>
-                ))}
-              </ul>
-            </>
-          ) : null}
+                ))
+              ) : (
+                <Empty />
+              )
+            ) : (
+              placeholders
+            )}
+          </ul>
 
-          {showResults.length ? (
-            <>
-              <h1 className="text-3xl mt-3 text-gray-700">Series </h1>
-              <ul
-                className="-mx-2 -mt-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
-                style={{ WebkitOverflowScrolling: 'touch' }}
-              >
-                {showResults.map((r, i) => (
+          <h1 className="text-3xl mt-3 text-gray-700">Series </h1>
+          <ul
+            className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {showResults ? (
+              showResults.length ? (
+                showResults.map((r, i) => (
                   <li
                     key={`${r.show.ids.trakt}-show-${i}`}
                     className="p-2 h-full"
@@ -195,10 +203,14 @@ const Person: React.FC = () => {
                       </ImageLink>
                     </div>
                   </li>
-                ))}
-              </ul>
-            </>
-          ) : null}
+                ))
+              ) : (
+                <Empty />
+              )
+            ) : (
+              placeholders
+            )}
+          </ul>
         </article>
       </div>
     </div>
