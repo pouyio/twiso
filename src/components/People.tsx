@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Emoji from './Emoji';
 import { People as IPeople } from '../models';
+import { Empty } from './Empty';
 
 const placeholders = [
   <li
@@ -84,9 +84,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
                 </li>
               ))
             ) : (
-              <li className="bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre flex flex-col text-center">
-                Ninguno <Emoji emoji="😵" />
-              </li>
+              <Empty />
             )
           ) : (
             placeholders
@@ -119,11 +117,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
                     </li>
                   ))
               ) : (
-                <li className="my-1">
-                  <div className="bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre">
-                    Ninguno <Emoji emoji="😵" />
-                  </div>
-                </li>
+                <Empty />
               )
             ) : (
               <li className="my-1">

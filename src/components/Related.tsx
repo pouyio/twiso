@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getRelatedApi } from '../utils/api';
 import ImageLink from './ImageLink';
-import Emoji from './Emoji';
 import { Show, Movie } from '../models';
+import { Empty } from './Empty';
 
 interface IRelatedProps {
   itemId: number;
@@ -80,7 +80,7 @@ const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
 
   return (
     <ul
-      className="flex overflow-x-auto -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-center"
+      className="flex overflow-x-auto -mx-4 my-2 lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-center"
       style={{ WebkitOverflowScrolling: 'touch' }}
     >
       {results ? (
@@ -101,9 +101,7 @@ const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
             </li>
           ))
         ) : (
-          <li className="bg-gray-200 inline-block my-2 font-light px-3 py-2 rounded-full">
-            Ninguno <Emoji emoji="😵" />
-          </li>
+          <Empty />
         )
       ) : (
         placeholders
