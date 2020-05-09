@@ -9,6 +9,27 @@ const port = 80;
 
 const ROUTES = ['/', '/search', '/movies', '/shows', '/profile'];
 
+const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
+  type: 'movie' | 'show' | 'person',
+  id: number,
+) => {
+  const searchResponses = await getApi<T>(id, type);
+
+  const item = searchResponses.data[0][type];
+
+  const imgResponse = await getImgsApi(item.ids.tmdb, type);
+  const poster = findFirstValid(
+    (imgResponse.data.posters || imgResponse.data.profiles)!,
+    'es',
+  );
+
+  let imgUrl = 'https://via.placeholder.com/185x330';
+  if (poster) {
+    imgUrl = `https://image.tmdb.org/t/p/w185${poster.file_path}`;
+  }
+  return { item, imgUrl };
+};
+
 app.get(ROUTES, (req, res) => {
   fs.readFile(
     path.join(__dirname + '/build/index.html'),
@@ -45,32 +66,19 @@ app.get('/movie/:id', (req, res) => {
         return;
       }
 
-      const searchResponses = await getApi<SearchMovie>(
-        +req.params.id,
+      const { item, imgUrl } = await fetchData<SearchMovie>(
         'movie',
+        +req.params.id,
       );
 
-      const initialItem = searchResponses.data[0].movie;
-
-      const imgResponse = await getImgsApi(initialItem.ids.tmdb, 'movie');
-      const poster = findFirstValid(
-        (imgResponse.data.posters || imgResponse.data.profiles)!,
-        'es',
-      );
-
-      let initialImgUrl = 'https://via.placeholder.com/185x330';
-      if (poster) {
-        initialImgUrl = `https://image.tmdb.org/t/p/w185${poster.file_path}`;
-      }
-
-      data = data
+      const finalData = data
         .replace('__OG_TYPE__', 'video.movie')
-        .replace('__OG_TITLE__', initialItem?.title)
-        .replace('__OG_IMAGE__', initialImgUrl)
+        .replace('__OG_TITLE__', item?.title)
+        .replace('__OG_IMAGE__', imgUrl)
         .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
-        .replace('__OG_DESCRIPTION__', initialItem?.overview);
+        .replace('__OG_DESCRIPTION__', item?.overview);
 
-      res.send(data);
+      res.send(finalData);
     },
   );
 });
@@ -86,29 +94,19 @@ app.get('/show/:id', (req, res) => {
         return;
       }
 
-      const searchResponses = await getApi<SearchShow>(+req.params.id, 'show');
-
-      const initialItem = searchResponses.data[0].show;
-
-      const imgResponse = await getImgsApi(initialItem.ids.tmdb, 'show');
-      const poster = findFirstValid(
-        (imgResponse.data.posters || imgResponse.data.profiles)!,
-        'es',
+      const { item, imgUrl } = await fetchData<SearchShow>(
+        'show',
+        +req.params.id,
       );
 
-      let initialImgUrl = 'https://via.placeholder.com/185x330';
-      if (poster) {
-        initialImgUrl = `https://image.tmdb.org/t/p/w185${poster.file_path}`;
-      }
-
-      data = data
+      const finalData = data
         .replace('__OG_TYPE__', 'video.tv_show')
-        .replace('__OG_TITLE__', initialItem?.title)
-        .replace('__OG_IMAGE__', initialImgUrl)
+        .replace('__OG_TITLE__', item?.title)
+        .replace('__OG_IMAGE__', imgUrl)
         .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
-        .replace('__OG_DESCRIPTION__', initialItem?.overview);
+        .replace('__OG_DESCRIPTION__', item?.overview);
 
-      res.send(data);
+      res.send(finalData);
     },
   );
 });
@@ -124,32 +122,19 @@ app.get('/person/:id', (req, res) => {
         return;
       }
 
-      const searchResponses = await getApi<SearchPerson>(
-        +req.params.id,
+      const { item, imgUrl } = await fetchData<SearchPerson>(
         'person',
+        +req.params.id,
       );
 
-      const initialItem = searchResponses.data[0].person;
-
-      const imgResponse = await getImgsApi(initialItem.ids.tmdb, 'person');
-      const poster = findFirstValid(
-        (imgResponse.data.posters || imgResponse.data.profiles)!,
-        'en',
-      );
-
-      let initialImgUrl = 'https://via.placeholder.com/185x330';
-      if (poster) {
-        initialImgUrl = `https://image.tmdb.org/t/p/w185${poster.file_path}`;
-      }
-
-      data = data
+      const finalData = data
         .replace('__OG_TYPE__', 'profile')
-        .replace('__OG_TITLE__', initialItem.name)
-        .replace('__OG_IMAGE__', initialImgUrl)
+        .replace('__OG_TITLE__', item.name)
+        .replace('__OG_IMAGE__', imgUrl)
         .replace('__OG_URL__', `https://twiso.now.sh${req.path}`)
-        .replace('__OG_DESCRIPTION__', initialItem.biography);
+        .replace('__OG_DESCRIPTION__', item.biography);
 
-      res.send(data);
+      res.send(finalData);
     },
   );
 });
