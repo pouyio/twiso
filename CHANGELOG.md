@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/pouyio/twiso/compare/v2.1.0...v2.1.1) (2020-05-09)
+
+
+### :art:
+
+* cache search ([17b8c61](https://github.com/pouyio/twiso/commit/17b8c6188e00c51455060fb312d5e61628005a67))
+
 # [2.1.0](https://github.com/pouyio/twiso/compare/v2.0.9...v2.1.0) (2020-05-09)
 
 
