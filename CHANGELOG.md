@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/pouyio/twiso/compare/v2.0.9...v2.1.0) (2020-05-09)
+
+
+### :sparkles:
+
+* Back to SPA + Open graph, ditched next ([92a7cfd](https://github.com/pouyio/twiso/commit/92a7cfd93d19bd2b4311f96ff5628f1d45a19b35))
+
 ## [2.0.9](https://github.com/pouyio/twiso/compare/v2.0.8...v2.0.9) (2020-05-03)
 
 
