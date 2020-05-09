@@ -130,13 +130,13 @@ const Person: React.FC = () => {
           </div>
 
           <div className="my-4 relative">
-            <p className="block-underline">Biografía:</p>
+            <p className="font-medium">Biografía:</p>
             <CollapsableText className="leading-tight font-light">
               {localState.biography || 'Sin descripción'}
             </CollapsableText>
           </div>
 
-          <h1 className="text-3xl mt-3 text-gray-700">Películas </h1>
+          <h1 className="font-medium">Películas </h1>
           <ul
             className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
@@ -174,7 +174,7 @@ const Person: React.FC = () => {
             )}
           </ul>
 
-          <h1 className="text-3xl mt-3 text-gray-700">Series </h1>
+          <h1 className="font-medium">Series </h1>
           <ul
             className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}

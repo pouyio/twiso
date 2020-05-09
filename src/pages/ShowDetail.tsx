@@ -196,14 +196,14 @@ export default function ShowDetail() {
           </div>
 
           <div className="my-4">
-            <p>Resumen:</p>
+            <p className="font-medium">Resumen:</p>
             <CollapsableText className="leading-tight font-light">
               {overview || 'Sin descripción'}
             </CollapsableText>
           </div>
 
           <div className="my-4">
-            <p>Géneros:</p>
+            <p className="font-medium">Géneros:</p>
             <Genres genres={item.genres} />
           </div>
 
@@ -212,7 +212,7 @@ export default function ShowDetail() {
           </div>
 
           <div className="my-4">
-            <p>Relacionados:</p>
+            <p className="font-medium">Relacionados:</p>
             <Related itemId={item.ids.trakt} type="show" />
           </div>
         </article>

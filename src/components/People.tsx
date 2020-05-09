@@ -62,7 +62,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
   return (
     <>
       <div className="my-4">
-        <p>Reparto:</p>
+        <p className="font-medium">Reparto:</p>
         <ul
           className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
           style={{ WebkitOverflowScrolling: 'touch' }}
@@ -77,8 +77,8 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
                     }}
                   >
                     <div className="bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre flex flex-col text-center">
-                      <span>{character.person.name}</span>
-                      <small>{character.character}</small>
+                      <span>{character.person.name || '-'}</span>
+                      <small>{character.character || '-'}</small>
                     </div>
                   </Link>
                 </li>
@@ -94,7 +94,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
 
       {type === 'movie' && (
         <div className="my-4">
-          <p>Dirección:</p>
+          <p className="font-medium">Dirección:</p>
           <ul
             className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
