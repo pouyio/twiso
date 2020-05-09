@@ -96,7 +96,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
         <div className="my-4">
           <p>Dirección:</p>
           <ul
-            className="flex overflow-x-auto my-2 -mx-4 lg:overflow-auto lg:flex-wrap lg:justify-start"
+            className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {people ? (
