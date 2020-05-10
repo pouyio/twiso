@@ -3,9 +3,10 @@ import Helmet from 'react-helmet';
 import ImageLink from '../components/ImageLink';
 import { searchApi } from '../utils/api';
 import Popular from '../components/Popular';
-import { useSearch, useDebounce } from '../hooks';
+import { useSearch, useDebounce, useFilter } from '../hooks';
 import Emoji from '../components/Emoji';
 import { SearchMovie, SearchPerson, SearchShow } from '../models';
+import { SearchFilters } from 'components/SearchFilters';
 
 export default function Search() {
   const { search, setSearch } = useSearch();
@@ -13,6 +14,7 @@ export default function Search() {
   const [movieResults, setMovieResults] = useState<SearchMovie[]>([]);
   const [showResults, setShowResults] = useState<SearchShow[]>([]);
   const [peopleResults, setPeopleResults] = useState<SearchPerson[]>([]);
+  const { filterBy } = useFilter();
   const debouncedSearch = useDebounce(search, 500);
 
   useEffect(() => {
@@ -45,15 +47,29 @@ export default function Search() {
     };
   }, [debouncedSearch]);
 
+  const onFiltersChange = (
+    all: boolean,
+    filters: Array<'movie' | 'show' | 'person'>,
+  ) => {
+    if (!all) {
+      if (!filters.length || filters.includes('movie')) {
+        setMovieResults(filterBy(debouncedSearch, 'movie'));
+      }
+      if (!filters.length || filters.includes('show')) {
+        setShowResults(filterBy(debouncedSearch, 'show'));
+      }
+      return;
+    }
+
+    console.log('TODO set filters for remote search');
+  };
+
   return (
-    <div
-      className="m-4 lg:max-w-5xl lg:mx-auto"
-      style={{ paddingTop: 'env(safe-area-inset-top)' }}
-    >
+    <div className="m-4" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
       <Helmet>
         <title>Search</title>
       </Helmet>
-      <div className="w-full bg-gray-300 rounded flex items-center m-auto lg:max-w-lg">
+      <div className="w-full bg-gray-300 rounded flex items-center my-2 m-auto lg:max-w-lg">
         <input
           className="bg-gray-300 rounded text-black px-2 py-1 outline-none flex-grow text-gray-700 "
           type="text"
@@ -70,6 +86,8 @@ export default function Search() {
           />
         </button>
       </div>
+
+      <SearchFilters onFiltersChange={onFiltersChange} />
 
       {search ? (
         <>

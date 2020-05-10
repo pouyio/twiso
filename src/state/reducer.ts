@@ -121,6 +121,9 @@ export function reducer(state: IState, action: Action): IState {
         action.payload ?? ++state.loading.shows.current;
       return { ...state };
     }
+    case 'SET_GLOBAL_SEARCH': {
+      return { ...state, globalSearch: !!action.payload };
+    }
     default:
       return state;
   }

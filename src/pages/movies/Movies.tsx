@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { MoviesWatchlist } from './MoviesWatchlist';
-import { MoviesWatched } from './MoviesWatched';
-import Emoji from '../../components/Emoji';
-import { StringParam, useQueryParam } from 'use-query-params';
 import Helmet from 'react-helmet';
+import { StringParam, useQueryParam } from 'use-query-params';
+import Emoji from '../../components/Emoji';
 import { useGlobalState } from '../../state/store';
+import { MoviesWatched } from './MoviesWatched';
+import { MoviesWatchlist } from './MoviesWatchlist';
 
 export default function Movies() {
   const [mode, setMode] = useQueryParam('mode', StringParam);
