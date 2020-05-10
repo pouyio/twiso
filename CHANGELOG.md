@@ -1,3 +1,10 @@
+## [2.1.3](https://github.com/pouyio/twiso/compare/v2.1.2...v2.1.3) (2020-05-10)
+
+
+### :bug:
+
+* fix now deloy ([caca5af](https://github.com/pouyio/twiso/commit/caca5af7824f3ca38025e27cb2415c4b8180f7df))
+
 ## [2.1.2](https://github.com/pouyio/twiso/compare/v2.1.1...v2.1.2) (2020-05-10)
 
 
