@@ -1,3 +1,17 @@
+## [2.1.2](https://github.com/pouyio/twiso/compare/v2.1.1...v2.1.2) (2020-05-10)
+
+
+### :art:
+
+* added empty state ([4d5b366](https://github.com/pouyio/twiso/commit/4d5b3662007c22864d370823fd4e027fd7acaa83))
+* added empty states to Person detail ([fd0d751](https://github.com/pouyio/twiso/commit/fd0d751357d7f8ae5ae9b99769dd59011a8b938b))
+* added missing margin on desktop ([73b4a2d](https://github.com/pouyio/twiso/commit/73b4a2db7bf172a3f790febaca48ef7a18459d27))
+* bolder section titles ([2d42566](https://github.com/pouyio/twiso/commit/2d425668942247bcd05d9822791b615bc45a4f64))
+
+### :bug:
+
+* redirect to search if not logged in ([f7f370d](https://github.com/pouyio/twiso/commit/f7f370d435e58520779027738f0f4e15301226df))
+
 ## [2.1.1](https://github.com/pouyio/twiso/compare/v2.1.0...v2.1.1) (2020-05-09)
 
 
