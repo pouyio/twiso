@@ -23,6 +23,7 @@
     "custom-sw": "cra-append-sw src/custom-sw.js -s",
     "start": "npm run tailwind:css && react-scripts start",
     "build": "NODE_ENV=production npm run tailwind:css && react-scripts build && npm run custom-sw",
+    "now-build": "npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
