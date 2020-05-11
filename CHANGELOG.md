@@ -1,3 +1,10 @@
+## [2.1.4](https://github.com/pouyio/twiso/compare/v2.1.3...v2.1.4) (2020-05-11)
+
+
+### :art:
+
+* more simetry ([4b7263c](https://github.com/pouyio/twiso/commit/4b7263c75881a00a6f52462264a3fee6549b5966))
+
 ## [2.1.3](https://github.com/pouyio/twiso/compare/v2.1.2...v2.1.3) (2020-05-10)
 
 
