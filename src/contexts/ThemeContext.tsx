@@ -42,7 +42,10 @@ export const ThemeProvider: React.FC<IThemeProviderProps> = ({ children }) => {
         <Helmet>
           <style type="text/css">{`
             body {
-              background: ${localTheme === 'theme-dark' ? 'black' : ''};
+              transition: background-color 0.25s, color 0.25s;
+              background-color: ${
+                localTheme === 'theme-dark' ? 'black' : 'inherit'
+              };
             }
           `}</style>
         </Helmet>
