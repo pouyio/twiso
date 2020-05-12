@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useContext, useEffect, useState } from 'react';
 import { version } from '../../package.json';
 import Emoji from '../components/Emoji';
@@ -5,11 +6,11 @@ import { getStatsApi, getProfileApi } from '../utils/api';
 import { UserStats } from '../models';
 import { removeImgCaches, removeCaches } from '../utils/cache';
 import Helmet from 'react-helmet';
-import { AuthContext, ThemeContext } from '../contexts';
+import { AuthContext, ThemeContext, ThemeType } from '../contexts';
 import { LoginButton } from '../components/LoginButton';
 
 export default function Profile() {
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme, setTheme } = useContext(ThemeContext);
   const [stats, setStats] = useState<UserStats>();
   const [dev, setDev] = useState(false);
   const { session } = useContext(AuthContext);
@@ -50,20 +51,37 @@ export default function Profile() {
       </Helmet>
       <div className="lg:max-w-lg m-auto">
         <ul className="flex justify-between">
-          <li className="py-1">
-            <button
-              onClick={toggleTheme}
-              className="bg-gray-200 px-2 py-1 rounded-full"
+          <li className="py-1 relative">
+            <select
+              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-none"
+              onChange={e => {
+                const value =
+                  e.target.value === '0'
+                    ? undefined
+                    : (e.target.value as ThemeType);
+                setTheme!(value);
+              }}
+              value={theme || '0'}
             >
-              <Emoji emoji={theme === 'theme-dark' ? '🌞' : '🌚'} />
-              {theme === 'theme-dark' ? 'Light' : 'Dark'} mode
-            </button>
+              <option value="theme-dark">🌚 Dark</option>
+              <option value="theme-light">🌞 Light</option>
+              <option value="0">🌓 System</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg
+                className="fill-current h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg>
+            </div>
           </li>
           <li className="py-1">
             {session ? (
               <button
                 onClick={logout}
-                className="bg-gray-200 px-2 py-1 rounded-full"
+                className="bg-gray-200 px-4 py-1 rounded-full"
               >
                 <Emoji emoji="❌" /> Logout
               </button>
