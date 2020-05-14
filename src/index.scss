@@ -1,8 +1,9 @@
+body,
 .theme-wrapper {
   transition: background-color 0.25s, color 0.25s;
 }
 
-.theme-light {
+@mixin theme-light {
   --primary-light: white;
   --primary-dark: black;
 
@@ -47,7 +48,7 @@
   --purple-900: #44337a;
 }
 
-.theme-dark {
+@mixin theme-dark {
   --primary-dark: white;
   --primary-light: black;
 
@@ -90,6 +91,27 @@
   --purple-300: #6b46c1;
   --purple-200: #553c9a;
   --purple-100: #44337a;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: black;
+    @include theme-dark();
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: white;
+    @include theme-light();
+  }
+}
+
+.theme-dark {
+  @include theme-dark();
+}
+.theme-light {
+  @include theme-light();
 }
 
 img {

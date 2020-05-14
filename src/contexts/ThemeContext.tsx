@@ -5,7 +5,7 @@ export type ThemeType = 'theme-light' | 'theme-dark';
 
 interface ThemeContextProps {
   theme: ThemeType;
-  toggleTheme: () => void;
+  setTheme: (theme?: ThemeType) => void;
 }
 
 export const ThemeContext = createContext<Partial<ThemeContextProps>>({});
@@ -15,16 +15,17 @@ interface IThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<IThemeProviderProps> = ({ children }) => {
-  const [localTheme, setLocalTheme] = useState<ThemeType>(
-    (localStorage.getItem('theme') as ThemeType) || 'theme-light',
+  const [localTheme, setLocalTheme] = useState<ThemeType | undefined>(
+    localStorage.getItem('theme') as ThemeType,
   );
 
-  const toggleTheme = () => {
-    setLocalTheme(t => {
-      const newTheme = t === 'theme-light' ? 'theme-dark' : 'theme-light';
+  const setTheme = (newTheme?: ThemeType) => {
+    if (newTheme) {
       localStorage.setItem('theme', newTheme);
-      return newTheme;
-    });
+    } else {
+      localStorage.removeItem('theme');
+    }
+    setLocalTheme(newTheme);
   };
 
   const styles = () => {
@@ -34,17 +35,21 @@ export const ThemeProvider: React.FC<IThemeProviderProps> = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme: localTheme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme: localTheme, setTheme }}>
       <div
-        className={`theme-wrapper text-black bg-white ${localTheme}`}
+        className={`theme-wrapper text-black bg-white ${localTheme ?? ''}`}
         {...styles()}
       >
         <Helmet>
-          <style type="text/css">{`
-            body {
-              background: ${localTheme === 'theme-dark' ? 'black' : ''};
-            }
+          {localTheme && (
+            <style type="text/css">{`
+              body {
+                background-color: ${
+                  localTheme === 'theme-dark' ? 'black' : 'white'
+                };
+              }
           `}</style>
+          )}
         </Helmet>
         {children}
       </div>

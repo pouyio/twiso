@@ -61,37 +61,6 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
 
   return (
     <>
-      <div className="my-4">
-        <p className="font-medium">Reparto:</p>
-        <ul
-          className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
-          style={{ WebkitOverflowScrolling: 'touch' }}
-        >
-          {people ? (
-            cast.length ? (
-              cast.map((character, i) => (
-                <li key={i} className="my-1">
-                  <Link
-                    to={{
-                      pathname: `/person/${character.person.ids.trakt}`,
-                    }}
-                  >
-                    <div className="bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre flex flex-col text-center">
-                      <span>{character.person.name || '-'}</span>
-                      <small>{character.character || '-'}</small>
-                    </div>
-                  </Link>
-                </li>
-              ))
-            ) : (
-              <Empty />
-            )
-          ) : (
-            placeholders
-          )}
-        </ul>
-      </div>
-
       {type === 'movie' && (
         <div className="my-4">
           <p className="font-medium">Dirección:</p>
@@ -127,6 +96,37 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
           </ul>
         </div>
       )}
+
+      <div className="my-4">
+        <p className="font-medium">Reparto:</p>
+        <ul
+          className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap justify-between"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
+          {people ? (
+            cast.length ? (
+              cast.map((character, i) => (
+                <li key={i} className="my-1">
+                  <Link
+                    to={{
+                      pathname: `/person/${character.person.ids.trakt}`,
+                    }}
+                  >
+                    <div className="bg-gray-200 font-light px-3 py-1 rounded-full mx-1 whitespace-pre flex flex-col text-center">
+                      <span>{character.person.name || '-'}</span>
+                      <small>{character.character || '-'}</small>
+                    </div>
+                  </Link>
+                </li>
+              ))
+            ) : (
+              <Empty />
+            )
+          ) : (
+            placeholders
+          )}
+        </ul>
+      </div>
     </>
   );
 };

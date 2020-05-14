@@ -1,3 +1,18 @@
+## [2.1.5](https://github.com/pouyio/twiso/compare/v2.1.4...v2.1.5) (2020-05-12)
+
+
+### :art:
+
+* added system theme ([36f3dc0](https://github.com/pouyio/twiso/commit/36f3dc0459ba82e9914b386f928d2ddb90c399e4))
+* smoth dark/light transition in all page ([75af23f](https://github.com/pouyio/twiso/commit/75af23f65837431ffacf05f6c1a74832470f00c0))
+
+## [2.1.4](https://github.com/pouyio/twiso/compare/v2.1.3...v2.1.4) (2020-05-11)
+
+
+### :art:
+
+* more simetry ([4b7263c](https://github.com/pouyio/twiso/commit/4b7263c75881a00a6f52462264a3fee6549b5966))
+
 ## [2.1.3](https://github.com/pouyio/twiso/compare/v2.1.2...v2.1.3) (2020-05-10)
 
 

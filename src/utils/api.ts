@@ -286,7 +286,7 @@ export const getPopularApi = (type: ItemType, limit: number = 40) => {
 
 export const getRelatedApi = <T>(id: number, type: ItemType) => {
   return axios.get<T[]>(
-    `${BASE_URL}/${type}s/${id}/related?extended=full&page=1&limit=10`,
+    `${BASE_URL}/${type}s/${id}/related?extended=full&page=1&limit=12`,
     {
       headers: {
         ...base_headers,
