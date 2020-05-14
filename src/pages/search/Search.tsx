@@ -1,12 +1,15 @@
+import { SearchFilters, IFilters } from 'pages/search/SearchFilters';
 import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
-import ImageLink from '../components/ImageLink';
-import { searchApi } from '../utils/api';
-import Popular from '../components/Popular';
-import { useSearch, useDebounce, useFilter } from '../hooks';
-import Emoji from '../components/Emoji';
-import { SearchMovie, SearchPerson, SearchShow } from '../models';
-import { SearchFilters } from 'components/SearchFilters';
+import Emoji from '../../components/Emoji';
+import ImageLink from '../../components/ImageLink';
+import Popular from '../../components/Popular';
+import { useDebounce, useFilter, useSearch } from '../../hooks';
+import { SearchMovie, SearchPerson, SearchShow } from '../../models';
+import { searchApi } from '../../utils/api';
+
+export type RemoteFilterTypes = Array<'movie' | 'show' | 'person'>;
+type LocalFilterTypes = Array<'movie' | 'show'>;
 
 export default function Search() {
   const { search, setSearch } = useSearch();
@@ -14,8 +17,41 @@ export default function Search() {
   const [movieResults, setMovieResults] = useState<SearchMovie[]>([]);
   const [showResults, setShowResults] = useState<SearchShow[]>([]);
   const [peopleResults, setPeopleResults] = useState<SearchPerson[]>([]);
+  const [filters, setFilters] = useState<IFilters>({
+    remote: false,
+    types: [],
+  });
   const { filterBy } = useFilter();
   const debouncedSearch = useDebounce(search, 500);
+
+  const remoteSearch = (query: string, types: RemoteFilterTypes) => {
+    setLoading(true);
+    searchApi<SearchMovie & SearchShow & SearchPerson>(
+      query,
+      types.join(','),
+    ).then(({ data }) => {
+      const movies: SearchMovie[] = data.filter(r => r.type === 'movie');
+      const shows: SearchShow[] = data.filter(r => r.type === 'show');
+      const person: SearchPerson[] = data.filter(r => r.type === 'person');
+      setMovieResults(movies);
+      setShowResults(shows);
+      setPeopleResults(person);
+      setLoading(false);
+    });
+  };
+
+  const localSearch = (query: string, types: LocalFilterTypes) => {
+    setMovieResults([]);
+    setShowResults([]);
+    setPeopleResults([]);
+
+    if (types.includes('movie')) {
+      setMovieResults(filterBy(query, 'movie'));
+    }
+    if (types.includes('show')) {
+      setShowResults(filterBy(query, 'show'));
+    }
+  };
 
   useEffect(() => {
     if (!debouncedSearch) {
@@ -25,44 +61,19 @@ export default function Search() {
       return;
     }
 
-    setLoading(true);
-    let isSubscribed = true;
-    searchApi<SearchMovie & SearchShow & SearchPerson>(
-      debouncedSearch,
-      'movie,show,person',
-    ).then(({ data }) => {
-      const movies: SearchMovie[] = data.filter(r => r.type === 'movie');
-      const shows: SearchShow[] = data.filter(r => r.type === 'show');
-      const person: SearchPerson[] = data.filter(r => r.type === 'person');
-      if (!isSubscribed) {
-        return;
-      }
-      setMovieResults(movies);
-      setShowResults(shows);
-      setPeopleResults(person);
-      setLoading(false);
-    });
-    return () => {
-      isSubscribed = false;
-    };
-  }, [debouncedSearch]);
-
-  const onFiltersChange = (
-    all: boolean,
-    filters: Array<'movie' | 'show' | 'person'>,
-  ) => {
-    if (!all) {
-      if (!filters.length || filters.includes('movie')) {
-        setMovieResults(filterBy(debouncedSearch, 'movie'));
-      }
-      if (!filters.length || filters.includes('show')) {
-        setShowResults(filterBy(debouncedSearch, 'show'));
-      }
+    if (filters.remote) {
+      const fullTypes: RemoteFilterTypes = filters.types.length
+        ? filters.types
+        : ['movie', 'show', 'person'];
+      remoteSearch(debouncedSearch, fullTypes);
       return;
     }
 
-    console.log('TODO set filters for remote search');
-  };
+    const fullTypes = filters.types.filter(f => f !== 'person').length
+      ? filters.types.filter(f => f !== 'person')
+      : ['movie', 'show'];
+    localSearch(debouncedSearch, fullTypes as LocalFilterTypes);
+  }, [filters, debouncedSearch]);
 
   return (
     <div className="m-4" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
@@ -87,7 +98,7 @@ export default function Search() {
         </button>
       </div>
 
-      <SearchFilters onFiltersChange={onFiltersChange} />
+      <SearchFilters onFiltersChange={setFilters} />
 
       {search ? (
         <>

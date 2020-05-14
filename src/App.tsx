@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Route, Redirect, useLocation, NavLink } from 'react-router-dom';
 import CacheRoute from 'react-router-cache-route';
-import Search from './pages/Search';
+import Search from './pages/search/Search';
 import Login from './components/Login';
 import MovieDetail from './pages/MovieDetail';
 import ShowDetail from './pages/ShowDetail';
