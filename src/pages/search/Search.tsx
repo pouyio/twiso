@@ -1,5 +1,5 @@
 import { SearchFilters, IFilters } from 'pages/search/SearchFilters';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Helmet from 'react-helmet';
 import Emoji from '../../components/Emoji';
 import ImageLink from '../../components/ImageLink';
@@ -40,7 +40,7 @@ export default function Search() {
     });
   };
 
-  const localSearch = (query: string, types: LocalFilterTypes) => {
+  const localSearch = useCallback((query: string, types: LocalFilterTypes) => {
     setMovieResults([]);
     setShowResults([]);
     setPeopleResults([]);
@@ -51,7 +51,8 @@ export default function Search() {
     if (types.includes('show')) {
       setShowResults(filterBy(query, 'show'));
     }
-  };
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (!debouncedSearch) {
@@ -73,6 +74,7 @@ export default function Search() {
       ? filters.types.filter(f => f !== 'person')
       : ['movie', 'show'];
     localSearch(debouncedSearch, fullTypes as LocalFilterTypes);
+    // eslint-disable-next-line
   }, [filters, debouncedSearch]);
 
   return (

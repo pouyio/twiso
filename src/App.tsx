@@ -17,7 +17,7 @@ import { useGlobalState } from './state/store';
 import { Alert } from 'components/Alert/Alert';
 import { Providers } from 'components/Providers';
 import { GlobalSearch } from 'components/GlobalSearch';
-import { GlobalHotKeys } from 'react-hotkeys';
+import LongPress from 'components/Longpress';
 
 const ParamsComponent: React.FC = () => {
   const location = useLocation();
@@ -41,7 +41,7 @@ const App: React.FC = () => {
   const [ref, setRef] = useState<HTMLDivElement | null>();
 
   const {
-    actions: { firstLoad, setGlobalSearch },
+    actions: { firstLoad },
     state: { userInfo, globalSearch },
   } = useGlobalState();
 
@@ -55,128 +55,96 @@ const App: React.FC = () => {
   return (
     <div ref={setRef}>
       <Providers modalRef={ref!}>
-        <GlobalHotKeys
-          keyMap={{ SEARCH: { sequence: 'f', action: 'keyup' }, ESC: 'esc' }}
-          handlers={{
-            SEARCH: () => setGlobalSearch(true),
-            ESC: () => setGlobalSearch(false),
-          }}
-        >
-          <Alert />
-          <ul className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block">
+        <Alert />
+        <ul className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block select-none">
+          <li className="py-1">
+            <Emoji emoji="📺" /> P
+          </li>
+        </ul>
+        <nav className="w-full flex flex-col fixed bottom-0 z-20 justify-around text-2xl lg:top-0 lg:bottom-auto select-none">
+          <ProgressBar />
+          <ul
+            className="flex justify-around px-2 text-center bg-gray-200"
+            style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+          >
+            {session ? (
+              <>
+                <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
+                  <NavLink
+                    activeClassName="selected-nav-item"
+                    to="/movies?mode=watchlist&page=1"
+                    className="flex items-center"
+                  >
+                    <Emoji emoji="🎬" />
+                    <span className="ml-2 text-base hidden lg:inline">
+                      Películas
+                    </span>
+                  </NavLink>
+                </li>
+                <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
+                  <NavLink
+                    activeClassName="selected-nav-item"
+                    to="/shows?mode=watched&page=1"
+                    className="flex items-center"
+                  >
+                    <Emoji emoji="📺" />
+                    <span className="ml-2 text-base hidden lg:inline">
+                      Series
+                    </span>
+                  </NavLink>
+                </li>
+              </>
+            ) : null}
+            <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
+              <LongPress />
+            </li>
             <li className="py-1">
-              <Emoji emoji="📺" /> P
+              <NavLink
+                activeClassName="selected-nav-item"
+                to="/profile"
+                className="flex items-center"
+              >
+                <Emoji emoji="👤" />
+                <span className="ml-2 text-base hidden lg:inline">Perfil</span>
+              </NavLink>
             </li>
           </ul>
-          <nav className="w-full flex flex-col fixed bottom-0 z-50 justify-around text-2xl lg:top-0 lg:bottom-auto">
-            <ProgressBar />
-            <ul
-              className="flex justify-around px-2 text-center bg-gray-200"
-              style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-            >
-              {session ? (
-                <>
-                  <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
-                    <NavLink
-                      activeClassName="selected-nav-item"
-                      to="/movies?mode=watchlist&page=1"
-                      className="flex items-center"
-                    >
-                      <Emoji emoji="🎬" />
-                      <span className="ml-2 text-base hidden lg:inline">
-                        Películas
-                      </span>
-                    </NavLink>
-                  </li>
-                  <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
-                    <NavLink
-                      activeClassName="selected-nav-item"
-                      to="/shows?mode=watched&page=1"
-                      className="flex items-center"
-                    >
-                      <Emoji emoji="📺" />
-                      <span className="ml-2 text-base hidden lg:inline">
-                        Series
-                      </span>
-                    </NavLink>
-                  </li>
-                </>
-              ) : null}
-              <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
-                <NavLink
-                  activeClassName="selected-nav-item"
-                  to="/search"
-                  className="flex items-center"
-                >
-                  <Emoji emoji="🔍" />
-                  <span className="ml-2 text-base hidden lg:inline">
-                    Buscar
-                  </span>
-                </NavLink>
-              </li>
-              <li
-                className={`py-1 cursor-pointer flex items-center`}
-                onClick={() => setGlobalSearch(true)}
-              >
-                <Emoji emoji="👓" />
-                <span className="ml-2 text-base hidden lg:inline">
-                  Filtrar (F)
-                </span>
-              </li>
-              <li className="py-1">
-                <NavLink
-                  activeClassName="selected-nav-item"
-                  to="/profile"
-                  className="flex items-center"
-                >
-                  <Emoji emoji="👤" />
-                  <span className="ml-2 text-base hidden lg:inline">
-                    Perfil
-                  </span>
-                </NavLink>
-              </li>
-            </ul>
-          </nav>
-          <>
-            {globalSearch && <GlobalSearch />}
-            <Route exact path="/">
-              <ParamsComponent />
-            </Route>
-            <ProtectedRoute path="/movies">
-              {userInfo.movies.ready ? (
-                <Movies />
-              ) : (
-                <h1>Cargando películas!</h1>
-              )}
-            </ProtectedRoute>
-            <ProtectedRoute path="/shows">
-              {userInfo.shows.ready ? <Shows /> : <h1>Cargando series!</h1>}
-            </ProtectedRoute>
-            <CacheRoute path="/search">
-              <Search />
-            </CacheRoute>
-            <Route path="/movie/:id">
-              <MovieDetail />
-            </Route>
-            <Route path="/show/:id">
-              <ShowDetail />
-            </Route>
-            <Route path="/person/:id">
-              <Person />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
-            <ul
-              className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"
-              style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-            >
-              <li className="py-1">
-                <Emoji emoji="📺" />P
-              </li>
-            </ul>
-          </>
-        </GlobalHotKeys>
+        </nav>
+        <>
+          {globalSearch && <GlobalSearch />}
+          <Route exact path="/">
+            <ParamsComponent />
+          </Route>
+          <ProtectedRoute path="/movies">
+            {userInfo.movies.ready ? <Movies /> : <h1>Cargando películas!</h1>}
+          </ProtectedRoute>
+          <ProtectedRoute path="/shows">
+            {userInfo.shows.ready ? <Shows /> : <h1>Cargando series!</h1>}
+          </ProtectedRoute>
+          <CacheRoute path="/search">
+            <Search />
+          </CacheRoute>
+          <Route path="/movie/:id">
+            <MovieDetail />
+          </Route>
+          <Route path="/show/:id">
+            <ShowDetail />
+          </Route>
+          <Route path="/person/:id">
+            <Person />
+          </Route>
+          <Route path="/profile">
+            <Profile />
+          </Route>
+          <ul
+            className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"
+            style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+          >
+            <li className="py-1">
+              <Emoji emoji="📺" />P
+            </li>
+          </ul>
+        </>
       </Providers>
     </div>
   );
