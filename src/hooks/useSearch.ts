@@ -8,7 +8,7 @@ export const useSearch = () => {
 
   const setSearch = useCallback(
     (query: string) => {
-      history.push({ search: `?search=${query}` });
+      history.push({ search: `?query=${query}` });
       setLocalSearch(query);
     },
     [history],
@@ -16,7 +16,7 @@ export const useSearch = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const paramSearch = params.get('search');
+    const paramSearch = params.get('query');
     if (!paramSearch) {
       return;
     }
