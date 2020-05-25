@@ -162,7 +162,7 @@ export default function MovieDetail() {
               >
                 {showOriginalTitle ? item.title : title}
               </h1>
-              <h1 className="text-xl leading-none text-center mb-4 text-gray-300">
+              <h1 className="text-xl text-center mb-4 text-gray-300">
                 {new Date(item.released).toLocaleDateString(language, {
                   year: 'numeric',
                   month: 'long',
