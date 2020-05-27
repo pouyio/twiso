@@ -17,9 +17,9 @@ export const SearchFilters: React.FC<ISearchFiltersProps> = ({
   const [remote, setRemote] = useState(true);
 
   const onFilterClick = (type: 'movie' | 'show' | 'person') => {
-    setFilterBy(filters => {
+    setFilterBy((filters) => {
       const newFilters = filters.includes(type)
-        ? filters.filter(f => f !== type)
+        ? filters.filter((f) => f !== type)
         : [...filters, type];
       return newFilters.length === 3 ? [] : newFilters;
     });
@@ -34,7 +34,7 @@ export const SearchFilters: React.FC<ISearchFiltersProps> = ({
       <div className="flex whitespace-no-wrap items-center my-1 lg:my-0 justify-center">
         <div
           className="flex items-center cursor-pointer select-none"
-          onClick={() => setRemote(a => !a)}
+          onClick={() => setRemote((a) => !a)}
         >
           <p className={`mr-3 ${remote ? '' : 'opacity-75'}`}>Todo</p>
 

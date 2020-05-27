@@ -42,13 +42,13 @@ const Seasons: React.FC<ISeasonsProps> = ({
       return false;
     }
     const foundSeasonProgress = progress.seasons.find(
-      s => s.number === selectedSeason!.number,
+      (s) => s.number === selectedSeason!.number,
     );
     if (!foundSeasonProgress) {
       return false;
     }
     return (
-      foundSeasonProgress.episodes.find(e => e.number === episodeNumber) || {}
+      foundSeasonProgress.episodes.find((e) => e.number === episodeNumber) || {}
     ).completed;
   };
 
@@ -57,7 +57,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
       return false;
     }
     const foundSeasonProgress = progress.seasons.find(
-      s => s.number === seasonNumber,
+      (s) => s.number === seasonNumber,
     );
     if (!foundSeasonProgress) {
       return false;
@@ -84,13 +84,13 @@ const Seasons: React.FC<ISeasonsProps> = ({
 
   const isEpisodeAvailable = (episode: Episode) => {
     const seasonAvailable = progress?.seasons.find(
-      s => s.number === episode.season,
+      (s) => s.number === episode.season,
     );
     if (!seasonAvailable) {
       return false;
     }
 
-    return seasonAvailable.episodes.some(e => e.number === episode.number);
+    return seasonAvailable.episodes.some((e) => e.number === episode.number);
   };
 
   const getFormattedDate = (date: string, size: 'long' | 'short') => {
@@ -109,7 +109,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
         className="flex overflow-x-auto my-5 -mr-3"
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
-        {seasons.map(s => (
+        {seasons.map((s) => (
           <li
             onClick={() => setSelectedSeason(s)}
             key={s.ids.trakt}
@@ -130,7 +130,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
       {selectedSeason && selectedSeason.episodes && (
         <>
           <ul className="my-4">
-            {selectedSeason.episodes.map(e => (
+            {selectedSeason.episodes.map((e) => (
               <li
                 className="myt-6 py-3 text-sm leading-tight border-b"
                 key={e.ids.trakt}

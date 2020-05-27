@@ -72,7 +72,7 @@ export default function MovieDetail() {
   };
 
   const onShare = () => {
-    share(item!.title).then(action => {
+    share(item!.title).then((action) => {
       if (action === 'copied') {
         showAlert(`Enlace a "${item!.title}" copiado`);
       }

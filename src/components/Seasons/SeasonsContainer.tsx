@@ -39,7 +39,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   } = useGlobalState();
 
   const fullShowFn = useCallback(
-    () => watched.find(w => w.show.ids.trakt === +showId),
+    () => watched.find((w) => w.show.ids.trakt === +showId),
     [watched, showId],
   );
 
@@ -69,18 +69,18 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     }
     getSeasonEpisodesApi(showId, selectedSeason.number).then(({ data }) => {
       if (!localShow) {
-        setUnTrackedSeasons(us => {
-          const i = us.findIndex(s => s.number === selectedSeason.number);
+        setUnTrackedSeasons((us) => {
+          const i = us.findIndex((s) => s.number === selectedSeason.number);
           us[i].episodes = data;
           return [...us];
         });
       } else {
-        setLocalShow(ls => {
+        setLocalShow((ls) => {
           if (!ls) {
             return;
           }
           const i = ls!.fullSeasons!.findIndex(
-            s => s.number === selectedSeason.number,
+            (s) => s.number === selectedSeason.number,
           );
           ls!.fullSeasons![i].episodes = data;
           return { ...ls };
@@ -97,7 +97,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     }
     setSelectedSeason(
       localShowFullSeasonsRef.find(
-        s => s.number === localShowNextEpisodeRef.season,
+        (s) => s.number === localShowNextEpisodeRef.season,
       ),
     );
   }, [localShowFullSeasonsRef, localShowNextEpisodeRef]);
@@ -142,7 +142,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     }
   };
   const removeSeasonWatched = (season: Season) => {
-    const fullShow = watched.find(w => w.show.ids.trakt === show.ids.trakt);
+    const fullShow = watched.find((w) => w.show.ids.trakt === show.ids.trakt);
     removeSeasonWatchedAction(fullShow!, season, session!);
   };
 

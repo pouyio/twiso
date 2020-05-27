@@ -71,7 +71,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
             {people ? (
               crew?.directing && crew.directing.length ? (
                 crew.directing
-                  .filter(crew => crew.job.toLowerCase() === 'director')
+                  .filter((crew) => crew.job.toLowerCase() === 'director')
                   .map((crew, i: number) => (
                     <li key={i} className="my-1">
                       <Link

@@ -17,7 +17,7 @@ const Rating: React.FC<IRatingProps> = ({ rating = 0, votes = 0 }) => {
   }, [votes]);
 
   return (
-    <div onClick={() => setShowVotes(s => !s)} className="cursor-pointer">
+    <div onClick={() => setShowVotes((s) => !s)} className="cursor-pointer">
       {showVotes ? (
         <>
           <Emoji emoji="👍🏼" />

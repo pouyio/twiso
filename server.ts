@@ -11,7 +11,7 @@ const ROUTES = ['/', '/search', '/movies', '/shows', '/profile'];
 
 const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   type: 'movie' | 'show' | 'person',
-  id: number,
+  id: number
 ) => {
   const searchResponses = await getApi<T>(id, type);
 
@@ -20,7 +20,7 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   const imgResponse = await getImgsApi(item.ids.tmdb, type);
   const poster = findFirstValid(
     (imgResponse.data.posters || imgResponse.data.profiles)!,
-    'es',
+    'es'
   );
 
   let imgUrl = 'https://via.placeholder.com/185x330';
@@ -46,12 +46,12 @@ app.get(ROUTES, (req, res) => {
         .replace('<meta property="og:image" content="__OG_IMAGE__"/>', '')
         .replace(
           '<meta property="og:description" content="__OG_DESCRIPTION__"/>',
-          '',
+          ''
         )
         .replace('__OG_URL__', `https://twiso.now.sh${req.path}`);
 
       res.send(data);
-    },
+    }
   );
 });
 
@@ -68,7 +68,7 @@ app.get('/movie/:id', (req, res) => {
 
       const { item, imgUrl } = await fetchData<SearchMovie>(
         'movie',
-        +req.params.id,
+        +req.params.id
       );
 
       const finalData = data
@@ -79,7 +79,7 @@ app.get('/movie/:id', (req, res) => {
         .replace('__OG_DESCRIPTION__', item?.overview);
 
       res.send(finalData);
-    },
+    }
   );
 });
 
@@ -96,7 +96,7 @@ app.get('/show/:id', (req, res) => {
 
       const { item, imgUrl } = await fetchData<SearchShow>(
         'show',
-        +req.params.id,
+        +req.params.id
       );
 
       const finalData = data
@@ -107,7 +107,7 @@ app.get('/show/:id', (req, res) => {
         .replace('__OG_DESCRIPTION__', item?.overview);
 
       res.send(finalData);
-    },
+    }
   );
 });
 
@@ -124,7 +124,7 @@ app.get('/person/:id', (req, res) => {
 
       const { item, imgUrl } = await fetchData<SearchPerson>(
         'person',
-        +req.params.id,
+        +req.params.id
       );
 
       const finalData = data
@@ -135,7 +135,7 @@ app.get('/person/:id', (req, res) => {
         .replace('__OG_DESCRIPTION__', item.biography);
 
       res.send(finalData);
-    },
+    }
   );
 });
 

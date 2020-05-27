@@ -85,7 +85,7 @@ const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
     >
       {results ? (
         results.length ? (
-          results.map(r => (
+          results.map((r) => (
             <li
               key={r.ids.trakt}
               className="p-2"

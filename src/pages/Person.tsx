@@ -38,27 +38,27 @@ const Person: React.FC = () => {
     getPersonItemsApi<PersonShows>(id, 'show').then(({ data }) => {
       setShowResults(
         data.cast
-          .filter(r => r.series_regular)
+          .filter((r) => r.series_regular)
           .filter(
-            r => !(r.character === 'Himself' || r.character === 'Herself'),
+            (r) => !(r.character === 'Himself' || r.character === 'Herself'),
           )
-          .map(r => ({ show: r.show, type: 'show', title: r.character })),
+          .map((r) => ({ show: r.show, type: 'show', title: r.character })),
       );
     });
     getPersonItemsApi<PersonMovies>(id, 'movie').then(({ data }) => {
       setMovieResults([
         ...data.cast
           .filter(
-            r => !(r.character === 'Himself' || r.character === 'Herself'),
+            (r) => !(r.character === 'Himself' || r.character === 'Herself'),
           )
-          .map(r => ({
+          .map((r) => ({
             movie: r.movie,
             type: 'movie',
             title: r.character,
           })),
         ...((data.crew || {}).directing || [])
-          .map(r => ({ movie: r.movie, type: 'movie', title: r.job }))
-          .filter(r => !(r.title === 'Himself' || r.title === 'Herself')),
+          .map((r) => ({ movie: r.movie, type: 'movie', title: r.job }))
+          .filter((r) => !(r.title === 'Himself' || r.title === 'Herself')),
       ]);
     });
   }, [id, language]);

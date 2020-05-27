@@ -35,7 +35,7 @@ const ShowsWatched: React.FC = () => {
   return (
     <PaginationContainer items={orderedShows}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
-        {getItemsByPage().map(m => (
+        {getItemsByPage().map((m) => (
           <li
             key={m.show.ids.trakt}
             className="p-2"

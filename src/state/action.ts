@@ -64,28 +64,28 @@ export interface IDispatchFunctions {
   addEpisodeWatched: (
     show: ShowWatched,
     episode: Episode,
-    session: Session,
+    session: Session
   ) => void;
   removeEpisodeWatched: (
     show: ShowWatched,
     episode: Episode,
-    session: Session,
+    session: Session
   ) => void;
   addSeasonWatched: (
     show: ShowWatched,
     season: Season,
-    session: Session,
+    session: Session
   ) => void;
   removeSeasonWatched: (
     show: ShowWatched,
     season: Season,
-    session: Session,
+    session: Session
   ) => void;
   setGlobalSearch: (value?: boolean) => void;
 }
 export const dispatchFunctions = (
   state: IState,
-  dispatch: (action: Action) => void,
+  dispatch: (action: Action) => void
 ): IDispatchFunctions => {
   const firstLoad = load(dispatch);
 
@@ -148,7 +148,7 @@ export const dispatchFunctions = (
   const addEpisodeWatched = async (
     show: ShowWatched,
     episode: Episode,
-    session: Session,
+    session: Session
   ) => {
     const { data } = await addWatchedApi(episode, session, 'episode');
     if (data.added.episodes) {
@@ -167,7 +167,7 @@ export const dispatchFunctions = (
   const removeEpisodeWatched = async (
     show: ShowWatched,
     episode: Episode,
-    session: Session,
+    session: Session
   ) => {
     const { data } = await removeWatchedApi(episode, session!, 'episode');
     if (data.deleted.episodes) {
@@ -189,7 +189,7 @@ export const dispatchFunctions = (
   const addSeasonWatched = async (
     show: ShowWatched,
     season: Season,
-    session: Session,
+    session: Session
   ) => {
     const { data } = await addWatchedApi(season, session!, 'season');
     if (data.added.episodes) {
@@ -208,7 +208,7 @@ export const dispatchFunctions = (
   const removeSeasonWatched = async (
     show: ShowWatched,
     season: Season,
-    session: Session,
+    session: Session
   ) => {
     const { data } = await removeWatchedApi(season, session!, 'season');
     if (data.deleted.episodes) {

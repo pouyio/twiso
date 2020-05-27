@@ -47,7 +47,7 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
         className="-mx-4 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto"
         style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
       >
-        {results.map(r => (
+        {results.map((r) => (
           <li
             key={r[type]!.ids.trakt}
             className="p-2"

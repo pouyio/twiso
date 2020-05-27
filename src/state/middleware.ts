@@ -3,7 +3,7 @@ import { MiddlewareApi } from './store';
 import db from '../utils/db';
 
 export const customMiddleware = (store: MiddlewareApi) => (
-  next: (action: Action) => void,
+  next: (action: Action) => void
 ) => (action: Action) => {
   next(action);
   switch (action.type) {
@@ -14,9 +14,9 @@ export const customMiddleware = (store: MiddlewareApi) => (
         .delete()
         .then(() => {
           db.table('movies').bulkPut(
-            action.payload.map(m => {
+            action.payload.map((m) => {
               return { ...m, localState: 'watched' };
-            }),
+            })
           );
         });
       break;
@@ -36,7 +36,7 @@ export const customMiddleware = (store: MiddlewareApi) => (
         .delete()
         .then(() => {
           db.table('movies').bulkPut(
-            action.payload.map(m => ({ ...m, localState: 'watchlist' })),
+            action.payload.map((m) => ({ ...m, localState: 'watchlist' }))
           );
         });
       break;
@@ -56,7 +56,7 @@ export const customMiddleware = (store: MiddlewareApi) => (
         .delete()
         .then(() => {
           db.table('shows').bulkPut(
-            action.payload.map(s => ({ ...s, localState: 'watchlist' })),
+            action.payload.map((s) => ({ ...s, localState: 'watchlist' }))
           );
         });
       break;
@@ -70,7 +70,7 @@ export const customMiddleware = (store: MiddlewareApi) => (
       break;
     }
     case 'REMOVE_WATCHED_SHOWS': {
-      db.table('shows').bulkDelete(action.payload.map(s => s.show.ids.trakt));
+      db.table('shows').bulkDelete(action.payload.map((s) => s.show.ids.trakt));
       break;
     }
     case 'REMOVE_WATCHLIST_SHOW': {
@@ -84,7 +84,7 @@ export const customMiddleware = (store: MiddlewareApi) => (
         .delete()
         .then(() => {
           db.table('shows').bulkPut(
-            action.payload.map(s => ({ ...s, localState: 'watched' })),
+            action.payload.map((s) => ({ ...s, localState: 'watched' }))
           );
         });
       break;

@@ -17,7 +17,7 @@ import {
 
 const refreshWatchedMovies = async (
   dispatch: (action: Action) => void,
-  session: Session,
+  session: Session
 ) => {
   const moviesWatched = await db
     .table<MovieWatched>('movies')
@@ -34,7 +34,7 @@ const refreshWatchedMovies = async (
 
 const refreshWatchlistMovies = async (
   dispatch: (action: Action) => void,
-  session: Session,
+  session: Session
 ) => {
   const moviesWatchlist = await db
     .table<MovieWatchlist>('movies')
@@ -52,7 +52,7 @@ const refreshWatchlistMovies = async (
 
 const refreshMovies = (
   dispatch: (action: Action) => void,
-  session: Session,
+  session: Session
 ) => {
   try {
     return Promise.all([
@@ -66,7 +66,7 @@ const refreshMovies = (
 
 const refreshWatchedShows = async (
   dispatch: (action: Action) => void,
-  session: Session,
+  session: Session
 ) => {
   const showsWatched = await db
     .table<ShowWatched>('shows')
@@ -75,18 +75,20 @@ const refreshWatchedShows = async (
   dispatch({ type: 'SET_WATCHED_SHOWS', payload: showsWatched });
 
   getWatchedApi<ShowWatched>(session, 'show').then(async ({ data }) => {
-    const showsToUpdate = showsWatched.filter(s => {
+    const showsToUpdate = showsWatched.filter((s) => {
       return data.some(
-        sd =>
+        (sd) =>
           !s.progress ||
           (s.show.ids.trakt === sd.show.ids.trakt &&
-            s.last_updated_at !== sd.last_updated_at),
+            s.last_updated_at !== sd.last_updated_at)
       );
     });
     const showsToAdd = data.filter(
-      d => !showsWatched.some(s => s.show.ids.trakt === d.show.ids.trakt),
+      (d) => !showsWatched.some((s) => s.show.ids.trakt === d.show.ids.trakt)
     );
-    showsToAdd.forEach(s => dispatch({ type: 'ADD_WATCHED_SHOW', payload: s }));
+    showsToAdd.forEach((s) =>
+      dispatch({ type: 'ADD_WATCHED_SHOW', payload: s })
+    );
     const outdatedShows = [...showsToAdd, ...showsToUpdate];
 
     dispatch({
@@ -95,7 +97,7 @@ const refreshWatchedShows = async (
     });
 
     const showsToDelete = showsWatched.filter(
-      s => !data.some(d => d.show.ids.trakt === s.show.ids.trakt),
+      (s) => !data.some((d) => d.show.ids.trakt === s.show.ids.trakt)
     );
     dispatch({ type: 'REMOVE_WATCHED_SHOWS', payload: showsToDelete });
     dispatch({
@@ -103,7 +105,7 @@ const refreshWatchedShows = async (
       payload: showsToDelete.length,
     });
 
-    outdatedShows.forEach(async outdated => {
+    outdatedShows.forEach(async (outdated) => {
       try {
         const [seasons, progress] = await Promise.all([
           getSeasonsApi(outdated.show.ids.trakt),
@@ -134,7 +136,7 @@ const refreshWatchedShows = async (
 
 const refreshWatchlistShows = async (
   dispatch: (action: Action) => void,
-  session: Session,
+  session: Session
 ) => {
   const showsWatchlist = await db
     .table<ShowWatchlist>('shows')
@@ -144,7 +146,7 @@ const refreshWatchlistShows = async (
   dispatch({ type: 'SET_WATCHLIST_SHOWS', payload: showsWatchlist });
 
   getWatchlistApi<ShowWatchlist>(session, 'show').then(({ data }) =>
-    dispatch({ type: 'SET_WATCHLIST_SHOWS', payload: data }),
+    dispatch({ type: 'SET_WATCHLIST_SHOWS', payload: data })
   );
 };
 
@@ -160,7 +162,7 @@ const refreshShows = (dispatch: (action: Action) => void, session: Session) => {
 };
 
 const load = (dispatch: (action: Action) => void) => async (
-  session: Session | null,
+  session: Session | null
 ): Promise<void> => {
   getImgsConfigApi().then(({ data }) => {
     dispatch({ type: 'GET_IMG_CONFIG', payload: data });
@@ -171,10 +173,10 @@ const load = (dispatch: (action: Action) => void) => async (
   }
 
   refreshMovies(dispatch, session)?.then(() =>
-    dispatch({ type: 'MOVIES_READY' }),
+    dispatch({ type: 'MOVIES_READY' })
   );
   refreshShows(dispatch, session)?.then(() =>
-    dispatch({ type: 'SHOWS_READY' }),
+    dispatch({ type: 'SHOWS_READY' })
   );
 };
 

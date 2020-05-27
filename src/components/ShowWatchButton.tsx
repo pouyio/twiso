@@ -21,7 +21,7 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
   } = useGlobalState();
 
   const isWatchlist = () => {
-    return watchlist.some(i => i.show.ids.trakt === item.ids.trakt);
+    return watchlist.some((i) => i.show.ids.trakt === item.ids.trakt);
   };
 
   return (

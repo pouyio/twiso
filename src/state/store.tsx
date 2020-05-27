@@ -32,7 +32,7 @@ const CreateStore = (
       dispatch: (action: Action) => dispatch(action),
     };
 
-    const chain = middlewares.map(middleware => middleware(middlewaresApi));
+    const chain = middlewares.map((middleware) => middleware(middlewaresApi));
 
     const enhancedDispatch: Dispatch<Action> = compose(...chain)(dispatch);
     return { state, dispatch: enhancedDispatch };

@@ -13,7 +13,7 @@ const CollapsableText: React.FC<ICollapsableTextProps> = ({
 }) => {
   const [opened, setOpened] = useState(false);
 
-  const toggleOpened = () => setOpened(o => !o);
+  const toggleOpened = () => setOpened((o) => !o);
 
   return (
     <div className="flex flex-col">

@@ -27,10 +27,10 @@ export const useFilter = () => {
           { name: 'show.title', weight: 0.7 },
           { name: 'show.overview', weight: 0.3 },
         ],
-      },
+      }
     );
 
-    return fuse.search(text).map(r => r.item);
+    return fuse.search(text).map((r) => r.item);
   };
 
   const filterBy = (text: string, type: 'movie' | 'show') => {
@@ -63,7 +63,7 @@ export const useFilter = () => {
       keys,
     });
 
-    return fuse.search(text).map(r => r.item);
+    return fuse.search(text).map((r) => r.item);
   };
 
   return { filter, filterBy };
