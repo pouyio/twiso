@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Route, Redirect, useLocation, NavLink } from 'react-router-dom';
 import CacheRoute from 'react-router-cache-route';
-import Search from './pages/Search';
+import Search from './pages/search/Search';
 import Login from './components/Login';
 import MovieDetail from './pages/MovieDetail';
 import ShowDetail from './pages/ShowDetail';
@@ -16,6 +16,8 @@ import { ProgressBar } from './components/ProgressBar';
 import { useGlobalState } from './state/store';
 import { Alert } from 'components/Alert/Alert';
 import { Providers } from 'components/Providers';
+import { GlobalSearch } from 'components/GlobalSearch';
+import LongPress from 'components/Longpress';
 
 const ParamsComponent: React.FC = () => {
   const location = useLocation();
@@ -40,7 +42,7 @@ const App: React.FC = () => {
 
   const {
     actions: { firstLoad },
-    state: { userInfo },
+    state: { userInfo, globalSearch },
   } = useGlobalState();
 
   const { session } = useContext(AuthContext);
@@ -54,12 +56,12 @@ const App: React.FC = () => {
     <div ref={setRef}>
       <Providers modalRef={ref!}>
         <Alert />
-        <ul className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block">
+        <ul className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block select-none">
           <li className="py-1">
             <Emoji emoji="📺" /> P
           </li>
         </ul>
-        <nav className="w-full flex flex-col fixed bottom-0 z-50 justify-around text-2xl lg:top-0 lg:bottom-auto">
+        <nav className="w-full flex flex-col fixed bottom-0 z-20 justify-around text-2xl lg:top-0 lg:bottom-auto select-none">
           <ProgressBar />
           <ul
             className="flex justify-around px-2 text-center bg-gray-200"
@@ -67,7 +69,7 @@ const App: React.FC = () => {
           >
             {session ? (
               <>
-                <li className="py-1">
+                <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
                   <NavLink
                     activeClassName="selected-nav-item"
                     to="/movies?mode=watchlist&page=1"
@@ -79,7 +81,7 @@ const App: React.FC = () => {
                     </span>
                   </NavLink>
                 </li>
-                <li className="py-1">
+                <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
                   <NavLink
                     activeClassName="selected-nav-item"
                     to="/shows?mode=watched&page=1"
@@ -93,15 +95,8 @@ const App: React.FC = () => {
                 </li>
               </>
             ) : null}
-            <li className="py-1">
-              <NavLink
-                activeClassName="selected-nav-item"
-                to="/search"
-                className="flex items-center"
-              >
-                <Emoji emoji="🔍" />
-                <span className="ml-2 text-base hidden lg:inline">Buscar</span>
-              </NavLink>
+            <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
+              <LongPress />
             </li>
             <li className="py-1">
               <NavLink
@@ -116,6 +111,7 @@ const App: React.FC = () => {
           </ul>
         </nav>
         <>
+          {globalSearch && <GlobalSearch />}
           <Route exact path="/">
             <ParamsComponent />
           </Route>

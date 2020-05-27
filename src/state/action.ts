@@ -50,7 +50,8 @@ export type Action =
   | { type: 'MOVIES_READY' }
   | { type: 'SHOWS_READY' }
   | { type: 'SET_TOTAL_LOADING_SHOWS'; payload: number }
-  | { type: 'UPDATE_TOTAL_LOADING_SHOWS'; payload?: number };
+  | { type: 'UPDATE_TOTAL_LOADING_SHOWS'; payload?: number }
+  | { type: 'SET_GLOBAL_SEARCH'; payload?: boolean };
 
 export interface IDispatchFunctions {
   firstLoad: (session: Session | null) => Promise<void>;
@@ -80,6 +81,7 @@ export interface IDispatchFunctions {
     season: Season,
     session: Session,
   ) => void;
+  setGlobalSearch: (value?: boolean) => void;
 }
 export const dispatchFunctions = (
   state: IState,
@@ -225,6 +227,10 @@ export const dispatchFunctions = (
     }
   };
 
+  const setGlobalSearch = (value?: boolean) => {
+    dispatch({ type: 'SET_GLOBAL_SEARCH', payload: value });
+  };
+
   return {
     firstLoad,
     addMovieWatched,
@@ -237,5 +243,6 @@ export const dispatchFunctions = (
     removeEpisodeWatched,
     addSeasonWatched,
     removeSeasonWatched,
+    setGlobalSearch,
   };
 };

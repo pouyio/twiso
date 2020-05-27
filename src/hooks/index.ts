@@ -6,3 +6,4 @@ export * from './useShare';
 export * from './useTranslate';
 export * from './useImage';
 export * from './useDebounce';
+export * from './useFilter';

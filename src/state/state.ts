@@ -26,6 +26,7 @@ export interface IState {
     shows: { current: number; total: number };
   };
   userInfo: IUserInfo;
+  globalSearch?: boolean;
   config?: ImgConfig;
   language: string;
 }

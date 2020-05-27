@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { SearchFilters, IFilters } from 'pages/search/SearchFilters';
+import React, { useEffect, useState, useCallback } from 'react';
 import Helmet from 'react-helmet';
-import ImageLink from '../components/ImageLink';
-import { searchApi } from '../utils/api';
-import Popular from '../components/Popular';
-import { useSearch, useDebounce } from '../hooks';
-import Emoji from '../components/Emoji';
-import { SearchMovie, SearchPerson, SearchShow } from '../models';
+import Emoji from '../../components/Emoji';
+import ImageLink from '../../components/ImageLink';
+import Popular from '../../components/Popular';
+import { useDebounce, useFilter, useSearch } from '../../hooks';
+import { SearchMovie, SearchPerson, SearchShow } from '../../models';
+import { searchApi } from '../../utils/api';
+
+export type RemoteFilterTypes = Array<'movie' | 'show' | 'person'>;
+type LocalFilterTypes = Array<'movie' | 'show'>;
 
 export default function Search() {
   const { search, setSearch } = useSearch();
@@ -13,7 +17,42 @@ export default function Search() {
   const [movieResults, setMovieResults] = useState<SearchMovie[]>([]);
   const [showResults, setShowResults] = useState<SearchShow[]>([]);
   const [peopleResults, setPeopleResults] = useState<SearchPerson[]>([]);
+  const [filters, setFilters] = useState<IFilters>({
+    remote: false,
+    types: [],
+  });
+  const { filterBy } = useFilter();
   const debouncedSearch = useDebounce(search, 500);
+
+  const remoteSearch = (query: string, types: RemoteFilterTypes) => {
+    setLoading(true);
+    searchApi<SearchMovie & SearchShow & SearchPerson>(
+      query,
+      types.join(','),
+    ).then(({ data }) => {
+      const movies: SearchMovie[] = data.filter(r => r.type === 'movie');
+      const shows: SearchShow[] = data.filter(r => r.type === 'show');
+      const person: SearchPerson[] = data.filter(r => r.type === 'person');
+      setMovieResults(movies);
+      setShowResults(shows);
+      setPeopleResults(person);
+      setLoading(false);
+    });
+  };
+
+  const localSearch = useCallback((query: string, types: LocalFilterTypes) => {
+    setMovieResults([]);
+    setShowResults([]);
+    setPeopleResults([]);
+
+    if (types.includes('movie')) {
+      setMovieResults(filterBy(query, 'movie'));
+    }
+    if (types.includes('show')) {
+      setShowResults(filterBy(query, 'show'));
+    }
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (!debouncedSearch) {
@@ -23,37 +62,27 @@ export default function Search() {
       return;
     }
 
-    setLoading(true);
-    let isSubscribed = true;
-    searchApi<SearchMovie & SearchShow & SearchPerson>(
-      debouncedSearch,
-      'movie,show,person',
-    ).then(({ data }) => {
-      const movies: SearchMovie[] = data.filter(r => r.type === 'movie');
-      const shows: SearchShow[] = data.filter(r => r.type === 'show');
-      const person: SearchPerson[] = data.filter(r => r.type === 'person');
-      if (!isSubscribed) {
-        return;
-      }
-      setMovieResults(movies);
-      setShowResults(shows);
-      setPeopleResults(person);
-      setLoading(false);
-    });
-    return () => {
-      isSubscribed = false;
-    };
-  }, [debouncedSearch]);
+    if (filters.remote) {
+      const fullTypes: RemoteFilterTypes = filters.types.length
+        ? filters.types
+        : ['movie', 'show', 'person'];
+      remoteSearch(debouncedSearch, fullTypes);
+      return;
+    }
+
+    const fullTypes = filters.types.filter(f => f !== 'person').length
+      ? filters.types.filter(f => f !== 'person')
+      : ['movie', 'show'];
+    localSearch(debouncedSearch, fullTypes as LocalFilterTypes);
+    // eslint-disable-next-line
+  }, [filters, debouncedSearch]);
 
   return (
-    <div
-      className="m-4 lg:max-w-5xl lg:mx-auto"
-      style={{ paddingTop: 'env(safe-area-inset-top)' }}
-    >
+    <div className="m-4" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
       <Helmet>
         <title>Search</title>
       </Helmet>
-      <div className="w-full bg-gray-300 rounded flex items-center m-auto lg:max-w-lg">
+      <div className="w-full bg-gray-300 rounded flex items-center my-2 m-auto lg:max-w-lg">
         <input
           className="bg-gray-300 rounded text-black px-2 py-1 outline-none flex-grow text-gray-700 "
           type="text"
@@ -70,6 +99,8 @@ export default function Search() {
           />
         </button>
       </div>
+
+      <SearchFilters onFiltersChange={setFilters} />
 
       {search ? (
         <>

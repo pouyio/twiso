@@ -131,6 +131,16 @@ button:focus {
   box-shadow: inset 0px -2px var(--gray-600);
 }
 
+.toggle__dot {
+  top: -0.25rem;
+  left: -0.25rem;
+  transition: all 0.3s ease-in-out;
+}
+
+input:not(:checked) ~ .toggle__dot {
+  transform: translateX(100%);
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
