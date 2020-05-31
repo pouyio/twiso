@@ -1,0 +1,40 @@
+import {
+  configureStore,
+  createReducer,
+  getDefaultMiddleware,
+  createAction,
+} from '@reduxjs/toolkit';
+import { reducer as moviesReducer } from './slices/moviesSlice';
+import { reducer as showsReducer } from './slices/showsSlice';
+import { reducer as defaultReducer } from './slices/defaultSlice';
+import { initialState } from './state';
+import { dbMiddleware } from './middleware-redux';
+
+export const setTotalLoadingShows = createAction<number>(
+  'SET_TOTAL_LOADING_SHOWS'
+);
+
+export const updateTotalLoadingShows = createAction<number | undefined>(
+  'UPDATE_TOTAL_LOADING_SHOWS'
+);
+
+const store = configureStore({
+  reducer: {
+    language: createReducer(initialState.language, {}),
+    loading: createReducer(initialState.loading, (builder) =>
+      builder
+        .addCase(setTotalLoadingShows, (state, { payload }) => {
+          state.shows.total = payload;
+        })
+        .addCase(updateTotalLoadingShows, (state, { payload }) => {
+          state.shows.current = payload ?? state.shows.current + 1;
+        })
+    ),
+    config: defaultReducer,
+    movies: moviesReducer,
+    shows: showsReducer,
+  },
+  middleware: [...getDefaultMiddleware(), dbMiddleware],
+});
+
+export default store;

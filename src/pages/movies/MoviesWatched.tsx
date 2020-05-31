@@ -4,18 +4,18 @@ import PaginationContainer from '../../components/Pagination/PaginationContainer
 import { usePagination } from '../../hooks';
 import { MovieWatched } from 'models';
 
-interface IMoviesWatchedProps {
+export const MoviesWatched: React.FC<{
   movies: MovieWatched[];
-}
-
-export const MoviesWatched: React.FC<IMoviesWatchedProps> = ({ movies }) => {
+}> = ({ movies }) => {
   const { getItemsByPage } = usePagination(movies);
   const [orderedMovies, setOrderedMovies] = useState<MovieWatched[]>([]);
 
   useEffect(() => {
-    const newItems = movies.sort((a, b) =>
-      new Date(a.watched_at) < new Date(b.watched_at) ? 1 : -1,
-    );
+    const newItems = movies
+      .map((m) => m)
+      .sort((a, b) =>
+        new Date(a.watched_at) < new Date(b.watched_at) ? 1 : -1
+      );
     setOrderedMovies(newItems);
   }, [movies]);
 

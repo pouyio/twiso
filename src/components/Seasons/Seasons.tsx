@@ -42,7 +42,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
       return false;
     }
     const foundSeasonProgress = progress.seasons.find(
-      (s) => s.number === selectedSeason!.number,
+      (s) => s.number === selectedSeason!.number
     );
     if (!foundSeasonProgress) {
       return false;
@@ -57,7 +57,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
       return false;
     }
     const foundSeasonProgress = progress.seasons.find(
-      (s) => s.number === seasonNumber,
+      (s) => s.number === seasonNumber
     );
     if (!foundSeasonProgress) {
       return false;
@@ -84,7 +84,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
 
   const isEpisodeAvailable = (episode: Episode) => {
     const seasonAvailable = progress?.seasons.find(
-      (s) => s.number === episode.season,
+      (s) => s.number === episode.season
     );
     if (!seasonAvailable) {
       return false;
@@ -156,7 +156,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
                         title: getTranslated('title', e),
                         overview: `${getFormattedDate(
                           e.first_aired,
-                          'long',
+                          'long'
                         )}\n${getTranslated('overview', e)}`,
                       })
                     }

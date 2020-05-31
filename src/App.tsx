@@ -10,7 +10,7 @@ import Emoji from './components/Emoji';
 import { AuthContext } from './contexts';
 import Person from './pages/Person';
 import Movies from './pages/movies/Movies';
-import Shows from './pages/shows/Shows';
+// import Shows from './pages/shows/Shows';
 import Profile from './pages/Profile';
 import { ProgressBar } from './components/ProgressBar';
 import { useGlobalState } from './state/store';
@@ -18,6 +18,10 @@ import { Alert } from 'components/Alert/Alert';
 import { Providers } from 'components/Providers';
 import { GlobalSearch } from 'components/GlobalSearch';
 import LongPress from 'components/Longpress';
+import { useSelector } from 'react-redux';
+import { IState } from 'state/state';
+import { firstLoad } from 'state/firstLoadAction-redux';
+import Shows from 'pages/shows/Shows';
 
 const ParamsComponent: React.FC = () => {
   const location = useLocation();
@@ -41,14 +45,20 @@ const App: React.FC = () => {
   const [ref, setRef] = useState<HTMLDivElement | null>();
 
   const {
-    actions: { firstLoad },
-    state: { userInfo, globalSearch },
+    state: { globalSearch },
   } = useGlobalState();
+
+  const moviesReady = useSelector<IState>((state) => state.movies.ready);
+  const showsReady = useSelector<IState>((state) => state.shows.ready);
 
   const { session } = useContext(AuthContext);
 
   useEffect(() => {
-    firstLoad(session);
+    // firstLoad(session);
+    if (session) {
+      firstLoad(session);
+    }
+    // store.dispatch();
     // eslint-disable-next-line
   }, [session]);
 
@@ -116,10 +126,10 @@ const App: React.FC = () => {
             <ParamsComponent />
           </Route>
           <ProtectedRoute path="/movies">
-            {userInfo.movies.ready ? <Movies /> : <h1>Cargando películas!</h1>}
+            {moviesReady ? <Movies /> : <h1>Cargando películas!</h1>}
           </ProtectedRoute>
           <ProtectedRoute path="/shows">
-            {userInfo.shows.ready ? <Shows /> : <h1>Cargando series!</h1>}
+            {showsReady ? <Shows /> : <h1>Cargando series!</h1>}
           </ProtectedRoute>
           <CacheRoute path="/search">
             <Search />

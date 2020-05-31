@@ -7,8 +7,12 @@ import {
 } from '../models';
 
 export const PAGE_SIZE = 40;
+const LANGUAGE = 'es';
 
-interface IUserInfo {
+export interface IState {
+  loading: {
+    shows: { current: number; total: number };
+  };
   movies: {
     ready: boolean;
     watched: MovieWatched[];
@@ -19,13 +23,6 @@ interface IUserInfo {
     watched: ShowWatched[];
     watchlist: ShowWatchlist[];
   };
-}
-
-export interface IState {
-  loading: {
-    shows: { current: number; total: number };
-  };
-  userInfo: IUserInfo;
   globalSearch?: boolean;
   config?: ImgConfig;
   language: string;
@@ -35,17 +32,15 @@ export const initialState: IState = {
   loading: {
     shows: { current: 0, total: 0 },
   },
-  userInfo: {
-    movies: {
-      ready: false,
-      watched: [],
-      watchlist: [],
-    },
-    shows: {
-      ready: false,
-      watched: [],
-      watchlist: [],
-    },
+  movies: {
+    ready: true,
+    watched: [],
+    watchlist: [],
   },
-  language: 'es',
+  shows: {
+    ready: true,
+    watched: [],
+    watchlist: [],
+  },
+  language: LANGUAGE,
 };

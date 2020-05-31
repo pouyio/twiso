@@ -2,33 +2,30 @@ import React, { useState, useEffect } from 'react';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
-import { useGlobalState } from '../../state/store';
 import { ShowWatched } from 'models';
+import { useSelector } from 'react-redux';
+import { IState } from 'state/state';
 
 const ShowsWatched: React.FC = () => {
   const [orderedShows, setOrderedShows] = useState<ShowWatched[]>([]);
-  const {
-    state: {
-      userInfo: {
-        shows: { watched },
-      },
-    },
-  } = useGlobalState();
+  const watched = useSelector((state: IState) => state.shows.watched);
   const { getItemsByPage } = usePagination(orderedShows);
 
   useEffect(() => {
     setOrderedShows(
-      watched.sort((a, b) => {
-        if (!a.progress?.next_episode) {
-          return 1;
-        }
-        if (!b.progress?.next_episode) {
-          return -1;
-        }
-        const aDate = new Date(a.progress?.last_watched_at ?? '');
-        const bDate = new Date(b.progress?.last_watched_at ?? '');
-        return aDate < bDate ? 1 : -1;
-      }),
+      watched
+        .map((s) => s)
+        .sort((a, b) => {
+          if (!a.progress?.next_episode) {
+            return 1;
+          }
+          if (!b.progress?.next_episode) {
+            return -1;
+          }
+          const aDate = new Date(a.progress?.last_watched_at ?? '');
+          const bDate = new Date(b.progress?.last_watched_at ?? '');
+          return aDate < bDate ? 1 : -1;
+        })
     );
   }, [watched]);
 

@@ -3,9 +3,7 @@ import { useGlobalState } from 'state/store';
 
 export const useFilter = () => {
   const {
-    state: {
-      userInfo: { movies, shows },
-    },
+    state: { movies, shows },
   } = useGlobalState();
 
   const filter = (text: string) => {

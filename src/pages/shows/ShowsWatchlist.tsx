@@ -2,26 +2,23 @@ import React, { useEffect, useState } from 'react';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
-import { useGlobalState } from '../../state/store';
 import { ShowWatchlist } from 'models';
+import { useSelector } from 'react-redux';
+import { IState } from 'state/state';
 
 const ShowsWatchlist: React.FC = () => {
   const [orderedShows, setOrderedShows] = useState<ShowWatchlist[]>([]);
-  const {
-    state: {
-      userInfo: {
-        shows: { watchlist },
-      },
-    },
-  } = useGlobalState();
+
   const { getItemsByPage } = usePagination(orderedShows);
+  const watchlist = useSelector((state: IState) => state.shows.watchlist);
 
   useEffect(() => {
     const nearFuture = new Date();
     nearFuture.setDate(nearFuture.getDate() + 7);
     const newItems = watchlist
+      .map((s) => s)
       .sort((a, b) =>
-        new Date(a.listed_at!) < new Date(b.listed_at!) ? -1 : 1,
+        new Date(a.listed_at!) < new Date(b.listed_at!) ? -1 : 1
       )
       .reduce((acc: ShowWatchlist[], s) => {
         if (!s.show.first_aired) {

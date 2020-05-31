@@ -1,22 +1,18 @@
-import { useGlobalState } from '../state/store';
+import { useSelector } from 'react-redux';
+import { IState } from 'state/state';
 
 export const useIsWatch = () => {
-  const {
-    state: { userInfo },
-  } = useGlobalState();
+  const movies = useSelector((state: IState) => state.movies);
+  const shows = useSelector((state: IState) => state.shows);
 
   const isWatched = (id: number, type: 'show' | 'movie') => {
-    const property = `${type}s` as 'shows' | 'movies';
-    return userInfo[property].watched.some(
-      (i: any) => i[type].ids.trakt === id,
-    );
+    const items = `${type}s` === 'shows' ? shows : movies;
+    return items.watched.some((i: any) => i[type].ids.trakt === id);
   };
 
   const isWatchlist = (id: number, type: 'show' | 'movie') => {
-    const property = `${type}s` as 'shows' | 'movies';
-    return userInfo[property].watchlist.some(
-      (i: any) => i[type].ids.trakt === id,
-    );
+    const items = `${type}s` === 'shows' ? shows : movies;
+    return items.watchlist.some((i: any) => i[type].ids.trakt === id);
   };
 
   return {
