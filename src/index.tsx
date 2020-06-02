@@ -5,10 +5,11 @@ import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { AuthProvider } from 'contexts/AuthContext';
-import { StoreProvider } from 'state/store';
 import initReactFastclick from 'react-fastclick';
 import * as Sentry from '@sentry/browser';
 import { version } from '../package.json';
+import { store } from 'state/store-redux';
+import { Provider } from 'react-redux';
 
 initReactFastclick();
 
@@ -18,12 +19,12 @@ Sentry.init({
 });
 
 ReactDOM.render(
-  <AuthProvider>
-    <StoreProvider>
+  <Provider store={store}>
+    <AuthProvider>
       <App />
-    </StoreProvider>
-  </AuthProvider>,
-  document.getElementById('root'),
+    </AuthProvider>
+  </Provider>,
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

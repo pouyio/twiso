@@ -10,17 +10,15 @@ import Emoji from './components/Emoji';
 import { AuthContext } from './contexts';
 import Person from './pages/Person';
 import Movies from './pages/movies/Movies';
-// import Shows from './pages/shows/Shows';
 import Profile from './pages/Profile';
 import { ProgressBar } from './components/ProgressBar';
-import { useGlobalState } from './state/store';
 import { Alert } from 'components/Alert/Alert';
 import { Providers } from 'components/Providers';
 import { GlobalSearch } from 'components/GlobalSearch';
 import LongPress from 'components/Longpress';
 import { useSelector } from 'react-redux';
 import { IState } from 'state/state';
-import { firstLoad } from 'state/firstLoadAction-redux';
+import { firstLoad } from './state/firstLoadAction-redux';
 import Shows from 'pages/shows/Shows';
 
 const ParamsComponent: React.FC = () => {
@@ -44,9 +42,7 @@ const ParamsComponent: React.FC = () => {
 const App: React.FC = () => {
   const [ref, setRef] = useState<HTMLDivElement | null>();
 
-  const {
-    state: { globalSearch },
-  } = useGlobalState();
+  const globalSearch = useSelector((state: IState) => state.globalSearch);
 
   const moviesReady = useSelector<IState>((state) => state.movies.ready);
   const showsReady = useSelector<IState>((state) => state.shows.ready);
@@ -54,11 +50,9 @@ const App: React.FC = () => {
   const { session } = useContext(AuthContext);
 
   useEffect(() => {
-    // firstLoad(session);
     if (session) {
       firstLoad(session);
     }
-    // store.dispatch();
     // eslint-disable-next-line
   }, [session]);
 

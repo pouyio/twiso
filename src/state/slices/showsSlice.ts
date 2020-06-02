@@ -16,7 +16,6 @@ import {
   addWatchedApi,
   removeWatchedApi,
 } from 'utils/api';
-import store from 'state/store-redux';
 
 export const addWatchlist = createAsyncThunk(
   'shows/addWatchlist',
@@ -33,11 +32,11 @@ export const addWatchlist = createAsyncThunk(
 
 export const removeWatchlist = createAsyncThunk(
   'shows/removeWatchlist',
-  async ({ show, session }: { show: Show; session: Session }) => {
+  async ({ show, session }: { show: Show; session: Session }, { dispatch }) => {
     try {
       const { data } = await removeWatchlistApi(show, session, 'show');
       if (data.deleted.shows) {
-        store.dispatch(_removeWatchlist(show.ids.trakt));
+        dispatch(_removeWatchlist(show.ids.trakt));
       }
     } catch (e) {
       console.error(e);
@@ -48,24 +47,27 @@ export const removeWatchlist = createAsyncThunk(
 
 export const addEpisodeWatched = createAsyncThunk(
   'shows/addEpisodeWatched',
-  async ({
-    show,
-    episode,
-    session,
-  }: {
-    show: ShowWatched;
-    episode: Episode;
-    session: Session;
-  }) => {
+  async (
+    {
+      show,
+      episode,
+      session,
+    }: {
+      show: ShowWatched;
+      episode: Episode;
+      session: Session;
+    },
+    { dispatch }
+  ) => {
     try {
       const { data } = await addWatchedApi(episode, session, 'episode');
-      store.dispatch(_removeWatchlist(show.show.ids.trakt));
+      dispatch(_removeWatchlist(show.show.ids.trakt));
       if (data.added.episodes) {
         const { data: progress } = await getProgressApi(
           session,
           show.show.ids.trakt
         );
-        store.dispatch(updateProgress({ show, progress }));
+        dispatch(updateProgress({ show, progress }));
       }
     } catch (error) {
       console.error(error);
@@ -76,15 +78,18 @@ export const addEpisodeWatched = createAsyncThunk(
 
 export const removeEpisodeWatched = createAsyncThunk(
   'shows/removeEpisodeWatched',
-  async ({
-    show,
-    episode,
-    session,
-  }: {
-    show: ShowWatched;
-    episode: Episode;
-    session: Session;
-  }) => {
+  async (
+    {
+      show,
+      episode,
+      session,
+    }: {
+      show: ShowWatched;
+      episode: Episode;
+      session: Session;
+    },
+    { dispatch }
+  ) => {
     try {
       const { data } = await removeWatchedApi(episode, session, 'episode');
       if (data.deleted.episodes) {
@@ -93,9 +98,9 @@ export const removeEpisodeWatched = createAsyncThunk(
           show.show.ids.trakt
         );
         if (!progress.last_episode) {
-          store.dispatch(_removeWatched(show.show.ids.trakt));
+          dispatch(_removeWatched(show.show.ids.trakt));
         } else {
-          store.dispatch(updateProgress({ show, progress }));
+          dispatch(updateProgress({ show, progress }));
         }
       }
     } catch (error) {
@@ -107,15 +112,18 @@ export const removeEpisodeWatched = createAsyncThunk(
 
 export const addSeasonWatched = createAsyncThunk(
   'shows/addSeasonWatched',
-  async ({
-    season,
-    show,
-    session,
-  }: {
-    season: Season;
-    show: ShowWatched;
-    session: Session;
-  }) => {
+  async (
+    {
+      season,
+      show,
+      session,
+    }: {
+      season: Season;
+      show: ShowWatched;
+      session: Session;
+    },
+    { dispatch }
+  ) => {
     try {
       const { data } = await addWatchedApi(season, session!, 'season');
       if (data.added.episodes) {
@@ -123,8 +131,8 @@ export const addSeasonWatched = createAsyncThunk(
           session,
           show.show.ids.trakt
         );
-        store.dispatch(_removeWatchlist(show.show.ids.trakt));
-        store.dispatch(updateProgress({ show, progress }));
+        dispatch(_removeWatchlist(show.show.ids.trakt));
+        dispatch(updateProgress({ show, progress }));
       }
     } catch (e) {
       console.error(e);
@@ -135,15 +143,18 @@ export const addSeasonWatched = createAsyncThunk(
 
 export const removeSeasonWatched = createAsyncThunk(
   'shows/removeSeasonWatched',
-  async ({
-    season,
-    show,
-    session,
-  }: {
-    season: Season;
-    show: ShowWatched;
-    session: Session;
-  }) => {
+  async (
+    {
+      season,
+      show,
+      session,
+    }: {
+      season: Season;
+      show: ShowWatched;
+      session: Session;
+    },
+    { dispatch }
+  ) => {
     try {
       const { data } = await removeWatchedApi(season, session!, 'season');
       if (data.deleted.episodes) {
@@ -152,9 +163,9 @@ export const removeSeasonWatched = createAsyncThunk(
           show.show.ids.trakt
         );
         if (!progress.last_episode) {
-          store.dispatch(_removeWatched(show.show.ids.trakt));
+          dispatch(_removeWatched(show.show.ids.trakt));
         } else {
-          store.dispatch(updateProgress({ show, progress }));
+          dispatch(updateProgress({ show, progress }));
         }
       }
     } catch (e) {

@@ -26,7 +26,8 @@ import {
   updateSeasons,
   updateProgress,
 } from './slices/showsSlice';
-import store, {
+import {
+  store,
   setTotalLoadingShows,
   updateTotalLoadingShows,
 } from './store-redux';

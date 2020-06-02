@@ -12,9 +12,10 @@ import {
   Movie,
   Show,
 } from '../models';
-import { useGlobalState } from '../state/store';
 import { placeholders } from 'components/Related';
 import { Empty } from 'components/Empty';
+import { useSelector } from 'react-redux';
+import { IState } from 'state/state';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
@@ -24,10 +25,7 @@ const Person: React.FC = () => {
   const [showResults, setShowResults] = useState<
     { show: Show; type: 'show'; title: string }[]
   >();
-
-  const {
-    state: { language },
-  } = useGlobalState();
+  const language = useSelector((state: IState) => state.language);
 
   const { id } = useParams<{ id: string }>();
 
@@ -40,16 +38,16 @@ const Person: React.FC = () => {
         data.cast
           .filter((r) => r.series_regular)
           .filter(
-            (r) => !(r.character === 'Himself' || r.character === 'Herself'),
+            (r) => !(r.character === 'Himself' || r.character === 'Herself')
           )
-          .map((r) => ({ show: r.show, type: 'show', title: r.character })),
+          .map((r) => ({ show: r.show, type: 'show', title: r.character }))
       );
     });
     getPersonItemsApi<PersonMovies>(id, 'movie').then(({ data }) => {
       setMovieResults([
         ...data.cast
           .filter(
-            (r) => !(r.character === 'Himself' || r.character === 'Herself'),
+            (r) => !(r.character === 'Himself' || r.character === 'Herself')
           )
           .map((r) => ({
             movie: r.movie,

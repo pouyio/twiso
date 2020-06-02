@@ -23,7 +23,7 @@ export interface IState {
     watched: ShowWatched[];
     watchlist: ShowWatchlist[];
   };
-  globalSearch?: boolean;
+  globalSearch: boolean;
   config?: ImgConfig;
   language: string;
 }
@@ -43,4 +43,5 @@ export const initialState: IState = {
     watchlist: [],
   },
   language: LANGUAGE,
+  globalSearch: false,
 };

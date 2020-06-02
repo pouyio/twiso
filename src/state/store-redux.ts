@@ -18,7 +18,9 @@ export const updateTotalLoadingShows = createAction<number | undefined>(
   'UPDATE_TOTAL_LOADING_SHOWS'
 );
 
-const store = configureStore({
+export const setGlobalSearch = createAction<boolean>('SET_GLOBAL_SEARCH');
+
+export const store = configureStore({
   reducer: {
     language: createReducer(initialState.language, {}),
     loading: createReducer(initialState.loading, (builder) =>
@@ -30,11 +32,12 @@ const store = configureStore({
           state.shows.current = payload ?? state.shows.current + 1;
         })
     ),
+    globalSearch: createReducer(initialState.globalSearch, (builder) =>
+      builder.addCase(setGlobalSearch, (state, { payload }) => payload)
+    ),
     config: defaultReducer,
     movies: moviesReducer,
     shows: showsReducer,
   },
   middleware: [...getDefaultMiddleware(), dbMiddleware],
 });
-
-export default store;
