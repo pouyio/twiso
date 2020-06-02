@@ -160,7 +160,7 @@ export default function ShowDetail() {
               </button>
             </div>
 
-            <div className="w-full">
+            <div className="w-full max-w-3xl">
               <h1
                 onClick={toggleShowOriginalTitle}
                 className="text-4xl leading-none text-center mb-4"
