@@ -8,7 +8,7 @@ import { AuthProvider } from 'contexts/AuthContext';
 import initReactFastclick from 'react-fastclick';
 import * as Sentry from '@sentry/browser';
 import { version } from '../package.json';
-import { store } from 'state/store-redux';
+import { store } from 'state/store';
 import { Provider } from 'react-redux';
 
 initReactFastclick();

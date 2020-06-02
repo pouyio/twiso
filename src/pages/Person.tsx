@@ -16,6 +16,7 @@ import { placeholders } from 'components/Related';
 import { Empty } from 'components/Empty';
 import { useSelector } from 'react-redux';
 import { IState } from 'state/state';
+import Helmet from 'react-helmet';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();

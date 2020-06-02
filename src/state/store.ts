@@ -8,7 +8,7 @@ import { reducer as moviesReducer } from './slices/moviesSlice';
 import { reducer as showsReducer } from './slices/showsSlice';
 import { reducer as defaultReducer } from './slices/defaultSlice';
 import { initialState } from './state';
-import { dbMiddleware } from './middleware-redux';
+import { dbMiddleware } from './middleware';
 
 export const setTotalLoadingShows = createAction<number>(
   'SET_TOTAL_LOADING_SHOWS'

@@ -9,7 +9,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Emoji from './Emoji';
 import ImageLink from './ImageLink';
 import { useDispatch } from 'react-redux';
-import { setGlobalSearch } from 'state/store-redux';
+import { setGlobalSearch } from 'state/store';
 
 export const GlobalSearch = () => {
   const { filter } = useFilter();

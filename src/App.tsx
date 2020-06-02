@@ -18,7 +18,7 @@ import { GlobalSearch } from 'components/GlobalSearch';
 import LongPress from 'components/Longpress';
 import { useSelector } from 'react-redux';
 import { IState } from 'state/state';
-import { firstLoad } from './state/firstLoadAction-redux';
+import { firstLoad } from './state/firstLoadAction';
 import Shows from 'pages/shows/Shows';
 
 const ParamsComponent: React.FC = () => {

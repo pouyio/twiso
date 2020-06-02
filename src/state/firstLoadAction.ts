@@ -30,7 +30,7 @@ import {
   store,
   setTotalLoadingShows,
   updateTotalLoadingShows,
-} from './store-redux';
+} from './store';
 
 const loadWatchlistMovies = async (session: Session) => {
   const moviesWatchlist = await db
