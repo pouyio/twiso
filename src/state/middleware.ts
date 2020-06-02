@@ -107,15 +107,6 @@ export const dbMiddleware = (store) => (next) => (action) => {
         .modify({ fullSeasons: action.payload.seasons });
       break;
     }
-    case 'shows/addSeasonWatched': {
-      //  TODO
-      break;
-    }
-    case 'shows/removeSeasonWatched': {
-      //  TODO
-      break;
-    }
-
     default:
       break;
   }
