@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { RemoteFilterTypes } from './Search';
+import { AuthContext } from 'contexts';
 
 export interface IFilters {
   remote: boolean;
@@ -15,6 +16,7 @@ export const SearchFilters: React.FC<ISearchFiltersProps> = ({
 }) => {
   const [filterBy, setFilterBy] = useState<RemoteFilterTypes>([]);
   const [remote, setRemote] = useState(true);
+  const { session } = useContext(AuthContext);
 
   const onFilterClick = (type: 'movie' | 'show' | 'person') => {
     setFilterBy((filters) => {
@@ -31,27 +33,29 @@ export const SearchFilters: React.FC<ISearchFiltersProps> = ({
 
   return (
     <div className="my-2 lg:max-w-lg mx-auto flex flex-wrap items-center justify-center lg:justify-between">
-      <div className="flex whitespace-no-wrap items-center my-1 lg:my-0 justify-center">
-        <div
-          className="flex items-center cursor-pointer select-none"
-          onClick={() => setRemote((a) => !a)}
-        >
-          <p className={`mr-3 ${remote ? '' : 'opacity-75'}`}>Todo</p>
+      {session && (
+        <div className="flex whitespace-no-wrap items-center my-1 lg:my-0 justify-center">
+          <div
+            className="flex items-center cursor-pointer select-none"
+            onClick={() => setRemote((a) => !a)}
+          >
+            <p className={`mr-3 ${remote ? '' : 'opacity-75'}`}>Todo</p>
 
-          <div className="relative">
-            <input
-              type="checkbox"
-              className="hidden"
-              checked={remote}
-              onChange={() => null}
-            />
-            <div className="toggle__line w-8 h-3 bg-gray-400 rounded-full"></div>
-            <div className="toggle__dot absolute w-5 h-5 bg-gray-200 rounded-full left-0"></div>
+            <div className="relative">
+              <input
+                type="checkbox"
+                className="hidden"
+                checked={remote}
+                onChange={() => null}
+              />
+              <div className="toggle__line w-8 h-3 bg-gray-400 rounded-full"></div>
+              <div className="toggle__dot absolute w-5 h-5 bg-gray-200 rounded-full left-0"></div>
+            </div>
+
+            <p className={`ml-3 ${remote ? 'opacity-75' : ''}`}>Mi coleción</p>
           </div>
-
-          <p className={`ml-3 ${remote ? 'opacity-75' : ''}`}>Mi coleción</p>
         </div>
-      </div>
+      )}
 
       <div className="inline-flex my-1 lg:my-0">
         <button

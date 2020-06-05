@@ -1,3 +1,15 @@
+# [2.2.0](https://github.com/pouyio/twiso/compare/v2.1.5...v2.2.0) (2020-05-27)
+
+
+### :art:
+
+* dont ovelap title and date ([404374b](https://github.com/pouyio/twiso/commit/404374ba552b0b69da1a137b4b778075a5c15fbf))
+* remove max width ([a16e92b](https://github.com/pouyio/twiso/commit/a16e92bc3ad15a5126c6b937df36b5b25d610b64))
+
+### :sparkles:
+
+* added advanced search & local filter ([7bb90f6](https://github.com/pouyio/twiso/commit/7bb90f6d9e0b2e50df0ce6175eb852ae6d1ec2ad))
+
 ## [2.1.5](https://github.com/pouyio/twiso/compare/v2.1.4...v2.1.5) (2020-05-12)
 
 
