@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/pouyio/twiso/compare/v2.2.0...v2.2.1) (2020-06-05)
+
+
+### :bug:
+
+* remove local/remote search if not logged in ([8ea19d4](https://github.com/pouyio/twiso/commit/8ea19d4a4d286837dff6e6247b07efd28f8dcbf0))
+
 # [2.2.0](https://github.com/pouyio/twiso/compare/v2.1.5...v2.2.0) (2020-05-27)
 
 
