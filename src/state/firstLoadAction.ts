@@ -5,7 +5,6 @@ import {
   ShowWatchlist,
 } from 'models';
 import {
-  getImgsConfigApi,
   getWatchedApi,
   getWatchlistApi,
   getSeasonsApi,
@@ -13,7 +12,6 @@ import {
 } from 'utils/api';
 import db from 'utils/db';
 import { Session } from '../contexts/AuthContext';
-import { setImagesConfig } from './slices/defaultSlice';
 import {
   setWatched as setWatchedMovies,
   setWatchlist as setWatchlistMovies,
@@ -26,11 +24,7 @@ import {
   updateSeasons,
   updateProgress,
 } from './slices/showsSlice';
-import {
-  store,
-  setTotalLoadingShows,
-  updateTotalLoadingShows,
-} from './store';
+import { store, setTotalLoadingShows, updateTotalLoadingShows } from './store';
 
 const loadWatchlistMovies = async (session: Session) => {
   const moviesWatchlist = await db
@@ -122,10 +116,6 @@ const loadWatchedShows = async (session: Session) => {
 };
 
 export const firstLoad = async (session: Session) => {
-  getImgsConfigApi().then(({ data }) => {
-    store.dispatch(setImagesConfig(data));
-  });
-
   loadWatchedMovies(session);
   loadWatchlistMovies(session);
 

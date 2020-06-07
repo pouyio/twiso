@@ -16,10 +16,11 @@ import { Alert } from 'components/Alert/Alert';
 import { Providers } from 'components/Providers';
 import { GlobalSearch } from 'components/GlobalSearch';
 import LongPress from 'components/Longpress';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { IState } from 'state/state';
 import { firstLoad } from './state/firstLoadAction';
 import Shows from 'pages/shows/Shows';
+import { loadImgConfig } from 'state/slices/defaultSlice';
 
 const ParamsComponent: React.FC = () => {
   const location = useLocation();
@@ -48,8 +49,10 @@ const App: React.FC = () => {
   const showsReady = useSelector<IState>((state) => state.shows.ready);
 
   const { session } = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(loadImgConfig());
     if (session) {
       firstLoad(session);
     }
