@@ -15,7 +15,7 @@ initReactFastclick();
 
 Sentry.init({
   release: `twiso@${version}`,
-  dsn: process.env.SENTRY_DSN,
+  dsn: process.env.REACT_APP_SENTRY_DSN,
 });
 
 ReactDOM.render(
