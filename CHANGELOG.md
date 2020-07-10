@@ -1,3 +1,19 @@
+## [2.2.2](https://github.com/pouyio/twiso/compare/v2.2.1...v2.2.2) (2020-07-10)
+
+
+### :art:
+
+* added person title to page ([2fb3113](https://github.com/pouyio/twiso/commit/2fb3113944b5110d9b2d65d6472fe04a5c78436f))
+* fixed overflow ([19e9d93](https://github.com/pouyio/twiso/commit/19e9d93cd5339daed767d886596739c326ec82c4))
+
+### :bug:
+
+* reload shows on different last_watched_at ([a37f334](https://github.com/pouyio/twiso/commit/a37f3345a97e98ec4558d899f3471427f1ad36a8))
+
+### :rocket:
+
+* added sentry correctly ([1776b77](https://github.com/pouyio/twiso/commit/1776b770801834223a807caa912a8e7b69d5169f))
+
 ## [2.2.1](https://github.com/pouyio/twiso/compare/v2.2.0...v2.2.1) (2020-06-05)
 
 
