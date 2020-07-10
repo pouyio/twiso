@@ -97,7 +97,10 @@ export const dbMiddleware = (store) => (next) => (action) => {
       db.table('shows')
         .where('show.ids.trakt')
         .equals(action.payload.show.show.ids.trakt)
-        .modify({ progress: action.payload.progress });
+        .modify({
+          progress: action.payload.progress,
+          last_watched_at: action.payload.progress.last_watched_at,
+        });
       break;
     }
     case 'shows/updateSeasons': {

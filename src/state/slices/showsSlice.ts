@@ -220,6 +220,8 @@ const showsSlice = createSlice({
         state.watched.push({ ...payload.show, progress: payload.progress });
       } else {
         state.watched[showIndex].progress = payload.progress;
+        state.watched[showIndex].last_watched_at =
+          payload.progress.last_watched_at;
       }
     },
     _removeWatchlist(state, { payload }: PayloadAction<number>) {
