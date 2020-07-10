@@ -11,7 +11,7 @@ export const useSearch = () => {
       history.push({ search: `?query=${query}` });
       setLocalSearch(query);
     },
-    [history],
+    [history]
   );
 
   useEffect(() => {

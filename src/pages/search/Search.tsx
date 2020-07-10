@@ -30,9 +30,9 @@ export default function Search() {
       query,
       types.join(','),
     ).then(({ data }) => {
-      const movies: SearchMovie[] = data.filter(r => r.type === 'movie');
-      const shows: SearchShow[] = data.filter(r => r.type === 'show');
-      const person: SearchPerson[] = data.filter(r => r.type === 'person');
+      const movies: SearchMovie[] = data.filter((r) => r.type === 'movie');
+      const shows: SearchShow[] = data.filter((r) => r.type === 'show');
+      const person: SearchPerson[] = data.filter((r) => r.type === 'person');
       setMovieResults(movies);
       setShowResults(shows);
       setPeopleResults(person);
@@ -70,8 +70,8 @@ export default function Search() {
       return;
     }
 
-    const fullTypes = filters.types.filter(f => f !== 'person').length
-      ? filters.types.filter(f => f !== 'person')
+    const fullTypes = filters.types.filter((f) => f !== 'person').length
+      ? filters.types.filter((f) => f !== 'person')
       : ['movie', 'show'];
     localSearch(debouncedSearch, fullTypes as LocalFilterTypes);
     // eslint-disable-next-line
@@ -88,7 +88,7 @@ export default function Search() {
           type="text"
           placeholder="🔍 Busca una película, serie o persona"
           autoFocus={true}
-          onChange={e => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           value={search}
         />
         <button onClick={() => setSearch('')}>
@@ -113,7 +113,7 @@ export default function Search() {
                 className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto"
                 style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
               >
-                {movieResults.map(r => (
+                {movieResults.map((r) => (
                   <li
                     key={r.movie.ids.slug}
                     className="p-2"
@@ -142,7 +142,7 @@ export default function Search() {
                 className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
                 style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
               >
-                {showResults.map(r => (
+                {showResults.map((r) => (
                   <li
                     key={r.show.ids.slug}
                     className="p-2"
@@ -171,7 +171,7 @@ export default function Search() {
                 className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
                 style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
               >
-                {peopleResults.map(r => (
+                {peopleResults.map((r) => (
                   <li
                     key={r.person.ids.slug}
                     className="p-2"

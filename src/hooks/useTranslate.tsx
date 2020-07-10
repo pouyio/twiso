@@ -2,13 +2,12 @@ import { useState, useEffect, useContext, useCallback } from 'react';
 import { getTranslationsApi } from '../utils/api';
 import { AuthContext } from '../contexts';
 import { Movie, Show, Translation } from '../models';
-import { useGlobalState } from '../state/store';
+import { useSelector } from 'react-redux';
+import { IState } from 'state/state';
 
 export const useTranslate = (type: 'movie' | 'show', item?: Show | Movie) => {
   const { session } = useContext(AuthContext);
-  const {
-    state: { language },
-  } = useGlobalState();
+  const language = useSelector((state: IState) => state.language);
   const [translation, setTranslation] = useState<{
     title: string;
     overview: string;
@@ -28,7 +27,7 @@ export const useTranslate = (type: 'movie' | 'show', item?: Show | Movie) => {
       }
       return mergedTranslation;
     },
-    [item],
+    [item]
   );
 
   useEffect(() => {

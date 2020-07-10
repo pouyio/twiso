@@ -8,7 +8,7 @@ export const AlertContext = createContext<{
   text: string;
   close: () => void;
 }>({
-  showAlert: text => null,
+  showAlert: (text) => null,
   opened: false,
   text: '',
   close: () => null,

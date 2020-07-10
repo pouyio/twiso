@@ -1,20 +1,19 @@
 import React from 'react';
 import LongPressable from 'react-longpressable';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useGlobalState } from 'state/store';
 import Emoji from './Emoji';
+import { useDispatch } from 'react-redux';
+import { setGlobalSearch } from 'state/store';
 
 const LongPress: React.FC = () => {
   const history = useHistory();
   const { pathname } = useLocation();
 
-  const {
-    actions: { setGlobalSearch },
-  } = useGlobalState();
+  const dispatch = useDispatch();
   return (
     <LongPressable
       onShortPress={() => history.push('/search')}
-      onLongPress={() => setGlobalSearch(true)}
+      onLongPress={() => dispatch(setGlobalSearch(true))}
       longPressTime={500}
     >
       <div

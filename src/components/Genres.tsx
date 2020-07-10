@@ -14,7 +14,7 @@ const Genres: React.FC<IGenresProps> = ({ genres }) => {
       style={{ WebkitOverflowScrolling: 'touch' }}
     >
       {genres.length ? (
-        genres.map(g => (
+        genres.map((g) => (
           <li key={g}>
             <div className="bg-gray-100 font-light px-2 py-1 rounded-full mx-1 whitespace-pre">
               <Emoji emoji={getGenre(g).emoji} /> {getGenre(g).name}

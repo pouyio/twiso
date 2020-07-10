@@ -6,9 +6,10 @@ import {
   ShowWatchlist,
 } from 'models';
 import React, { useEffect, useRef, useState } from 'react';
-import { useGlobalState } from 'state/store';
 import Emoji from './Emoji';
 import ImageLink from './ImageLink';
+import { useDispatch } from 'react-redux';
+import { setGlobalSearch } from 'state/store';
 
 export const GlobalSearch = () => {
   const { filter } = useFilter();
@@ -17,10 +18,7 @@ export const GlobalSearch = () => {
   >();
   const { isWatched, isWatchlist } = useIsWatch();
   const ref = useRef<HTMLInputElement>(null);
-
-  const {
-    actions: { setGlobalSearch },
-  } = useGlobalState();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (ref.current) {
@@ -34,7 +32,7 @@ export const GlobalSearch = () => {
   };
 
   const getBgClass = (
-    item: MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist,
+    item: MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist
   ) => {
     if (isWatched(item[item.type || 'show'].ids.trakt, item.type || 'show')) {
       return 'bg-green-400';
@@ -57,11 +55,11 @@ export const GlobalSearch = () => {
           onChange={onFilter}
           onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.keyCode === 27 || e.charCode === 27) {
-              setGlobalSearch(false);
+              dispatch(setGlobalSearch(false));
             }
           }}
         />
-        <button onClick={() => setGlobalSearch(false)} tabIndex={-1}>
+        <button onClick={() => dispatch(setGlobalSearch(false))} tabIndex={-1}>
           <Emoji className="ml-3 mr-2" emoji="❌" />
         </button>
       </div>
@@ -73,7 +71,7 @@ export const GlobalSearch = () => {
                 key={`${item[item.type || 'show'].ids?.trakt}_${i}`}
                 className="p-2"
                 style={{ flex: '1 0 50%', maxWidth: '10em' }}
-                onClick={() => setGlobalSearch(false)}
+                onClick={() => dispatch(setGlobalSearch(false))}
                 tabIndex={i + 1}
               >
                 <div className={`rounded-lg ${getBgClass(item)}`}>

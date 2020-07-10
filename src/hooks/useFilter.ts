@@ -1,12 +1,10 @@
 import Fuse from 'fuse.js';
-import { useGlobalState } from 'state/store';
+import { useSelector } from 'react-redux';
+import { IState } from '../state/state';
 
 export const useFilter = () => {
-  const {
-    state: {
-      userInfo: { movies, shows },
-    },
-  } = useGlobalState();
+  const movies = useSelector((state: IState) => state.movies);
+  const shows = useSelector((state: IState) => state.shows);
 
   const filter = (text: string) => {
     if (!text) {
@@ -27,10 +25,10 @@ export const useFilter = () => {
           { name: 'show.title', weight: 0.7 },
           { name: 'show.overview', weight: 0.3 },
         ],
-      },
+      }
     );
 
-    return fuse.search(text).map(r => r.item);
+    return fuse.search(text).map((r) => r.item);
   };
 
   const filterBy = (text: string, type: 'movie' | 'show') => {
@@ -63,7 +61,7 @@ export const useFilter = () => {
       keys,
     });
 
-    return fuse.search(text).map(r => r.item);
+    return fuse.search(text).map((r) => r.item);
   };
 
   return { filter, filterBy };

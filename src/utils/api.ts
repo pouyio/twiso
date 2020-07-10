@@ -58,7 +58,7 @@ export const loginApi = (code: string) => {
 
 export const getImgsConfigApi = () => {
   return axios.get<ImgConfig>(
-    `${IMG_URL}/configuration?api_key=${tmbdb_api_key}`,
+    `${IMG_URL}/configuration?api_key=${tmbdb_api_key}`
   );
 };
 
@@ -68,7 +68,7 @@ export const getImgsApi = (id: number, type: ItemType) => {
     newType = 'tv';
   }
   return limitAxios.get<ImageResponse>(
-    `${IMG_URL}/${newType}/${id}/images?api_key=${tmbdb_api_key}`,
+    `${IMG_URL}/${newType}/${id}/images?api_key=${tmbdb_api_key}`
   );
 };
 
@@ -77,7 +77,7 @@ export const getApi = <T>(id: number, type: ItemType) => {
     `${BASE_URL}/search/trakt/${id}?type=${type}&extended=full`,
     {
       headers: base_headers,
-    },
+    }
   );
 };
 
@@ -86,7 +86,7 @@ export const getSeasonsApi = (id: number) => {
     `${BASE_URL}/shows/${id}/seasons?translations=es`,
     {
       headers: base_headers,
-    },
+    }
   );
 };
 
@@ -95,7 +95,7 @@ export const getSeasonEpisodesApi = (id: number, season: number) => {
     `${BASE_URL}/shows/${id}/seasons/${season}?extended=full&translations=es`,
     {
       headers: base_headers,
-    },
+    }
   );
 };
 
@@ -107,7 +107,7 @@ export const getProgressApi = (session: Session, id: number) => {
         ...base_headers,
         Authorization: `Bearer ${session.access_token}`,
       },
-    },
+    }
   );
 };
 
@@ -116,26 +116,26 @@ export const getTranslationsApi = (id: number, type: ItemType) => {
     `${BASE_URL}/${type}s/${id}/translations/es`,
     {
       headers: base_headers,
-    },
+    }
   );
 };
 
 export const searchApi = <T>(
   query: string,
   type: string,
-  limit: number = 40,
+  limit: number = 40
 ) => {
   return axios.get<T[]>(
     `${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${limit}`,
     {
       headers: base_headers,
-    },
+    }
   );
 };
 
 export const getWatchedApi = <T extends MovieWatched | ShowWatched>(
   session: Session,
-  type: ItemType,
+  type: ItemType
 ) => {
   const url =
     type === 'movie'
@@ -153,7 +153,7 @@ export const getWatchedApi = <T extends MovieWatched | ShowWatched>(
 export const addWatchedApi = (
   item: Episode | Season | Movie,
   session: Session,
-  type: ItemType,
+  type: ItemType
 ) => {
   return axios.post<AddedWatched>(
     `${BASE_URL}/sync/history`,
@@ -165,14 +165,14 @@ export const addWatchedApi = (
         ...base_headers,
         Authorization: `Bearer ${session.access_token}`,
       },
-    },
+    }
   );
 };
 
 export const removeWatchedApi = (
   item: Episode | Season | Movie,
   session: Session,
-  type: ItemType,
+  type: ItemType
 ) => {
   return axios.post<RemovedWatched>(
     `${BASE_URL}/sync/history/remove`,
@@ -184,13 +184,13 @@ export const removeWatchedApi = (
         ...base_headers,
         Authorization: `Bearer ${session.access_token}`,
       },
-    },
+    }
   );
 };
 
 export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
   session: Session,
-  type: 'movie' | 'show',
+  type: 'movie' | 'show'
 ) => {
   return axios
     .get<T[]>(`${BASE_URL}/sync/watchlist/${type}s?extended=full`, {
@@ -199,11 +199,11 @@ export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
         Authorization: `Bearer ${session.access_token}`,
       },
     })
-    .then(res => {
+    .then((res) => {
       const ordered = res.data.sort(
         (a, b) =>
           (new Date(b.listed_at as string) as any) -
-          (new Date(a.listed_at as string) as any),
+          (new Date(a.listed_at as string) as any)
       );
       res.data = ordered;
       return res;
@@ -213,7 +213,7 @@ export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
 export const addWatchlistApi = (
   item: Show | Movie,
   session: Session,
-  type: ItemType,
+  type: ItemType
 ) => {
   return axios.post<AddedWatchlist>(
     `${BASE_URL}/sync/watchlist`,
@@ -225,14 +225,14 @@ export const addWatchlistApi = (
         ...base_headers,
         Authorization: `Bearer ${session.access_token}`,
       },
-    },
+    }
   );
 };
 
 export const removeWatchlistApi = (
   item: Show | Movie,
   session: Session,
-  type: ItemType,
+  type: ItemType
 ) => {
   return axios.post<RemovedWatchlist>(
     `${BASE_URL}/sync/watchlist/remove`,
@@ -244,7 +244,7 @@ export const removeWatchlistApi = (
         ...base_headers,
         Authorization: `Bearer ${session.access_token}`,
       },
-    },
+    }
   );
 };
 
@@ -280,7 +280,7 @@ export const getPopularApi = (type: ItemType, limit: number = 40) => {
       headers: {
         ...base_headers,
       },
-    },
+    }
   );
 };
 
@@ -291,7 +291,7 @@ export const getRelatedApi = <T>(id: number, type: ItemType) => {
       headers: {
         ...base_headers,
       },
-    },
+    }
   );
 };
 

@@ -21,9 +21,9 @@ export type SearchPerson = SearchItem & {
 };
 
 export interface MovieWatchlist {
-  id: number;
+  id?: number;
   listed_at: string;
-  rank: number;
+  rank?: number;
   type: 'movie';
   movie: Movie;
 }

@@ -4,13 +4,9 @@ import PaginationContainer from 'components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
 import { MovieWatchlist } from 'models';
 
-interface IMoviesWatchlistProps {
+export const MoviesWatchlist: React.FC<{
   movies: MovieWatchlist[];
-}
-
-export const MoviesWatchlist: React.FC<IMoviesWatchlistProps> = ({
-  movies,
-}) => {
+}> = ({ movies }) => {
   const [orderedMovies, setOrderedMovies] = useState<MovieWatchlist[]>([]);
   const { getItemsByPage } = usePagination(orderedMovies);
 
@@ -18,6 +14,7 @@ export const MoviesWatchlist: React.FC<IMoviesWatchlistProps> = ({
     const nearFuture = new Date();
     nearFuture.setDate(nearFuture.getDate() + 7);
     const newItems = movies
+      .map((m) => m)
       .sort((a, b) => (new Date(a.listed_at) < new Date(b.listed_at) ? -1 : 1))
       .reduce((acc: MovieWatchlist[], m) => {
         if (!m.movie.released) {

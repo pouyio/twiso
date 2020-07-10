@@ -2,18 +2,15 @@ import React, { useEffect } from 'react';
 import Helmet from 'react-helmet';
 import { StringParam, useQueryParam } from 'use-query-params';
 import Emoji from '../../components/Emoji';
-import { useGlobalState } from '../../state/store';
 import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';
+import { useSelector } from 'react-redux';
+import { IState } from 'state/state';
 
 export default function Movies() {
   const [mode, setMode] = useQueryParam('mode', StringParam);
 
-  const {
-    state: {
-      userInfo: { movies },
-    },
-  } = useGlobalState();
+  const movies = useSelector((state: IState) => state.movies);
 
   useEffect(() => {
     if (!mode) {

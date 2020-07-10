@@ -1,28 +1,27 @@
-import React, { useEffect, useState, useContext } from 'react';
-import WatchButton from '../components/WatchButton';
-import { getApi, getPeopleApi, getRatingsApi } from '../utils/api';
-import Image from '../components/Image';
-import { useTranslate, useIsWatch, useShare } from '../hooks';
-import Emoji from '../components/Emoji';
-import Related from '../components/Related';
-import Genres from '../components/Genres';
-import People from '../components/People';
-import CollapsableText from '../components/CollapsableText';
-import { SearchMovie, Movie, People as IPeople, Ratings } from '../models';
-import { useLocation, useParams } from 'react-router-dom';
-import Helmet from 'react-helmet';
-import { useGlobalState } from '../state/store';
 import Rating from 'components/Rating';
+import React, { useContext, useEffect, useState } from 'react';
+import Helmet from 'react-helmet';
+import { useSelector } from 'react-redux';
+import { useLocation, useParams } from 'react-router-dom';
+import { IState } from 'state/state';
+import CollapsableText from '../components/CollapsableText';
+import Emoji from '../components/Emoji';
+import Genres from '../components/Genres';
+import Image from '../components/Image';
+import People from '../components/People';
+import Related from '../components/Related';
+import WatchButton from '../components/WatchButton';
 import { AlertContext } from '../contexts';
+import { useIsWatch, useShare, useTranslate } from '../hooks';
+import { Movie, People as IPeople, Ratings, SearchMovie } from '../models';
+import { getApi, getPeopleApi, getRatingsApi } from '../utils/api';
 
 export default function MovieDetail() {
   const [item, setItem] = useState<Movie>();
   const [showOriginalTitle, setShowOriginalTitle] = useState(false);
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
-  const {
-    state: { language },
-  } = useGlobalState();
+  const language = useSelector((state: IState) => state.language);
   const { title = '', overview = '' } = useTranslate('movie', item);
   const { state } = useLocation();
   const { id } = useParams<{ id: string }>();
@@ -72,7 +71,7 @@ export default function MovieDetail() {
   };
 
   const onShare = () => {
-    share(item!.title).then(action => {
+    share(item!.title).then((action) => {
       if (action === 'copied') {
         showAlert(`Enlace a "${item!.title}" copiado`);
       }

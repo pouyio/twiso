@@ -12,9 +12,11 @@ import {
   Movie,
   Show,
 } from '../models';
-import { useGlobalState } from '../state/store';
 import { placeholders } from 'components/Related';
 import { Empty } from 'components/Empty';
+import { useSelector } from 'react-redux';
+import { IState } from 'state/state';
+import Helmet from 'react-helmet';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
@@ -24,10 +26,7 @@ const Person: React.FC = () => {
   const [showResults, setShowResults] = useState<
     { show: Show; type: 'show'; title: string }[]
   >();
-
-  const {
-    state: { language },
-  } = useGlobalState();
+  const language = useSelector((state: IState) => state.language);
 
   const { id } = useParams<{ id: string }>();
 
@@ -38,33 +37,36 @@ const Person: React.FC = () => {
     getPersonItemsApi<PersonShows>(id, 'show').then(({ data }) => {
       setShowResults(
         data.cast
-          .filter(r => r.series_regular)
+          .filter((r) => r.series_regular)
           .filter(
-            r => !(r.character === 'Himself' || r.character === 'Herself'),
+            (r) => !(r.character === 'Himself' || r.character === 'Herself')
           )
-          .map(r => ({ show: r.show, type: 'show', title: r.character })),
+          .map((r) => ({ show: r.show, type: 'show', title: r.character }))
       );
     });
     getPersonItemsApi<PersonMovies>(id, 'movie').then(({ data }) => {
       setMovieResults([
         ...data.cast
           .filter(
-            r => !(r.character === 'Himself' || r.character === 'Herself'),
+            (r) => !(r.character === 'Himself' || r.character === 'Herself')
           )
-          .map(r => ({
+          .map((r) => ({
             movie: r.movie,
             type: 'movie',
             title: r.character,
           })),
         ...((data.crew || {}).directing || [])
-          .map(r => ({ movie: r.movie, type: 'movie', title: r.job }))
-          .filter(r => !(r.title === 'Himself' || r.title === 'Herself')),
+          .map((r) => ({ movie: r.movie, type: 'movie', title: r.job }))
+          .filter((r) => !(r.title === 'Himself' || r.title === 'Herself')),
       ]);
     });
   }, [id, language]);
 
   return localState ? (
     <div className="bg-gray-300">
+      <Helmet>
+        <title>{localState.name}</title>
+      </Helmet>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
           className="p-10 pt-5 sticky top-0 z-0 lg:hidden"

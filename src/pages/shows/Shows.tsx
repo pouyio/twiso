@@ -4,18 +4,13 @@ import ShowsWatchlist from './ShowsWatchlist';
 import ShowsWatched from './ShowsWatched';
 import { StringParam, useQueryParam } from 'use-query-params';
 import Helmet from 'react-helmet';
-import { useGlobalState } from '../../state/store';
+import { useSelector } from 'react-redux';
+import { IState } from 'state/state';
 
 export default function Shows() {
   const [mode, setMode] = useQueryParam('mode', StringParam);
 
-  const {
-    state: {
-      userInfo: {
-        shows: { watchlist, watched },
-      },
-    },
-  } = useGlobalState();
+  const shows = useSelector((state: IState) => state.shows);
 
   useEffect(() => {
     if (!mode) {
@@ -39,7 +34,7 @@ export default function Shows() {
           }`}
           onClick={() => setMode('watchlist')}
         >
-          <Emoji emoji="⏱" /> Pendientes ({watchlist.length})
+          <Emoji emoji="⏱" /> Pendientes ({shows.watchlist.length})
         </button>
         <button
           className={`border-b-2 py-2 w-full ${
@@ -47,7 +42,7 @@ export default function Shows() {
           }`}
           onClick={() => setMode('watched')}
         >
-          <Emoji emoji="📚" /> Siguiendo ({watched.length})
+          <Emoji emoji="📚" /> Siguiendo ({shows.watched.length})
         </button>
       </div>
       <div className="py-3">
