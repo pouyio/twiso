@@ -1,3 +1,14 @@
+## [2.2.4](https://github.com/pouyio/twiso/compare/v2.2.3...v2.2.4) (2020-07-14)
+
+
+### :arrow_up:
+
+* Bump npm from 6.14.1 to 6.14.6 ([df0fb44](https://github.com/pouyio/twiso/commit/df0fb44e29e7d179d845282d5cf5af1414155ddb))
+
+### :art:
+
+* scroll on global search ([d0f1f6f](https://github.com/pouyio/twiso/commit/d0f1f6f2ecfc60ded2e9f618bfc81142fb362935))
+
 ## [2.2.3](https://github.com/pouyio/twiso/compare/v2.2.2...v2.2.3) (2020-07-14)
 
 
