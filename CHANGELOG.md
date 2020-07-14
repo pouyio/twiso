@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/pouyio/twiso/compare/v2.2.2...v2.2.3) (2020-07-14)
+
+
+### :bug:
+
+* added safe-area margin top to global search ([719d4dc](https://github.com/pouyio/twiso/commit/719d4dcb6e3c6e190629669230b5d184e8b7cd54))
+
 ## [2.2.2](https://github.com/pouyio/twiso/compare/v2.2.1...v2.2.2) (2020-07-10)
 
 
