@@ -44,7 +44,10 @@ export const GlobalSearch = () => {
   };
 
   return (
-    <section className="fixed w-full z-30 top-0">
+    <section
+      className="fixed w-full z-30 top-0"
+      style={{ marginTop: 'env(safe-area-inset-top)' }}
+    >
       <div className="w-full bg-blue-100 flex items-center">
         <input
           ref={ref}
