@@ -45,7 +45,7 @@ export const GlobalSearch = () => {
 
   return (
     <section
-      className="fixed w-full z-30 top-0"
+      className="fixed w-full z-30 top-0 flex flex-col h-full"
       style={{ marginTop: 'env(safe-area-inset-top)' }}
     >
       <div className="w-full bg-blue-100 flex items-center">
@@ -66,7 +66,7 @@ export const GlobalSearch = () => {
           <Emoji className="ml-3 mr-2" emoji="❌" />
         </button>
       </div>
-      <ul className="flex flex-wrap items-stretch justify-center bg-white">
+      <ul className="flex flex-wrap items-stretch justify-center bg-white overflow-y-auto">
         {results &&
           results.map((item, i) => {
             return (
