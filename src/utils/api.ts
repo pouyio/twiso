@@ -56,6 +56,15 @@ export const loginApi = (code: string) => {
   });
 };
 
+export const refreshApi = (refreshToken: string) => {
+  return axios.post<Session>(LOGIN_URL, {
+    refresh_token: refreshToken,
+    client_id: trakt_api_key,
+    redirect_uri: redirect_url,
+    grant_type: 'refresh_token',
+  });
+};
+
 export const getImgsConfigApi = () => {
   return axios.get<ImgConfig>(
     `${IMG_URL}/configuration?api_key=${tmbdb_api_key}`
