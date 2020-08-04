@@ -1,3 +1,10 @@
+## [2.2.5](https://github.com/pouyio/twiso/compare/v2.2.4...v2.2.5) (2020-08-04)
+
+
+### :bug:
+
+* added auto token refresh on expiration ([fe25e23](https://github.com/pouyio/twiso/commit/fe25e23b646a6f486fb73c94c7a0f15c2fd750e9))
+
 ## [2.2.4](https://github.com/pouyio/twiso/compare/v2.2.3...v2.2.4) (2020-07-14)
 
 
