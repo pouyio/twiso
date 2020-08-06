@@ -26,10 +26,10 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   show,
   showId,
 }) => {
-  const [selectedSeason, setSelectedSeason] = useState<Season>();
+  const [selectedSeason, setSelectedSeason] = useState<number>();
   const [unTrackedProgress, setUnTrackedProgress] = useState<ShowProgress>();
   const [unTrackedSeasons, setUnTrackedSeasons] = useState<Season[]>([]);
-  const [localShow, setLocalShow] = useState<ShowWatched>();
+  const [episodes, setEpisodes] = useState<Episode[][]>([]);
   const { session } = useContext(AuthContext);
   const { toggle } = useContext(ModalContext);
   const dispatch = useDispatch();
@@ -39,17 +39,10 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
 
   useEffect(() => {
     setSelectedSeason(undefined);
-    setLocalShow(undefined);
   }, [showId]);
 
   useEffect(() => {
     if (watchedShow) {
-      setLocalShow(watchedShow);
-    }
-  }, [watchedShow]);
-
-  useEffect(() => {
-    if (localShow) {
       return;
     }
     getSeasonsApi(showId).then(({ data }) => setUnTrackedSeasons(data));
@@ -58,55 +51,40 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
         setUnTrackedProgress(data)
       );
     }
-  }, [session, showId, localShow]);
+  }, [session, showId, watchedShow]);
 
   useEffect(() => {
-    if (!selectedSeason) {
+    if (selectedSeason === undefined) {
       return;
     }
-    if (selectedSeason && selectedSeason.episodes) {
+    if (selectedSeason !== undefined && episodes[selectedSeason]) {
       return;
     }
-    getSeasonEpisodesApi(showId, selectedSeason.number).then(({ data }) => {
-      if (!localShow) {
-        setUnTrackedSeasons((us) => {
-          const i = us.findIndex((s) => s.number === selectedSeason.number);
-          us[i].episodes = data;
-          return [...us];
-        });
-      } else {
-        setLocalShow((ls) => {
-          if (!ls) {
-            return;
-          }
-          const i = ls!.fullSeasons!.findIndex(
-            (s) => s.number === selectedSeason.number
-          );
-          const copy = JSON.parse(JSON.stringify(ls));
-          copy.fullSeasons[i].episodes = data;
-          return copy;
-        });
-      }
+    getSeasonEpisodesApi(showId, selectedSeason).then(({ data }) => {
+      setEpisodes((e) => {
+        e[selectedSeason] = data;
+        return [...e];
+      });
     });
     // eslint-disable-next-line
   }, [selectedSeason, showId]);
 
-  const localShowFullSeasonsRef = localShow?.fullSeasons;
-  const localShowNextEpisodeRef = localShow?.progress?.next_episode;
+  const watchedShowFullSeasonsRef = watchedShow?.fullSeasons;
+  const watchedShowNextEpisodeRef = watchedShow?.progress?.next_episode;
   useEffect(() => {
-    if (!localShowFullSeasonsRef || !localShowNextEpisodeRef) {
+    if (!watchedShowFullSeasonsRef || !watchedShowNextEpisodeRef) {
       return;
     }
     setSelectedSeason(
-      localShowFullSeasonsRef.find(
-        (s) => s.number === localShowNextEpisodeRef.season
-      )
+      watchedShowFullSeasonsRef.find(
+        (s) => s.number === watchedShowNextEpisodeRef.season
+      )?.number
     );
-  }, [localShowFullSeasonsRef, localShowNextEpisodeRef]);
+  }, [watchedShowFullSeasonsRef, watchedShowNextEpisodeRef]);
 
   const addEpisode = (episode: Episode) => {
     const generatedShow =
-      localShow ||
+      watchedShow ||
       (({
         show,
         progress: unTrackedSeasons,
@@ -120,7 +98,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const removeEpisode = (episode: Episode) => {
     dispatch(
       removeEpisodeWatched({
-        show: localShow!,
+        show: watchedShow!,
         episode,
         session: session!,
       })
@@ -128,11 +106,11 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   };
 
   const addSeason = () => {
-    if (localShow) {
+    if (watchedShow) {
       dispatch(
         addSeasonWatched({
-          show: localShow,
-          season: selectedSeason!,
+          show: watchedShow,
+          season: getFullSeason(selectedSeason)!,
           session: session!,
         })
       );
@@ -144,17 +122,18 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
             progress: unTrackedProgress,
             fullSeasons: unTrackedSeasons,
           } as unknown) as ShowWatched,
-          season: selectedSeason!,
+          season: getFullSeason(selectedSeason)!,
           session: session!,
         })
       );
     }
   };
+
   const removeSeason = () => {
     dispatch(
       removeSeasonWatched({
-        show: localShow!,
-        season: selectedSeason!,
+        show: watchedShow!,
+        season: getFullSeason(selectedSeason)!,
         session: session!,
       })
     );
@@ -170,39 +149,28 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     toggle({ title, text: overview });
   };
 
-  const selectSeason = (season: Season) => {
-    if (!season) {
-      return;
-    }
-    if (!selectedSeason) {
-      setSelectedSeason(season);
-      return;
-    }
-    if (selectedSeason.ids.trakt === season.ids.trakt) {
-      setSelectedSeason(undefined);
-      return;
-    }
-    setSelectedSeason(season);
+  const getFullSeason = (season?: number) => {
+    return watchedShow?.fullSeasons?.find((s) => s.number === season);
   };
 
   return (
     <>
       <SeasonSelector
-        seasons={localShow?.fullSeasons ?? unTrackedSeasons}
-        progress={localShow?.progress ?? unTrackedProgress}
-        selectedSeason={selectedSeason}
-        setSelectedSeason={selectSeason}
+        seasons={watchedShow?.fullSeasons ?? unTrackedSeasons}
+        progress={watchedShow?.progress ?? unTrackedProgress}
+        selectedSeason={getFullSeason(selectedSeason)}
+        setSelectedSeason={setSelectedSeason}
       />
-      {selectedSeason && (
+      {selectedSeason !== undefined && (
         <Episodes
           seasonProgress={(
-            localShow?.progress ?? unTrackedProgress
-          )?.seasons.find((s) => s.number === selectedSeason.number)}
+            watchedShow?.progress ?? unTrackedProgress
+          )?.seasons.find((s) => s.number === selectedSeason)}
           addEpisodeWatched={addEpisode}
           removeEpisodeWatched={removeEpisode}
           addSeasonWatched={addSeason}
           removeSeasonWatched={removeSeason}
-          episodes={selectedSeason.episodes}
+          episodes={episodes[selectedSeason]}
           showModal={showModal}
           onlyView={!session}
         />

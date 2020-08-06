@@ -5,7 +5,7 @@ interface ISeasonsProps {
   progress?: ShowProgress;
   seasons: Season[];
   selectedSeason?: Season;
-  setSelectedSeason: (season: Season) => void;
+  setSelectedSeason: (season?: number) => void;
 }
 
 const SeasonSelector: React.FC<ISeasonsProps> = ({
@@ -46,7 +46,11 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
     >
       {seasons.map((s) => (
         <li
-          onClick={() => setSelectedSeason(s)}
+          onClick={() =>
+            setSelectedSeason(
+              selectedSeason?.number === s.number ? undefined : s.number
+            )
+          }
           key={s.ids.trakt}
           className={
             'whitespace-pre mx-1 rounded-full text-sm px-3 py-2 cursor-pointer border-gray-200 border ' +
