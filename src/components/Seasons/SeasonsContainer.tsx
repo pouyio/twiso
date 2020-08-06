@@ -150,7 +150,9 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   };
 
   const getFullSeason = (season?: number) => {
-    return watchedShow?.fullSeasons?.find((s) => s.number === season);
+    return (watchedShow?.fullSeasons ?? unTrackedSeasons)?.find(
+      (s) => s.number === season
+    );
   };
 
   return (
