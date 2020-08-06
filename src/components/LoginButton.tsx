@@ -4,7 +4,7 @@ const redirect_url = process.env.REACT_APP_REDIRECT_URL;
 export const LoginButton: React.FC<{ small?: boolean }> = ({ small }) => {
   return (
     <a
-      className={`bg-gray-300 rounded-full text-white ${
+      className={`bg-gray-400 rounded-full text-white ${
         small ? 'p-2' : 'px-12 py-3'
       }`}
       style={{ lineHeight: '2em' }}
