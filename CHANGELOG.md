@@ -1,3 +1,14 @@
+## [2.2.8](https://github.com/pouyio/twiso/compare/v2.2.7...v2.2.8) (2020-08-06)
+
+
+### :bug:
+
+* fixed selected season ([390255f](https://github.com/pouyio/twiso/commit/390255f0dc18dccf974583fe1178858762775040))
+
+### :rocket:
+
+* update vercel deploy ([9bd2b58](https://github.com/pouyio/twiso/commit/9bd2b5800f8ed6c112b4f9f03bddbf3ac8b21b7e))
+
 ## [2.2.7](https://github.com/pouyio/twiso/compare/v2.2.6...v2.2.7) (2020-08-06)
 
 
