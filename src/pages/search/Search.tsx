@@ -1,4 +1,4 @@
-import { SearchFilters, IFilters } from 'pages/search/SearchFilters';
+import { SearchFilters, IFilters } from '../../pages/search/SearchFilters';
 import React, { useEffect, useState, useCallback } from 'react';
 import Helmet from 'react-helmet';
 import Emoji from '../../components/Emoji';
@@ -28,7 +28,7 @@ export default function Search() {
     setLoading(true);
     searchApi<SearchMovie & SearchShow & SearchPerson>(
       query,
-      types.join(','),
+      types.join(',')
     ).then(({ data }) => {
       const movies: SearchMovie[] = data.filter((r) => r.type === 'movie');
       const shows: SearchShow[] = data.filter((r) => r.type === 'show');

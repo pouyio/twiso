@@ -8,7 +8,7 @@ export const useSearch = () => {
 
   const setSearch = useCallback(
     (query: string) => {
-      history.push({ search: `?query=${query}` });
+      history.replace({ search: `?query=${query}` });
       setLocalSearch(query);
     },
     [history]
