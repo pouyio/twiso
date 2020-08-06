@@ -26,6 +26,7 @@ jobs:
 
   createSentryRelease:
     name: Add Sentry release
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
