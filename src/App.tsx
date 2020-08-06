@@ -1,16 +1,16 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Route, Redirect, useLocation, NavLink } from 'react-router-dom';
+import React, { useContext, useState, useEffect, lazy, Suspense } from 'react';
+import {
+  Route,
+  Redirect,
+  useLocation,
+  NavLink,
+  Switch,
+} from 'react-router-dom';
 import CacheRoute from 'react-router-cache-route';
-import Search from './pages/search/Search';
 import Login from './components/Login';
-import MovieDetail from './pages/MovieDetail';
-import ShowDetail from './pages/ShowDetail';
 import ProtectedRoute from './components/ProtectedRoute';
 import Emoji from './components/Emoji';
 import { AuthContext } from './contexts';
-import Person from './pages/Person';
-import Movies from './pages/movies/Movies';
-import Profile from './pages/Profile';
 import { ProgressBar } from './components/ProgressBar';
 import { Alert } from 'components/Alert/Alert';
 import { Providers } from 'components/Providers';
@@ -19,9 +19,15 @@ import LongPress from 'components/Longpress';
 import { useSelector, useDispatch } from 'react-redux';
 import { IState } from 'state/state';
 import { firstLoad } from './state/firstLoadAction';
-import Shows from 'pages/shows/Shows';
 import { loadImgConfig } from 'state/slices/defaultSlice';
 import * as Sentry from '@sentry/react';
+const Movies = lazy(() => import('./pages/movies/Movies'));
+const Profile = lazy(() => import('./pages/Profile'));
+const MovieDetail = lazy(() => import('./pages/MovieDetail'));
+const ShowDetail = lazy(() => import('./pages/ShowDetail'));
+const Person = lazy(() => import('./pages/Person'));
+const Shows = lazy(() => import('./pages/shows/Shows'));
+const Search = lazy(() => import('./pages/search/Search'));
 
 const ParamsComponent: React.FC = () => {
   const location = useLocation();
@@ -126,27 +132,40 @@ const App: React.FC = () => {
             <Route exact path="/">
               <ParamsComponent />
             </Route>
-            <ProtectedRoute path="/movies">
-              {moviesReady ? <Movies /> : <h1>Cargando películas!</h1>}
-            </ProtectedRoute>
-            <ProtectedRoute path="/shows">
-              {showsReady ? <Shows /> : <h1>Cargando series!</h1>}
-            </ProtectedRoute>
-            <CacheRoute path="/search">
-              <Search />
-            </CacheRoute>
-            <Route path="/movie/:id">
-              <MovieDetail />
-            </Route>
-            <Route path="/show/:id">
-              <ShowDetail />
-            </Route>
-            <Route path="/person/:id">
-              <Person />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
+            <Suspense
+              fallback={
+                <div
+                  className="flex justify-center text-6xl items-center"
+                  style={{ marginTop: 'env(safe-area-inset-top)' }}
+                >
+                  <Emoji emoji="⏳" rotating={true} />
+                </div>
+              }
+            >
+              <Switch>
+                <ProtectedRoute path="/movies">
+                  {moviesReady ? <Movies /> : <h1>Cargando películas!</h1>}
+                </ProtectedRoute>
+                <ProtectedRoute path="/shows">
+                  {showsReady ? <Shows /> : <h1>Cargando series!</h1>}
+                </ProtectedRoute>
+                <CacheRoute path="/search">
+                  <Search />
+                </CacheRoute>
+                <Route path="/movie/:id">
+                  <MovieDetail />
+                </Route>
+                <Route path="/show/:id">
+                  <ShowDetail />
+                </Route>
+                <Route path="/person/:id">
+                  <Person />
+                </Route>
+                <Route path="/profile">
+                  <Profile />
+                </Route>
+              </Switch>
+            </Suspense>
             <ul
               className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"
               style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
