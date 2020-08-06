@@ -1,3 +1,10 @@
+## [2.2.9](https://github.com/pouyio/twiso/compare/v2.2.8...v2.2.9) (2020-08-06)
+
+
+### :rocket:
+
+* added code spliting ([c5f54d2](https://github.com/pouyio/twiso/commit/c5f54d2177bde052865d544c45549bc5a3d5ec15))
+
 ## [2.2.8](https://github.com/pouyio/twiso/compare/v2.2.7...v2.2.8) (2020-08-06)
 
 
