@@ -1,3 +1,10 @@
+## [2.2.7](https://github.com/pouyio/twiso/compare/v2.2.6...v2.2.7) (2020-08-06)
+
+
+### :bug:
+
+* navigate back properly when searching texts ([d4615d9](https://github.com/pouyio/twiso/commit/d4615d980895da68e8b64610d8a22264307fe771))
+
 ## [2.2.6](https://github.com/pouyio/twiso/compare/v2.2.5...v2.2.6) (2020-08-06)
 
 
