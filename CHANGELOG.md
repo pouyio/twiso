@@ -1,3 +1,10 @@
+## [2.2.6](https://github.com/pouyio/twiso/compare/v2.2.5...v2.2.6) (2020-08-06)
+
+
+### :bug:
+
+* seasons selector ([91935a0](https://github.com/pouyio/twiso/commit/91935a04273570454f6250598214da25ef65f021))
+
 ## [2.2.5](https://github.com/pouyio/twiso/compare/v2.2.4...v2.2.5) (2020-08-04)
 
 
