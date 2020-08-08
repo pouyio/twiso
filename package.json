@@ -9,6 +9,7 @@
     "axios-rate-limit": "^1.2.1",
     "dexie": "^2.0.4",
     "fuse.js": "^5.2.3",
+    "query-string": "^6.13.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-fastclick": "^3.0.2",
@@ -20,7 +21,7 @@
     "react-router-cache-route": "^1.8.4",
     "react-router-dom": "^5.1.1",
     "react-scripts": "3.4.0",
-    "use-query-params": "^0.4.1"
+    "use-query-params": "^1.1.6"
   },
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",

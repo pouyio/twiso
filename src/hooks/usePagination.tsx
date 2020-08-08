@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useQueryParam, NumberParam } from 'use-query-params';
+import { useQueryParam, NumberParam, withDefault } from 'use-query-params';
 import { PAGE_SIZE } from 'state/state';
 
 export const usePagination = <T,>(items: T[]) => {
-  const [currentPage = 1, setCurrentPage] = useQueryParam('page', NumberParam);
+  const [currentPage, setCurrentPage] = useQueryParam(
+    'page',
+    withDefault(NumberParam, 1)
+  );
   const [lastPage, setLastPage] = useState(1);
-
-  useEffect(() => {
-    setCurrentPage(currentPage);
-    // eslint-disable-next-line
-  }, []);
 
   useEffect(() => {
     const localLastPage = Math.ceil(items.length / PAGE_SIZE);

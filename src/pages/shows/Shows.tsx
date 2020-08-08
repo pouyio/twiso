@@ -1,23 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Emoji from '../../components/Emoji';
 import ShowsWatchlist from './ShowsWatchlist';
 import ShowsWatched from './ShowsWatched';
-import { StringParam, useQueryParam } from 'use-query-params';
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import Helmet from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { IState } from 'state/state';
 
 export default function Shows() {
-  const [mode, setMode] = useQueryParam('mode', StringParam);
+  const [mode, setMode] = useQueryParam(
+    'mode',
+    withDefault(StringParam, 'watched')
+  );
 
   const shows = useSelector((state: IState) => state.shows);
-
-  useEffect(() => {
-    if (!mode) {
-      setMode('watched');
-    }
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <>

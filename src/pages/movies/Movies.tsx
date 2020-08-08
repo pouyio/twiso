@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Helmet from 'react-helmet';
-import { StringParam, useQueryParam } from 'use-query-params';
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import Emoji from '../../components/Emoji';
 import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';
@@ -8,16 +8,12 @@ import { useSelector } from 'react-redux';
 import { IState } from 'state/state';
 
 export default function Movies() {
-  const [mode, setMode] = useQueryParam('mode', StringParam);
+  const [mode, setMode] = useQueryParam(
+    'mode',
+    withDefault(StringParam, 'watchlist')
+  );
 
   const movies = useSelector((state: IState) => state.movies);
-
-  useEffect(() => {
-    if (!mode) {
-      setMode('watchlist');
-    }
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <>
