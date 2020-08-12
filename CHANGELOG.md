@@ -1,3 +1,24 @@
+# [2.3.0](https://github.com/pouyio/twiso/compare/v2.2.9...v2.3.0) (2020-08-12)
+
+
+### :ambulance:
+
+* updated use-query-params ([af589f5](https://github.com/pouyio/twiso/commit/af589f5b6d937681a0c1ee984bce91a5312edcd0))
+
+### :art:
+
+* center seasons container on wide devices ([f2978b1](https://github.com/pouyio/twiso/commit/f2978b105aac181eca7d1ff547ffa44a53892cad))
+* longer overview text before collapse ([7a02996](https://github.com/pouyio/twiso/commit/7a029962be269f61bac5629c003ebaf2f3685294))
+* symetric seasons selector margins ([b2934c0](https://github.com/pouyio/twiso/commit/b2934c08a064d1f62861f253f033e610c5e13556))
+
+### :sparkles:
+
+* show remaining/progress in watched shows ([218d69e](https://github.com/pouyio/twiso/commit/218d69e7034a2ef11ea6341fe39c02fe2400f6d9))
+
+### :style:
+
+* improved a11y ([9481e2e](https://github.com/pouyio/twiso/commit/9481e2e0bba511fa68d924675d3be190a5b23ce3))
+
 ## [2.2.9](https://github.com/pouyio/twiso/compare/v2.2.8...v2.2.9) (2020-08-06)
 
 
