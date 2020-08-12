@@ -14,6 +14,8 @@ import { SearchShow, People as IPeople, Show, Ratings } from '../models';
 import Helmet from 'react-helmet';
 import Rating from 'components/Rating';
 import { AlertContext } from '../contexts';
+import { useSelector } from 'react-redux';
+import { IState } from '../state/state';
 
 enum status {
   'returning series' = 'en antena',
@@ -28,11 +30,17 @@ export default function ShowDetail() {
   const [showOriginalTitle, setShowOriginalTitle] = useState(false);
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
+  const [showProgressPercentage, setShowProgressPercentage] = useState(false);
   const { title, overview } = useTranslate('show', item);
   const { state } = useLocation<Show>();
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
+  const progress = useSelector(
+    (state: IState) =>
+      state.shows.watched.find((s) => s.show.ids.trakt === item?.ids.trakt)
+        ?.progress
+  );
 
   const { isWatchlist, isWatched } = useIsWatch();
 
@@ -181,6 +189,32 @@ export default function ShowDetail() {
                     votes={ratings?.votes ?? 0}
                   />
                 </h2>
+                {isWatched(+id, 'show') && (
+                  <h2
+                    className="text-sm cursor-pointer text-center"
+                    style={{ minWidth: '8rem' }}
+                    onClick={() => setShowProgressPercentage((s) => !s)}
+                  >
+                    <Emoji emoji="✓" />{' '}
+                    {showProgressPercentage
+                      ? `${Math.round(
+                          ((progress?.completed ?? 0) * 100) /
+                            (progress?.aired ?? 1)
+                        )}% completado`
+                      : `${progress?.completed}/${progress?.aired} episodios`}
+                    <div className="bg-green-100">
+                      <div
+                        className="bg-green-400 h-1 rounded text-white text-xs"
+                        style={{
+                          width: `${
+                            ((progress?.completed ?? 0) * 100) /
+                            (progress?.aired ?? 1)
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                  </h2>
+                )}
                 <h2>{item.network}</h2>
               </div>
 
