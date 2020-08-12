@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/pouyio/twiso/compare/v2.3.0...v2.4.0) (2020-08-12)
+
+
+### :sparkles:
+
+* added splash screen ([9ab6caf](https://github.com/pouyio/twiso/commit/9ab6cafc3d8e8a27e9671744418d37e42693acb8))
+
 # [2.3.0](https://github.com/pouyio/twiso/compare/v2.2.9...v2.3.0) (2020-08-12)
 
 
