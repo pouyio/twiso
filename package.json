@@ -72,6 +72,6 @@
     "semantic-release": "^15.13.31",
     "source-map-explorer": "^2.2.1",
     "tailwindcss": "^1.4.6",
-    "typescript": "3.7.2"
+    "typescript": "^3.9.7"
   }
 }

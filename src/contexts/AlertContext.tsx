@@ -17,14 +17,14 @@ export const AlertContext = createContext<{
 export const AlertProvider = ({ children }: { children: ReactNode }) => {
   const [opened, setOpened] = useState(false);
   const [text, setText] = useState('');
-  const [toRef, setToRef] = useState();
+  const [toRef, setToRef] = useState<number>();
   const showAlert = (text: string) => {
     setText(text);
     setOpened(true);
     setToRef(
-      setTimeout(() => {
+      window.setTimeout(() => {
         setOpened(false);
-      }, DEFAULT_TIME),
+      }, DEFAULT_TIME)
     );
   };
 

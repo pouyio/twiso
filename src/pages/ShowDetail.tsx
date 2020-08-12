@@ -29,7 +29,7 @@ export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const { title, overview } = useTranslate('show', item);
-  const { state } = useLocation();
+  const { state } = useLocation<Show>();
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();

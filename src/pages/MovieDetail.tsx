@@ -23,7 +23,7 @@ export default function MovieDetail() {
   const [ratings, setRatings] = useState<Ratings>();
   const language = useSelector((state: IState) => state.language);
   const { title = '', overview = '' } = useTranslate('movie', item);
-  const { state } = useLocation();
+  const { state } = useLocation<Movie>();
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
