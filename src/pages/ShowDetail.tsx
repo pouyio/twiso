@@ -125,7 +125,7 @@ export default function ShowDetail() {
           style={{ transform: 'translate3d(0,0,0)' }}
         >
           <div className="lg:hidden bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
-          <div className="flex items-start">
+          <div className="flex items-start justify-center">
             <div
               className="hidden lg:block relative pr-4"
               style={{ minWidth: '10em', maxWidth: '10em' }}
