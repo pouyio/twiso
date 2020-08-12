@@ -41,7 +41,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
 
   return (
     <ul
-      className="flex overflow-x-auto my-5 -mr-3"
+      className="flex overflow-x-auto my-5 -mx-3"
       style={{ WebkitOverflowScrolling: 'touch' }}
     >
       {seasons.map((s) => (
