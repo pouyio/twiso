@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const MAX_LENGTH = 200;
+const MAX_LENGTH = 300;
 
 interface ICollapsableTextProps {
   className: string;
