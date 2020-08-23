@@ -22,7 +22,12 @@ import { Event } from './Event';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './custom.scss';
 import { ShowCalendar, MovieCalendar } from 'models';
-import e from 'express';
+import {
+  useQueryParam,
+  NumberParam,
+  withDefault,
+  DateParam,
+} from 'use-query-params';
 
 const localizer = dateFnsLocalizer({
   format,
@@ -60,7 +65,10 @@ const mapShow = (s: ShowCalendar) => ({
 export default function Calendar() {
   const { session } = useContext(AuthContext);
   const [events, setEvents] = useState<ICalendarEvent[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useQueryParam(
+    'date',
+    withDefault(DateParam, new Date())
+  );
   const [only, setOnly] = useState<'movie' | 'show'>();
 
   useEffect(() => {
