@@ -25,6 +25,8 @@ import {
   MovieWatched,
   Ratings,
   Profile,
+  MovieCalendar,
+  ShowCalendar,
 } from '../models';
 
 const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
@@ -328,4 +330,21 @@ export const getRatingsApi = (id: number, type: ItemType) => {
       ...base_headers,
     },
   });
+};
+
+export const getCalendar = <T extends MovieCalendar | ShowCalendar>(
+  session: Session,
+  type: ItemType,
+  firstDay: string,
+  period: number
+) => {
+  return axios.get<T[]>(
+    `${BASE_URL}/calendars/my/${type}s/${firstDay}/${period}`,
+    {
+      headers: {
+        ...base_headers,
+        Authorization: `Bearer ${session.access_token}`,
+      },
+    }
+  );
 };

@@ -5,7 +5,9 @@ body,
 
 @mixin theme-light {
   --primary-light: white;
+  --primary-light-50: rgba(255, 255, 255, 0.5);
   --primary-dark: black;
+  --primary-dark-50: rgba(0, 0, 0, 0.5);
 
   --gray-100: #f7fafc;
   --gray-200: #edf2f7;
@@ -50,7 +52,9 @@ body,
 
 @mixin theme-dark {
   --primary-dark: white;
+  --primary-dark-50: rgba(255, 255, 255, 0.5);
   --primary-light: black;
+  --primary-light-50: rgba(0, 0, 0, 0.5);
 
   --gray-900: #f7fafc;
   --gray-800: #edf2f7;

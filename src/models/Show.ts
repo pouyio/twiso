@@ -63,7 +63,7 @@ export interface Show {
   year: number;
 }
 
-interface SmallEpisode {
+export interface SmallEpisode {
   ids: Ids;
   number: number;
   season: number;

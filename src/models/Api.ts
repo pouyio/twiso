@@ -1,4 +1,5 @@
 import { Ids } from './Ids';
+import { SmallEpisode } from './Show';
 
 interface BaseNotFound {
   movies?: Ids[];
@@ -99,5 +100,19 @@ export interface Profile {
   vip_ep: boolean;
   ids: {
     slug: string;
+  };
+}
+
+export interface MovieCalendar {
+  movie: { title: string; year: number; ids: Ids };
+  released: string;
+}
+export interface ShowCalendar {
+  first_aired: string;
+  episode: SmallEpisode;
+  show: {
+    title: string;
+    year: number;
+    ids: Ids;
   };
 }
