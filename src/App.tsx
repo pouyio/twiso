@@ -28,7 +28,7 @@ const ShowDetail = lazy(() => import('./pages/ShowDetail'));
 const Person = lazy(() => import('./pages/Person'));
 const Shows = lazy(() => import('./pages/shows/Shows'));
 const Search = lazy(() => import('./pages/search/Search'));
-const Calendar = lazy(() => import('./pages/Calendar/Calendar'));
+const Calendar = lazy(() => import('./pages/calendar/Calendar'));
 
 const ParamsComponent: React.FC = () => {
   const location = useLocation();
