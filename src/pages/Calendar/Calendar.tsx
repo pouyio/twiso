@@ -47,14 +47,14 @@ const mapMovie = (m: MovieCalendar) => ({
   title: m.movie.title,
   start: new Date(m.released),
   end: new Date(m.released),
-  resource: { ...m.movie, type: 'movie' },
+  resource: { ...m, type: 'movie' },
 });
 
 const mapShow = (s: ShowCalendar) => ({
   title: `${s.episode.season}x${s.episode.number} - ${s.show.title}`,
   start: new Date(s.first_aired),
   end: new Date(s.first_aired),
-  resource: { ...s.show, type: 'show' },
+  resource: { ...s, type: 'show' },
 });
 
 export default function Calendar() {

@@ -16,6 +16,7 @@ import {
 import { IState } from 'state/state';
 import SeasonSelector from './SeasonSelector';
 import Episodes from './Episodes';
+import { useQueryParam, withDefault, NumberParam } from 'use-query-params';
 
 interface ISeasonsContainerProps {
   show: Show;
@@ -26,7 +27,10 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   show,
   showId,
 }) => {
-  const [selectedSeason, setSelectedSeason] = useState<number>();
+  const [selectedSeason, setSelectedSeason] = useQueryParam(
+    'season',
+    withDefault(NumberParam, undefined)
+  );
   const [unTrackedProgress, setUnTrackedProgress] = useState<ShowProgress>();
   const [unTrackedSeasons, setUnTrackedSeasons] = useState<Season[]>([]);
   const [episodes, setEpisodes] = useState<Episode[][]>([]);
@@ -36,10 +40,6 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const watchedShow = useSelector((state: IState) =>
     state.shows.watched.find((w) => w.show.ids.trakt === +showId)
   );
-
-  useEffect(() => {
-    setSelectedSeason(undefined);
-  }, [showId]);
 
   useEffect(() => {
     if (watchedShow) {
@@ -72,15 +72,25 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const watchedShowFullSeasonsRef = watchedShow?.fullSeasons;
   const watchedShowNextEpisodeRef = watchedShow?.progress?.next_episode;
   useEffect(() => {
-    if (!watchedShowFullSeasonsRef || !watchedShowNextEpisodeRef) {
+    if (
+      !watchedShowFullSeasonsRef ||
+      !watchedShowNextEpisodeRef ||
+      selectedSeason
+    ) {
       return;
     }
     setSelectedSeason(
       watchedShowFullSeasonsRef.find(
         (s) => s.number === watchedShowNextEpisodeRef.season
-      )?.number
+      )?.number,
+      'replace'
     );
-  }, [watchedShowFullSeasonsRef, watchedShowNextEpisodeRef]);
+  }, [
+    watchedShowFullSeasonsRef,
+    watchedShowNextEpisodeRef,
+    setSelectedSeason,
+    selectedSeason,
+  ]);
 
   const addEpisode = (episode: Episode) => {
     const generatedShow =
@@ -161,7 +171,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
         seasons={watchedShow?.fullSeasons ?? unTrackedSeasons}
         progress={watchedShow?.progress ?? unTrackedProgress}
         selectedSeason={getFullSeason(selectedSeason)}
-        setSelectedSeason={setSelectedSeason}
+        setSelectedSeason={(s) => setSelectedSeason(s, 'replace')}
       />
       {selectedSeason !== undefined && (
         <Episodes

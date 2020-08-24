@@ -12,26 +12,32 @@ export const Event: React.FC<EventProps<ICalendarEvent>> = ({
     if (event.resource.type === 'movie') {
       return (
         state.movies.watched.find(
-          (m) => m.movie.ids.trakt === event.resource.ids.trakt
+          (m) => m.movie.ids.trakt === event.resource.movie.ids.trakt
         ) ||
         state.movies.watchlist.find(
-          (m) => m.movie.ids.trakt === event.resource.ids.trakt
+          (m) => m.movie.ids.trakt === event.resource.movie.ids.trakt
         )
       );
     }
     return (
       state.shows.watched.find(
-        (m) => m.show.ids.trakt === event.resource.ids.trakt
+        (s) => s.show.ids.trakt === event.resource.show.ids.trakt
       ) ||
       state.shows.watchlist.find(
-        (m) => m.show.ids.trakt === event.resource.ids.trakt
+        (s) => s.show.ids.trakt === event.resource.show.ids.trakt
       )
     );
   });
   return (
     <Link
       to={{
-        pathname: `/${event.resource.type}/${event.resource.ids.trakt}`,
+        pathname: `/${event.resource.type}/${
+          event.resource[event.resource.type].ids.trakt
+        }`,
+        search:
+          event.resource.type === 'show'
+            ? `?season=${event.resource.episode.season}`
+            : '',
         state:
           event.resource.type === 'movie' ? item?.['movie'] : item?.['show'],
       }}
