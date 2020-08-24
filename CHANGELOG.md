@@ -1,3 +1,14 @@
+# [2.5.0](https://github.com/pouyio/twiso/compare/v2.4.0...v2.5.0) (2020-08-24)
+
+
+### :arrow_up:
+
+* Bump elliptic from 6.5.2 to 6.5.3 ([5a12424](https://github.com/pouyio/twiso/commit/5a1242455fca95a5a762bdf3d30fca61463b0030))
+
+### :sparkles:
+
+* added Calendar! ([c8012c4](https://github.com/pouyio/twiso/commit/c8012c4c49918569de3f2bd9d3c73d190b180a12))
+
 # [2.4.0](https://github.com/pouyio/twiso/compare/v2.3.0...v2.4.0) (2020-08-12)
 
 
