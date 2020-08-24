@@ -28,6 +28,7 @@ const ShowDetail = lazy(() => import('./pages/ShowDetail'));
 const Person = lazy(() => import('./pages/Person'));
 const Shows = lazy(() => import('./pages/shows/Shows'));
 const Search = lazy(() => import('./pages/search/Search'));
+const Calendar = lazy(() => import('./pages/calendar/Calendar'));
 
 const ParamsComponent: React.FC = () => {
   const location = useLocation();
@@ -113,6 +114,20 @@ const App: React.FC = () => {
               <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
                 <LongPress />
               </li>
+              {session ? (
+                <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
+                  <NavLink
+                    activeClassName="selected-nav-item"
+                    to="/calendar"
+                    className="flex items-center"
+                  >
+                    <Emoji emoji="📅" />
+                    <span className="ml-2 text-base hidden lg:inline">
+                      Calendar
+                    </span>
+                  </NavLink>
+                </li>
+              ) : null}
               <li className="py-1">
                 <NavLink
                   activeClassName="selected-nav-item"
@@ -148,6 +163,9 @@ const App: React.FC = () => {
                 </ProtectedRoute>
                 <ProtectedRoute path="/shows">
                   {showsReady ? <Shows /> : <h1>Cargando series!</h1>}
+                </ProtectedRoute>
+                <ProtectedRoute path="/calendar">
+                  <Calendar />
                 </ProtectedRoute>
                 <CacheRoute path="/search">
                   <Search />
