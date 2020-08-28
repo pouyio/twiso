@@ -75,42 +75,28 @@ export default function Calendar() {
       selectedDate
     );
 
+    getCalendar<MovieCalendar>('movie', prevMonthDay, 6).then(({ data }) =>
+      setEvents((e) => [...e, ...data.map(mapMovie)])
+    );
     getCalendar<MovieCalendar>(
-      session,
-      'movie',
-      prevMonthDay,
-      6
-    ).then(({ data }) => setEvents((e) => [...e, ...data.map(mapMovie)]));
-    getCalendar<MovieCalendar>(
-      session,
       'movie',
       firstDate,
       daysInMonth
     ).then(({ data }) => setEvents((e) => [...e, ...data.map(mapMovie)]));
-    getCalendar<MovieCalendar>(
-      session,
-      'movie',
-      nextMonthDay,
-      6
-    ).then(({ data }) => setEvents((e) => [...e, ...data.map(mapMovie)]));
+    getCalendar<MovieCalendar>('movie', nextMonthDay, 6).then(({ data }) =>
+      setEvents((e) => [...e, ...data.map(mapMovie)])
+    );
+    getCalendar<ShowCalendar>('show', prevMonthDay, 6).then(({ data }) =>
+      setEvents((e) => [...e, ...data.map(mapShow)])
+    );
     getCalendar<ShowCalendar>(
-      session,
-      'show',
-      prevMonthDay,
-      6
-    ).then(({ data }) => setEvents((e) => [...e, ...data.map(mapShow)]));
-    getCalendar<ShowCalendar>(
-      session,
       'show',
       firstDate,
       getDaysInMonth(selectedDate)
     ).then(({ data }) => setEvents((e) => [...e, ...data.map(mapShow)]));
-    getCalendar<ShowCalendar>(
-      session,
-      'show',
-      nextMonthDay,
-      6
-    ).then(({ data }) => setEvents((e) => [...e, ...data.map(mapShow)]));
+    getCalendar<ShowCalendar>('show', nextMonthDay, 6).then(({ data }) =>
+      setEvents((e) => [...e, ...data.map(mapShow)])
+    );
   }, [session, selectedDate]);
 
   const changeMonth = (direction: number) => {

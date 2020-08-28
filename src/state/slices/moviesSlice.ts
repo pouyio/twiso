@@ -7,13 +7,12 @@ import {
   removeWatchlistApi,
   addWatchlistApi,
 } from 'utils/api';
-import { Session } from 'contexts/AuthContext';
 
 export const addWatched = createAsyncThunk(
   'movies/addWatched',
-  async ({ movie, session }: { movie: Movie; session: Session }) => {
+  async ({ movie }: { movie: Movie }) => {
     try {
-      const { data } = await addWatchedApi(movie, session, 'movie');
+      const { data } = await addWatchedApi(movie, 'movie');
       return data;
     } catch (e) {
       console.error(e);
@@ -24,9 +23,9 @@ export const addWatched = createAsyncThunk(
 
 export const removeWatched = createAsyncThunk(
   'movies/removeWatched',
-  async ({ movie, session }: { movie: Movie; session: Session }) => {
+  async ({ movie }: { movie: Movie }) => {
     try {
-      const { data } = await removeWatchedApi(movie, session, 'movie');
+      const { data } = await removeWatchedApi(movie, 'movie');
       return data;
     } catch (e) {
       console.error(e);
@@ -37,9 +36,9 @@ export const removeWatched = createAsyncThunk(
 
 export const addWatchlist = createAsyncThunk(
   'movies/addWatchlist',
-  async ({ movie, session }: { movie: Movie; session: Session }) => {
+  async ({ movie }: { movie: Movie }) => {
     try {
-      const { data } = await addWatchlistApi(movie, session, 'movie');
+      const { data } = await addWatchlistApi(movie, 'movie');
       return data;
     } catch (e) {
       console.error(e);
@@ -50,9 +49,9 @@ export const addWatchlist = createAsyncThunk(
 
 export const removeWatchlist = createAsyncThunk(
   'movies/removeWatchlist',
-  async ({ movie, session }: { movie: Movie; session: Session }) => {
+  async ({ movie }: { movie: Movie }) => {
     try {
-      const { data } = await removeWatchlistApi(movie, session, 'movie');
+      const { data } = await removeWatchlistApi(movie, 'movie');
       return data;
     } catch (e) {
       console.error(e);

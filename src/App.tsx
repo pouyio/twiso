@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import {
   Route,
   Redirect,
@@ -10,7 +10,6 @@ import CacheRoute from 'react-router-cache-route';
 import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import Emoji from './components/Emoji';
-import { AuthContext } from './contexts';
 import { ProgressBar } from './components/ProgressBar';
 import { Alert } from 'components/Alert/Alert';
 import { Providers } from 'components/Providers';
@@ -21,6 +20,7 @@ import { IState } from 'state/state';
 import { firstLoad } from './state/firstLoadAction';
 import { loadImgConfig } from 'state/slices/defaultSlice';
 import * as Sentry from '@sentry/react';
+import { AuthService } from 'utils/AuthService';
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const Profile = lazy(() => import('./pages/Profile'));
 const MovieDetail = lazy(() => import('./pages/MovieDetail'));
@@ -28,14 +28,13 @@ const ShowDetail = lazy(() => import('./pages/ShowDetail'));
 const Person = lazy(() => import('./pages/Person'));
 const Shows = lazy(() => import('./pages/shows/Shows'));
 const Search = lazy(() => import('./pages/search/Search'));
-const Calendar = lazy(() => import('./pages/calendar/Calendar'));
+const Calendar = lazy(() => import('./pages/Calendar/Calendar'));
 
 const ParamsComponent: React.FC = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const { session } = useContext(AuthContext);
 
-  return session ? (
+  return AuthService.getInstance().isLoggedIn() ? (
     <Redirect to="/movies" />
   ) : (
     <div className="text-center pt-20">
@@ -56,16 +55,16 @@ const App: React.FC = () => {
   const moviesReady = useSelector<IState>((state) => state.movies.ready);
   const showsReady = useSelector<IState>((state) => state.shows.ready);
 
-  const { session } = useContext(AuthContext);
+  const isLoggedIn = AuthService.getInstance().isLoggedIn();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadImgConfig());
-    if (session) {
-      firstLoad(session);
+    if (isLoggedIn) {
+      firstLoad();
     }
     // eslint-disable-next-line
-  }, [session]);
+  }, [isLoggedIn]);
 
   return (
     <Sentry.ErrorBoundary>
@@ -83,7 +82,7 @@ const App: React.FC = () => {
               className="flex justify-around px-2 text-center bg-gray-200"
               style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
             >
-              {session ? (
+              {isLoggedIn ? (
                 <>
                   <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
                     <NavLink
@@ -114,7 +113,7 @@ const App: React.FC = () => {
               <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
                 <LongPress />
               </li>
-              {session ? (
+              {isLoggedIn ? (
                 <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
                   <NavLink
                     activeClassName="selected-nav-item"

@@ -17,9 +17,9 @@ export default function Profile() {
 
   useEffect(() => {
     if (session) {
-      getStatsApi(session).then(({ data }) => setStats(data));
-      getProfileApi(session).then(({ data }) =>
-        setDev(data.ids.slug === 'pouyio' || data.ids.slug === 'pouyio-test'),
+      getStatsApi().then(({ data }) => setStats(data));
+      getProfileApi().then(({ data }) =>
+        setDev(data.ids.slug === 'pouyio' || data.ids.slug === 'pouyio-test')
       );
     }
   }, [session]);

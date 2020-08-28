@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Movie } from '../models';
-import { AuthContext } from '../contexts';
 import { useIsWatch } from '../hooks';
 import { LoginButton } from '../components/LoginButton';
 import {
@@ -10,6 +9,7 @@ import {
   removeWatchlist,
 } from 'state/slices/moviesSlice';
 import { useDispatch } from 'react-redux';
+import { AuthService } from 'utils/AuthService';
 
 interface IWatchButtonProps {
   item: Movie;
@@ -18,26 +18,24 @@ interface IWatchButtonProps {
 const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
   const { isWatchlist, isWatched } = useIsWatch();
 
-  const { session } = useContext(AuthContext);
+  const isLoggedIn = AuthService.getInstance().isLoggedIn();
   const dispatch = useDispatch();
 
   return (
     <div className="flex justify-around my-8">
-      {session ? (
+      {isLoggedIn ? (
         <>
           {isWatched(item.ids.trakt, 'movie') ? (
             <button
               className="bg-green-400 py-3 px-12 rounded-full text-white font-bold"
-              onClick={async () =>
-                dispatch(removeWatched({ movie: item, session }))
-              }
+              onClick={async () => dispatch(removeWatched({ movie: item }))}
             >
               ✓ Vista
             </button>
           ) : (
             <button
               className="bg-gray-200 py-3 px-12 rounded-full text-gray-700 font-light"
-              onClick={() => dispatch(addWatched({ movie: item, session }))}
+              onClick={() => dispatch(addWatched({ movie: item }))}
             >
               Vista
             </button>
@@ -45,16 +43,14 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
           {isWatchlist(item.ids.trakt, 'movie') ? (
             <button
               className="bg-blue-400 py-3 px-12 rounded-full text-white font-bold"
-              onClick={() =>
-                dispatch(removeWatchlist({ movie: item, session }))
-              }
+              onClick={() => dispatch(removeWatchlist({ movie: item }))}
             >
               Pendiente
             </button>
           ) : (
             <button
               className="bg-gray-200 py-3 px-12 rounded-full text-gray-700 font-light"
-              onClick={() => dispatch(addWatchlist({ movie: item, session }))}
+              onClick={() => dispatch(addWatchlist({ movie: item }))}
             >
               Pendiente
             </button>

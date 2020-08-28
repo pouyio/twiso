@@ -2,49 +2,36 @@ import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
 import { Session } from '../contexts/AuthContext';
 import {
-  MovieWatchlist,
-  ShowWatchlist,
-  Movie,
-  Translation,
-  ShowProgress,
-  Season,
-  Episode,
-  Show,
-  ItemType,
-  ImgConfig,
-  People,
-  Popular,
-  Person,
-  RemovedWatched,
   AddedWatched,
   AddedWatchlist,
-  RemovedWatchlist,
-  UserStats,
+  Episode,
   ImageResponse,
-  ShowWatched,
-  MovieWatched,
-  Ratings,
-  Profile,
+  ImgConfig,
+  ItemType,
+  Movie,
   MovieCalendar,
+  MovieWatched,
+  MovieWatchlist,
+  People,
+  Person,
+  Popular,
+  Profile,
+  Ratings,
+  RemovedWatched,
+  RemovedWatchlist,
+  Season,
+  Show,
   ShowCalendar,
+  ShowProgress,
+  ShowWatched,
+  ShowWatchlist,
+  Translation,
+  UserStats,
 } from '../models';
+import { BASE_URL, config, IMG_URL, LOGIN_URL } from './apiConfig';
+import traktClient from './axiosClients';
 
-const trakt_api_key = process.env.REACT_APP_TRAKT_API_KEY;
-const tmbdb_api_key = process.env.REACT_APP_TMDB_API_KEY;
-const redirect_url = process.env.REACT_APP_REDIRECT_URL;
-const content_type = 'application/json';
-const trakt_api_version = 2;
-const BASE_URL = 'https://api.trakt.tv';
-const LOGIN_URL = 'https://trakt.tv/oauth/token';
-const IMG_URL = 'https://api.themoviedb.org/3';
-
-const base_headers = {
-  'content-type': content_type,
-  'trakt-api-key': trakt_api_key,
-  'trakt-api-version': trakt_api_version,
-};
-
-const limitAxios = rateLimit(axios.create(), {
+const limitClient = rateLimit(axios.create(), {
   maxRequests: 42,
   perMilliseconds: 10000,
 });
@@ -52,8 +39,8 @@ const limitAxios = rateLimit(axios.create(), {
 export const loginApi = (code: string) => {
   return axios.post<Session>(LOGIN_URL, {
     code,
-    client_id: trakt_api_key,
-    redirect_uri: redirect_url,
+    client_id: config.traktApiKey,
+    redirect_uri: config.redirectUrl,
     grant_type: 'authorization_code',
   });
 };
@@ -61,15 +48,15 @@ export const loginApi = (code: string) => {
 export const refreshApi = (refreshToken: string) => {
   return axios.post<Session>(LOGIN_URL, {
     refresh_token: refreshToken,
-    client_id: trakt_api_key,
-    redirect_uri: redirect_url,
+    client_id: config.traktApiKey,
+    redirect_uri: config.redirectUrl,
     grant_type: 'refresh_token',
   });
 };
 
 export const getImgsConfigApi = () => {
   return axios.get<ImgConfig>(
-    `${IMG_URL}/configuration?api_key=${tmbdb_api_key}`
+    `${IMG_URL}/configuration?api_key=${config.tmdbApiKey}`
   );
 };
 
@@ -78,56 +65,43 @@ export const getImgsApi = (id: number, type: ItemType) => {
   if (type === 'show') {
     newType = 'tv';
   }
-  return limitAxios.get<ImageResponse>(
-    `${IMG_URL}/${newType}/${id}/images?api_key=${tmbdb_api_key}`
+  return limitClient.get<ImageResponse>(
+    `${IMG_URL}/${newType}/${id}/images?api_key=${config.tmdbApiKey}`
   );
 };
 
 export const getApi = <T>(id: number, type: ItemType) => {
-  return axios.get<T[]>(
-    `${BASE_URL}/search/trakt/${id}?type=${type}&extended=full`,
-    {
-      headers: base_headers,
-    }
+  return traktClient.get<T[]>(
+    `${BASE_URL}/search/trakt/${id}?type=${type}&extended=full`
   );
 };
 
 export const getSeasonsApi = (id: number) => {
-  return axios.get<Season[]>(
-    `${BASE_URL}/shows/${id}/seasons?translations=es`,
-    {
-      headers: base_headers,
-    }
+  return traktClient.get<Season[]>(
+    `${BASE_URL}/shows/${id}/seasons?translations=es`
   );
 };
 
 export const getSeasonEpisodesApi = (id: number, season: number) => {
-  return axios.get<Episode[]>(
-    `${BASE_URL}/shows/${id}/seasons/${season}?extended=full&translations=es`,
-    {
-      headers: base_headers,
-    }
+  return traktClient.get<Episode[]>(
+    `${BASE_URL}/shows/${id}/seasons/${season}?extended=full&translations=es`
   );
 };
 
-export const getProgressApi = (session: Session, id: number) => {
-  return axios.get<ShowProgress>(
+export const getProgressApi = (id: number) => {
+  return traktClient.get<ShowProgress>(
     `${BASE_URL}/shows/${id}/progress/watched?specials=true&count_specials=false`,
     {
       headers: {
-        ...base_headers,
-        Authorization: `Bearer ${session.access_token}`,
+        Authorization: true,
       },
     }
   );
 };
 
 export const getTranslationsApi = (id: number, type: ItemType) => {
-  return axios.get<Translation[]>(
-    `${BASE_URL}/${type}s/${id}/translations/es`,
-    {
-      headers: base_headers,
-    }
+  return traktClient.get<Translation[]>(
+    `${BASE_URL}/${type}s/${id}/translations/es`
   );
 };
 
@@ -136,16 +110,12 @@ export const searchApi = <T>(
   type: string,
   limit: number = 40
 ) => {
-  return axios.get<T[]>(
-    `${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${limit}`,
-    {
-      headers: base_headers,
-    }
+  return traktClient.get<T[]>(
+    `${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${limit}`
   );
 };
 
 export const getWatchedApi = <T extends MovieWatched | ShowWatched>(
-  session: Session,
   type: ItemType
 ) => {
   const url =
@@ -153,28 +123,25 @@ export const getWatchedApi = <T extends MovieWatched | ShowWatched>(
       ? `${BASE_URL}/sync/history/movies?page=1&limit=10000&extended=full`
       : `${BASE_URL}/sync/watched/shows?extended=full`;
 
-  return axios.get<T[]>(url, {
+  return traktClient.get<T[]>(url, {
     headers: {
-      ...base_headers,
-      Authorization: `Bearer ${session.access_token}`,
+      Authorization: true,
     },
   });
 };
 
 export const addWatchedApi = (
   item: Episode | Season | Movie,
-  session: Session,
   type: ItemType
 ) => {
-  return axios.post<AddedWatched>(
+  return traktClient.post<AddedWatched>(
     `${BASE_URL}/sync/history`,
     {
       [`${type}s`]: [item],
     },
     {
       headers: {
-        ...base_headers,
-        Authorization: `Bearer ${session.access_token}`,
+        Authorization: true,
       },
     }
   );
@@ -182,32 +149,28 @@ export const addWatchedApi = (
 
 export const removeWatchedApi = (
   item: Episode | Season | Movie,
-  session: Session,
   type: ItemType
 ) => {
-  return axios.post<RemovedWatched>(
+  return traktClient.post<RemovedWatched>(
     `${BASE_URL}/sync/history/remove`,
     {
       [`${type}s`]: [item],
     },
     {
       headers: {
-        ...base_headers,
-        Authorization: `Bearer ${session.access_token}`,
+        Authorization: true,
       },
     }
   );
 };
 
 export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
-  session: Session,
   type: 'movie' | 'show'
 ) => {
-  return axios
+  return traktClient
     .get<T[]>(`${BASE_URL}/sync/watchlist/${type}s?extended=full`, {
       headers: {
-        ...base_headers,
-        Authorization: `Bearer ${session.access_token}`,
+        Authorization: true,
       },
     })
     .then((res) => {
@@ -221,30 +184,21 @@ export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
     });
 };
 
-export const addWatchlistApi = (
-  item: Show | Movie,
-  session: Session,
-  type: ItemType
-) => {
-  return axios.post<AddedWatchlist>(
+export const addWatchlistApi = (item: Show | Movie, type: ItemType) => {
+  return traktClient.post<AddedWatchlist>(
     `${BASE_URL}/sync/watchlist`,
     {
       [`${type}s`]: [item],
     },
     {
       headers: {
-        ...base_headers,
-        Authorization: `Bearer ${session.access_token}`,
+        Authorization: true,
       },
     }
   );
 };
 
-export const removeWatchlistApi = (
-  item: Show | Movie,
-  session: Session,
-  type: ItemType
-) => {
+export const removeWatchlistApi = (item: Show | Movie, type: ItemType) => {
   return axios.post<RemovedWatchlist>(
     `${BASE_URL}/sync/watchlist/remove`,
     {
@@ -252,98 +206,69 @@ export const removeWatchlistApi = (
     },
     {
       headers: {
-        ...base_headers,
-        Authorization: `Bearer ${session.access_token}`,
+        Authorization: true,
       },
     }
   );
 };
 
 export const getPeopleApi = (id: number, type: ItemType) => {
-  return axios.get<People>(`${BASE_URL}/${type}s/${id}/people`, {
-    headers: {
-      ...base_headers,
-    },
-  });
+  return traktClient.get<People>(`${BASE_URL}/${type}s/${id}/people`);
 };
 
 export const getPersonApi = (id: number) => {
-  return axios.get<Person>(`${BASE_URL}/people/${id}?extended=full`, {
-    headers: {
-      ...base_headers,
-    },
-  });
+  return traktClient.get<Person>(`${BASE_URL}/people/${id}?extended=full`);
 };
 
 export const getPersonItemsApi = <T>(person: string, type: ItemType) => {
-  return axios.get<T>(`${BASE_URL}/people/${person}/${type}s?extended=full`, {
-    headers: {
-      ...base_headers,
-    },
-  });
+  return traktClient.get<T>(
+    `${BASE_URL}/people/${person}/${type}s?extended=full`
+  );
 };
 
 export const getPopularApi = (type: ItemType, limit: number = 40) => {
   const year = new Date().getFullYear();
-  return axios.get<Popular[]>(
-    `${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${limit}&years=${year}`,
-    {
-      headers: {
-        ...base_headers,
-      },
-    }
+  return traktClient.get<Popular[]>(
+    `${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${limit}&years=${year}`
   );
 };
 
 export const getRelatedApi = <T>(id: number, type: ItemType) => {
-  return axios.get<T[]>(
-    `${BASE_URL}/${type}s/${id}/related?extended=full&page=1&limit=12`,
-    {
-      headers: {
-        ...base_headers,
-      },
-    }
+  return traktClient.get<T[]>(
+    `${BASE_URL}/${type}s/${id}/related?extended=full&page=1&limit=12`
   );
 };
 
-export const getStatsApi = (session: Session) => {
-  return axios.get<UserStats>(`${BASE_URL}/users/me/stats`, {
+export const getStatsApi = () => {
+  return traktClient.get<UserStats>(`${BASE_URL}/users/me/stats`, {
     headers: {
-      ...base_headers,
-      Authorization: `Bearer ${session.access_token}`,
+      Authorization: true,
     },
   });
 };
 
-export const getProfileApi = (session: Session) => {
-  return axios.get<Profile>(`${BASE_URL}/users/me`, {
+export const getProfileApi = () => {
+  return traktClient.get<Profile>(`${BASE_URL}/users/me`, {
     headers: {
-      ...base_headers,
-      Authorization: `Bearer ${session.access_token}`,
+      Authorization: true,
     },
   });
 };
 
 export const getRatingsApi = (id: number, type: ItemType) => {
-  return axios.get<Ratings>(`${BASE_URL}/${type}s/${id}/ratings`, {
-    headers: {
-      ...base_headers,
-    },
-  });
+  return traktClient.get<Ratings>(`${BASE_URL}/${type}s/${id}/ratings`);
 };
 
 export const getCalendar = <T extends MovieCalendar | ShowCalendar>(
-  session: Session,
   type: ItemType,
-  firstDay: string,
+  firstDaxios: string,
   period: number
 ) => {
-  return axios.get<T[]>(
-    `${BASE_URL}/calendars/my/${type}s/${firstDay}/${period}`,
+  return traktClient.get<T[]>(
+    `${BASE_URL}/calendars/my/${type}s/${firstDaxios}/${period}`,
     {
       headers: {
-        ...base_headers,
-        Authorization: `Bearer ${session.access_token}`,
+        Authorization: true,
       },
     }
   );

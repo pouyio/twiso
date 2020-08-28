@@ -47,9 +47,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     }
     getSeasonsApi(showId).then(({ data }) => setUnTrackedSeasons(data));
     if (session) {
-      getProgressApi(session, showId).then(({ data }) =>
-        setUnTrackedProgress(data)
-      );
+      getProgressApi(showId).then(({ data }) => setUnTrackedProgress(data));
     }
   }, [session, showId, watchedShow]);
 
