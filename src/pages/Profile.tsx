@@ -6,23 +6,26 @@ import { getStatsApi, getProfileApi } from '../utils/api';
 import { UserStats } from '../models';
 import { removeImgCaches, removeCaches } from '../utils/cache';
 import Helmet from 'react-helmet';
-import { AuthContext, ThemeContext, ThemeType } from '../contexts';
+import { ThemeContext, ThemeType } from '../contexts';
 import { LoginButton } from '../components/LoginButton';
+import { AuthService } from 'utils/AuthService';
+
+const authService = AuthService.getInstance();
 
 export default function Profile() {
   const { theme, setTheme } = useContext(ThemeContext);
   const [stats, setStats] = useState<UserStats>();
   const [dev, setDev] = useState(false);
-  const { session } = useContext(AuthContext);
+  const isLogged = authService.isLoggedIn();
 
   useEffect(() => {
-    if (session) {
+    if (isLogged) {
       getStatsApi().then(({ data }) => setStats(data));
       getProfileApi().then(({ data }) =>
         setDev(data.ids.slug === 'pouyio' || data.ids.slug === 'pouyio-test')
       );
     }
-  }, [session]);
+  }, [isLogged]);
 
   const logout = () => {
     localStorage.removeItem('session');
@@ -78,7 +81,7 @@ export default function Profile() {
             </div>
           </li>
           <li className="py-1">
-            {session ? (
+            {isLogged ? (
               <button
                 onClick={logout}
                 className="bg-gray-200 px-4 py-1 rounded-full"
@@ -90,7 +93,7 @@ export default function Profile() {
             )}
           </li>
         </ul>
-        {session ? (
+        {isLogged ? (
           <>
             <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
               <Emoji emoji="🎬" /> Películas

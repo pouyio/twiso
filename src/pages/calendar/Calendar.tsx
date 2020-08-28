@@ -1,5 +1,4 @@
 import Emoji from 'components/Emoji';
-import { AuthContext } from 'contexts';
 import addMonths from 'date-fns/addMonths';
 import format from 'date-fns/format';
 import getDay from 'date-fns/getDay';
@@ -10,7 +9,7 @@ import startOfWeek from 'date-fns/startOfWeek';
 import addDays from 'date-fns/addDays';
 import getDaysInMonth from 'date-fns/getDaysInMonth';
 import startOfMonth from 'date-fns/startOfMonth';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Calendar as BigCalendar,
   dateFnsLocalizer,
@@ -23,6 +22,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './custom.scss';
 import { ShowCalendar, MovieCalendar } from 'models';
 import { useQueryParam, withDefault, DateParam } from 'use-query-params';
+import { AuthService } from 'utils/AuthService';
 
 const localizer = dateFnsLocalizer({
   format,
@@ -57,8 +57,10 @@ const mapShow = (s: ShowCalendar) => ({
   resource: { ...s, type: 'show' },
 });
 
+const authService = AuthService.getInstance();
+
 export default function Calendar() {
-  const { session } = useContext(AuthContext);
+  const isLogged = authService.isLoggedIn();
   const [events, setEvents] = useState<ICalendarEvent[]>([]);
   const [selectedDate, setSelectedDate] = useQueryParam(
     'date',
@@ -67,7 +69,7 @@ export default function Calendar() {
   const [only, setOnly] = useState<'movie' | 'show'>();
 
   useEffect(() => {
-    if (!session) {
+    if (!isLogged) {
       return;
     }
 
@@ -97,7 +99,7 @@ export default function Calendar() {
     getCalendar<ShowCalendar>('show', nextMonthDay, 6).then(({ data }) =>
       setEvents((e) => [...e, ...data.map(mapShow)])
     );
-  }, [session, selectedDate]);
+  }, [isLogged, selectedDate]);
 
   const changeMonth = (direction: number) => {
     setSelectedDate(addMonths(selectedDate, direction));

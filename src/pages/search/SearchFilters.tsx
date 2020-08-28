@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RemoteFilterTypes } from './Search';
-import { AuthContext } from 'contexts';
+import { AuthService } from 'utils/AuthService';
 
 export interface IFilters {
   remote: boolean;
@@ -11,12 +11,13 @@ interface ISearchFiltersProps {
   onFiltersChange: (filters: IFilters) => void;
 }
 
+const authService = AuthService.getInstance();
+
 export const SearchFilters: React.FC<ISearchFiltersProps> = ({
   onFiltersChange,
 }) => {
   const [filterBy, setFilterBy] = useState<RemoteFilterTypes>([]);
   const [remote, setRemote] = useState(true);
-  const { session } = useContext(AuthContext);
 
   const onFilterClick = (type: 'movie' | 'show' | 'person') => {
     setFilterBy((filters) => {
@@ -33,7 +34,7 @@ export const SearchFilters: React.FC<ISearchFiltersProps> = ({
 
   return (
     <div className="my-2 lg:max-w-lg mx-auto flex flex-wrap items-center justify-center lg:justify-between">
-      {session && (
+      {authService.isLoggedIn() && (
         <div className="flex whitespace-no-wrap items-center my-1 lg:my-0 justify-center">
           <div
             className="flex items-center cursor-pointer select-none"

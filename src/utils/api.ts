@@ -1,6 +1,5 @@
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
-import { Session } from '../contexts/AuthContext';
 import {
   AddedWatched,
   AddedWatchlist,
@@ -30,6 +29,7 @@ import {
 } from '../models';
 import { BASE_URL, config, IMG_URL, LOGIN_URL } from './apiConfig';
 import traktClient from './axiosClients';
+import { Session } from './AuthService';
 
 const limitClient = rateLimit(axios.create(), {
   maxRequests: 42,

@@ -8,7 +8,6 @@ import {
   ShowProgress,
   Episode,
 } from 'models';
-import { Session } from 'contexts/AuthContext';
 import {
   addWatchlistApi,
   removeWatchlistApi,
@@ -19,7 +18,7 @@ import {
 
 export const addWatchlist = createAsyncThunk(
   'shows/addWatchlist',
-  async ({ show, session }: { show: Show; session: Session }) => {
+  async ({ show }: { show: Show }) => {
     try {
       const { data } = await addWatchlistApi(show, 'show');
       return data;
@@ -32,7 +31,7 @@ export const addWatchlist = createAsyncThunk(
 
 export const removeWatchlist = createAsyncThunk(
   'shows/removeWatchlist',
-  async ({ show, session }: { show: Show; session: Session }, { dispatch }) => {
+  async ({ show }: { show: Show }, { dispatch }) => {
     try {
       const { data } = await removeWatchlistApi(show, 'show');
       if (data.deleted.shows) {
@@ -51,11 +50,9 @@ export const addEpisodeWatched = createAsyncThunk(
     {
       show,
       episode,
-      session,
     }: {
       show: ShowWatched;
       episode: Episode;
-      session: Session;
     },
     { dispatch }
   ) => {
@@ -79,11 +76,9 @@ export const removeEpisodeWatched = createAsyncThunk(
     {
       show,
       episode,
-      session,
     }: {
       show: ShowWatched;
       episode: Episode;
-      session: Session;
     },
     { dispatch }
   ) => {
@@ -110,11 +105,9 @@ export const addSeasonWatched = createAsyncThunk(
     {
       season,
       show,
-      session,
     }: {
       season: Season;
       show: ShowWatched;
-      session: Session;
     },
     { dispatch }
   ) => {
@@ -138,11 +131,9 @@ export const removeSeasonWatched = createAsyncThunk(
     {
       season,
       show,
-      session,
     }: {
       season: Season;
       show: ShowWatched;
-      session: Session;
     },
     { dispatch }
   ) => {
