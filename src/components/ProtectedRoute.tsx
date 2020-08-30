@@ -1,11 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { AuthContext } from '../contexts';
 import { RouteProps } from 'react-router';
+import { AuthService } from 'utils/AuthService';
 
+const authService = AuthService.getInstance();
 const ProtectedRoute: React.FC<RouteProps> = ({ children, ...props }) => {
-  const { session } = useContext(AuthContext);
-  return <Route {...props}>{session ? children : <Redirect to="/" />}</Route>;
+  return (
+    <Route {...props}>
+      {authService.isLoggedIn() ? children : <Redirect to="/" />}
+    </Route>
+  );
 };
 
 export default ProtectedRoute;

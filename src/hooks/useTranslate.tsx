@@ -1,12 +1,13 @@
-import { useState, useEffect, useContext, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getTranslationsApi } from '../utils/api';
-import { AuthContext } from '../contexts';
 import { Movie, Show, Translation } from '../models';
 import { useSelector } from 'react-redux';
 import { IState } from 'state/state';
+import { AuthService } from 'utils/AuthService';
+
+const authService = AuthService.getInstance();
 
 export const useTranslate = (type: 'movie' | 'show', item?: Show | Movie) => {
-  const { session } = useContext(AuthContext);
   const language = useSelector((state: IState) => state.language);
   const [translation, setTranslation] = useState<{
     title: string;
@@ -15,6 +16,7 @@ export const useTranslate = (type: 'movie' | 'show', item?: Show | Movie) => {
     title: '',
     overview: '',
   });
+  const isLogged = authService.isLoggedIn();
 
   const mergeTranslation = useCallback(
     (translation: Translation) => {
@@ -41,7 +43,7 @@ export const useTranslate = (type: 'movie' | 'show', item?: Show | Movie) => {
     getTranslationsApi(item.ids.trakt, type).then(({ data }) => {
       setTranslation(mergeTranslation(data[0]));
     });
-  }, [item, session, language, mergeTranslation, type]);
+  }, [item, isLogged, language, mergeTranslation, type]);
 
   return translation;
 };

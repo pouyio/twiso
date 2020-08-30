@@ -4,7 +4,7 @@ import {
   getSeasonEpisodesApi,
   getProgressApi,
 } from '../../utils/api';
-import { ModalContext, AuthContext } from '../../contexts';
+import { ModalContext } from '../../contexts';
 import { Show, ShowProgress, Season, Episode, ShowWatched } from '../../models';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -17,11 +17,14 @@ import { IState } from 'state/state';
 import SeasonSelector from './SeasonSelector';
 import Episodes from './Episodes';
 import { useQueryParam, withDefault, NumberParam } from 'use-query-params';
+import { AuthService } from 'utils/AuthService';
 
 interface ISeasonsContainerProps {
   show: Show;
   showId: number;
 }
+
+const authService = AuthService.getInstance();
 
 const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   show,
@@ -34,7 +37,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const [unTrackedProgress, setUnTrackedProgress] = useState<ShowProgress>();
   const [unTrackedSeasons, setUnTrackedSeasons] = useState<Season[]>([]);
   const [episodes, setEpisodes] = useState<Episode[][]>([]);
-  const { session } = useContext(AuthContext);
+  const isLogged = authService.isLoggedIn();
   const { toggle } = useContext(ModalContext);
   const dispatch = useDispatch();
   const watchedShow = useSelector((state: IState) =>
@@ -46,12 +49,10 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       return;
     }
     getSeasonsApi(showId).then(({ data }) => setUnTrackedSeasons(data));
-    if (session) {
-      getProgressApi(session, showId).then(({ data }) =>
-        setUnTrackedProgress(data)
-      );
+    if (isLogged) {
+      getProgressApi(showId).then(({ data }) => setUnTrackedProgress(data));
     }
-  }, [session, showId, watchedShow]);
+  }, [isLogged, showId, watchedShow]);
 
   useEffect(() => {
     if (selectedSeason === undefined) {
@@ -100,9 +101,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
         progress: unTrackedSeasons,
         fullSeasons: unTrackedSeasons,
       } as unknown) as ShowWatched);
-    dispatch(
-      addEpisodeWatched({ show: generatedShow, episode, session: session! })
-    );
+    dispatch(addEpisodeWatched({ show: generatedShow, episode }));
   };
 
   const removeEpisode = (episode: Episode) => {
@@ -110,7 +109,6 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       removeEpisodeWatched({
         show: watchedShow!,
         episode,
-        session: session!,
       })
     );
   };
@@ -121,7 +119,6 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
         addSeasonWatched({
           show: watchedShow,
           season: getFullSeason(selectedSeason)!,
-          session: session!,
         })
       );
     } else {
@@ -133,7 +130,6 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
             fullSeasons: unTrackedSeasons,
           } as unknown) as ShowWatched,
           season: getFullSeason(selectedSeason)!,
-          session: session!,
         })
       );
     }
@@ -144,7 +140,6 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       removeSeasonWatched({
         show: watchedShow!,
         season: getFullSeason(selectedSeason)!,
-        session: session!,
       })
     );
   };
@@ -184,7 +179,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
           removeSeasonWatched={removeSeason}
           episodes={episodes[selectedSeason]}
           showModal={showModal}
-          onlyView={!session}
+          onlyView={!isLogged}
         />
       )}
     </>

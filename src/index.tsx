@@ -4,7 +4,6 @@ import './tailwind.css';
 import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { AuthProvider } from 'contexts/AuthContext';
 import initReactFastclick from 'react-fastclick';
 import * as Sentry from '@sentry/browser';
 import { version } from '../package.json';
@@ -20,9 +19,7 @@ Sentry.init({
 
 ReactDOM.render(
   <Provider store={store}>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <App />
   </Provider>,
   document.getElementById('root')
 );

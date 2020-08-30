@@ -1,19 +1,20 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { AuthContext } from '../contexts';
 import { loginApi } from '../utils/api';
+import { AuthService } from 'utils/AuthService';
 
 interface ILoginProps {
   code: string;
 }
 
+const authService = AuthService.getInstance();
+
 const Login: React.FC<ILoginProps> = ({ code }) => {
   const history = useHistory();
-  const { persistSession } = useContext(AuthContext);
 
   useEffect(() => {
     loginApi(code).then(({ data }) => {
-      persistSession(data);
+      authService.session = data;
       history.push('/movies');
     });
   });

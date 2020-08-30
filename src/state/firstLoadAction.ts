@@ -11,7 +11,6 @@ import {
   getProgressApi,
 } from 'utils/api';
 import db from 'utils/db';
-import { Session } from '../contexts/AuthContext';
 import {
   setWatched as setWatchedMovies,
   setWatchlist as setWatchlistMovies,
@@ -26,45 +25,45 @@ import {
 } from './slices/showsSlice';
 import { store, setTotalLoadingShows, updateTotalLoadingShows } from './store';
 
-const loadWatchlistMovies = async (session: Session) => {
+const loadWatchlistMovies = async () => {
   const moviesWatchlist = await db
     .table<MovieWatchlist>('movies')
     .where({ localState: 'watchlist' })
     .toArray();
   store.dispatch(setWatchlistMovies(moviesWatchlist));
-  const { data } = await getWatchlistApi<MovieWatchlist>(session, 'movie');
+  const { data } = await getWatchlistApi<MovieWatchlist>('movie');
   store.dispatch(setWatchlistMovies(data));
 };
 
-const loadWatchedMovies = async (session: Session) => {
+const loadWatchedMovies = async () => {
   const moviesWatched = await db
     .table<MovieWatched>('movies')
     .where({ localState: 'watched' })
     .toArray();
   store.dispatch(setWatchedMovies(moviesWatched));
-  const { data } = await getWatchedApi<MovieWatched>(session, 'movie');
+  const { data } = await getWatchedApi<MovieWatched>('movie');
   store.dispatch(setWatchedMovies(data));
   return true;
 };
 
-const loadWatchlistShows = async (session: Session) => {
+const loadWatchlistShows = async () => {
   const showsWatchlist = await db
     .table<ShowWatchlist>('shows')
     .where({ localState: 'watchlist' })
     .toArray();
   store.dispatch(setWatchlistShows(showsWatchlist));
-  const { data } = await getWatchlistApi<ShowWatchlist>(session, 'show');
+  const { data } = await getWatchlistApi<ShowWatchlist>('show');
   store.dispatch(setWatchlistShows(data));
 };
 
-const loadWatchedShows = async (session: Session) => {
+const loadWatchedShows = async () => {
   const showsWatched = await db
     .table<ShowWatched>('shows')
     .where({ localState: 'watched' })
     .toArray();
   store.dispatch(setWatchedShows(showsWatched));
 
-  getWatchedApi<ShowWatched>(session, 'show').then(async ({ data }) => {
+  getWatchedApi<ShowWatched>('show').then(async ({ data }) => {
     const showsToUpdate = showsWatched.filter((s) => {
       return data.some(
         (sd) =>
@@ -93,7 +92,7 @@ const loadWatchedShows = async (session: Session) => {
       try {
         const [seasons, progress] = await Promise.all([
           getSeasonsApi(outdated.show.ids.trakt),
-          getProgressApi(session, outdated.show.ids.trakt),
+          getProgressApi(outdated.show.ids.trakt),
         ]);
         store.dispatch(
           updateSeasons({
@@ -116,10 +115,10 @@ const loadWatchedShows = async (session: Session) => {
   });
 };
 
-export const firstLoad = async (session: Session) => {
-  loadWatchedMovies(session);
-  loadWatchlistMovies(session);
+export const firstLoad = async () => {
+  loadWatchedMovies();
+  loadWatchlistMovies();
 
-  loadWatchlistShows(session);
-  loadWatchedShows(session);
+  loadWatchlistShows();
+  loadWatchedShows();
 };
