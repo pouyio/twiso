@@ -1,3 +1,10 @@
+## [2.5.3](https://github.com/pouyio/twiso/compare/v2.5.2...v2.5.3) (2020-08-30)
+
+
+### :bug:
+
+* redeploy ([e887ffc](https://github.com/pouyio/twiso/commit/e887ffcc24564b422d017b4b13d33687ca358638))
+
 ## [2.5.2](https://github.com/pouyio/twiso/compare/v2.5.1...v2.5.2) (2020-08-30)
 
 
