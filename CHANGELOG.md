@@ -1,3 +1,10 @@
+## [2.5.5](https://github.com/pouyio/twiso/compare/v2.5.4...v2.5.5) (2020-08-30)
+
+
+### :bug:
+
+* localStorage from window ([4ccf507](https://github.com/pouyio/twiso/commit/4ccf5070e96047428ee3574281243bfe6c6c3d0c))
+
 ## [2.5.4](https://github.com/pouyio/twiso/compare/v2.5.3...v2.5.4) (2020-08-30)
 
 
