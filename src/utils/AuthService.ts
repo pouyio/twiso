@@ -15,7 +15,7 @@ export class AuthService {
 
   private constructor() {
     console.log('initializing AuthService');
-    this.session = JSON.parse(localStorage.getItem('session') || 'null');
+    this.session = JSON.parse(window.localStorage.getItem('session') || 'null');
 
     if (this.session) {
       if (
@@ -43,7 +43,7 @@ export class AuthService {
 
   set session(session: Session | null) {
     const sessionStr = JSON.stringify(session);
-    localStorage.setItem('session', sessionStr);
+    window.localStorage.setItem('session', sessionStr);
     this._session = session;
   }
 
