@@ -1,3 +1,35 @@
+## [2.5.3](https://github.com/pouyio/twiso/compare/v2.5.2...v2.5.3) (2020-08-30)
+
+
+### :bug:
+
+* redeploy ([e887ffc](https://github.com/pouyio/twiso/commit/e887ffcc24564b422d017b4b13d33687ca358638))
+
+## [2.5.2](https://github.com/pouyio/twiso/compare/v2.5.1...v2.5.2) (2020-08-30)
+
+
+### :bug:
+
+* redeploy ([9961a3f](https://github.com/pouyio/twiso/commit/9961a3f8925051f2bae83b3813d02392196b035a))
+
+## [2.5.1](https://github.com/pouyio/twiso/compare/v2.5.0...v2.5.1) (2020-08-30)
+
+
+### :rocket:
+
+* redeploy ([d7c8139](https://github.com/pouyio/twiso/commit/d7c81396644a39da1ce03ecba3457a1ed17ac6eb))
+
+# [2.5.0](https://github.com/pouyio/twiso/compare/v2.4.0...v2.5.0) (2020-08-24)
+
+
+### :arrow_up:
+
+* Bump elliptic from 6.5.2 to 6.5.3 ([5a12424](https://github.com/pouyio/twiso/commit/5a1242455fca95a5a762bdf3d30fca61463b0030))
+
+### :sparkles:
+
+* added Calendar! ([c8012c4](https://github.com/pouyio/twiso/commit/c8012c4c49918569de3f2bd9d3c73d190b180a12))
+
 # [2.4.0](https://github.com/pouyio/twiso/compare/v2.3.0...v2.4.0) (2020-08-12)
 
 

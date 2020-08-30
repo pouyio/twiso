@@ -7,7 +7,7 @@ import { findFirstValid } from './src/utils/findFirstValidImage';
 import { SearchMovie, SearchShow, SearchPerson } from './src/models';
 const port = 80;
 
-const ROUTES = ['/', '/search', '/movies', '/shows', '/profile'];
+const ROUTES = ['/', '/search', '/movies', '/shows', '/profile', '/calendar'];
 
 const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   type: 'movie' | 'show' | 'person',
