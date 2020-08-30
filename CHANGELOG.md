@@ -1,3 +1,10 @@
+## [2.5.1](https://github.com/pouyio/twiso/compare/v2.5.0...v2.5.1) (2020-08-30)
+
+
+### :rocket:
+
+* redeploy ([d7c8139](https://github.com/pouyio/twiso/commit/d7c81396644a39da1ce03ecba3457a1ed17ac6eb))
+
 # [2.5.0](https://github.com/pouyio/twiso/compare/v2.4.0...v2.5.0) (2020-08-24)
 
 
