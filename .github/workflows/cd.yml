@@ -39,6 +39,6 @@ jobs:
           SENTRY_ORG: twiso
           SENTRY_PROJECT: twiso
         with:
-          version: ${{ github.ref }}
+          version: ${{ github.event.release.tag_name }}
           environment: prod
           sourcemaps: './build'
