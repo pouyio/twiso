@@ -1,3 +1,10 @@
+## [2.6.2](https://github.com/pouyio/twiso/compare/v2.6.1...v2.6.2) (2020-08-31)
+
+
+### :rocket:
+
+* added sourcemaps to sentry ([0d5c668](https://github.com/pouyio/twiso/commit/0d5c6683d929396af1337c40ff975f5fe2000909))
+
 ## [2.6.1](https://github.com/pouyio/twiso/compare/v2.6.0...v2.6.1) (2020-08-31)
 
 
