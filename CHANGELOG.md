@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/pouyio/twiso/compare/v2.5.6...v2.6.0) (2020-08-31)
+
+
+### :sparkles:
+
+* added update button on new version ([3892746](https://github.com/pouyio/twiso/commit/38927460952d8647e09d4963e6fb27e7be59ef06))
+
 ## [2.5.6](https://github.com/pouyio/twiso/compare/v2.5.5...v2.5.6) (2020-08-31)
 
 
