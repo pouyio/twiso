@@ -1,3 +1,10 @@
+## [2.6.1](https://github.com/pouyio/twiso/compare/v2.6.0...v2.6.1) (2020-08-31)
+
+
+### :art:
+
+* update new version style ([7c95f3e](https://github.com/pouyio/twiso/commit/7c95f3e4d5cca2791faa31e27b9333e4850f66b8))
+
 # [2.6.0](https://github.com/pouyio/twiso/compare/v2.5.6...v2.6.0) (2020-08-31)
 
 
