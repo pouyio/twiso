@@ -19,6 +19,9 @@ export const updateTotalLoadingShows = createAction<number | undefined>(
 );
 
 export const setGlobalSearch = createAction<boolean>('SET_GLOBAL_SEARCH');
+export const setSWRegistration = createAction<ServiceWorkerRegistration>(
+  'SET_SW_REGISTRATION'
+);
 
 export const store = configureStore({
   reducer: {
@@ -34,6 +37,11 @@ export const store = configureStore({
     ),
     globalSearch: createReducer(initialState.globalSearch, (builder) =>
       builder.addCase(setGlobalSearch, (state, { payload }) => payload)
+    ),
+    serviceWorkerRegistration: createReducer(
+      initialState.serviceWorkerRegistration,
+      (builder) =>
+        builder.addCase(setSWRegistration, (state, { payload }) => payload)
     ),
     config: defaultReducer,
     movies: moviesReducer,
