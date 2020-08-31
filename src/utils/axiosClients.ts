@@ -8,10 +8,9 @@ traktClient.defaults.headers.common['content-type'] = CONTENT_TYPE;
 traktClient.defaults.headers.common['trakt-api-key'] = config.traktApiKey;
 traktClient.defaults.headers.common['trakt-api-version'] = TRAKT_API_VERSION;
 
-const authService = AuthService.getInstance();
-
 traktClient.interceptors.request.use(
   (config) => {
+    const authService = AuthService.getInstance();
     if (config.headers.Authorization) {
       if (authService.session) {
         config.headers.Authorization = `Bearer ${authService.session.access_token}`;

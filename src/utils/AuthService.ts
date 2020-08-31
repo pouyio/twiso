@@ -14,7 +14,6 @@ export class AuthService {
   private _session: Session | null = null;
 
   private constructor() {
-    console.log('initializing AuthService');
     this.session = JSON.parse(window.localStorage.getItem('session') || 'null');
 
     if (this.session) {
