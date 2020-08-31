@@ -24,6 +24,7 @@ export interface IState {
     watchlist: ShowWatchlist[];
   };
   globalSearch: boolean;
+  serviceWorkerRegistration: ServiceWorkerRegistration | null;
   config?: ImgConfig;
   language: string;
 }
@@ -44,4 +45,5 @@ export const initialState: IState = {
   },
   language: LANGUAGE,
   globalSearch: false,
+  serviceWorkerRegistration: null,
 };

@@ -21,6 +21,7 @@ import { firstLoad } from './state/firstLoadAction';
 import { loadImgConfig } from 'state/slices/defaultSlice';
 import * as Sentry from '@sentry/react';
 import { AuthService } from 'utils/AuthService';
+import { NewVersion } from 'components/NewVersion';
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const Profile = lazy(() => import('./pages/Profile'));
 const MovieDetail = lazy(() => import('./pages/MovieDetail'));
@@ -49,8 +50,12 @@ const ParamsComponent: React.FC = () => {
 
 const App: React.FC = () => {
   const [ref, setRef] = useState<HTMLDivElement | null>();
+  const [skipUpdate, setSkipUpdate] = useState(false);
 
   const globalSearch = useSelector((state: IState) => state.globalSearch);
+  const serviceWorkerRegistration = useSelector(
+    (state: IState) => state.serviceWorkerRegistration
+  );
 
   const moviesReady = useSelector<IState>((state) => state.movies.ready);
   const showsReady = useSelector<IState>((state) => state.shows.ready);
@@ -66,10 +71,32 @@ const App: React.FC = () => {
     // eslint-disable-next-line
   }, [isLoggedIn]);
 
+  const updateServiceWorker = () => {
+    if (!serviceWorkerRegistration) {
+      return;
+    }
+    const registrationWaiting = serviceWorkerRegistration.waiting;
+    if (registrationWaiting) {
+      registrationWaiting.postMessage({ type: 'SKIP_WAITING' });
+      registrationWaiting.addEventListener('statechange', (e) => {
+        console.log(e);
+        if ((e.target as ServiceWorker).state === 'activated') {
+          window.location.reload();
+        }
+      });
+    }
+  };
+
   return (
     <Sentry.ErrorBoundary>
       <div ref={setRef}>
         <Providers modalRef={ref!}>
+          {!!serviceWorkerRegistration && !skipUpdate && (
+            <NewVersion
+              close={() => setSkipUpdate(true)}
+              update={updateServiceWorker}
+            />
+          )}
           <Alert />
           <ul className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block select-none">
             <li className="py-1">
