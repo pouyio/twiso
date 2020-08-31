@@ -1,3 +1,10 @@
+## [2.6.3](https://github.com/pouyio/twiso/compare/v2.6.2...v2.6.3) (2020-08-31)
+
+
+### :rocket:
+
+* updated sentry cd ([011b1c0](https://github.com/pouyio/twiso/commit/011b1c0438fdf031dff393e297d9b39f20622a53))
+
 ## [2.6.2](https://github.com/pouyio/twiso/compare/v2.6.1...v2.6.2) (2020-08-31)
 
 
