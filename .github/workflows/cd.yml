@@ -31,14 +31,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
       - name: Create a Sentry.io release
-        uses: tclindner/sentry-releases-action@v1.0.0
+        uses: getsentry/action-release@v1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: twiso
           SENTRY_PROJECT: twiso
         with:
-          tagName: ${{ github.ref }}
+          version: ${{ github.ref }}
           environment: prod
-          sourceMapOptions: '{"include": ["build"]}'
+          sourcemaps: './build'
