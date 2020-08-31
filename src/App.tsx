@@ -79,7 +79,6 @@ const App: React.FC = () => {
     if (registrationWaiting) {
       registrationWaiting.postMessage({ type: 'SKIP_WAITING' });
       registrationWaiting.addEventListener('statechange', (e) => {
-        console.log(e);
         if ((e.target as ServiceWorker).state === 'activated') {
           window.location.reload();
         }
