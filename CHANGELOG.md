@@ -1,3 +1,10 @@
+## [2.6.4](https://github.com/pouyio/twiso/compare/v2.6.3...v2.6.4) (2020-08-31)
+
+
+### :bug:
+
+* fix sentry cd ([66ed3fc](https://github.com/pouyio/twiso/commit/66ed3fcb3081dc4c171dfe5e394ed5955d25fac2))
+
 ## [2.6.3](https://github.com/pouyio/twiso/compare/v2.6.2...v2.6.3) (2020-08-31)
 
 
