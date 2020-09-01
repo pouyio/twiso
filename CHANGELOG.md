@@ -1,3 +1,10 @@
+## [2.6.8](https://github.com/pouyio/twiso/compare/v2.6.7...v2.6.8) (2020-09-01)
+
+
+### :rocket:
+
+* typo ([a9e16c6](https://github.com/pouyio/twiso/commit/a9e16c641bfa9557c8d7289bc19b6bd8a9283630))
+
 ## [2.6.7](https://github.com/pouyio/twiso/compare/v2.6.6...v2.6.7) (2020-09-01)
 
 
