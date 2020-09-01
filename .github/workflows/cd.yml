@@ -15,8 +15,12 @@ jobs:
           clean: false
           repository: pouyio/twiso
           ref: refs/heads/master
-      - name: Build artifact
-        run: npm run build
+      - uses: borales/actions-yarn@v2.0.0
+          with:
+            cmd: install
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: build
       - name: Vercel Now Deployment
         uses: amondnet/vercel-action@v19
         with:
