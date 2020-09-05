@@ -131,10 +131,6 @@ button:focus {
   animation: spin 2s infinite linear;
 }
 
-.selected-nav-item {
-  box-shadow: inset 0px -2px var(--gray-600);
-}
-
 .toggle__dot {
   top: -0.25rem;
   left: -0.25rem;
