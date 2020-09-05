@@ -101,11 +101,13 @@ export const NavigationTabs: React.FC<{
       <motion.div
         className="absolute bg-gray-600 bottom-0 rounded"
         initial={false}
-        animate={{
-          height: '2px',
+        style={{
           bottom: 'calc(env(safe-area-inset-bottom) + 4px)',
-          left: slider.left,
+          height: '2px',
           width: slider.width,
+        }}
+        animate={{
+          left: slider.left,
         }}
       />
     </>
