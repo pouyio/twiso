@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from '../components/Image';
 import ImageLink from '../components/ImageLink';
-import CollapsableText from '../components/CollapsableText';
+import CollapsableText from '../components/CollapsableText/CollapsableText';
 import { getPersonItemsApi, getPersonApi } from '../utils/api';
 import Emoji from '../components/Emoji';
 import { useParams } from 'react-router-dom';
@@ -133,7 +133,7 @@ const Person: React.FC = () => {
 
           <div className="my-4 relative">
             <p className="font-medium">Biografía:</p>
-            <CollapsableText className="leading-tight font-light">
+            <CollapsableText>
               {localState.biography || 'Sin descripción'}
             </CollapsableText>
           </div>
