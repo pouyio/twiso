@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import { IState } from 'state/state';
-import CollapsableText from '../components/CollapsableText';
+import CollapsableText from '../components/CollapsableText/CollapsableText';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
 import Image from '../components/Image';
@@ -182,7 +182,7 @@ export default function MovieDetail() {
           </div>
           <div className="my-4">
             <p className="font-medium">Resumen:</p>
-            <CollapsableText className="leading-tight font-light">
+            <CollapsableText>
               {overview || 'Sin descripción'}
             </CollapsableText>
           </div>

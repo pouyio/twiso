@@ -1,11 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import {
-  Route,
-  Redirect,
-  useLocation,
-  NavLink,
-  Switch,
-} from 'react-router-dom';
+import { Route, Redirect, useLocation, Switch } from 'react-router-dom';
 import CacheRoute from 'react-router-cache-route';
 import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -14,7 +8,6 @@ import { ProgressBar } from './components/ProgressBar';
 import { Alert } from 'components/Alert/Alert';
 import { Providers } from 'components/Providers';
 import { GlobalSearch } from 'components/GlobalSearch';
-import LongPress from 'components/Longpress';
 import { useSelector, useDispatch } from 'react-redux';
 import { IState } from 'state/state';
 import { firstLoad } from './state/firstLoadAction';
@@ -22,6 +15,7 @@ import { loadImgConfig } from 'state/slices/defaultSlice';
 import * as Sentry from '@sentry/react';
 import { AuthService } from 'utils/AuthService';
 import { NewVersion } from 'components/NewVersion';
+import { NavigationTabs } from 'components/Navigation/NavigationTabs';
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const Profile = lazy(() => import('./pages/Profile'));
 const MovieDetail = lazy(() => import('./pages/MovieDetail'));
@@ -104,68 +98,7 @@ const App: React.FC = () => {
           </ul>
           <nav className="w-full flex flex-col fixed bottom-0 z-20 justify-around text-2xl lg:top-0 lg:bottom-auto select-none">
             <ProgressBar />
-            <ul
-              className="flex justify-around px-2 text-center bg-gray-200"
-              style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-            >
-              {isLoggedIn ? (
-                <>
-                  <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
-                    <NavLink
-                      activeClassName="selected-nav-item"
-                      to="/movies?mode=watchlist&page=1"
-                      className="flex items-center"
-                    >
-                      <Emoji emoji="🎬" />
-                      <span className="ml-2 text-base hidden lg:inline">
-                        Películas
-                      </span>
-                    </NavLink>
-                  </li>
-                  <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
-                    <NavLink
-                      activeClassName="selected-nav-item"
-                      to="/shows?mode=watched&page=1"
-                      className="flex items-center"
-                    >
-                      <Emoji emoji="📺" />
-                      <span className="ml-2 text-base hidden lg:inline">
-                        Series
-                      </span>
-                    </NavLink>
-                  </li>
-                </>
-              ) : null}
-              <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
-                <LongPress />
-              </li>
-              {isLoggedIn ? (
-                <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
-                  <NavLink
-                    activeClassName="selected-nav-item"
-                    to="/calendar"
-                    className="flex items-center"
-                  >
-                    <Emoji emoji="📅" />
-                    <span className="ml-2 text-base hidden lg:inline">
-                      Calendar
-                    </span>
-                  </NavLink>
-                </li>
-              ) : null}
-              <li className="py-1">
-                <NavLink
-                  activeClassName="selected-nav-item"
-                  to="/profile"
-                  className="flex items-center"
-                >
-                  <Emoji emoji="👤" />
-                  <span className="ml-2 text-base hidden lg:inline">
-                    Perfil
-                  </span>
-                </NavLink>
-              </li>
-            </ul>
+            <NavigationTabs logged={isLoggedIn} />
           </nav>
           <>
             {globalSearch && <GlobalSearch />}
