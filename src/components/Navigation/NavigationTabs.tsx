@@ -10,7 +10,7 @@ export const NavigationTabs: React.FC<{
 }> = ({ logged }) => {
   const { pathname } = useLocation();
   const { bounds, ref } = useResize();
-  const [slider, setSlider] = useState({ animating: true, left: 0, width: 0 });
+  const [slider, setSlider] = useState({ left: 0, width: 0 });
   const refs = useRef(
     new Map<string, HTMLLIElement | null>([
       ['/shows', null],
@@ -27,26 +27,11 @@ export const NavigationTabs: React.FC<{
       const tRect = target.getBoundingClientRect();
 
       setSlider({
-        animating: true,
         left: tRect.left,
         width: tRect.width,
       });
     }
-  }, [pathname]);
-
-  useEffect(() => {
-    const target = refs.current.get(pathname);
-    if (target) {
-      const tRect = target.getBoundingClientRect();
-
-      setSlider({
-        animating: false,
-        left: tRect.left,
-        width: tRect.width,
-      });
-    }
-    // eslint-disable-next-line
-  }, [bounds]);
+  }, [pathname, bounds]);
 
   return (
     <>
@@ -115,7 +100,6 @@ export const NavigationTabs: React.FC<{
       </ul>
       <motion.div
         className="absolute bg-gray-600 bottom-0 rounded"
-        static={!slider.animating}
         initial={false}
         animate={{
           height: '2px',
