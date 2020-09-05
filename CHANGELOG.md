@@ -1,3 +1,13 @@
+## [2.6.10](https://github.com/pouyio/twiso/compare/v2.6.9...v2.6.10) (2020-09-05)
+
+
+### :art:
+
+* added animation to collapsable text ([1803e37](https://github.com/pouyio/twiso/commit/1803e376f702393f9ca4daae94c3f56690969d64))
+* added episodes placeholder ([68071da](https://github.com/pouyio/twiso/commit/68071da03dc27b586af169444ad3f55eb3fac7c1))
+* added navigation animation ([730ea46](https://github.com/pouyio/twiso/commit/730ea46cf540eae339d713b74b60112aa053f47d))
+* added pulse animation to skeletons ([f2d4dd4](https://github.com/pouyio/twiso/commit/f2d4dd4c9e9e57d6f83f7a8cb0fac98033eb0506))
+
 ## [2.6.9](https://github.com/pouyio/twiso/compare/v2.6.8...v2.6.9) (2020-09-01)
 
 
