@@ -126,11 +126,6 @@ button:focus {
   outline: 0;
 }
 
-.spin {
-  display: inline-block;
-  animation: spin 2s infinite linear;
-}
-
 .toggle__dot {
   top: -0.25rem;
   left: -0.25rem;
@@ -139,12 +134,6 @@ button:focus {
 
 input:not(:checked) ~ .toggle__dot {
   transform: translateX(100%);
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 @keyframes twist-up {
