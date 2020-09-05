@@ -1,3 +1,10 @@
+## [2.6.11](https://github.com/pouyio/twiso/compare/v2.6.10...v2.6.11) (2020-09-05)
+
+
+### :bug:
+
+* fix bottom margin on mobile ([f5e039e](https://github.com/pouyio/twiso/commit/f5e039efc8217646bbd4dbfdc3485daaa9b3dda3))
+
 ## [2.6.10](https://github.com/pouyio/twiso/compare/v2.6.9...v2.6.10) (2020-09-05)
 
 
