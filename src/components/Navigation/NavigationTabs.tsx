@@ -103,7 +103,7 @@ export const NavigationTabs: React.FC<{
         initial={false}
         animate={{
           height: '2px',
-          bottom: '4px',
+          bottom: 'calc(env(safe-area-inset-bottom) + 4px)',
           left: slider.left,
           width: slider.width,
         }}
