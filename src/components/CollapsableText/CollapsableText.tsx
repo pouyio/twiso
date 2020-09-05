@@ -25,6 +25,7 @@ const CollapsableText: React.FC<ICollapsableTextProps> = ({
   const ref = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
+    setOpened(false);
     setIsButtonShown(isOverflown(ref.current));
   }, [children]);
 
