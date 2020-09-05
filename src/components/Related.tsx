@@ -18,52 +18,52 @@ const placeholderStyle = {
 export const placeholders = [
   <li
     key="placeholder-1"
-    className=" h-full bg-gray-300 rounded-lg m-2 animate-pulse"
+    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-gradient-to-r animate-pulse"
     style={placeholderStyle}
   ></li>,
   <li
     key="placeholder-2"
-    className=" h-full bg-gray-300 rounded-lg m-2 animate-pulse"
+    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-gradient-to-r animate-pulse"
     style={placeholderStyle}
   ></li>,
   <li
     key="placeholder-3"
-    className=" h-full bg-gray-300 rounded-lg m-2 animate-pulse"
+    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-gradient-to-r animate-pulse"
     style={placeholderStyle}
   ></li>,
   <li
     key="placeholder-4"
-    className=" h-full bg-gray-300 rounded-lg m-2 animate-pulse"
+    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-gradient-to-r animate-pulse"
     style={placeholderStyle}
   ></li>,
   <li
     key="placeholder-5"
-    className=" h-full bg-gray-300 rounded-lg m-2 animate-pulse"
+    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-gradient-to-r animate-pulse"
     style={placeholderStyle}
   ></li>,
   <li
     key="placeholder-6"
-    className=" h-full bg-gray-300 rounded-lg m-2 animate-pulse"
+    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-gradient-to-r animate-pulse"
     style={placeholderStyle}
   ></li>,
   <li
     key="placeholder-7"
-    className=" h-full bg-gray-300 rounded-lg m-2 animate-pulse"
+    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-gradient-to-r animate-pulse"
     style={placeholderStyle}
   ></li>,
   <li
     key="placeholder-8"
-    className=" h-full bg-gray-300 rounded-lg m-2 animate-pulse"
+    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-gradient-to-r animate-pulse"
     style={placeholderStyle}
   ></li>,
   <li
     key="placeholder-9"
-    className=" h-full bg-gray-300 rounded-lg m-2 animate-pulse"
+    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-gradient-to-r animate-pulse"
     style={placeholderStyle}
   ></li>,
   <li
     key="placeholder-10"
-    className=" h-full bg-gray-300 rounded-lg m-2 animate-pulse"
+    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-gradient-to-r animate-pulse"
     style={placeholderStyle}
   ></li>,
 ];
