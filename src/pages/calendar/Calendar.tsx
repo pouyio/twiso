@@ -19,7 +19,7 @@ import Helmet from 'react-helmet';
 import { getCalendar } from 'utils/api';
 import { Event } from './Event';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import './custom.scss';
+import './calendar.scss';
 import { ShowCalendar, MovieCalendar } from 'models';
 import { useQueryParam, withDefault, DateParam } from 'use-query-params';
 import { AuthService } from 'utils/AuthService';
