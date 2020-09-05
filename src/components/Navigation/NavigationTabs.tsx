@@ -45,6 +45,7 @@ export const NavigationTabs: React.FC<{
         width: tRect.width,
       });
     }
+    // eslint-disable-next-line
   }, [bounds]);
 
   return (
