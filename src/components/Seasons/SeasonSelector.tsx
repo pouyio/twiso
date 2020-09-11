@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Season, ShowProgress } from '../../models';
 
 interface ISeasonsProps {
@@ -8,20 +8,47 @@ interface ISeasonsProps {
   setSelectedSeason: (season?: number) => void;
 }
 
+const SELECTED_CLASS = 'bg-white text-gray-600';
+
 const SeasonSelector: React.FC<ISeasonsProps> = ({
   progress,
   seasons,
   selectedSeason,
   setSelectedSeason,
 }) => {
+  const ref = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    if (!ref.current || !ref.current.children) {
+      return;
+    }
+    const seasonTag = Array.from(ref.current.children).find(
+      (c) => !c.classList.toString().includes(SELECTED_CLASS)
+    ) as HTMLUListElement;
+    if (!seasonTag) {
+      return;
+    }
+    const pRect = ref.current.getBoundingClientRect();
+    const cRect = seasonTag.getBoundingClientRect();
+
+    if (!cRect) {
+      return;
+    }
+
+    ref.current.scrollTo({
+      left: seasonTag.offsetLeft - pRect.width / 2 + cRect.width / 2,
+      behavior: 'smooth',
+    });
+  }, [selectedSeason, ref]);
+
   const selectedClass = (season: Season) => {
     if (!selectedSeason) {
-      return 'bg-white text-gray-600';
+      return SELECTED_CLASS;
     }
     if (season.ids.trakt === selectedSeason.ids.trakt) {
       return 'bg-gray-200';
     }
-    return 'bg-white text-gray-600';
+    return SELECTED_CLASS;
   };
 
   const isSeasonWatched = (seasonNumber: number) => {
@@ -41,8 +68,9 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
 
   return (
     <ul
-      className="flex overflow-x-auto my-5 -mx-3"
+      className="flex overflow-x-auto my-5 -mx-3 relative"
       style={{ WebkitOverflowScrolling: 'touch' }}
+      ref={ref}
     >
       {seasons.map((s) => (
         <li
