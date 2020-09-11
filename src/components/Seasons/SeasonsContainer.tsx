@@ -76,7 +76,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     if (
       !watchedShowFullSeasonsRef ||
       !watchedShowNextEpisodeRef ||
-      selectedSeason
+      selectedSeason !== undefined
     ) {
       return;
     }
