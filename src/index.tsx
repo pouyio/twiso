@@ -9,6 +9,7 @@ import * as Sentry from '@sentry/browser';
 import { version } from '../package.json';
 import { setSWRegistration, store } from 'state/store';
 import { Provider } from 'react-redux';
+import 'scroll-behavior-polyfill';
 
 initReactFastclick();
 

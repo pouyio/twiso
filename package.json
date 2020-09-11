@@ -24,6 +24,7 @@
     "react-router-cache-route": "^1.8.4",
     "react-router-dom": "^5.1.1",
     "react-scripts": "^3.4.3",
+    "scroll-behavior-polyfill": "^2.0.13",
     "use-query-params": "^1.1.6"
   },
   "scripts": {
