@@ -1,3 +1,10 @@
+## [2.6.12](https://github.com/pouyio/twiso/compare/v2.6.11...v2.6.12) (2020-09-11)
+
+
+### :bug:
+
+* instatiate authservice only when required ([8449887](https://github.com/pouyio/twiso/commit/8449887e2fdd0a4f55e00418e6a1cf5d00e608eb))
+
 ## [2.6.11](https://github.com/pouyio/twiso/compare/v2.6.10...v2.6.11) (2020-09-05)
 
 
