@@ -1,3 +1,10 @@
+## [2.6.15](https://github.com/pouyio/twiso/compare/v2.6.14...v2.6.15) (2020-09-11)
+
+
+### :bug:
+
+* added polyfill for smooth scroll on safari ([7620957](https://github.com/pouyio/twiso/commit/7620957556061633e008d4dddcdd6925f008b060))
+
 ## [2.6.14](https://github.com/pouyio/twiso/compare/v2.6.13...v2.6.14) (2020-09-11)
 
 
