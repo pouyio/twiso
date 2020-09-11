@@ -1,10 +1,10 @@
+import { getApi, getImgsApi } from './src/utils/api';
+import { findFirstValid } from './src/utils/findFirstValidImage';
+import { SearchMovie, SearchShow, SearchPerson } from './src/models';
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
 const app = express();
-import { getApi, getImgsApi } from './src/utils/api';
-import { findFirstValid } from './src/utils/findFirstValidImage';
-import { SearchMovie, SearchShow, SearchPerson } from './src/models';
 const port = 80;
 
 const ROUTES = ['/', '/search', '/movies', '/shows', '/profile', '/calendar'];

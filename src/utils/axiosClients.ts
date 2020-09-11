@@ -10,8 +10,8 @@ traktClient.defaults.headers.common['trakt-api-version'] = TRAKT_API_VERSION;
 
 traktClient.interceptors.request.use(
   (config) => {
-    const authService = AuthService.getInstance();
     if (config.headers.Authorization) {
+      const authService = AuthService.getInstance();
       if (authService.session) {
         config.headers.Authorization = `Bearer ${authService.session.access_token}`;
       } else {
