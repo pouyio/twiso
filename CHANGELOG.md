@@ -1,3 +1,10 @@
+## [2.6.14](https://github.com/pouyio/twiso/compare/v2.6.13...v2.6.14) (2020-09-11)
+
+
+### :art:
+
+* scroll to season on selection ([64fa71f](https://github.com/pouyio/twiso/commit/64fa71f5bf50ded06ddb5ed56fdc41eabeac7433))
+
 ## [2.6.13](https://github.com/pouyio/twiso/compare/v2.6.12...v2.6.13) (2020-09-11)
 
 
