@@ -1,3 +1,14 @@
+## [2.6.16](https://github.com/pouyio/twiso/compare/v2.6.15...v2.6.16) (2020-09-21)
+
+
+### :arrow_up:
+
+* Bump node-fetch from 2.6.0 to 2.6.1 ([c0b6bdb](https://github.com/pouyio/twiso/commit/c0b6bdb3ef43e881ccab19bbdf420f0033d96cb4))
+
+### :art:
+
+* modal overlay ([80ba531](https://github.com/pouyio/twiso/commit/80ba5311f969ac35dcdf7f74c1ac9e32930348b7))
+
 ## [2.6.15](https://github.com/pouyio/twiso/compare/v2.6.14...v2.6.15) (2020-09-11)
 
 
