@@ -1,3 +1,10 @@
+## [2.6.17](https://github.com/pouyio/twiso/compare/v2.6.16...v2.6.17) (2020-09-24)
+
+
+### :rocket:
+
+* move deploy to vercel function ([49c5401](https://github.com/pouyio/twiso/commit/49c54016cb284799783c0a4346c883e14b54c599))
+
 ## [2.6.16](https://github.com/pouyio/twiso/compare/v2.6.15...v2.6.16) (2020-09-21)
 
 
