@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "build": {
-    "env": {
-      "REACT_APP_TRAKT_API_KEY": "@react_app_trakt_api_key",
-      "REACT_APP_TMDB_API_KEY": "@react_app_tmdb_api_key",
-      "REACT_APP_REDIRECT_URL": "@react_app_redirect_url",
-      "SENTRY_DSN": "@sentry_dsn"
-    }
+  "functions": {
+    "api/server.ts": { "runtime": "@vercel/node@1.8.3" }
   },
-  "routes": [{ "src": "/.*", "dest": "/server.ts" }],
-  "builds": [{ "src": "server.ts", "use": "@now/node" }]
+  "env": {
+    "REACT_APP_TRAKT_API_KEY": "@react_app_trakt_api_key",
+    "REACT_APP_TMDB_API_KEY": "@react_app_tmdb_api_key",
+    "REACT_APP_REDIRECT_URL": "@react_app_redirect_url",
+    "SENTRY_DSN": "@sentry_dsn"
+  },
+  "routes": [{ "src": "/.*", "dest": "api/server.ts" }]
 }

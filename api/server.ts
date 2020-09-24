@@ -1,11 +1,10 @@
-import { getApi, getImgsApi } from './src/utils/api';
-import { findFirstValid } from './src/utils/findFirstValidImage';
-import { SearchMovie, SearchShow, SearchPerson } from './src/models';
+import { getApi, getImgsApi } from '../src/utils/api';
+import { findFirstValid } from '../src/utils/findFirstValidImage';
+import { SearchMovie, SearchShow, SearchPerson } from '../src/models';
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
 const app = express();
-const port = 80;
 
 const ROUTES = ['/', '/search', '/movies', '/shows', '/profile', '/calendar'];
 
@@ -32,7 +31,7 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
 
 app.get(ROUTES, (req, res) => {
   fs.readFile(
-    path.join(__dirname + '/build/index.html'),
+    path.join(__dirname + '/../build/index.html'),
     'utf8',
     async (err, data) => {
       if (err) {
@@ -57,7 +56,7 @@ app.get(ROUTES, (req, res) => {
 
 app.get('/movie/:id', (req, res) => {
   fs.readFile(
-    path.join(__dirname + '/build/index.html'),
+    path.join(__dirname + '/../build/index.html'),
     'utf8',
     async (err, data) => {
       if (err) {
@@ -85,7 +84,7 @@ app.get('/movie/:id', (req, res) => {
 
 app.get('/show/:id', (req, res) => {
   fs.readFile(
-    path.join(__dirname + '/build/index.html'),
+    path.join(__dirname + '/../build/index.html'),
     'utf8',
     async (err, data) => {
       if (err) {
@@ -113,7 +112,7 @@ app.get('/show/:id', (req, res) => {
 
 app.get('/person/:id', (req, res) => {
   fs.readFile(
-    path.join(__dirname + '/build/index.html'),
+    path.join(__dirname + '/../build/index.html'),
     'utf8',
     async (err, data) => {
       if (err) {
@@ -139,6 +138,6 @@ app.get('/person/:id', (req, res) => {
   );
 });
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '/../build')));
 
-app.listen(port, () => console.log(`Running in http://localhost:${port}`));
+export default app;
