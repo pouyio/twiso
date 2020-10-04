@@ -1,3 +1,11 @@
+## [2.6.22](https://github.com/pouyio/twiso/compare/v2.6.21...v2.6.22) (2020-10-04)
+
+
+### :art:
+
+* fix safe-area ([d36116c](https://github.com/pouyio/twiso/commit/d36116ccd949074f8b24df7408e40a1cc43e765e))
+* fixed safe-area ([ad45241](https://github.com/pouyio/twiso/commit/ad4524106b92c9b7bdc798b826ec1d5cc719e2d9))
+
 ## [2.6.21](https://github.com/pouyio/twiso/compare/v2.6.20...v2.6.21) (2020-10-04)
 
 
