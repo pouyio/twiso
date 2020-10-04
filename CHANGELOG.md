@@ -1,3 +1,10 @@
+## [2.6.21](https://github.com/pouyio/twiso/compare/v2.6.20...v2.6.21) (2020-10-04)
+
+
+### :art:
+
+* added safe-areas for ipad too ([b215da1](https://github.com/pouyio/twiso/commit/b215da10a2c820ab9c82c3f4caf374faea5869aa))
+
 ## [2.6.20](https://github.com/pouyio/twiso/compare/v2.6.19...v2.6.20) (2020-10-04)
 
 
