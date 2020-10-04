@@ -1,3 +1,14 @@
+## [2.6.20](https://github.com/pouyio/twiso/compare/v2.6.19...v2.6.20) (2020-10-04)
+
+
+### :art:
+
+* gradient pulse on loading direction ([4031105](https://github.com/pouyio/twiso/commit/403110559b92fab6ec008263492cccdfd11af34c))
+
+### :rocket:
+
+* updated sentry ([8661923](https://github.com/pouyio/twiso/commit/8661923bb44cac144ee5513fef9c6d4c3cce4981))
+
 ## [2.6.19](https://github.com/pouyio/twiso/compare/v2.6.18...v2.6.19) (2020-10-04)
 
 
