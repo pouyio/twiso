@@ -1,3 +1,10 @@
+## [2.6.18](https://github.com/pouyio/twiso/compare/v2.6.17...v2.6.18) (2020-10-04)
+
+
+### :art:
+
+* added collapsable to cast in desktop ([38e16bf](https://github.com/pouyio/twiso/commit/38e16bfdb553aaf24cb7f9f862194809f2ed74b1))
+
 ## [2.6.17](https://github.com/pouyio/twiso/compare/v2.6.16...v2.6.17) (2020-09-24)
 
 
