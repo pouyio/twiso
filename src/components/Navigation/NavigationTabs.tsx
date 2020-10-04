@@ -37,7 +37,12 @@ export const NavigationTabs: React.FC<{
     <>
       <ul
         className="flex justify-around px-2 text-center bg-gray-200"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+        style={{
+          paddingBottom: 'env(safe-area-inset-bottom)',
+          ...(window.visualViewport.width >= 1024
+            ? { paddingTop: 'env(safe-area-inset-top)' }
+            : {}),
+        }}
         ref={ref}
       >
         {logged ? (

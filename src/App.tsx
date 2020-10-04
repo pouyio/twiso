@@ -91,7 +91,14 @@ const App: React.FC = () => {
             />
           )}
           <Alert />
-          <ul className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block select-none">
+          <ul
+            className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block select-none"
+            style={{
+              ...(window.visualViewport.width >= 1024
+                ? { paddingTop: 'env(safe-area-inset-top)' }
+                : {}),
+            }}
+          >
             <li className="py-1">
               <Emoji emoji="📺" /> P
             </li>
@@ -144,7 +151,12 @@ const App: React.FC = () => {
             </Suspense>
             <ul
               className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"
-              style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+              style={{
+                paddingBottom: 'env(safe-area-inset-bottom)',
+                ...(window.visualViewport.width >= 1024
+                  ? { paddingTop: 'env(safe-area-inset-top)' }
+                  : {}),
+              }}
             >
               <li className="py-1">
                 <Emoji emoji="📺" />P
