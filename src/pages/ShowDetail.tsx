@@ -8,14 +8,14 @@ import SeasonsContainer from '../components/Seasons/SeasonsContainer';
 import Genres from '../components/Genres';
 import ShowWatchButton from '../components/ShowWatchButton';
 import People from '../components/People';
-import CollapsableText from '../components/CollapsableText/CollapsableText';
 import { useLocation, useParams } from 'react-router-dom';
 import { SearchShow, People as IPeople, Show, Ratings } from '../models';
 import Helmet from 'react-helmet';
-import Rating from 'components/Rating';
+import Rating from '../components/Rating';
 import { AlertContext } from '../contexts';
 import { useSelector } from 'react-redux';
 import { IState } from '../state/state';
+import Collapsable from '../components/Collapsable/Collapsable';
 
 enum status {
   'returning series' = 'en antena',
@@ -231,9 +231,9 @@ export default function ShowDetail() {
 
           <div className="my-4">
             <p className="font-medium">Resumen:</p>
-            <CollapsableText>
+            <Collapsable heightInRem={7}>
               {overview || 'Sin descripción'}
-            </CollapsableText>
+            </Collapsable>
           </div>
 
           <div className="my-4">

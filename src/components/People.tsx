@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { People as IPeople } from '../models';
+import Collapsable from './Collapsable/Collapsable';
 import { Empty } from './Empty';
 
 const placeholders = [
@@ -99,33 +100,38 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
 
       <div className="my-4">
         <p className="font-medium">Reparto:</p>
-        <ul
-          className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap justify-between"
-          style={{ WebkitOverflowScrolling: 'touch' }}
+        <Collapsable
+          heightInRem={10}
+          disable={window.visualViewport.width < 1024}
         >
-          {people ? (
-            cast.length ? (
-              cast.map((character, i) => (
-                <li key={i} className="my-1">
-                  <Link
-                    to={{
-                      pathname: `/person/${character.person.ids.trakt}`,
-                    }}
-                  >
-                    <div className="bg-gray-200 font-light px-3 py-1 rounded-full mx-1 whitespace-pre flex flex-col text-center">
-                      <span>{character.person.name || '-'}</span>
-                      <small>{character.character || '-'}</small>
-                    </div>
-                  </Link>
-                </li>
-              ))
+          <ul
+            className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap justify-between"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {people ? (
+              cast.length ? (
+                cast.map((character, i) => (
+                  <li key={i} className="my-1">
+                    <Link
+                      to={{
+                        pathname: `/person/${character.person.ids.trakt}`,
+                      }}
+                    >
+                      <div className="bg-gray-200 font-light px-3 py-1 rounded-full mx-1 whitespace-pre flex flex-col text-center">
+                        <span>{character.person.name || '-'}</span>
+                        <small>{character.character || '-'}</small>
+                      </div>
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <Empty />
+              )
             ) : (
-              <Empty />
-            )
-          ) : (
-            placeholders
-          )}
-        </ul>
+              placeholders
+            )}
+          </ul>
+        </Collapsable>
       </div>
     </>
   );

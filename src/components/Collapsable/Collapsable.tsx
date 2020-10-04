@@ -1,24 +1,30 @@
 import { motion } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react';
-import './collapsable-text.css';
+import './collapsable.css';
 
-interface ICollapsableTextProps {
-  children: string;
+interface ICollapsableProps {
+  heightInRem: number;
+  disable?: boolean;
 }
 
-const isOverflown = (element: HTMLParagraphElement | null) => {
+const isOverflown = (
+  element: HTMLParagraphElement | null,
+  heightInRem: number
+) => {
   if (!element) {
     return false;
   }
 
   const isOverflowing =
     element.clientHeight < element.scrollHeight ||
-    element.clientHeight > 7 * 16;
+    element.clientHeight > heightInRem * 16;
 
   return isOverflowing;
 };
-const CollapsableText: React.FC<ICollapsableTextProps> = ({
-  children = '',
+const Collapsable: React.FC<ICollapsableProps> = ({
+  heightInRem,
+  children,
+  disable,
 }) => {
   const [opened, setOpened] = useState(false);
   const [isButtonShown, setIsButtonShown] = useState(false);
@@ -26,23 +32,26 @@ const CollapsableText: React.FC<ICollapsableTextProps> = ({
 
   useEffect(() => {
     setOpened(false);
-    setIsButtonShown(isOverflown(ref.current));
+    setIsButtonShown(isOverflown(ref.current, heightInRem));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children]);
 
-  return (
+  return disable ? (
+    <>{children}</>
+  ) : (
     <div className="flex flex-col">
-      <motion.p
+      <motion.div
         ref={ref}
         className={`leading-tight font-light overflow-hidden relative ${
-          isButtonShown && !opened ? 'collapsable-text' : ''
+          isButtonShown && !opened ? 'collapsable' : ''
         }`}
         initial={false}
         {...(isButtonShown
-          ? { animate: { height: opened ? 'auto' : '7rem' } }
+          ? { animate: { height: opened ? 'auto' : `${heightInRem}rem` } }
           : {})}
       >
         {children}
-      </motion.p>
+      </motion.div>
       {isButtonShown && (
         <span
           className="text-right text-blue-500 cursor-pointer"
@@ -55,4 +64,4 @@ const CollapsableText: React.FC<ICollapsableTextProps> = ({
   );
 };
 
-export default CollapsableText;
+export default Collapsable;

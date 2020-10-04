@@ -1,4 +1,4 @@
-.collapsable-text::before {
+.collapsable::before {
   box-shadow: inset 0px -32px 32px -26px var(--primary-light);
   position: absolute;
   top: 0;

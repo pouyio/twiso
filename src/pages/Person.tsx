@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from '../components/Image';
 import ImageLink from '../components/ImageLink';
-import CollapsableText from '../components/CollapsableText/CollapsableText';
+import Collapsable from '../components/Collapsable/Collapsable';
 import { getPersonItemsApi, getPersonApi } from '../utils/api';
 import Emoji from '../components/Emoji';
 import { useParams } from 'react-router-dom';
@@ -12,8 +12,8 @@ import {
   Movie,
   Show,
 } from '../models';
-import { placeholders } from 'components/Related';
-import { Empty } from 'components/Empty';
+import { placeholders } from '../components/Related';
+import { Empty } from '../components/Empty';
 import { useSelector } from 'react-redux';
 import { IState } from 'state/state';
 import Helmet from 'react-helmet';
@@ -133,9 +133,9 @@ const Person: React.FC = () => {
 
           <div className="my-4 relative">
             <p className="font-medium">Biografía:</p>
-            <CollapsableText>
+            <Collapsable heightInRem={7}>
               {localState.biography || 'Sin descripción'}
-            </CollapsableText>
+            </Collapsable>
           </div>
 
           <h1 className="font-medium">Películas </h1>

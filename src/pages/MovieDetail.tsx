@@ -1,10 +1,10 @@
-import Rating from 'components/Rating';
+import Collapsable from '../components/Collapsable/Collapsable';
+import Rating from '../components/Rating';
 import React, { useContext, useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import { IState } from 'state/state';
-import CollapsableText from '../components/CollapsableText/CollapsableText';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
 import Image from '../components/Image';
@@ -182,9 +182,9 @@ export default function MovieDetail() {
           </div>
           <div className="my-4">
             <p className="font-medium">Resumen:</p>
-            <CollapsableText>
+            <Collapsable heightInRem={7}>
               {overview || 'Sin descripción'}
-            </CollapsableText>
+            </Collapsable>
           </div>
 
           <div className="my-4">
