@@ -1,3 +1,10 @@
+## [2.6.19](https://github.com/pouyio/twiso/compare/v2.6.18...v2.6.19) (2020-10-04)
+
+
+### :rocket:
+
+* fix cd ([0544b8b](https://github.com/pouyio/twiso/commit/0544b8b32f8765399516bab7b481deee92dce462))
+
 ## [2.6.18](https://github.com/pouyio/twiso/compare/v2.6.17...v2.6.18) (2020-10-04)
 
 
