@@ -23,7 +23,7 @@ export default function Movies() {
       <div
         className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto"
         style={{
-          ...(window.visualViewport.width <= 1024
+          ...(window.visualViewport.width < 1024
             ? { paddingTop: 'env(safe-area-inset-top)' }
             : {}),
         }}
