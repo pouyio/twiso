@@ -1,3 +1,10 @@
+## [2.6.23](https://github.com/pouyio/twiso/compare/v2.6.22...v2.6.23) (2020-10-05)
+
+
+### :art:
+
+* update on orientation change ([86f5e8c](https://github.com/pouyio/twiso/commit/86f5e8c4d63ad311309d568266c87ff3e5440c0d))
+
 ## [2.6.22](https://github.com/pouyio/twiso/compare/v2.6.21...v2.6.22) (2020-10-04)
 
 
