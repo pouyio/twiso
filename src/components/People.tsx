@@ -1,3 +1,4 @@
+import { useWindowSize } from '../hooks';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { People as IPeople } from '../models';
@@ -59,6 +60,7 @@ interface IPeopleProps {
 const People: React.FC<IPeopleProps> = ({ people, type }) => {
   const cast = people?.cast ?? [];
   const crew = people?.crew;
+  const { width } = useWindowSize();
 
   return (
     <>
@@ -100,10 +102,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
 
       <div className="my-4">
         <p className="font-medium">Reparto:</p>
-        <Collapsable
-          heightInRem={10}
-          disable={window.visualViewport.width < 1024}
-        >
+        <Collapsable heightInRem={10} disable={width < 1024}>
           <ul
             className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap justify-between"
             style={{ WebkitOverflowScrolling: 'touch' }}

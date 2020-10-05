@@ -5,13 +5,15 @@ import Emoji from '../../components/Emoji';
 import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';
 import { useSelector } from 'react-redux';
-import { IState } from 'state/state';
+import { IState } from '../../state/state';
+import { useWindowSize } from '../../hooks';
 
 export default function Movies() {
   const [mode, setMode] = useQueryParam(
     'mode',
     withDefault(StringParam, 'watchlist')
   );
+  const { width } = useWindowSize();
 
   const movies = useSelector((state: IState) => state.movies);
 
@@ -23,9 +25,7 @@ export default function Movies() {
       <div
         className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto"
         style={{
-          ...(window.visualViewport.width < 1024
-            ? { paddingTop: 'env(safe-area-inset-top)' }
-            : {}),
+          ...(width < 1024 ? { paddingTop: 'env(safe-area-inset-top)' } : {}),
         }}
       >
         <button

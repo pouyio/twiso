@@ -6,12 +6,14 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import Helmet from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { IState } from 'state/state';
+import { useWindowSize } from '../../hooks';
 
 export default function Shows() {
   const [mode, setMode] = useQueryParam(
     'mode',
     withDefault(StringParam, 'watched')
   );
+  const { width } = useWindowSize();
 
   const shows = useSelector((state: IState) => state.shows);
 
@@ -23,9 +25,7 @@ export default function Shows() {
       <div
         className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto"
         style={{
-          ...(window.visualViewport.width < 1024
-            ? { paddingTop: 'env(safe-area-inset-top)' }
-            : {}),
+          ...(width < 1024 ? { paddingTop: 'env(safe-area-inset-top)' } : {}),
         }}
       >
         <button

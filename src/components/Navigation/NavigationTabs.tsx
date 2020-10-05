@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useResize } from '../../hooks';
+import { useResize, useWindowSize } from '../../hooks';
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Emoji from '../Emoji';
@@ -20,6 +20,7 @@ export const NavigationTabs: React.FC<{
       ['/movies', null],
     ])
   );
+  const { width } = useWindowSize();
 
   useEffect(() => {
     const target = refs.current.get(pathname);
@@ -39,9 +40,7 @@ export const NavigationTabs: React.FC<{
         className="flex justify-around px-2 text-center bg-gray-200"
         style={{
           paddingBottom: 'env(safe-area-inset-bottom)',
-          ...(window.visualViewport.width >= 1024
-            ? { paddingTop: 'env(safe-area-inset-top)' }
-            : {}),
+          ...(width >= 1024 ? { paddingTop: 'env(safe-area-inset-top)' } : {}),
         }}
         ref={ref}
       >

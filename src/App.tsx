@@ -16,6 +16,7 @@ import * as Sentry from '@sentry/react';
 import { AuthService } from 'utils/AuthService';
 import { NewVersion } from 'components/NewVersion';
 import { NavigationTabs } from 'components/Navigation/NavigationTabs';
+import { useWindowSize } from './hooks';
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const Profile = lazy(() => import('./pages/Profile'));
 const MovieDetail = lazy(() => import('./pages/MovieDetail'));
@@ -45,6 +46,7 @@ const ParamsComponent: React.FC = () => {
 const App: React.FC = () => {
   const [ref, setRef] = useState<HTMLDivElement | null>();
   const [skipUpdate, setSkipUpdate] = useState(false);
+  const { width: windowWidth } = useWindowSize();
 
   const globalSearch = useSelector((state: IState) => state.globalSearch);
   const serviceWorkerRegistration = useSelector(
@@ -94,7 +96,7 @@ const App: React.FC = () => {
           <ul
             className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block select-none"
             style={{
-              ...(window.visualViewport.width >= 1024
+              ...(windowWidth >= 1024
                 ? { paddingTop: 'env(safe-area-inset-top)' }
                 : {}),
             }}
@@ -153,7 +155,7 @@ const App: React.FC = () => {
               className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"
               style={{
                 paddingBottom: 'env(safe-area-inset-bottom)',
-                ...(window.visualViewport.width >= 1024
+                ...(windowWidth >= 1024
                   ? { paddingTop: 'env(safe-area-inset-top)' }
                   : {}),
               }}
