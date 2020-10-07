@@ -22,6 +22,7 @@ import {
   setWatchlist as setWatchlistShows,
   updateSeasons,
   updateProgress,
+  updateShow,
 } from './slices/showsSlice';
 import { store, setTotalLoadingShows, updateTotalLoadingShows } from './store';
 
@@ -64,19 +65,38 @@ const loadWatchedShows = async () => {
   store.dispatch(setWatchedShows(showsWatched));
 
   getWatchedApi<ShowWatched>('show').then(async ({ data }) => {
-    const showsToUpdate = showsWatched.filter((s) => {
-      return data.some(
-        (sd) =>
-          !s.progress ||
-          (s.show.ids.trakt === sd.show.ids.trakt &&
-            s.show.updated_at !== sd.show.updated_at)
+    const showsToUpdate = showsWatched.reduce<ShowWatched[]>((acc, s) => {
+      const newerShow = data.find(
+        (sd) => s.show.ids.trakt === sd.show.ids.trakt
       );
-    });
+
+      let shouldUpdate = false;
+
+      if (!newerShow || !s.progress) {
+        shouldUpdate = true;
+      }
+
+      if (
+        s.show.updated_at !== newerShow?.show.updated_at ||
+        s.last_watched_at !== newerShow?.last_watched_at
+      ) {
+        shouldUpdate = true;
+      }
+
+      if (shouldUpdate) {
+        acc.push({ ...newerShow! });
+      }
+
+      return acc;
+    }, []);
 
     const showsToAdd = data.filter(
       (d) => !showsWatched.some((s) => s.show.ids.trakt === d.show.ids.trakt)
     );
+
+    showsToUpdate.forEach((s) => store.dispatch(updateShow(s)));
     showsToAdd.forEach((s) => store.dispatch(addWatchedShow(s)));
+
     const outdatedShows = [...showsToAdd, ...showsToUpdate];
 
     store.dispatch(setTotalLoadingShows(outdatedShows.length));

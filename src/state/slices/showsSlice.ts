@@ -15,6 +15,7 @@ import {
   addWatchedApi,
   removeWatchedApi,
 } from 'utils/api';
+import { mergeDeepLeft } from 'ramda';
 
 export const addWatchlist = createAsyncThunk(
   'shows/addWatchlist',
@@ -167,6 +168,15 @@ const showsSlice = createSlice({
     addWatched(state, { payload }: PayloadAction<ShowWatched>) {
       state.watched.push(payload);
     },
+    updateShow(state, { payload }: PayloadAction<ShowWatched>) {
+      const index = state.watched.findIndex(
+        (s) => s.show.ids.trakt === payload.show.ids.trakt
+      );
+      state.watched[index] = mergeDeepLeft(
+        payload,
+        state.watched[index]
+      ) as ShowWatched;
+    },
     removeWatcheds(state, { payload }: PayloadAction<ShowWatched[]>) {
       state.watched = state.watched.filter(
         (s) => !payload.some((sd) => sd.show.ids.trakt === s.show.ids.trakt)
@@ -230,6 +240,7 @@ export const {
   setWatchlist,
   setWatched,
   addWatched,
+  updateShow,
   removeWatcheds,
   updateSeasons,
   updateProgress,

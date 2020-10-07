@@ -89,6 +89,13 @@ export const dbMiddleware = (store) => (next) => (action) => {
         });
       break;
     }
+    case 'shows/updateShow': {
+      db.table('shows')
+        .where('show.ids.trakt')
+        .equals(action.payload.show.ids.trakt)
+        .modify({ ...action.payload });
+      break;
+    }
     case 'shows/addWatched': {
       db.table('shows').put({ ...action.payload, localState: 'watched' });
       break;
