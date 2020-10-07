@@ -1,3 +1,10 @@
+## [2.6.24](https://github.com/pouyio/twiso/compare/v2.6.23...v2.6.24) (2020-10-07)
+
+
+### :bug:
+
+* update show on new chapters ([04a98ca](https://github.com/pouyio/twiso/commit/04a98cad0d6d1c906dfb4918ff7ca2b613adfd80))
+
 ## [2.6.23](https://github.com/pouyio/twiso/compare/v2.6.22...v2.6.23) (2020-10-05)
 
 
