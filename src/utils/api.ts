@@ -199,7 +199,7 @@ export const addWatchlistApi = (item: Show | Movie, type: ItemType) => {
 };
 
 export const removeWatchlistApi = (item: Show | Movie, type: ItemType) => {
-  return axios.post<RemovedWatchlist>(
+  return traktClient.post<RemovedWatchlist>(
     `${BASE_URL}/sync/watchlist/remove`,
     {
       [`${type}s`]: [item],
