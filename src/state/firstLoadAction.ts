@@ -69,8 +69,7 @@ const loadWatchedShows = async () => {
         (sd) =>
           !s.progress ||
           (s.show.ids.trakt === sd.show.ids.trakt &&
-            (s.last_updated_at !== sd.last_updated_at ||
-              s.last_watched_at !== sd.last_watched_at))
+            s.show.updated_at !== sd.show.updated_at)
       );
     });
 
