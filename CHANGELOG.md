@@ -1,3 +1,10 @@
+## [2.6.25](https://github.com/pouyio/twiso/compare/v2.6.24...v2.6.25) (2020-10-07)
+
+
+### :bug:
+
+* improve shows sync ([549f124](https://github.com/pouyio/twiso/commit/549f1245312b13cf081ba9dffec62eb699983794))
+
 ## [2.6.24](https://github.com/pouyio/twiso/compare/v2.6.23...v2.6.24) (2020-10-07)
 
 
