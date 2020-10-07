@@ -1,3 +1,10 @@
+## [2.6.26](https://github.com/pouyio/twiso/compare/v2.6.25...v2.6.26) (2020-10-07)
+
+
+### :bug:
+
+* update axios client ([5cb7665](https://github.com/pouyio/twiso/commit/5cb7665a47dad04a9a3351c2aabe14bb162f0818))
+
 ## [2.6.25](https://github.com/pouyio/twiso/compare/v2.6.24...v2.6.25) (2020-10-07)
 
 
