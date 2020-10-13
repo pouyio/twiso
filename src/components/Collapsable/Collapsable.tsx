@@ -16,7 +16,7 @@ const isOverflown = (
   }
 
   const isOverflowing =
-    element.clientHeight < element.scrollHeight ||
+    element.clientHeight + 1 < element.scrollHeight ||
     element.clientHeight > heightInRem * 16;
 
   return isOverflowing;
