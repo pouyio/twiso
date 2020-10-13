@@ -1,3 +1,10 @@
+## [2.6.28](https://github.com/pouyio/twiso/compare/v2.6.27...v2.6.28) (2020-10-13)
+
+
+### :art:
+
+* fine tunning collapsable ([b395189](https://github.com/pouyio/twiso/commit/b395189cf1d13dd5f448b38600b74795eeca281d))
+
 ## [2.6.27](https://github.com/pouyio/twiso/compare/v2.6.26...v2.6.27) (2020-10-13)
 
 
