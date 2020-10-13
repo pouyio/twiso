@@ -1,3 +1,10 @@
+## [2.6.27](https://github.com/pouyio/twiso/compare/v2.6.26...v2.6.27) (2020-10-13)
+
+
+### :bug:
+
+* fix firebox visualViewport not available ([0be2d5a](https://github.com/pouyio/twiso/commit/0be2d5a93b1a54f07b9074e716b524ee7ceaee41))
+
 ## [2.6.26](https://github.com/pouyio/twiso/compare/v2.6.25...v2.6.26) (2020-10-07)
 
 
