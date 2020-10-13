@@ -8,9 +8,11 @@ export const useWindowSize = () => {
 
   useEffect(() => {
     const handleResize = () => {
+      const width = window.visualViewport?.width ?? window.innerWidth;
+      const height = window.visualViewport?.height ?? window.innerHeight;
       setWindowSize({
-        width: window.visualViewport.width,
-        height: window.visualViewport.height,
+        width,
+        height,
       });
     };
 
