@@ -74,6 +74,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
     >
       {seasons.map((s) => (
         <li
+          role="button"
           onClick={() =>
             setSelectedSeason(
               selectedSeason?.number === s.number ? undefined : s.number
