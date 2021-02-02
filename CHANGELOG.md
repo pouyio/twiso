@@ -1,3 +1,18 @@
+## [2.6.29](https://github.com/pouyio/twiso/compare/v2.6.28...v2.6.29) (2021-02-02)
+
+
+### :arrow_up:
+
+* Bump npm-user-validate from 1.0.0 to 1.0.1 ([6eb1f99](https://github.com/pouyio/twiso/commit/6eb1f99b21790695fa3c4d0f4c38980b31dc3ad5))
+
+### :art:
+
+* style show progress ([68916f9](https://github.com/pouyio/twiso/commit/68916f90703a59f52e806061be738fb32e7028d4))
+
+### :style:
+
+* added role to season buttons ([b58ad97](https://github.com/pouyio/twiso/commit/b58ad9785a57b3380fb75a6576f098ac7497d395))
+
 ## [2.6.28](https://github.com/pouyio/twiso/compare/v2.6.27...v2.6.28) (2020-10-13)
 
 
