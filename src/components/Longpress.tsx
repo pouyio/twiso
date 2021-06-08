@@ -10,16 +10,18 @@ const LongPress: React.FC = () => {
 
   const dispatch = useDispatch();
   return (
-    <LongPressable
-      onShortPress={() => history.push('/search')}
-      onLongPress={() => dispatch(setGlobalSearch(true))}
-      longPressTime={500}
-    >
-      <div className="flex items-center cursor-pointer">
-        <Emoji emoji="🔍" />
-        <span className="ml-2 text-base hidden lg:inline">Buscar</span>
-      </div>
-    </LongPressable>
+    <div role="button" onClick={() => history.push('/search')}>
+      <LongPressable
+        onShortPress={() => history.push('/search')}
+        onLongPress={() => dispatch(setGlobalSearch(true))}
+        longPressTime={500}
+      >
+        <div className="flex items-center cursor-pointer">
+          <Emoji emoji="🔍" />
+          <span className="ml-2 text-base hidden lg:inline">Buscar</span>
+        </div>
+      </LongPressable>
+    </div>
   );
 };
 

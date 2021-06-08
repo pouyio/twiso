@@ -80,7 +80,6 @@ export const NavigationTabs: React.FC<{
           className="py-1"
           onClick={() => window.scrollTo(0, 0)}
           ref={(el) => refs.current.set('/search', el)}
-          role="button"
         >
           <LongPress />
         </li>
