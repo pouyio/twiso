@@ -1,3 +1,10 @@
+## [2.6.32](https://github.com/pouyio/twiso/compare/v2.6.31...v2.6.32) (2021-06-08)
+
+
+### :art:
+
+* add role to search button ([7ab46d4](https://github.com/pouyio/twiso/commit/7ab46d41d9accc8ae890878569bd8ad69eb3bca8))
+
 ## [2.6.31](https://github.com/pouyio/twiso/compare/v2.6.30...v2.6.31) (2021-06-08)
 
 
