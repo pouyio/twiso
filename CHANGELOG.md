@@ -1,3 +1,14 @@
+## [2.6.30](https://github.com/pouyio/twiso/compare/v2.6.29...v2.6.30) (2021-06-08)
+
+
+### :arrow_up:
+
+* Bump ini from 1.3.5 to 1.3.7 ([7c417b9](https://github.com/pouyio/twiso/commit/7c417b9ef15744ffa3081d84985c7515dca98a8f))
+
+### :art:
+
+* add role to search button ([389e990](https://github.com/pouyio/twiso/commit/389e9908e2aff50a6363eb68edb6cf31305bb06f))
+
 ## [2.6.29](https://github.com/pouyio/twiso/compare/v2.6.28...v2.6.29) (2021-02-02)
 
 
