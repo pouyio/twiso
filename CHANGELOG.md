@@ -1,3 +1,19 @@
+## [2.6.31](https://github.com/pouyio/twiso/compare/v2.6.30...v2.6.31) (2021-06-08)
+
+
+### :arrow_up:
+
+* Bump axios from 0.19.2 to 0.21.1 ([c7f7162](https://github.com/pouyio/twiso/commit/c7f71620c2c888ffca2f274bcf3ee44c865df709))
+* Bump elliptic from 6.5.3 to 6.5.4 ([8db7eb6](https://github.com/pouyio/twiso/commit/8db7eb6df891184ed899846f983ffa9cbb7d4925))
+* Bump handlebars from 4.7.6 to 4.7.7 ([908e07f](https://github.com/pouyio/twiso/commit/908e07f5fea5c1d9ef3706b157e735bf3f1bb5d4))
+* Bump hosted-git-info from 2.8.8 to 2.8.9 ([eedba1b](https://github.com/pouyio/twiso/commit/eedba1b8c386943d5d207486b95e9ead7d9ee19e))
+* Bump ssri from 6.0.1 to 6.0.2 ([d35b229](https://github.com/pouyio/twiso/commit/d35b229932363c420af121a5ca8bea537f254149))
+* Bump y18n from 3.2.1 to 3.2.2 ([0965fa9](https://github.com/pouyio/twiso/commit/0965fa93e66287c5738810aad2ca1ce4db4f458b))
+
+### :art:
+
+* add role to search button ([3a34bab](https://github.com/pouyio/twiso/commit/3a34babbac569d3835dfd9eb65be758503eedb6d))
+
 ## [2.6.30](https://github.com/pouyio/twiso/compare/v2.6.29...v2.6.30) (2021-06-08)
 
 
