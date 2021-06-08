@@ -87,6 +87,7 @@ export const NavigationTabs: React.FC<{
           <li
             className="py-1"
             onClick={() => window.scrollTo(0, 0)}
+            role="button"
             ref={(el) => refs.current.set('/calendar', el)}
           >
             <NavLink to="/calendar" className="flex items-center">
