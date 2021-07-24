@@ -17,8 +17,8 @@ export const useImage = (
 
   const { language, config } = useSelector((state: IState) => {
     return {
-      language: state.language,
-      config: state.config,
+      language: state.config.language,
+      config: state.config.img,
     };
   });
 

@@ -7,7 +7,8 @@ import {
 } from '../models';
 
 export const PAGE_SIZE = 40;
-const LANGUAGE = 'es';
+
+export type Language = 'en' | 'es';
 
 export interface IState {
   loading: {
@@ -25,8 +26,7 @@ export interface IState {
   };
   globalSearch: boolean;
   serviceWorkerRegistration: ServiceWorkerRegistration | null;
-  config?: ImgConfig;
-  language: string;
+  config: { img?: ImgConfig; language: Language };
 }
 
 export const initialState: IState = {
@@ -43,7 +43,9 @@ export const initialState: IState = {
     watched: [],
     watchlist: [],
   },
-  language: LANGUAGE,
+  config: {
+    language: (localStorage.getItem('language') || 'en') as Language,
+  },
   globalSearch: false,
   serviceWorkerRegistration: null,
 };

@@ -8,7 +8,7 @@ import { AuthService } from 'utils/AuthService';
 const authService = AuthService.getInstance();
 
 export const useTranslate = (type: 'movie' | 'show', item?: Show | Movie) => {
-  const language = useSelector((state: IState) => state.language);
+  const language = useSelector((state: IState) => state.config.language);
   const [translation, setTranslation] = useState<{
     title: string;
     overview: string;

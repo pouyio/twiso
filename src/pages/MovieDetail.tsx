@@ -21,7 +21,7 @@ export default function MovieDetail() {
   const [showOriginalTitle, setShowOriginalTitle] = useState(false);
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
-  const language = useSelector((state: IState) => state.language);
+  const language = useSelector((state: IState) => state.config.language);
   const { title = '', overview = '' } = useTranslate('movie', item);
   const { state } = useLocation<Movie>();
   const { id } = useParams<{ id: string }>();

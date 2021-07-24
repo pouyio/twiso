@@ -6,7 +6,7 @@ import {
 } from '@reduxjs/toolkit';
 import { reducer as moviesReducer } from './slices/moviesSlice';
 import { reducer as showsReducer } from './slices/showsSlice';
-import { reducer as defaultReducer } from './slices/defaultSlice';
+import { reducer as configReducer } from './slices/configSlice';
 import { initialState } from './state';
 import { dbMiddleware } from './middleware';
 
@@ -25,7 +25,6 @@ export const setSWRegistration = createAction<ServiceWorkerRegistration>(
 
 export const store = configureStore({
   reducer: {
-    language: createReducer(initialState.language, {}),
     loading: createReducer(initialState.loading, (builder) =>
       builder
         .addCase(setTotalLoadingShows, (state, { payload }) => {
@@ -36,14 +35,14 @@ export const store = configureStore({
         })
     ),
     globalSearch: createReducer(initialState.globalSearch, (builder) =>
-      builder.addCase(setGlobalSearch, (state, { payload }) => payload)
+      builder.addCase(setGlobalSearch, (_, { payload }) => payload)
     ),
     serviceWorkerRegistration: createReducer(
       initialState.serviceWorkerRegistration,
       (builder) =>
-        builder.addCase(setSWRegistration, (state, { payload }) => payload)
+        builder.addCase(setSWRegistration, (_, { payload }) => payload)
     ),
-    config: defaultReducer,
+    config: configReducer,
     movies: moviesReducer,
     shows: showsReducer,
   },

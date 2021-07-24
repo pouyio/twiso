@@ -26,7 +26,7 @@ const Person: React.FC = () => {
   const [showResults, setShowResults] = useState<
     { show: Show; type: 'show'; title: string }[]
   >();
-  const language = useSelector((state: IState) => state.language);
+  const language = useSelector((state: IState) => state.config.language);
 
   const { id } = useParams<{ id: string }>();
 

@@ -11,7 +11,7 @@ import { GlobalSearch } from 'components/GlobalSearch';
 import { useSelector, useDispatch } from 'react-redux';
 import { IState } from 'state/state';
 import { firstLoad } from './state/firstLoadAction';
-import { loadImgConfig } from 'state/slices/defaultSlice';
+import { loadImgConfig } from 'state/slices/configSlice';
 import * as Sentry from '@sentry/react';
 import { AuthService } from 'utils/AuthService';
 import { NewVersion } from 'components/NewVersion';

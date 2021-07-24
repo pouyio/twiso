@@ -117,6 +117,10 @@ export const dbMiddleware = (store) => (next) => (action) => {
         .modify({ fullSeasons: action.payload.seasons });
       break;
     }
+    case 'config/setLanguage': {
+      localStorage.setItem('language', action.payload);
+      break;
+    }
     default:
       break;
   }
