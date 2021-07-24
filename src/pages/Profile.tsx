@@ -93,8 +93,8 @@ export default function Profile() {
               }}
               value={language}
             >
-              <option value="en">English 🇬🇧</option>
-              <option value="es">Español 🇪🇸</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="es">🇪🇸 Español</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
