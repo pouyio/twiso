@@ -13,6 +13,7 @@ export type Language = 'en' | 'es';
 export interface IState {
   loading: {
     shows: { current: number; total: number };
+    movies: { current: number; total: number };
   };
   movies: {
     ready: boolean;
@@ -32,6 +33,8 @@ export interface IState {
 export const initialState: IState = {
   loading: {
     shows: { current: 0, total: 0 },
+    // TODO split in watched & watchlist to show several loaders
+    movies: { current: 0, total: 0 },
   },
   movies: {
     ready: true,

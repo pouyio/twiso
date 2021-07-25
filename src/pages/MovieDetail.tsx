@@ -32,6 +32,7 @@ export default function MovieDetail() {
 
   useEffect(() => {
     if (!state) {
+      // TODO getMovie action but only fetch, avoid middleware
       getApi<SearchMovie>(+id, 'movie').then(({ data }) => {
         const item = data[0];
         setItem(item.movie);
@@ -81,7 +82,7 @@ export default function MovieDetail() {
   return item ? (
     <div className={getBgClassName()}>
       <Helmet>
-        <title>{title}</title>
+        <title>{item.title}</title>
       </Helmet>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
@@ -183,7 +184,7 @@ export default function MovieDetail() {
           <div className="my-4">
             <p className="font-medium">Resumen:</p>
             <Collapsable heightInRem={7}>
-              {overview || 'Sin descripción'}
+              {item.overview || 'Sin descripción'}
             </Collapsable>
           </div>
 

@@ -14,8 +14,16 @@ export const setTotalLoadingShows = createAction<number>(
   'SET_TOTAL_LOADING_SHOWS'
 );
 
+export const setTotalLoadingMovies = createAction<number>(
+  'SET_TOTAL_LOADING_MOVIES'
+);
+
 export const updateTotalLoadingShows = createAction<number | undefined>(
   'UPDATE_TOTAL_LOADING_SHOWS'
+);
+
+export const updateTotalLoadingMovies = createAction<number | undefined>(
+  'UPDATE_TOTAL_LOADING_MOVIES'
 );
 
 export const setGlobalSearch = createAction<boolean>('SET_GLOBAL_SEARCH');
@@ -32,6 +40,12 @@ export const store = configureStore({
         })
         .addCase(updateTotalLoadingShows, (state, { payload }) => {
           state.shows.current = payload ?? state.shows.current + 1;
+        })
+        .addCase(setTotalLoadingMovies, (state, { payload }) => {
+          state.movies.total = payload;
+        })
+        .addCase(updateTotalLoadingMovies, (state, { payload }) => {
+          state.movies.current = payload ?? state.movies.current + 1;
         })
     ),
     globalSearch: createReducer(initialState.globalSearch, (builder) =>

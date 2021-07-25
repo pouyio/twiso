@@ -7,7 +7,7 @@ import {
   removeWatched,
   addWatchlist,
   removeWatchlist,
-} from 'state/slices/moviesSlice';
+} from 'state/thunks/movies';
 import { useDispatch } from 'react-redux';
 import { AuthService } from 'utils/AuthService';
 

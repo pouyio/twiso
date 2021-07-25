@@ -45,6 +45,21 @@ export const dbMiddleware = (store) => (next) => (action) => {
       db.table('movies').delete(action.payload.ids.trakt);
       break;
     }
+    case 'movies/removeWatchlists': {
+      db.table('movies').bulkDelete(
+        action.payload.map((m) => m.movie.ids.trakt)
+      );
+      break;
+    }
+    case 'movies/getMovie/fulfilled': {
+      const state = store.getState().movies;
+      const oldMovie = state[action.meta.arg.type].find(
+        (m) => m.movie.ids.trakt === action.meta.arg.id
+      );
+      const newMovie = { ...oldMovie, movie: action.payload };
+      db.table('movies').put({ ...newMovie, localState: action.meta.arg.type });
+      break;
+    }
     case 'shows/setWatchlist': {
       db.table('shows')
         .where('localState')

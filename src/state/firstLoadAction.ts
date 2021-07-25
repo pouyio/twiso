@@ -12,6 +12,10 @@ import {
 } from 'utils/api';
 import db from 'utils/db';
 import {
+  addWatchlists as addWatchlistMovies,
+  addWatcheds as addWatchedMovies,
+  removeWatchlists as removeWatchlistMovies,
+  removeWatcheds as removeWatchedtMovies,
   setWatched as setWatchedMovies,
   setWatchlist as setWatchlistMovies,
 } from './slices/moviesSlice';
@@ -24,16 +28,70 @@ import {
   updateProgress,
   updateShow,
 } from './slices/showsSlice';
-import { store, setTotalLoadingShows, updateTotalLoadingShows } from './store';
+import {
+  store,
+  setTotalLoadingShows,
+  updateTotalLoadingShows,
+  setTotalLoadingMovies,
+  updateTotalLoadingMovies,
+} from './store';
+import { getMovie } from './thunks/movies';
 
 const loadWatchlistMovies = async () => {
   const moviesWatchlist = await db
     .table<MovieWatchlist>('movies')
     .where({ localState: 'watchlist' })
     .toArray();
+
   store.dispatch(setWatchlistMovies(moviesWatchlist));
+
   const { data } = await getWatchlistApi<MovieWatchlist>('movie');
-  store.dispatch(setWatchlistMovies(data));
+
+  const moviesToDelete = moviesWatchlist.filter(
+    (d) => !data.some((m) => m.movie.ids.trakt === d.movie.ids.trakt)
+  );
+  store.dispatch(removeWatchlistMovies(moviesToDelete));
+
+  const moviesToUpdate = moviesWatchlist
+    .filter((m) => data.some((md) => md.movie.ids.trakt === m.movie.ids.trakt))
+    .reduce<MovieWatchlist[]>((acc, m) => {
+      const newerMovie = data.find(
+        (md) => m.movie.ids.trakt === md.movie.ids.trakt
+      );
+
+      let shouldUpdate = false;
+
+      if (m.movie.updated_at !== newerMovie?.movie.updated_at) {
+        shouldUpdate = true;
+      }
+
+      if (shouldUpdate) {
+        acc.push({ ...newerMovie! });
+      }
+
+      return acc;
+    }, []);
+
+  const moviesToAdd = data.filter(
+    (d) => !moviesWatchlist.some((m) => m.movie.ids.trakt === d.movie.ids.trakt)
+  );
+  store.dispatch(addWatchlistMovies(moviesToAdd));
+
+  const outdatedMovies = [...moviesToAdd, ...moviesToUpdate];
+
+  store.dispatch(setTotalLoadingMovies(outdatedMovies.length));
+
+  outdatedMovies.forEach(async (outdated) => {
+    try {
+      store.dispatch(
+        getMovie({ id: outdated.movie.ids.trakt, type: 'watchlist' }) as any
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      store.dispatch(updateTotalLoadingMovies());
+    }
+  });
 };
 
 const loadWatchedMovies = async () => {
@@ -43,8 +101,51 @@ const loadWatchedMovies = async () => {
     .toArray();
   store.dispatch(setWatchedMovies(moviesWatched));
   const { data } = await getWatchedApi<MovieWatched>('movie');
-  store.dispatch(setWatchedMovies(data));
-  return true;
+  const moviesToDelete = moviesWatched.filter(
+    (d) => !data.some((m) => m.movie.ids.trakt === d.movie.ids.trakt)
+  );
+  store.dispatch(removeWatchedtMovies(moviesToDelete));
+
+  const moviesToUpdate = moviesWatched
+    .filter((m) => data.some((md) => md.movie.ids.trakt === m.movie.ids.trakt))
+    .reduce<MovieWatched[]>((acc, m) => {
+      const newerMovie = data.find(
+        (md) => m.movie.ids.trakt === md.movie.ids.trakt
+      );
+
+      let shouldUpdate = false;
+
+      if (m.movie.updated_at !== newerMovie?.movie.updated_at) {
+        shouldUpdate = true;
+      }
+
+      if (shouldUpdate) {
+        acc.push({ ...newerMovie! });
+      }
+
+      return acc;
+    }, []);
+
+  const moviesToAdd = data.filter(
+    (d) => !moviesWatched.some((m) => m.movie.ids.trakt === d.movie.ids.trakt)
+  );
+  store.dispatch(addWatchedMovies(moviesToAdd));
+
+  const outdatedMovies = [...moviesToAdd, ...moviesToUpdate];
+
+  store.dispatch(setTotalLoadingMovies(outdatedMovies.length));
+
+  outdatedMovies.forEach(async (outdated) => {
+    try {
+      store.dispatch(
+        getMovie({ id: outdated.movie.ids.trakt, type: 'watched' }) as any
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      store.dispatch(updateTotalLoadingMovies());
+    }
+  });
 };
 
 const loadWatchlistShows = async () => {
@@ -54,6 +155,7 @@ const loadWatchlistShows = async () => {
     .toArray();
   store.dispatch(setWatchlistShows(showsWatchlist));
   const { data } = await getWatchlistApi<ShowWatchlist>('show');
+  // TODO comprobar cuales son nuevas, eliminadas y desactualizadas, para obtenerlas individualmente junto con la traducción. Lo de abajo se eliminará
   store.dispatch(setWatchlistShows(data));
 };
 
