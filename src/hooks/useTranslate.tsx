@@ -1,14 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getTranslationsApi } from '../utils/api';
 import { Movie, Show, Translation } from '../models';
-import { useSelector } from 'react-redux';
-import { IState } from 'state/state';
 import { AuthService } from 'utils/AuthService';
+import { useAppSelector } from 'state/store';
 
 const authService = AuthService.getInstance();
 
 export const useTranslate = (type: 'movie' | 'show', item?: Show | Movie) => {
-  const language = useSelector((state: IState) => state.config.language);
+  const language = useAppSelector((state) => state.config.language);
   const [translation, setTranslation] = useState<{
     title: string;
     overview: string;

@@ -1,6 +1,16 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { initialState, Language } from '../state';
+import { Language } from '../state';
 import { getImgsConfigApi } from 'utils/api';
+import { ImgConfig } from 'models';
+
+interface ConfigState {
+  img?: ImgConfig;
+  language: Language;
+}
+
+const initialState: ConfigState = {
+  language: (localStorage.getItem('language') || 'en') as Language,
+};
 
 export const loadImgConfig = createAsyncThunk('config/load', async () => {
   try {
@@ -14,7 +24,7 @@ export const loadImgConfig = createAsyncThunk('config/load', async () => {
 
 const configSlice = createSlice({
   name: 'config',
-  initialState: initialState.config,
+  initialState: initialState,
   reducers: {
     setLanguage(state, { payload }: PayloadAction<Language>) {
       state.language = payload;

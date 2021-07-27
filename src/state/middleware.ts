@@ -1,6 +1,7 @@
+import { Middleware } from '@reduxjs/toolkit';
 import db from '../utils/db';
 
-export const dbMiddleware = (store) => (next) => (action) => {
+export const dbMiddleware: Middleware = (store) => (next) => (action) => {
   switch (action.type) {
     case 'movies/setWatched': {
       db.table('movies')
@@ -16,12 +17,20 @@ export const dbMiddleware = (store) => (next) => (action) => {
         });
       break;
     }
-    case 'movies/addWatched': {
-      db.table('movies').put({ ...action.payload, localState: 'watched' });
+    case 'movies/addWatched/fulfilled': {
+      if (action.payload.added.movies) {
+        db.table('movies').put({
+          movie: action.meta.arg.movie,
+          localState: 'watched',
+        });
+      }
       break;
     }
-    case 'movies/removeWatched': {
-      db.table('movies').delete(action.payload.ids.trakt);
+    case 'movies/removeWatched/fulfilled':
+    case 'movies/removeWatchlist/fulfilled': {
+      if (action.payload.deleted.movies) {
+        db.table('movies').delete(action.meta.arg.movie.ids.trakt);
+      }
       break;
     }
     case 'movies/setWatchlist':
@@ -37,12 +46,13 @@ export const dbMiddleware = (store) => (next) => (action) => {
           );
         });
       break;
-    case 'movies/addWatchlist': {
-      db.table('movies').put({ ...action.payload, localState: 'watchlist' });
-      break;
-    }
-    case 'movies/removeWatchlist': {
-      db.table('movies').delete(action.payload.ids.trakt);
+    case 'movies/addWatchlist/fulfilled': {
+      if (action.payload.added.movies) {
+        db.table('movies').put({
+          movie: action.meta.arg.movie,
+          localState: 'watchlist',
+        });
+      }
       break;
     }
     case 'movies/removeWatchlists': {

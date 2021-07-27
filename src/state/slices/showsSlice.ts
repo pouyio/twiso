@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { initialState } from '../state';
 import {
   ShowWatchlist,
   ShowWatched,
@@ -16,6 +15,18 @@ import {
   removeWatchedApi,
 } from 'utils/api';
 import { mergeDeepLeft } from 'ramda';
+
+interface ShowsState {
+  ready: boolean;
+  watched: ShowWatched[];
+  watchlist: ShowWatchlist[];
+}
+
+const initialState: ShowsState = {
+  ready: true,
+  watched: [],
+  watchlist: [],
+};
 
 export const addWatchlist = createAsyncThunk(
   'shows/addWatchlist',
@@ -157,7 +168,7 @@ export const removeSeasonWatched = createAsyncThunk(
 
 const showsSlice = createSlice({
   name: 'shows',
-  initialState: initialState.shows,
+  initialState: initialState,
   reducers: {
     setWatchlist(state, { payload }: PayloadAction<ShowWatchlist[]>) {
       state.watchlist = payload;

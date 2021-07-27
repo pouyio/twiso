@@ -4,7 +4,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
-import { IState } from 'state/state';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
 import Image from '../components/Image';
@@ -22,12 +21,13 @@ import {
 } from '../utils/api';
 import { getTranslation } from 'utils/getTranslations';
 import { allMovies } from 'state/slices/moviesSlice';
+import { useAppSelector } from 'state/store';
 
 export default function MovieDetail() {
   const [item, setItem] = useState<Movie>();
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
-  const language = useSelector((state: IState) => state.config.language);
+  const language = useAppSelector((state) => state.config.language);
   const { state } = useLocation<Movie>();
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);

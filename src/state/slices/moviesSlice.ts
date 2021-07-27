@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { initialState, IState } from '../state';
+import { IState } from '../state';
 import { MovieWatchlist, MovieWatched } from 'models';
 import {
   addWatched,
@@ -9,9 +9,21 @@ import {
   removeWatchlist as removeWatchlistThunk,
 } from 'state/thunks/movies';
 
+interface MoviesState {
+  ready: boolean;
+  watched: MovieWatched[];
+  watchlist: MovieWatchlist[];
+}
+
+const initialState: MoviesState = {
+  ready: true,
+  watched: [],
+  watchlist: [],
+};
+
 const moviesSlice = createSlice({
   name: 'movies',
-  initialState: initialState.movies,
+  initialState: initialState,
   reducers: {
     setWatched(state, { payload }: PayloadAction<MovieWatched[]>) {
       state.watched = payload;

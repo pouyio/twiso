@@ -14,9 +14,8 @@ import {
 } from '../models';
 import { placeholders } from '../components/Related';
 import { Empty } from '../components/Empty';
-import { useSelector } from 'react-redux';
-import { IState } from 'state/state';
 import Helmet from 'react-helmet';
+import { useAppSelector } from 'state/store';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
@@ -26,7 +25,7 @@ const Person: React.FC = () => {
   const [showResults, setShowResults] = useState<
     { show: Show; type: 'show'; title: string }[]
   >();
-  const language = useSelector((state: IState) => state.config.language);
+  const language = useAppSelector((state) => state.config.language);
 
   const { id } = useParams<{ id: string }>();
 

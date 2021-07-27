@@ -9,9 +9,9 @@ import Helmet from 'react-helmet';
 import { ThemeContext, ThemeType } from '../contexts';
 import { LoginButton } from '../components/LoginButton';
 import { AuthService } from 'utils/AuthService';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setLanguage } from 'state/slices/configSlice';
-import { IState } from 'state/state';
+import { useAppSelector } from 'state/store';
 
 const authService = AuthService.getInstance();
 
@@ -21,7 +21,7 @@ export default function Profile() {
   const [dev, setDev] = useState(false);
   const isLogged = authService.isLoggedIn();
   const dispatch = useDispatch();
-  const language = useSelector((state: IState) => state.config.language);
+  const language = useAppSelector((state) => state.config.language);
 
   useEffect(() => {
     if (isLogged) {
