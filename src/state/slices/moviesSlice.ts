@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { initialState } from '../state';
+import { initialState, IState } from '../state';
 import { MovieWatchlist, MovieWatched } from 'models';
 import {
   addWatched,
@@ -84,6 +84,7 @@ const moviesSlice = createSlice({
       }),
 });
 
+// actions
 export const {
   setWatched,
   setWatchlist,
@@ -93,4 +94,11 @@ export const {
   removeWatcheds,
 } = moviesSlice.actions;
 
+// reducer
 export const reducer = moviesSlice.reducer;
+
+// selectors
+export const allMovies = (state: IState) => [
+  ...state.movies.watched,
+  ...state.movies.watchlist,
+];

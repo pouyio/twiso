@@ -26,6 +26,8 @@ const configSlice = createSlice({
     }),
 });
 
+// actions
 export const { setLanguage } = configSlice.actions;
 
+// reducer
 export const reducer = configSlice.reducer;

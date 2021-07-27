@@ -236,6 +236,7 @@ const showsSlice = createSlice({
 
 const { _removeWatchlist, _removeWatched } = showsSlice.actions;
 
+// actions
 export const {
   setWatchlist,
   setWatched,
@@ -246,4 +247,5 @@ export const {
   updateProgress,
 } = showsSlice.actions;
 
+// reducer
 export const reducer = showsSlice.reducer;
