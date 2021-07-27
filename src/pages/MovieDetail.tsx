@@ -12,36 +12,64 @@ import People from '../components/People';
 import Related from '../components/Related';
 import WatchButton from '../components/WatchButton';
 import { AlertContext } from '../contexts';
-import { useIsWatch, useShare, useTranslate } from '../hooks';
+import { useIsWatch, useShare } from '../hooks';
 import { Movie, People as IPeople, Ratings, SearchMovie } from '../models';
-import { getApi, getPeopleApi, getRatingsApi } from '../utils/api';
+import {
+  getApi,
+  getPeopleApi,
+  getRatingsApi,
+  getTranslationsApi,
+} from '../utils/api';
+import { getTranslation } from 'utils/getTranslations';
+import { allMovies } from 'state/slices/moviesSlice';
 
 export default function MovieDetail() {
   const [item, setItem] = useState<Movie>();
-  const [showOriginalTitle, setShowOriginalTitle] = useState(false);
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const language = useSelector((state: IState) => state.config.language);
-  const { title = '', overview = '' } = useTranslate('movie', item);
   const { state } = useLocation<Movie>();
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
+  const movies = useSelector(allMovies);
 
   const { isWatchlist, isWatched } = useIsWatch();
 
   useEffect(() => {
-    if (!state) {
-      // TODO getMovie action but only fetch, avoid middleware
-      getApi<SearchMovie>(+id, 'movie').then(({ data }) => {
-        const item = data[0];
-        setItem(item.movie);
-      });
+    window.scrollTo(0, 0);
+
+    if (item) {
       return;
     }
-    setItem(state);
-    window.scrollTo(0, 0);
-  }, [state, id]);
+
+    if (state) {
+      setItem(state);
+      return;
+    }
+
+    const foundLocalMovie = movies.find((m) => m.movie.ids.trakt === +id);
+
+    if (foundLocalMovie) {
+      setItem(foundLocalMovie.movie);
+    }
+
+    const retrieveRemoteMovie = async () => {
+      const { data } = await getApi<SearchMovie>(+id, 'movie');
+      const movie = data[0].movie;
+      setItem(movie);
+      if (movie.available_translations.includes('es')) {
+        const { data: translations } = await getTranslationsApi(+id, 'movie');
+        const { title, overview } = getTranslation(translations);
+        movie.title = title;
+        movie.overview = overview;
+        setItem(movie);
+      }
+    };
+
+    retrieveRemoteMovie();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, id, movies]);
 
   useEffect(() => {
     setPeople(undefined);
@@ -65,10 +93,6 @@ export default function MovieDetail() {
       return 'bg-blue-400';
     }
     return 'bg-gray-300';
-  };
-
-  const toggleShowOriginalTitle = () => {
-    setShowOriginalTitle(!showOriginalTitle);
   };
 
   const onShare = () => {
@@ -156,11 +180,8 @@ export default function MovieDetail() {
             </div>
 
             <div className="w-full">
-              <h1
-                onClick={toggleShowOriginalTitle}
-                className="text-4xl leading-none text-center"
-              >
-                {showOriginalTitle ? item.title : title}
+              <h1 className="text-4xl leading-none text-center">
+                {item.title}
               </h1>
               <h1 className="text-xl text-center mb-4 text-gray-300">
                 {new Date(item.released).toLocaleDateString(language, {
