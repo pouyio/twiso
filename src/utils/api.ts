@@ -28,7 +28,7 @@ import {
   UserStats,
 } from '../models';
 import { BASE_URL, config, IMG_URL, LOGIN_URL } from './apiConfig';
-import traktClient from './axiosClients';
+import { authTraktClient, traktClient } from './axiosClients';
 import { Session } from './AuthService';
 
 const limitClient = rateLimit(axios.create(), {
@@ -89,13 +89,8 @@ export const getSeasonEpisodesApi = (id: number, season: number) => {
 };
 
 export const getProgressApi = (id: number) => {
-  return traktClient.get<ShowProgress>(
-    `${BASE_URL}/shows/${id}/progress/watched?specials=true&count_specials=false`,
-    {
-      headers: {
-        Authorization: true,
-      },
-    }
+  return authTraktClient.get<ShowProgress>(
+    `${BASE_URL}/shows/${id}/progress/watched?specials=true&count_specials=false`
   );
 };
 
@@ -123,43 +118,26 @@ export const getWatchedApi = <T extends MovieWatched | ShowWatched>(
       ? `${BASE_URL}/sync/history/movies?page=1&limit=10000&extended=full`
       : `${BASE_URL}/sync/watched/shows?extended=full`;
 
-  return traktClient.get<T[]>(url, {
-    headers: {
-      Authorization: true,
-    },
-  });
+  return authTraktClient.get<T[]>(url);
 };
 
 export const addWatchedApi = (
   item: Episode | Season | Movie,
   type: ItemType
 ) => {
-  return traktClient.post<AddedWatched>(
-    `${BASE_URL}/sync/history`,
-    {
-      [`${type}s`]: [item],
-    },
-    {
-      headers: {
-        Authorization: true,
-      },
-    }
-  );
+  return authTraktClient.post<AddedWatched>(`${BASE_URL}/sync/history`, {
+    [`${type}s`]: [item],
+  });
 };
 
 export const removeWatchedApi = (
   item: Episode | Season | Movie,
   type: ItemType
 ) => {
-  return traktClient.post<RemovedWatched>(
+  return authTraktClient.post<RemovedWatched>(
     `${BASE_URL}/sync/history/remove`,
     {
       [`${type}s`]: [item],
-    },
-    {
-      headers: {
-        Authorization: true,
-      },
     }
   );
 };
@@ -167,12 +145,8 @@ export const removeWatchedApi = (
 export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
   type: 'movie' | 'show'
 ) => {
-  return traktClient
-    .get<T[]>(`${BASE_URL}/sync/watchlist/${type}s?extended=full`, {
-      headers: {
-        Authorization: true,
-      },
-    })
+  return authTraktClient
+    .get<T[]>(`${BASE_URL}/sync/watchlist/${type}s?extended=full`)
     .then((res) => {
       const ordered = res.data.sort(
         (a, b) =>
@@ -185,29 +159,16 @@ export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
 };
 
 export const addWatchlistApi = (item: Show | Movie, type: ItemType) => {
-  return traktClient.post<AddedWatchlist>(
-    `${BASE_URL}/sync/watchlist`,
-    {
-      [`${type}s`]: [item],
-    },
-    {
-      headers: {
-        Authorization: true,
-      },
-    }
-  );
+  return authTraktClient.post<AddedWatchlist>(`${BASE_URL}/sync/watchlist`, {
+    [`${type}s`]: [item],
+  });
 };
 
 export const removeWatchlistApi = (item: Show | Movie, type: ItemType) => {
-  return traktClient.post<RemovedWatchlist>(
+  return authTraktClient.post<RemovedWatchlist>(
     `${BASE_URL}/sync/watchlist/remove`,
     {
       [`${type}s`]: [item],
-    },
-    {
-      headers: {
-        Authorization: true,
-      },
     }
   );
 };
@@ -240,19 +201,11 @@ export const getRelatedApi = <T>(id: number, type: ItemType) => {
 };
 
 export const getStatsApi = () => {
-  return traktClient.get<UserStats>(`${BASE_URL}/users/me/stats`, {
-    headers: {
-      Authorization: true,
-    },
-  });
+  return authTraktClient.get<UserStats>(`${BASE_URL}/users/me/stats`);
 };
 
 export const getProfileApi = () => {
-  return traktClient.get<Profile>(`${BASE_URL}/users/me`, {
-    headers: {
-      Authorization: true,
-    },
-  });
+  return authTraktClient.get<Profile>(`${BASE_URL}/users/me`);
 };
 
 export const getRatingsApi = (id: number, type: ItemType) => {
@@ -264,12 +217,7 @@ export const getCalendar = <T extends MovieCalendar | ShowCalendar>(
   firstDaxios: string,
   period: number
 ) => {
-  return traktClient.get<T[]>(
-    `${BASE_URL}/calendars/my/${type}s/${firstDaxios}/${period}`,
-    {
-      headers: {
-        Authorization: true,
-      },
-    }
+  return authTraktClient.get<T[]>(
+    `${BASE_URL}/calendars/my/${type}s/${firstDaxios}/${period}`
   );
 };
