@@ -16,7 +16,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-      inmutableCheck: false,
+      immutableCheck: false,
     }).concat(dbMiddleware),
 });
 
