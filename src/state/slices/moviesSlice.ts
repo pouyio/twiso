@@ -89,10 +89,13 @@ const moviesSlice = createSlice({
         }
       })
       .addCase(getMovie.fulfilled, (state, { payload, meta }) => {
-        const index = state.watchlist.findIndex(
+        const index = state[meta.arg.type].findIndex(
           (m) => m.movie.ids.trakt === payload.ids.trakt
         );
-        state.watchlist[index] = { ...state.watchlist[index], movie: payload };
+        state[meta.arg.type][index] = {
+          ...state[meta.arg.type][index],
+          movie: payload,
+        };
       }),
 });
 
