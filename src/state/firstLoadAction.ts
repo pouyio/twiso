@@ -20,6 +20,12 @@ import {
   setWatchlist as setWatchlistMovies,
 } from './slices/moviesSlice';
 import {
+  setTotalLoadingMovies,
+  setTotalLoadingShows,
+  updateTotalLoadingMovies,
+  updateTotalLoadingShows,
+} from './slices/rootSlice';
+import {
   addWatched as addWatchedShow,
   removeWatcheds as removeWatchedShows,
   setWatched as setWatchedShows,
@@ -28,13 +34,7 @@ import {
   updateProgress,
   updateShow,
 } from './slices/showsSlice';
-import {
-  store,
-  setTotalLoadingShows,
-  updateTotalLoadingShows,
-  setTotalLoadingMovies,
-  updateTotalLoadingMovies,
-} from './store';
+import { store } from './store';
 import { getMovie } from './thunks/movies';
 
 const loadWatchlistMovies = async () => {
@@ -81,7 +81,7 @@ const loadWatchlistMovies = async () => {
 
   store.dispatch(setTotalLoadingMovies(outdatedMovies.length));
 
-  outdatedMovies.forEach(async (outdated) => {
+  outdatedMovies.splice(0, 5).forEach(async (outdated) => {
     try {
       store.dispatch(
         getMovie({ id: outdated.movie.ids.trakt, type: 'watchlist' }) as any

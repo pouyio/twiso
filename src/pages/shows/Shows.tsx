@@ -4,8 +4,7 @@ import ShowsWatchlist from './ShowsWatchlist';
 import ShowsWatched from './ShowsWatched';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import Helmet from 'react-helmet';
-import { useSelector } from 'react-redux';
-import { IState } from 'state/state';
+import { useAppSelector } from 'state/store';
 import { useWindowSize } from '../../hooks';
 
 export default function Shows() {
@@ -15,7 +14,7 @@ export default function Shows() {
   );
   const { width } = useWindowSize();
 
-  const shows = useSelector((state: IState) => state.shows);
+  const shows = useAppSelector((state) => state.shows);
 
   return (
     <>

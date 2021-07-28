@@ -3,7 +3,7 @@ import LongPressable from 'react-longpressable';
 import { useHistory } from 'react-router-dom';
 import Emoji from './Emoji';
 import { useDispatch } from 'react-redux';
-import { setGlobalSearch } from 'state/store';
+import { setGlobalSearch } from 'state/slices/rootSlice';
 
 const LongPress: React.FC = () => {
   const history = useHistory();

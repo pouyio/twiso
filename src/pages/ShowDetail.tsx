@@ -13,8 +13,7 @@ import { SearchShow, People as IPeople, Show, Ratings } from '../models';
 import Helmet from 'react-helmet';
 import Rating from '../components/Rating';
 import { AlertContext } from '../contexts';
-import { useSelector } from 'react-redux';
-import { IState } from '../state/state';
+import { useAppSelector } from 'state/store';
 import Collapsable from '../components/Collapsable/Collapsable';
 
 enum status {
@@ -36,8 +35,8 @@ export default function ShowDetail() {
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
-  const progress = useSelector(
-    (state: IState) =>
+  const progress = useAppSelector(
+    (state) =>
       state.shows.watched.find((s) => s.show.ids.trakt === item?.ids.trakt)
         ?.progress
   );

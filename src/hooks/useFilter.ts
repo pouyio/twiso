@@ -1,10 +1,9 @@
 import Fuse from 'fuse.js';
-import { useSelector } from 'react-redux';
-import { IState } from '../state/state';
+import { useAppSelector } from 'state/store';
 
 export const useFilter = () => {
-  const movies = useSelector((state: IState) => state.movies);
-  const shows = useSelector((state: IState) => state.shows);
+  const movies = useAppSelector((state) => state.movies);
+  const shows = useAppSelector((state) => state.shows);
 
   const filter = (text: string) => {
     if (!text) {

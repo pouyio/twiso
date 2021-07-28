@@ -2,7 +2,7 @@ import Collapsable from '../components/Collapsable/Collapsable';
 import Rating from '../components/Rating';
 import React, { useContext, useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from 'state/store';
 import { useLocation, useParams } from 'react-router-dom';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
@@ -21,7 +21,6 @@ import {
 } from '../utils/api';
 import { getTranslation } from 'utils/getTranslations';
 import { allMovies } from 'state/slices/moviesSlice';
-import { useAppSelector } from 'state/store';
 
 export default function MovieDetail() {
   const [item, setItem] = useState<Movie>();
@@ -32,7 +31,7 @@ export default function MovieDetail() {
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
-  const movies = useSelector(allMovies);
+  const movies = useAppSelector(allMovies);
 
   const { isWatchlist, isWatched } = useIsWatch();
 

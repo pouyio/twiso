@@ -6,18 +6,18 @@ import {
 } from '../../utils/api';
 import { ModalContext } from '../../contexts';
 import { Show, ShowProgress, Season, Episode, ShowWatched } from '../../models';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   addEpisodeWatched,
   removeEpisodeWatched,
   addSeasonWatched,
   removeSeasonWatched,
 } from '../../state/slices/showsSlice';
-import { IState } from 'state/state';
 import SeasonSelector from './SeasonSelector';
 import Episodes from './Episodes';
 import { useQueryParam, withDefault, NumberParam } from 'use-query-params';
 import { AuthService } from 'utils/AuthService';
+import { useAppSelector } from 'state/store';
 
 interface ISeasonsContainerProps {
   show: Show;
@@ -40,7 +40,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const isLogged = authService.isLoggedIn();
   const { toggle } = useContext(ModalContext);
   const dispatch = useDispatch();
-  const watchedShow = useSelector((state: IState) =>
+  const watchedShow = useAppSelector((state) =>
     state.shows.watched.find((w) => w.show.ids.trakt === +showId)
   );
 

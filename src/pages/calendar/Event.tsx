@@ -1,14 +1,13 @@
 import React from 'react';
 import { Event as ICalendarEvent, EventProps } from 'react-big-calendar';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { IState } from '../../state/state';
+import { useAppSelector } from 'state/store';
 
 export const Event: React.FC<EventProps<ICalendarEvent>> = ({
   title,
   event,
 }) => {
-  const item = useSelector((state: IState) => {
+  const item = useAppSelector((state) => {
     if (event.resource.type === 'movie') {
       return (
         state.movies.watched.find(

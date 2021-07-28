@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { IState } from 'state/state';
+import { useAppSelector } from 'state/store';
 
 export const ProgressBar: React.FC = () => {
   const [width, setWith] = useState<number>();
-  const current = useSelector((state: IState) => state.loading.shows.current);
-  const total = useSelector((state: IState) => state.loading.shows.total);
+  const current = useAppSelector((state) => state.root.loading.shows.current);
+  const total = useAppSelector((state) => state.root.loading.shows.total);
 
   useEffect(() => {
     if (!total) {
