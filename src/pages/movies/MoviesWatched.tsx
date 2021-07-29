@@ -7,8 +7,8 @@ import { MovieWatched } from 'models';
 export const MoviesWatched: React.FC<{
   movies: MovieWatched[];
 }> = ({ movies }) => {
-  const { getItemsByPage } = usePagination(movies);
   const [orderedMovies, setOrderedMovies] = useState<MovieWatched[]>([]);
+  const { getItemsByPage } = usePagination(orderedMovies);
 
   useEffect(() => {
     const newItems = movies
