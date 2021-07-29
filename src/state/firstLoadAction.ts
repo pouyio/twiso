@@ -84,7 +84,7 @@ const loadWatchlistMovies = async () => {
   outdatedMovies.forEach(async (outdated) => {
     try {
       store.dispatch(
-        getMovie({ id: outdated.movie.ids.trakt, type: 'watchlist' }) as any
+        getMovie({ id: outdated.movie.ids.trakt, type: 'watchlist' })
       );
     } catch (error) {
       console.error(error);
