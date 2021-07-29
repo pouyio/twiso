@@ -7,6 +7,7 @@
     "@sentry/react": "^5.24.2",
     "axios": "^0.21.1",
     "axios-rate-limit": "^1.2.1",
+    "bottleneck": "^2.19.5",
     "date-fns": "^2.15.0",
     "dexie": "^2.0.4",
     "framer-motion": "^2.6.6",

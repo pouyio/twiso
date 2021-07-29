@@ -1,27 +1,19 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { AuthService } from './AuthService';
-import { config, CONTENT_TYPE, TRAKT_API_VERSION } from './apiConfig';
-import axiosRateLimit from 'axios-rate-limit';
+import { BASE_URL, config, CONTENT_TYPE, TRAKT_API_VERSION } from './apiConfig';
 
-const authTraktClient = axiosRateLimit(axios.create(), {
-  maxRequests: 1000,
-  perMilliseconds: 5 * 60 * 1000,
-});
+const axiosConfig: AxiosRequestConfig = {
+  baseURL: BASE_URL,
+  headers: {
+    'content-type': CONTENT_TYPE,
+    'trakt-api-key': config.traktApiKey,
+    'trakt-api-version': TRAKT_API_VERSION,
+  },
+};
 
-const traktClient = axiosRateLimit(axios.create(), {
-  maxRequests: 1000,
-  perMilliseconds: 5 * 60 * 1000,
-});
+const authTraktClient = axios.create(axiosConfig);
 
-traktClient.defaults.headers.common['content-type'] = CONTENT_TYPE;
-traktClient.defaults.headers.common['trakt-api-key'] = config.traktApiKey;
-traktClient.defaults.headers.common['trakt-api-version'] = TRAKT_API_VERSION;
-
-authTraktClient.defaults.headers.common['content-type'] = CONTENT_TYPE;
-authTraktClient.defaults.headers.common['trakt-api-key'] = config.traktApiKey;
-authTraktClient.defaults.headers.common[
-  'trakt-api-version'
-] = TRAKT_API_VERSION;
+const traktClient = axios.create(axiosConfig);
 
 authTraktClient.interceptors.request.use(
   (config) => {
@@ -37,5 +29,4 @@ authTraktClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-export default traktClient;
 export { traktClient, authTraktClient };

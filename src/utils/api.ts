@@ -27,9 +27,15 @@ import {
   Translation,
   UserStats,
 } from '../models';
-import { BASE_URL, config, IMG_URL, LOGIN_URL } from './apiConfig';
+import { config, IMG_URL, LOGIN_URL } from './apiConfig';
 import { authTraktClient, traktClient } from './axiosClients';
 import { Session } from './AuthService';
+import Bottleneck from 'bottleneck';
+
+const limiter = new Bottleneck({
+  minTime: 4,
+  maxConcurrent: 100,
+});
 
 const limitClient = rateLimit(axios.create(), {
   maxRequests: 42,
@@ -70,35 +76,30 @@ export const getImgsApi = (id: number, type: ItemType) => {
   );
 };
 
-export const getApi = <T>(id: number, type: ItemType) => {
-  return traktClient.get<T[]>(
-    `${BASE_URL}/search/trakt/${id}?type=${type}&extended=full`
-  );
-};
+export const getApi = <T>(id: number, type: ItemType) =>
+  limiter.wrap(() =>
+    traktClient.get<T[]>(`/search/trakt/${id}?type=${type}&extended=full`)
+  )();
 
 export const getSeasonsApi = (id: number) => {
-  return traktClient.get<Season[]>(
-    `${BASE_URL}/shows/${id}/seasons?translations=es`
-  );
+  return traktClient.get<Season[]>(`/shows/${id}/seasons?translations=es`);
 };
 
 export const getSeasonEpisodesApi = (id: number, season: number) => {
   return traktClient.get<Episode[]>(
-    `${BASE_URL}/shows/${id}/seasons/${season}?extended=full&translations=es`
+    `/shows/${id}/seasons/${season}?extended=full&translations=es`
   );
 };
 
 export const getProgressApi = (id: number) => {
   return authTraktClient.get<ShowProgress>(
-    `${BASE_URL}/shows/${id}/progress/watched?specials=true&count_specials=false`
+    `/shows/${id}/progress/watched?specials=true&count_specials=false`
   );
 };
 
-export const getTranslationsApi = (id: number, type: ItemType) => {
-  return traktClient.get<Translation[]>(
-    `${BASE_URL}/${type}s/${id}/translations/es`
-  );
-};
+export const getTranslationsApi = limiter.wrap((id: number, type: ItemType) => {
+  return traktClient.get<Translation[]>(`/${type}s/${id}/translations/es`);
+});
 
 export const searchApi = <T>(
   query: string,
@@ -106,7 +107,7 @@ export const searchApi = <T>(
   limit: number = 40
 ) => {
   return traktClient.get<T[]>(
-    `${BASE_URL}/search/${type}?query=${query}&extended=full&page=1&limit=${limit}`
+    `/search/${type}?query=${query}&extended=full&page=1&limit=${limit}`
   );
 };
 
@@ -115,8 +116,8 @@ export const getWatchedApi = <T extends MovieWatched | ShowWatched>(
 ) => {
   const url =
     type === 'movie'
-      ? `${BASE_URL}/sync/history/movies?page=1&limit=10000&extended=full`
-      : `${BASE_URL}/sync/watched/shows?extended=full`;
+      ? `/sync/history/movies?page=1&limit=10000&extended=full`
+      : `/sync/watched/shows?extended=full`;
 
   return authTraktClient.get<T[]>(url);
 };
@@ -125,7 +126,7 @@ export const addWatchedApi = (
   item: Episode | Season | Movie,
   type: ItemType
 ) => {
-  return authTraktClient.post<AddedWatched>(`${BASE_URL}/sync/history`, {
+  return authTraktClient.post<AddedWatched>(`/sync/history`, {
     [`${type}s`]: [item],
   });
 };
@@ -134,19 +135,16 @@ export const removeWatchedApi = (
   item: Episode | Season | Movie,
   type: ItemType
 ) => {
-  return authTraktClient.post<RemovedWatched>(
-    `${BASE_URL}/sync/history/remove`,
-    {
-      [`${type}s`]: [item],
-    }
-  );
+  return authTraktClient.post<RemovedWatched>(`/sync/history/remove`, {
+    [`${type}s`]: [item],
+  });
 };
 
 export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
   type: 'movie' | 'show'
 ) => {
   return authTraktClient
-    .get<T[]>(`${BASE_URL}/sync/watchlist/${type}s?extended=full`)
+    .get<T[]>(`/sync/watchlist/${type}s?extended=full`)
     .then((res) => {
       const ordered = res.data.sort(
         (a, b) =>
@@ -159,57 +157,52 @@ export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
 };
 
 export const addWatchlistApi = (item: Show | Movie, type: ItemType) => {
-  return authTraktClient.post<AddedWatchlist>(`${BASE_URL}/sync/watchlist`, {
+  return authTraktClient.post<AddedWatchlist>(`/sync/watchlist`, {
     [`${type}s`]: [item],
   });
 };
 
 export const removeWatchlistApi = (item: Show | Movie, type: ItemType) => {
-  return authTraktClient.post<RemovedWatchlist>(
-    `${BASE_URL}/sync/watchlist/remove`,
-    {
-      [`${type}s`]: [item],
-    }
-  );
+  return authTraktClient.post<RemovedWatchlist>(`/sync/watchlist/remove`, {
+    [`${type}s`]: [item],
+  });
 };
 
 export const getPeopleApi = (id: number, type: ItemType) => {
-  return traktClient.get<People>(`${BASE_URL}/${type}s/${id}/people`);
+  return traktClient.get<People>(`/${type}s/${id}/people`);
 };
 
 export const getPersonApi = (id: number) => {
-  return traktClient.get<Person>(`${BASE_URL}/people/${id}?extended=full`);
+  return traktClient.get<Person>(`/people/${id}?extended=full`);
 };
 
 export const getPersonItemsApi = <T>(person: string, type: ItemType) => {
-  return traktClient.get<T>(
-    `${BASE_URL}/people/${person}/${type}s?extended=full`
-  );
+  return traktClient.get<T>(`/people/${person}/${type}s?extended=full`);
 };
 
 export const getPopularApi = (type: ItemType, limit: number = 40) => {
   const year = new Date().getFullYear();
   return traktClient.get<Popular[]>(
-    `${BASE_URL}/${type}s/watched/weekly?extended=full&page=1&limit=${limit}&years=${year}`
+    `/${type}s/watched/weekly?extended=full&page=1&limit=${limit}&years=${year}`
   );
 };
 
 export const getRelatedApi = <T>(id: number, type: ItemType) => {
   return traktClient.get<T[]>(
-    `${BASE_URL}/${type}s/${id}/related?extended=full&page=1&limit=12`
+    `/${type}s/${id}/related?extended=full&page=1&limit=12`
   );
 };
 
 export const getStatsApi = () => {
-  return authTraktClient.get<UserStats>(`${BASE_URL}/users/me/stats`);
+  return authTraktClient.get<UserStats>(`/users/me/stats`);
 };
 
 export const getProfileApi = () => {
-  return authTraktClient.get<Profile>(`${BASE_URL}/users/me`);
+  return authTraktClient.get<Profile>(`/users/me`);
 };
 
 export const getRatingsApi = (id: number, type: ItemType) => {
-  return traktClient.get<Ratings>(`${BASE_URL}/${type}s/${id}/ratings`);
+  return traktClient.get<Ratings>(`/${type}s/${id}/ratings`);
 };
 
 export const getCalendar = <T extends MovieCalendar | ShowCalendar>(
@@ -218,6 +211,6 @@ export const getCalendar = <T extends MovieCalendar | ShowCalendar>(
   period: number
 ) => {
   return authTraktClient.get<T[]>(
-    `${BASE_URL}/calendars/my/${type}s/${firstDaxios}/${period}`
+    `/calendars/my/${type}s/${firstDaxios}/${period}`
   );
 };

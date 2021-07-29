@@ -81,7 +81,7 @@ const loadWatchlistMovies = async () => {
 
   store.dispatch(setTotalLoadingMovies(outdatedMovies.length));
 
-  outdatedMovies.splice(0, 5).forEach(async (outdated) => {
+  outdatedMovies.forEach(async (outdated) => {
     try {
       store.dispatch(
         getMovie({ id: outdated.movie.ids.trakt, type: 'watchlist' }) as any
