@@ -76,10 +76,9 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       break;
     }
     case 'shows/updateShow': {
-      db.table('shows')
-        .where('show.ids.trakt')
-        .equals(action.payload.show.ids.trakt)
-        .modify({ ...action.payload });
+      db.table('shows').update(action.payload.show.ids.trakt, {
+        ...action.payload,
+      });
       break;
     }
     case 'shows/addWatched': {
@@ -87,20 +86,16 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       break;
     }
     case 'shows/updateProgress': {
-      db.table('shows')
-        .where('show.ids.trakt')
-        .equals(action.payload.show.show.ids.trakt)
-        .modify({
-          progress: action.payload.progress,
-          last_watched_at: action.payload.progress.last_watched_at,
-        });
+      db.table('shows').update(action.payload.show.show.ids.trakt, {
+        progress: action.payload.progress,
+        last_watched_at: action.payload.progress.last_watched_at,
+      });
       break;
     }
     case 'shows/updateSeasons': {
-      db.table('shows')
-        .where('show.ids.trakt')
-        .equals(action.payload.show.show.ids.trakt)
-        .modify({ fullSeasons: action.payload.seasons });
+      db.table('shows').update(action.payload.show.show.ids.trakt, {
+        fullSeasons: action.payload.seasons,
+      });
       break;
     }
     case 'shows/getShow/fulfilled': {
