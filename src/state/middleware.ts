@@ -112,6 +112,13 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       db.table('shows').put({ ...newShow, localState: action.meta.arg.type });
       break;
     }
+    case 'shows/updateFullShow/fulfilled': {
+      db.table('shows').update(
+        action.meta.arg.outdated.show.ids.trakt,
+        action.payload
+      );
+      break;
+    }
     case 'config/setLanguage': {
       localStorage.setItem('language', action.payload);
       break;

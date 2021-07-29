@@ -1,7 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Season, ShowProgress, ShowWatched, ShowWatchlist } from 'models';
 import { mergeDeepLeft } from 'ramda';
-import { addWatchlist, getShow, removeWatchlist } from 'state/thunks/shows';
+import {
+  addWatchlist,
+  getShow,
+  removeWatchlist,
+  updateFullShow,
+} from 'state/thunks/shows';
 
 interface ShowsState {
   ready: boolean;
@@ -116,6 +121,16 @@ const showsSlice = createSlice({
           ...state[meta.arg.type][index],
           show: payload,
         };
+      })
+      .addCase(updateFullShow.fulfilled, (state, { payload }) => {
+        const showIndex = state.watched.findIndex(
+          (s) => s.show.ids.trakt === payload.show.ids.trakt
+        );
+        if (showIndex === -1) {
+          state.watched.push(payload);
+        } else {
+          state.watched[showIndex] = payload;
+        }
       }),
 });
 

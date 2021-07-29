@@ -4,12 +4,7 @@ import {
   ShowWatched,
   ShowWatchlist,
 } from 'models';
-import {
-  getWatchedApi,
-  getWatchlistApi,
-  getSeasonsApi,
-  getProgressApi,
-} from 'utils/api';
+import { getWatchedApi, getWatchlistApi } from 'utils/api';
 import db from 'utils/db';
 import {
   addWatchlists as addWatchlistMovies,
@@ -32,13 +27,11 @@ import {
   removeWatchlists as removeWatchlistShows,
   setWatched as setWatchedShows,
   setWatchlist as setWatchlistShows,
-  updateSeasons,
-  updateProgress,
   updateShow,
 } from './slices/showsSlice';
 import { store } from './store';
 import { getMovie } from './thunks/movies';
-import { getShow } from './thunks/shows';
+import { getShow, updateFullShow } from './thunks/shows';
 
 const loadWatchlistMovies = async () => {
   const moviesWatchlist = await db
@@ -213,73 +206,56 @@ const loadWatchedShows = async () => {
     .toArray();
   store.dispatch(setWatchedShows(showsWatched));
 
-  getWatchedApi<ShowWatched>('show').then(async ({ data }) => {
-    const showsToUpdate = showsWatched.reduce<ShowWatched[]>((acc, s) => {
-      const newerShow = data.find(
-        (sd) => s.show.ids.trakt === sd.show.ids.trakt
-      );
+  const { data } = await getWatchedApi<ShowWatched>('show');
 
-      let shouldUpdate = false;
+  const showsToUpdate = showsWatched.reduce<ShowWatched[]>((acc, s) => {
+    const newerShow = data.find((sd) => s.show.ids.trakt === sd.show.ids.trakt);
 
-      if (!newerShow || !s.progress) {
-        shouldUpdate = true;
-      }
+    let shouldUpdate = false;
 
-      if (
-        s.show.updated_at !== newerShow?.show.updated_at ||
-        s.last_watched_at !== newerShow?.last_watched_at
-      ) {
-        shouldUpdate = true;
-      }
+    if (!newerShow || !s.progress) {
+      shouldUpdate = true;
+    }
 
-      if (shouldUpdate) {
-        acc.push({ ...newerShow! });
-      }
+    if (
+      s.show.updated_at !== newerShow?.show.updated_at ||
+      s.last_watched_at !== newerShow?.last_watched_at
+    ) {
+      shouldUpdate = true;
+    }
 
-      return acc;
-    }, []);
+    if (shouldUpdate) {
+      acc.push({ ...newerShow! });
+    }
 
-    const showsToAdd = data.filter(
-      (d) => !showsWatched.some((s) => s.show.ids.trakt === d.show.ids.trakt)
-    );
+    return acc;
+  }, []);
 
-    showsToUpdate.forEach((s) => store.dispatch(updateShow(s)));
-    showsToAdd.forEach((s) => store.dispatch(addWatchedShow(s)));
+  const showsToAdd = data.filter(
+    (d) => !showsWatched.some((s) => s.show.ids.trakt === d.show.ids.trakt)
+  );
 
-    const outdatedShows = [...showsToAdd, ...showsToUpdate];
+  showsToUpdate.forEach((s) => store.dispatch(updateShow(s)));
+  showsToAdd.forEach((s) => store.dispatch(addWatchedShow(s)));
 
-    store.dispatch(setTotalLoadingShows(outdatedShows.length));
+  const outdatedShows = [...showsToAdd, ...showsToUpdate];
 
-    const showsToDelete = showsWatched.filter(
-      (s) => !data.some((d) => d.show.ids.trakt === s.show.ids.trakt)
-    );
-    store.dispatch(removeWatchedShows(showsToDelete));
-    store.dispatch(updateTotalLoadingShows(showsToDelete.length));
+  store.dispatch(setTotalLoadingShows(outdatedShows.length));
 
-    outdatedShows.forEach(async (outdated) => {
-      try {
-        const [seasons, progress] = await Promise.all([
-          getSeasonsApi(outdated.show.ids.trakt),
-          getProgressApi(outdated.show.ids.trakt),
-        ]);
-        store.dispatch(
-          updateSeasons({
-            show: outdated,
-            seasons: seasons.data,
-          })
-        );
-        store.dispatch(
-          updateProgress({
-            show: outdated,
-            progress: progress.data,
-          })
-        );
-      } catch (error) {
-        console.error(error);
-      } finally {
-        store.dispatch(updateTotalLoadingShows());
-      }
-    });
+  const showsToDelete = showsWatched.filter(
+    (s) => !data.some((d) => d.show.ids.trakt === s.show.ids.trakt)
+  );
+  store.dispatch(removeWatchedShows(showsToDelete));
+  store.dispatch(updateTotalLoadingShows(showsToDelete.length));
+
+  outdatedShows.forEach(async (outdated) => {
+    try {
+      store.dispatch(updateFullShow({ outdated }));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      store.dispatch(updateTotalLoadingShows());
+    }
   });
 };
 

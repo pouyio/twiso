@@ -10,6 +10,7 @@ import {
   addWatchlistApi,
   getApi,
   getProgressApi,
+  getSeasonsApi,
   getTranslationsApi,
   removeWatchedApi,
   removeWatchlistApi,
@@ -165,6 +166,39 @@ export const getShow = createAsyncThunk(
         show.overview = overview;
       }
       return show;
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
+  }
+);
+
+export const updateFullShow = createAsyncThunk(
+  'shows/updateFullShow',
+  async ({ outdated }: { outdated: ShowWatched }) => {
+    const showCopy = JSON.parse(JSON.stringify(outdated));
+    try {
+      const translationAvailable = showCopy.show.available_translations.includes(
+        'es'
+      );
+      const [seasons, progress, translations] = await Promise.all([
+        getSeasonsApi(showCopy.show.ids.trakt),
+        getProgressApi(showCopy.show.ids.trakt),
+        translationAvailable
+          ? getTranslationsApi(showCopy.show.ids.trakt, 'show')
+          : null,
+      ]);
+
+      showCopy.fullSeasons = seasons.data;
+      showCopy.progress = progress.data;
+      showCopy.last_watched_at = progress.data.last_watched_at;
+
+      if (translationAvailable && translations) {
+        const { title, overview } = getTranslation(translations.data);
+        showCopy.show.title = title;
+        showCopy.show.overview = overview;
+      }
+      return showCopy;
     } catch (e) {
       console.error(e);
       throw e;
