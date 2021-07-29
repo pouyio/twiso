@@ -1,10 +1,10 @@
 import React from 'react';
 import { Show } from '../models';
 import { LoginButton } from './LoginButton';
-import { useDispatch } from 'react-redux';
-import { removeWatchlist, addWatchlist } from 'state/slices/showsSlice';
+import { removeWatchlist, addWatchlist } from 'state/thunks/shows';
 import { useIsWatch } from 'hooks';
 import { AuthService } from 'utils/AuthService';
+import { useAppDispatch } from 'state/store';
 
 interface IShowWatchButtonProps {
   item: Show;
@@ -13,7 +13,7 @@ interface IShowWatchButtonProps {
 const authService = AuthService.getInstance();
 
 const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { isWatchlist } = useIsWatch();
 
   return (

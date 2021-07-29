@@ -33,19 +33,6 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       }
       break;
     }
-    case 'movies/setWatchlist':
-      db.table('movies')
-        .where('localState')
-        .equals('watchlist')
-        .delete()
-        .then(() => {
-          db.table('movies').bulkPut(
-            action.payload.map((m) => {
-              return { ...m, localState: 'watchlist' };
-            })
-          );
-        });
-      break;
     case 'movies/addWatchlist/fulfilled': {
       if (action.payload.added.movies) {
         db.table('movies').put({
@@ -70,24 +57,17 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       db.table('movies').put({ ...newMovie, localState: action.meta.arg.type });
       break;
     }
-    case 'shows/setWatchlist': {
-      db.table('shows')
-        .where('localState')
-        .equals('watchlist')
-        .delete()
-        .then(() => {
-          db.table('shows').bulkPut(
-            action.payload.map((s) => ({ ...s, localState: 'watchlist' }))
-          );
-        });
+    case 'shows/removeWatchlists': {
+      db.table('shows').bulkDelete(action.payload.map((s) => s.show.ids.trakt));
       break;
     }
-    case 'shows/addWatchlist': {
-      db.table('shows').put({
-        ...action.payload,
-        localState: 'watchlist',
-      });
-
+    case 'shows/addWatchlist/fulfilled': {
+      if (action.payload.added.shows) {
+        db.table('shows').put({
+          show: action.meta.arg.show,
+          localState: 'watchlist',
+        });
+      }
       break;
     }
     case 'shows/removeWatcheds': {
@@ -98,6 +78,13 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       db.table('shows').delete(action.payload);
       break;
     }
+    case 'shows/removeWatchlist/fulfilled': {
+      if (action.payload.deleted.shows) {
+        db.table('shows').delete(action.meta.arg.show.ids.trakt);
+      }
+      break;
+    }
+    // TODO remove if possible all _removewatchlist can be deleted
     case 'shows/_removeWatchlist': {
       db.table('shows').delete(action.payload);
       break;
@@ -140,6 +127,15 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
         .where('show.ids.trakt')
         .equals(action.payload.show.show.ids.trakt)
         .modify({ fullSeasons: action.payload.seasons });
+      break;
+    }
+    case 'shows/getShow/fulfilled': {
+      const state = store.getState().movies;
+      const oldShow = state[action.meta.arg.type].find(
+        (s) => s.show.ids.trakt === action.meta.arg.id
+      );
+      const newShow = { ...oldShow, show: action.payload };
+      db.table('shows').put({ ...newShow, localState: action.meta.arg.type });
       break;
     }
     case 'config/setLanguage': {

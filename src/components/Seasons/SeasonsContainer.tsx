@@ -12,7 +12,7 @@ import {
   removeEpisodeWatched,
   addSeasonWatched,
   removeSeasonWatched,
-} from '../../state/slices/showsSlice';
+} from '../../state/thunks/shows';
 import SeasonSelector from './SeasonSelector';
 import Episodes from './Episodes';
 import { useQueryParam, withDefault, NumberParam } from 'use-query-params';
