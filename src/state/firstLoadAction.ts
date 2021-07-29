@@ -26,8 +26,10 @@ import {
   updateTotalLoadingShows,
 } from './slices/rootSlice';
 import {
+  addWatchlists as addWatchlistShows,
   addWatched as addWatchedShow,
   removeWatcheds as removeWatchedShows,
+  removeWatchlists as removeWatchlistShows,
   setWatched as setWatchedShows,
   setWatchlist as setWatchlistShows,
   updateSeasons,
@@ -36,6 +38,7 @@ import {
 } from './slices/showsSlice';
 import { store } from './store';
 import { getMovie } from './thunks/movies';
+import { getShow } from './thunks/shows';
 
 const loadWatchlistMovies = async () => {
   const moviesWatchlist = await db
@@ -155,8 +158,52 @@ const loadWatchlistShows = async () => {
     .toArray();
   store.dispatch(setWatchlistShows(showsWatchlist));
   const { data } = await getWatchlistApi<ShowWatchlist>('show');
-  // TODO comprobar cuales son nuevas, eliminadas y desactualizadas, para obtenerlas individualmente junto con la traducción. Lo de abajo se eliminará
-  store.dispatch(setWatchlistShows(data));
+
+  const showsToDelete = showsWatchlist.filter(
+    (s) => !data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt)
+  );
+  store.dispatch(removeWatchlistShows(showsToDelete));
+
+  const showsToUpdate = showsWatchlist
+    .filter((s) => data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt))
+    .reduce<ShowWatchlist[]>((acc, s) => {
+      const newerShow = data.find(
+        (sd) => s.show.ids.trakt === sd.show.ids.trakt
+      );
+
+      let shouldUpdate = false;
+
+      if (s.show.updated_at !== newerShow?.show.updated_at) {
+        shouldUpdate = true;
+      }
+
+      if (shouldUpdate) {
+        acc.push({ ...newerShow! });
+      }
+
+      return acc;
+    }, []);
+
+  const showsToAdd = data.filter(
+    (sd) => !showsWatchlist.some((s) => s.show.ids.trakt === sd.show.ids.trakt)
+  );
+  store.dispatch(addWatchlistShows(showsToAdd));
+
+  const outdatedShows = [...showsToAdd, ...showsToUpdate];
+
+  store.dispatch(setTotalLoadingShows(outdatedShows.length));
+
+  outdatedShows.forEach(async (outdated) => {
+    try {
+      store.dispatch(
+        getShow({ id: outdated.show.ids.trakt, type: 'watchlist' })
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      store.dispatch(updateTotalLoadingMovies());
+    }
+  });
 };
 
 const loadWatchedShows = async () => {

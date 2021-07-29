@@ -1,20 +1,7 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  ShowWatchlist,
-  ShowWatched,
-  Show,
-  Season,
-  ShowProgress,
-  Episode,
-} from 'models';
-import {
-  addWatchlistApi,
-  removeWatchlistApi,
-  getProgressApi,
-  addWatchedApi,
-  removeWatchedApi,
-} from 'utils/api';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Season, ShowProgress, ShowWatched, ShowWatchlist } from 'models';
 import { mergeDeepLeft } from 'ramda';
+import { addWatchlist, getShow, removeWatchlist } from 'state/thunks/shows';
 
 interface ShowsState {
   ready: boolean;
@@ -28,148 +15,13 @@ const initialState: ShowsState = {
   watchlist: [],
 };
 
-export const addWatchlist = createAsyncThunk(
-  'shows/addWatchlist',
-  async ({ show }: { show: Show }) => {
-    try {
-      const { data } = await addWatchlistApi(show, 'show');
-      return data;
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
-  }
-);
-
-export const removeWatchlist = createAsyncThunk(
-  'shows/removeWatchlist',
-  async ({ show }: { show: Show }, { dispatch }) => {
-    try {
-      const { data } = await removeWatchlistApi(show, 'show');
-      if (data.deleted.shows) {
-        dispatch(_removeWatchlist(show.ids.trakt));
-      }
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
-  }
-);
-
-export const addEpisodeWatched = createAsyncThunk(
-  'shows/addEpisodeWatched',
-  async (
-    {
-      show,
-      episode,
-    }: {
-      show: ShowWatched;
-      episode: Episode;
-    },
-    { dispatch }
-  ) => {
-    try {
-      const { data } = await addWatchedApi(episode, 'episode');
-      dispatch(_removeWatchlist(show.show.ids.trakt));
-      if (data.added.episodes) {
-        const { data: progress } = await getProgressApi(show.show.ids.trakt);
-        dispatch(updateProgress({ show, progress }));
-      }
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
-);
-
-export const removeEpisodeWatched = createAsyncThunk(
-  'shows/removeEpisodeWatched',
-  async (
-    {
-      show,
-      episode,
-    }: {
-      show: ShowWatched;
-      episode: Episode;
-    },
-    { dispatch }
-  ) => {
-    try {
-      const { data } = await removeWatchedApi(episode, 'episode');
-      if (data.deleted.episodes) {
-        const { data: progress } = await getProgressApi(show.show.ids.trakt);
-        if (!progress.last_episode) {
-          dispatch(_removeWatched(show.show.ids.trakt));
-        } else {
-          dispatch(updateProgress({ show, progress }));
-        }
-      }
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
-);
-
-export const addSeasonWatched = createAsyncThunk(
-  'shows/addSeasonWatched',
-  async (
-    {
-      season,
-      show,
-    }: {
-      season: Season;
-      show: ShowWatched;
-    },
-    { dispatch }
-  ) => {
-    try {
-      const { data } = await addWatchedApi(season, 'season');
-      if (data.added.episodes) {
-        const { data: progress } = await getProgressApi(show.show.ids.trakt);
-        dispatch(_removeWatchlist(show.show.ids.trakt));
-        dispatch(updateProgress({ show, progress }));
-      }
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
-  }
-);
-
-export const removeSeasonWatched = createAsyncThunk(
-  'shows/removeSeasonWatched',
-  async (
-    {
-      season,
-      show,
-    }: {
-      season: Season;
-      show: ShowWatched;
-    },
-    { dispatch }
-  ) => {
-    try {
-      const { data } = await removeWatchedApi(season, 'season');
-      if (data.deleted.episodes) {
-        const { data: progress } = await getProgressApi(show.show.ids.trakt);
-        if (!progress.last_episode) {
-          dispatch(_removeWatched(show.show.ids.trakt));
-        } else {
-          dispatch(updateProgress({ show, progress }));
-        }
-      }
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
-  }
-);
-
 const showsSlice = createSlice({
   name: 'shows',
   initialState: initialState,
   reducers: {
+    addWatchlists(state, { payload }: PayloadAction<ShowWatchlist[]>) {
+      state.watchlist = [...state.watchlist, ...payload];
+    },
     setWatchlist(state, { payload }: PayloadAction<ShowWatchlist[]>) {
       state.watchlist = payload;
     },
@@ -187,6 +39,11 @@ const showsSlice = createSlice({
         payload,
         state.watched[index]
       ) as ShowWatched;
+    },
+    removeWatchlists(state, { payload }: PayloadAction<ShowWatchlist[]>) {
+      state.watchlist = state.watchlist.filter(
+        (s) => !payload.some((sd) => sd.show.ids.trakt === s.show.ids.trakt)
+      );
     },
     removeWatcheds(state, { payload }: PayloadAction<ShowWatched[]>) {
       state.watched = state.watched.filter(
@@ -231,29 +88,48 @@ const showsSlice = createSlice({
     },
   },
   extraReducers: (builder) =>
-    builder.addCase(addWatchlist.fulfilled, (state, { payload, meta }) => {
-      if (payload?.added.shows) {
-        state.watched = state.watched.filter(
-          (m) => meta.arg.show.ids.trakt !== m.show.ids.trakt
+    builder
+      .addCase(addWatchlist.fulfilled, (state, { payload, meta }) => {
+        if (payload?.added.shows) {
+          state.watched = state.watched.filter(
+            (m) => meta.arg.show.ids.trakt !== m.show.ids.trakt
+          );
+          state.watchlist.push({
+            show: meta.arg.show,
+            type: 'show',
+            listed_at: new Date().toISOString(),
+          });
+        }
+      })
+      .addCase(removeWatchlist.fulfilled, (state, { payload, meta }) => {
+        if (payload?.deleted.shows) {
+          state.watchlist = state.watchlist.filter(
+            (s) => meta.arg.show.ids.trakt !== s.show.ids.trakt
+          );
+        }
+      })
+      .addCase(getShow.fulfilled, (state, { payload, meta }) => {
+        const index = state[meta.arg.type].findIndex(
+          (s) => s.show.ids.trakt === payload.ids.trakt
         );
-        state.watchlist.push({
-          show: meta.arg.show,
-          type: 'show',
-          listed_at: new Date().toISOString(),
-        });
-      }
-    }),
+        state[meta.arg.type][index] = {
+          ...state[meta.arg.type][index],
+          show: payload,
+        };
+      }),
 });
 
-const { _removeWatchlist, _removeWatched } = showsSlice.actions;
+export const { _removeWatchlist, _removeWatched } = showsSlice.actions;
 
 // actions
 export const {
   setWatchlist,
   setWatched,
   addWatched,
+  addWatchlists,
   updateShow,
   removeWatcheds,
+  removeWatchlists,
   updateSeasons,
   updateProgress,
 } = showsSlice.actions;
