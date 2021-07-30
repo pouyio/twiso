@@ -11,12 +11,17 @@ import { RootState } from 'state/store';
 
 interface MoviesState {
   ready: boolean;
+  pending: { watched: number[]; watchlist: number[] };
   watched: MovieWatched[];
   watchlist: MovieWatchlist[];
 }
 
 const initialState: MoviesState = {
   ready: true,
+  pending: {
+    watched: [],
+    watchlist: [],
+  },
   watched: [],
   watchlist: [],
 };
@@ -50,6 +55,9 @@ const moviesSlice = createSlice({
   },
   extraReducers: (builder) =>
     builder
+      .addCase(addWatched.pending, (state, { meta }) => {
+        state.pending.watched.push(meta.arg.movie.ids.trakt);
+      })
       .addCase(addWatched.fulfilled, (state, { payload, meta }) => {
         if (payload?.added.movies) {
           state.watchlist = state.watchlist.filter(
@@ -61,6 +69,17 @@ const moviesSlice = createSlice({
             watched_at: new Date().toISOString(),
           });
         }
+        state.pending.watched = state.pending.watched.filter(
+          (p) => p !== meta.arg.movie.ids.trakt
+        );
+      })
+      .addCase(addWatched.rejected, (state, { meta }) => {
+        state.pending.watched = state.pending.watched.filter(
+          (p) => p !== meta.arg.movie.ids.trakt
+        );
+      })
+      .addCase(removeWatched.pending, (state, { meta }) => {
+        state.pending.watched.push(meta.arg.movie.ids.trakt);
       })
       .addCase(removeWatched.fulfilled, (state, { payload, meta }) => {
         if (payload?.deleted.movies) {
@@ -68,6 +87,17 @@ const moviesSlice = createSlice({
             (m) => meta.arg.movie.ids.trakt !== m.movie.ids.trakt
           );
         }
+        state.pending.watched = state.pending.watched.filter(
+          (p) => p !== meta.arg.movie.ids.trakt
+        );
+      })
+      .addCase(removeWatched.rejected, (state, { meta }) => {
+        state.pending.watched = state.pending.watched.filter(
+          (p) => p !== meta.arg.movie.ids.trakt
+        );
+      })
+      .addCase(addWatchlistThunk.pending, (state, { meta }) => {
+        state.pending.watchlist.push(meta.arg.movie.ids.trakt);
       })
       .addCase(addWatchlistThunk.fulfilled, (state, { payload, meta }) => {
         if (payload?.added.movies) {
@@ -79,7 +109,18 @@ const moviesSlice = createSlice({
             type: 'movie',
             listed_at: new Date().toISOString(),
           });
+          state.pending.watchlist = state.pending.watchlist.filter(
+            (p) => p !== meta.arg.movie.ids.trakt
+          );
         }
+      })
+      .addCase(addWatchlistThunk.rejected, (state, { meta }) => {
+        state.pending.watchlist = state.pending.watchlist.filter(
+          (p) => p !== meta.arg.movie.ids.trakt
+        );
+      })
+      .addCase(removeWatchlistThunk.pending, (state, { meta }) => {
+        state.pending.watchlist.push(meta.arg.movie.ids.trakt);
       })
       .addCase(removeWatchlistThunk.fulfilled, (state, { payload, meta }) => {
         if (payload?.deleted.movies) {
@@ -87,6 +128,14 @@ const moviesSlice = createSlice({
             (m) => meta.arg.movie.ids.trakt !== m.movie.ids.trakt
           );
         }
+        state.pending.watchlist = state.pending.watchlist.filter(
+          (p) => p !== meta.arg.movie.ids.trakt
+        );
+      })
+      .addCase(removeWatchlistThunk.rejected, (state, { meta }) => {
+        state.pending.watchlist = state.pending.watchlist.filter(
+          (p) => p !== meta.arg.movie.ids.trakt
+        );
       })
       .addCase(getMovie.fulfilled, (state, { payload, meta }) => {
         const index = state[meta.arg.type].findIndex(
