@@ -10,12 +10,18 @@ import {
 
 interface ShowsState {
   ready: boolean;
+  pending: {
+    watchlist: number[];
+  };
   watched: ShowWatched[];
   watchlist: ShowWatchlist[];
 }
 
 const initialState: ShowsState = {
   ready: true,
+  pending: {
+    watchlist: [],
+  },
   watched: [],
   watchlist: [],
 };
@@ -94,6 +100,9 @@ const showsSlice = createSlice({
   },
   extraReducers: (builder) =>
     builder
+      .addCase(addWatchlist.pending, (state, { meta }) => {
+        state.pending.watchlist.push(meta.arg.show.ids.trakt);
+      })
       .addCase(addWatchlist.fulfilled, (state, { payload, meta }) => {
         if (payload?.added.shows) {
           state.watched = state.watched.filter(
@@ -105,6 +114,17 @@ const showsSlice = createSlice({
             listed_at: new Date().toISOString(),
           });
         }
+        state.pending.watchlist = state.pending.watchlist.filter(
+          (p) => p !== meta.arg.show.ids.trakt
+        );
+      })
+      .addCase(addWatchlist.rejected, (state, { meta }) => {
+        state.pending.watchlist = state.pending.watchlist.filter(
+          (p) => p !== meta.arg.show.ids.trakt
+        );
+      })
+      .addCase(removeWatchlist.pending, (state, { meta }) => {
+        state.pending.watchlist.push(meta.arg.show.ids.trakt);
       })
       .addCase(removeWatchlist.fulfilled, (state, { payload, meta }) => {
         if (payload?.deleted.shows) {
@@ -112,6 +132,14 @@ const showsSlice = createSlice({
             (s) => meta.arg.show.ids.trakt !== s.show.ids.trakt
           );
         }
+        state.pending.watchlist = state.pending.watchlist.filter(
+          (p) => p !== meta.arg.show.ids.trakt
+        );
+      })
+      .addCase(removeWatchlist.rejected, (state, { meta }) => {
+        state.pending.watchlist = state.pending.watchlist.filter(
+          (p) => p !== meta.arg.show.ids.trakt
+        );
       })
       .addCase(getShow.fulfilled, (state, { payload, meta }) => {
         const index = state[meta.arg.type].findIndex(
