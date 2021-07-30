@@ -2,8 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Season, ShowProgress, ShowWatched, ShowWatchlist } from 'models';
 import { mergeDeepLeft } from 'ramda';
 import {
+  addEpisodeWatched,
   addWatchlist,
   getShow,
+  removeEpisodeWatched,
   removeWatchlist,
   updateFullShow,
 } from 'state/thunks/shows';
@@ -12,6 +14,7 @@ interface ShowsState {
   ready: boolean;
   pending: {
     watchlist: number[];
+    watched: number[];
   };
   watched: ShowWatched[];
   watchlist: ShowWatchlist[];
@@ -21,6 +24,7 @@ const initialState: ShowsState = {
   ready: true,
   pending: {
     watchlist: [],
+    watched: [],
   },
   watched: [],
   watchlist: [],
@@ -159,6 +163,32 @@ const showsSlice = createSlice({
         } else {
           state.watched[showIndex] = payload;
         }
+      })
+      .addCase(addEpisodeWatched.pending, (state, { meta }) => {
+        state.pending.watched.push(meta.arg.episode.ids.trakt);
+      })
+      .addCase(addEpisodeWatched.fulfilled, (state, { meta }) => {
+        state.pending.watched = state.pending.watched.filter(
+          (p) => p !== meta.arg.episode.ids.trakt
+        );
+      })
+      .addCase(addEpisodeWatched.rejected, (state, { meta }) => {
+        state.pending.watched = state.pending.watched.filter(
+          (p) => p !== meta.arg.episode.ids.trakt
+        );
+      })
+      .addCase(removeEpisodeWatched.pending, (state, { meta }) => {
+        state.pending.watched.push(meta.arg.episode.ids.trakt);
+      })
+      .addCase(removeEpisodeWatched.fulfilled, (state, { meta }) => {
+        state.pending.watched = state.pending.watched.filter(
+          (p) => p !== meta.arg.episode.ids.trakt
+        );
+      })
+      .addCase(removeEpisodeWatched.rejected, (state, { meta }) => {
+        state.pending.watched = state.pending.watched.filter(
+          (p) => p !== meta.arg.episode.ids.trakt
+        );
       }),
 });
 

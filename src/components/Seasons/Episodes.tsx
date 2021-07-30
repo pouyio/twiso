@@ -2,6 +2,7 @@ import React from 'react';
 import Emoji from '../Emoji';
 import { Episode, Season } from '../../models';
 import { EpisodesPlaceholder } from './EpisodesPlaceholder';
+import { useAppSelector } from 'state/store';
 
 interface ISeasonsProps {
   seasonProgress?: Season;
@@ -24,6 +25,8 @@ const Episodes: React.FC<ISeasonsProps> = ({
   showModal,
   onlyView,
 }) => {
+  const watched = useAppSelector((state) => state.shows.pending.watched);
+
   const isEpisodeWatched = (episodeNumber: number) => {
     if (!seasonProgress) {
       return false;
@@ -118,14 +121,21 @@ const Episodes: React.FC<ISeasonsProps> = ({
                     {getFormattedDate(e.first_aired, 'short')}
                   </span>
                 </div>
-                {isEpisodeAvailable(e) && (
-                  <button
-                    className="px-5 text-right"
-                    onClick={() => toggleEpisode(e)}
-                  >
-                    <Emoji emoji="▶️" className="text-xl" />
-                  </button>
-                )}
+                {isEpisodeAvailable(e) &&
+                  (watched.includes(e.ids.trakt) ? (
+                    <Emoji
+                      emoji="⏳"
+                      rotating={true}
+                      className="px-5 text-right"
+                    />
+                  ) : (
+                    <button
+                      className="px-5 text-right"
+                      onClick={() => toggleEpisode(e)}
+                    >
+                      <Emoji emoji="▶️" className="text-xl" />
+                    </button>
+                  ))}
               </div>
             </li>
           ))
