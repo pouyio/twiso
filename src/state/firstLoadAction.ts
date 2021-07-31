@@ -208,28 +208,37 @@ const loadWatchedShows = async () => {
 
   const { data } = await getWatchedApi<ShowWatched>('show');
 
-  const showsToUpdate = showsWatched.reduce<ShowWatched[]>((acc, s) => {
-    const newerShow = data.find((sd) => s.show.ids.trakt === sd.show.ids.trakt);
+  const showsToDelete = showsWatched.filter(
+    (s) => !data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt)
+  );
+  store.dispatch(removeWatchedShows(showsToDelete));
 
-    let shouldUpdate = false;
+  const showsToUpdate = showsWatched
+    .filter((s) => data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt))
+    .reduce<ShowWatched[]>((acc, s) => {
+      const newerShow = data.find(
+        (sd) => s.show.ids.trakt === sd.show.ids.trakt
+      );
 
-    if (!newerShow || !s.progress) {
-      shouldUpdate = true;
-    }
+      let shouldUpdate = false;
 
-    if (
-      s.show.updated_at !== newerShow?.show.updated_at ||
-      s.last_watched_at !== newerShow?.last_watched_at
-    ) {
-      shouldUpdate = true;
-    }
+      if (!newerShow || !s.progress) {
+        shouldUpdate = true;
+      }
 
-    if (shouldUpdate) {
-      acc.push({ ...newerShow! });
-    }
+      if (
+        s.show.updated_at !== newerShow?.show.updated_at ||
+        s.last_watched_at !== newerShow?.last_watched_at
+      ) {
+        shouldUpdate = true;
+      }
 
-    return acc;
-  }, []);
+      if (shouldUpdate) {
+        acc.push({ ...newerShow! });
+      }
+
+      return acc;
+    }, []);
 
   const showsToAdd = data.filter(
     (d) => !showsWatched.some((s) => s.show.ids.trakt === d.show.ids.trakt)
@@ -241,11 +250,6 @@ const loadWatchedShows = async () => {
   const outdatedShows = [...showsToAdd, ...showsToUpdate];
 
   store.dispatch(setTotalLoadingShows(outdatedShows.length));
-
-  const showsToDelete = showsWatched.filter(
-    (s) => !data.some((d) => d.show.ids.trakt === s.show.ids.trakt)
-  );
-  store.dispatch(removeWatchedShows(showsToDelete));
   store.dispatch(updateTotalLoadingShows(showsToDelete.length));
 
   outdatedShows.forEach(async (outdated) => {
