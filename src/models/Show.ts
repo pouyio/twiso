@@ -1,7 +1,7 @@
 import { Ids } from './Ids';
 
 export interface ShowWatched {
-  last_updated_at: string;
+  // last_updated_at: string;
   last_watched_at: string;
   plays: number;
   reset_at: string;
