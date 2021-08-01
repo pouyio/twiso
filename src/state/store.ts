@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { reducer as moviesReducer } from './slices/moviesSlice';
-import { reducer as showsReducer } from './slices/showsSlice';
-import { reducer as configReducer } from './slices/configSlice';
-import { reducer as rootReducer } from './slices/rootSlice';
+import { reducer as moviesReducer } from './slices/movies';
+import { reducer as showsReducer } from './slices/shows';
+import { reducer as configReducer } from './slices/config';
+import { reducer as rootReducer } from './slices/root';
 import { dbMiddleware } from './middleware';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 

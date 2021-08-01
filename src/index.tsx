@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import initReactFastclick from 'react-fastclick';
 import * as Sentry from '@sentry/browser';
 import { version } from '../package.json';
-import { setSWRegistration } from 'state/slices/rootSlice';
+import { setSWRegistration } from 'state/slices/root';
 import { store } from 'state/store';
 import { Provider } from 'react-redux';
 import 'scroll-behavior-polyfill';

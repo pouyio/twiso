@@ -7,7 +7,7 @@ import {
   populateDetail,
   removeWatched,
   removeWatchlist as removeWatchlistThunk,
-} from 'state/thunks/movies';
+} from 'state/slices/movies/thunks';
 
 interface MoviesState {
   ready: boolean;

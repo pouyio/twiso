@@ -10,7 +10,7 @@ import { ThemeContext, ThemeType } from '../contexts';
 import { LoginButton } from '../components/LoginButton';
 import { AuthService } from 'utils/AuthService';
 import { useDispatch } from 'react-redux';
-import { Language, setLanguage } from 'state/slices/configSlice';
+import { Language, setLanguage } from 'state/slices/config';
 import { useAppSelector } from 'state/store';
 
 const authService = AuthService.getInstance();

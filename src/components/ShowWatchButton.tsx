@@ -1,7 +1,7 @@
 import React from 'react';
 import { Show } from '../models';
 import { LoginButton } from './LoginButton';
-import { removeWatchlist, addWatchlist } from 'state/thunks/shows';
+import { removeWatchlist, addWatchlist } from 'state/slices/shows/thunks';
 import { useIsWatch } from 'hooks';
 import { AuthService } from 'utils/AuthService';
 import { useAppSelector } from 'state/store';

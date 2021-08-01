@@ -10,7 +10,7 @@ import { Providers } from 'components/Providers';
 import { GlobalSearch } from 'components/GlobalSearch';
 import { useDispatch } from 'react-redux';
 import { firstLoad } from './state/firstLoadAction';
-import { loadImgConfig } from 'state/slices/configSlice';
+import { loadImgConfig } from 'state/slices/config';
 import * as Sentry from '@sentry/react';
 import { AuthService } from 'utils/AuthService';
 import { NewVersion } from 'components/NewVersion';

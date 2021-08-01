@@ -13,13 +13,13 @@ import {
   removeWatcheds as removeWatchedtMovies,
   setWatched as setWatchedMovies,
   setWatchlist as setWatchlistMovies,
-} from './slices/moviesSlice';
+} from './slices/movies';
 import {
   setTotalLoadingMovies,
   setTotalLoadingShows,
   updateTotalLoadingMovies,
   updateTotalLoadingShows,
-} from './slices/rootSlice';
+} from './slices/root';
 import {
   addWatchlists as addWatchlistShows,
   addWatched as addWatchedShow,
@@ -28,10 +28,10 @@ import {
   setWatched as setWatchedShows,
   setWatchlist as setWatchlistShows,
   updateShow,
-} from './slices/showsSlice';
+} from './slices/shows';
 import { store } from './store';
-import { getMovie } from './thunks/movies';
-import { getShow, updateFullShow } from './thunks/shows';
+import { getMovie } from './slices/movies/thunks';
+import { getShow, updateFullShow } from 'state/slices/shows/thunks';
 
 const loadWatchlistMovies = async () => {
   const moviesWatchlist = await db

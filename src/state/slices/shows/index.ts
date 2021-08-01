@@ -11,7 +11,7 @@ import {
   removeSeasonWatched,
   removeWatchlist,
   updateFullShow,
-} from 'state/thunks/shows';
+} from './thunks';
 
 interface ShowsState {
   ready: boolean;

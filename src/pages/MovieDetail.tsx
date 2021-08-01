@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import { useLocation, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'state/store';
-import { populateDetail } from 'state/thunks/movies';
+import { populateDetail } from 'state/slices/movies/thunks';
 import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
