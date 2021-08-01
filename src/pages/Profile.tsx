@@ -10,7 +10,7 @@ import { ThemeContext, ThemeType } from '../contexts';
 import { LoginButton } from '../components/LoginButton';
 import { AuthService } from 'utils/AuthService';
 import { useDispatch } from 'react-redux';
-import { setLanguage } from 'state/slices/configSlice';
+import { Language, setLanguage } from 'state/slices/configSlice';
 import { useAppSelector } from 'state/store';
 
 const authService = AuthService.getInstance();
@@ -89,7 +89,7 @@ export default function Profile() {
             <select
               className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-none"
               onChange={(e) => {
-                dispatch(setLanguage(e.target.value as 'en' | 'es'));
+                dispatch(setLanguage(e.target.value as Language));
               }}
               value={language}
             >

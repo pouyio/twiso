@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQueryParam, NumberParam, withDefault } from 'use-query-params';
-import { PAGE_SIZE } from 'state/state';
+export const PAGE_SIZE = 40;
 
 export const usePagination = <T,>(items: T[]) => {
   const [currentPage, setCurrentPage] = useQueryParam(
