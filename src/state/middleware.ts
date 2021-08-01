@@ -114,6 +114,24 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       );
       break;
     }
+    case 'shows/addEpisodeWatched/fulfilled': {
+      db.table('shows').put({
+        ...action.payload,
+        localState: 'watched',
+      });
+      break;
+    }
+    case 'shows/removeEpisodeWatched/fulfilled': {
+      if (action.payload) {
+        db.table('shows').update(action.meta.arg.show.show.ids.trakt, {
+          progress: action.payload,
+          last_watched_at: action.payload.last_watched_at,
+        });
+      } else {
+        db.table('shows').delete(action.meta.arg.show.show.ids.trakt);
+      }
+      break;
+    }
     case 'config/setLanguage': {
       localStorage.setItem('language', action.payload);
       break;

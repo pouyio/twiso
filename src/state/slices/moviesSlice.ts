@@ -53,7 +53,7 @@ const moviesSlice = createSlice({
       );
     },
   },
-  extraReducers: (builder) =>
+  extraReducers: (builder) => {
     builder
       .addCase(addWatched.pending, (state, { meta }) => {
         state.pending.watched.push(meta.arg.movie.ids.trakt);
@@ -145,7 +145,8 @@ const moviesSlice = createSlice({
           ...state[meta.arg.type][index],
           movie: payload,
         };
-      }),
+      });
+  },
 });
 
 // actions

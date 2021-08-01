@@ -1,10 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Episode, SearchShow, Season, Show, ShowWatched } from 'models';
+import {
+  Episode,
+  SearchShow,
+  Season,
+  Show,
+  ShowProgress,
+  ShowWatched,
+} from 'models';
 import {
   updateProgress,
   _removeWatched,
   _removeWatchlist,
 } from 'state/slices/showsSlice';
+import { RootState } from 'state/store';
 import {
   addWatchedApi,
   addWatchlistApi,
@@ -43,60 +51,60 @@ export const removeWatchlist = createAsyncThunk(
   }
 );
 
-export const addEpisodeWatched = createAsyncThunk(
-  'shows/addEpisodeWatched',
-  async (
-    {
-      show,
-      episode,
-    }: {
-      show: ShowWatched;
-      episode: Episode;
-    },
-    { dispatch }
-  ) => {
-    try {
-      const { data } = await addWatchedApi(episode, 'episode');
-      dispatch(_removeWatchlist(show.show.ids.trakt));
-      if (data.added.episodes) {
-        const { data: progress } = await getProgressApi(show.show.ids.trakt);
-        dispatch(updateProgress({ show, progress }));
+export const addEpisodeWatched = createAsyncThunk<
+  ShowWatched,
+  {
+    show: ShowWatched;
+    episode: Episode;
+  },
+  { state: RootState }
+>('shows/addEpisodeWatched', async ({ show, episode }, { getState }) => {
+  const { data } = await addWatchedApi(episode, 'episode');
+  if (data.added.episodes) {
+    const { data: progress } = await getProgressApi(show.show.ids.trakt);
+    const state = getState();
+    const showIndex = state.shows.watched.findIndex(
+      (s) => s.show.ids.trakt === show.show.ids.trakt
+    );
+    const updatedShow = { ...show };
+    if (showIndex === -1) {
+      if (show.show.available_translations.includes('es')) {
+        const { data: translations } = await getTranslationsApi(
+          show.show.ids.trakt,
+          'show'
+        );
+        const { title, overview } = getTranslation(translations);
+        updatedShow.show.title = title;
+        updatedShow.show.overview = overview;
       }
-    } catch (error) {
-      console.error(error);
-      throw error;
     }
+    return {
+      ...(showIndex === -1 ? updatedShow : state.shows.watched[showIndex]),
+      last_watched_at: progress.last_watched_at,
+      progress,
+    };
   }
-);
+  throw Error('shows/addEpisodeWatched failed');
+});
 
-export const removeEpisodeWatched = createAsyncThunk(
-  'shows/removeEpisodeWatched',
-  async (
-    {
-      show,
-      episode,
-    }: {
-      show: ShowWatched;
-      episode: Episode;
-    },
-    { dispatch }
-  ) => {
-    try {
-      const { data } = await removeWatchedApi(episode, 'episode');
-      if (data.deleted.episodes) {
-        const { data: progress } = await getProgressApi(show.show.ids.trakt);
-        if (!progress.last_episode) {
-          dispatch(_removeWatched(show.show.ids.trakt));
-        } else {
-          dispatch(updateProgress({ show, progress }));
-        }
-      }
-    } catch (error) {
-      console.error(error);
-      throw error;
+export const removeEpisodeWatched = createAsyncThunk<
+  ShowProgress | false,
+  {
+    show: ShowWatched;
+    episode: Episode;
+  }
+>('shows/removeEpisodeWatched', async ({ show, episode }) => {
+  const { data } = await removeWatchedApi(episode, 'episode');
+  if (data.deleted.episodes) {
+    const { data: progress } = await getProgressApi(show.show.ids.trakt);
+    if (!progress.last_episode) {
+      return false;
+    } else {
+      return progress;
     }
   }
-);
+  throw Error('shows/addEpisodeWatched failed');
+});
 
 export const addSeasonWatched = createAsyncThunk(
   'shows/addSeasonWatched',

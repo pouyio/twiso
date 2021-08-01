@@ -1,7 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { getApi, getPeopleApi, getRatingsApi } from '../utils/api';
+import {
+  getApi,
+  getPeopleApi,
+  getRatingsApi,
+  getTranslationsApi,
+} from '../utils/api';
 import Image from '../components/Image';
-import { useTranslate, useIsWatch, useShare } from '../hooks';
+import { useIsWatch, useShare } from '../hooks';
 import Emoji from '../components/Emoji';
 import Related from '../components/Related';
 import SeasonsContainer from '../components/Seasons/SeasonsContainer';
@@ -15,6 +20,7 @@ import Rating from '../components/Rating';
 import { AlertContext } from '../contexts';
 import { useAppSelector } from 'state/store';
 import Collapsable from '../components/Collapsable/Collapsable';
+import { getTranslation } from 'utils/getTranslations';
 
 enum status {
   'returning series' = 'en antena',
@@ -26,11 +32,9 @@ enum status {
 
 export default function ShowDetail() {
   const [item, setItem] = useState<Show>();
-  const [showOriginalTitle, setShowOriginalTitle] = useState(false);
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const [showProgressPercentage, setShowProgressPercentage] = useState(false);
-  const { title, overview } = useTranslate('show', item);
   const { state } = useLocation<Show>();
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
@@ -44,15 +48,27 @@ export default function ShowDetail() {
   const { isWatchlist, isWatched } = useIsWatch();
 
   useEffect(() => {
-    if (!state) {
-      getApi<SearchShow>(+id, 'show').then(({ data }) => {
-        const item = data[0];
-        setItem(item.show);
-      });
+    window.scrollTo(0, 0);
+
+    if (state) {
+      setItem(state);
       return;
     }
-    setItem(state);
-    window.scrollTo(0, 0);
+
+    const retrieveRemoteShow = async () => {
+      const { data } = await getApi<SearchShow>(+id, 'show');
+      const show = data[0].show;
+      setItem(show);
+      if (show.available_translations.includes('es')) {
+        const { data: translations } = await getTranslationsApi(+id, 'show');
+        const { title, overview } = getTranslation(translations);
+        show.title = title;
+        show.overview = overview;
+        setItem(show);
+      }
+    };
+
+    retrieveRemoteShow();
   }, [state, id]);
 
   useEffect(() => {
@@ -79,10 +95,6 @@ export default function ShowDetail() {
     return 'bg-gray-300';
   };
 
-  const toggleShowOriginalTitle = () => {
-    setShowOriginalTitle(!showOriginalTitle);
-  };
-
   const onShare = () => {
     share(item!.title).then((action) => {
       if (action === 'copied') {
@@ -94,7 +106,7 @@ export default function ShowDetail() {
   return item ? (
     <div className={getBgClassName()}>
       <Helmet>
-        <title>{title}</title>
+        <title>{item.title}</title>
       </Helmet>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
@@ -168,11 +180,8 @@ export default function ShowDetail() {
             </div>
 
             <div className="w-full max-w-3xl">
-              <h1
-                onClick={toggleShowOriginalTitle}
-                className="text-4xl leading-none text-center mb-4"
-              >
-                {showOriginalTitle ? item.title : title}
+              <h1 className="text-4xl leading-none text-center mb-4">
+                {item.title}
               </h1>
 
               <div className="flex mb-4 justify-between items-center text-gray-600">
@@ -231,7 +240,7 @@ export default function ShowDetail() {
           <div className="my-4">
             <p className="font-medium">Resumen:</p>
             <Collapsable heightInRem={7}>
-              {overview || 'Sin descripción'}
+              {item.overview || 'Sin descripción'}
             </Collapsable>
           </div>
 
