@@ -79,7 +79,7 @@ export const addEpisodeWatched = createAsyncThunk<
       const showIndex = state.shows.watched.findIndex(
         (s) => s.show.ids.trakt === show.show.ids.trakt
       );
-      const updatedShow: ShowWatched = { ...show };
+      const updatedShow: ShowWatched = JSON.parse(JSON.stringify(show));
       if (showIndex === -1) {
         if (show.show.available_translations.includes('es')) {
           const { title, overview } = await getTranslationsApi(
