@@ -1,6 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
+  AddedWatchlist,
   Episode,
+  RemovedWatchlist,
   SearchShow,
   Season,
   Show,
@@ -35,9 +37,9 @@ const _getRemoteWithTranslations = async (id: number) => {
   return show;
 };
 
-export const addWatchlist = createAsyncThunk(
+export const addWatchlist = createAsyncThunk<AddedWatchlist, { show: Show }>(
   'shows/addWatchlist',
-  async ({ show }: { show: Show }) => {
+  async ({ show }) => {
     try {
       const { data } = await addWatchlistApi(show, 'show');
       return data;
@@ -48,18 +50,18 @@ export const addWatchlist = createAsyncThunk(
   }
 );
 
-export const removeWatchlist = createAsyncThunk(
-  'shows/removeWatchlist',
-  async ({ show }: { show: Show }) => {
-    try {
-      const { data } = await removeWatchlistApi(show, 'show');
-      return data;
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
+export const removeWatchlist = createAsyncThunk<
+  RemovedWatchlist,
+  { show: Show }
+>('shows/removeWatchlist', async ({ show }) => {
+  try {
+    const { data } = await removeWatchlistApi(show, 'show');
+    return data;
+  } catch (e) {
+    console.error(e);
+    throw e;
   }
-);
+});
 
 export const addEpisodeWatched = createAsyncThunk<
   ShowWatched,
@@ -69,29 +71,34 @@ export const addEpisodeWatched = createAsyncThunk<
   },
   { state: RootState }
 >('shows/addEpisodeWatched', async ({ show, episode }, { getState }) => {
-  const { data } = await addWatchedApi(episode, 'episode');
-  if (data.added.episodes) {
-    const { data: progress } = await getProgressApi(show.show.ids.trakt);
-    const state = getState();
-    const showIndex = state.shows.watched.findIndex(
-      (s) => s.show.ids.trakt === show.show.ids.trakt
-    );
-    const updatedShow = { ...show };
-    if (showIndex === -1) {
-      if (show.show.available_translations.includes('es')) {
-        const { title, overview } = await getTranslationsApi(
-          show.show.ids.trakt,
-          'show'
-        );
-        updatedShow.show.title = title;
-        updatedShow.show.overview = overview;
+  try {
+    const { data } = await addWatchedApi(episode, 'episode');
+    if (data.added.episodes) {
+      const { data: progress } = await getProgressApi(show.show.ids.trakt);
+      const state = getState();
+      const showIndex = state.shows.watched.findIndex(
+        (s) => s.show.ids.trakt === show.show.ids.trakt
+      );
+      const updatedShow: ShowWatched = { ...show };
+      if (showIndex === -1) {
+        if (show.show.available_translations.includes('es')) {
+          const { title, overview } = await getTranslationsApi(
+            show.show.ids.trakt,
+            'show'
+          );
+          updatedShow.show.title = title;
+          updatedShow.show.overview = overview;
+        }
       }
+      return {
+        ...(showIndex === -1 ? updatedShow : state.shows.watched[showIndex]),
+        last_watched_at: progress.last_watched_at,
+        progress,
+      };
     }
-    return {
-      ...(showIndex === -1 ? updatedShow : state.shows.watched[showIndex]),
-      last_watched_at: progress.last_watched_at,
-      progress,
-    };
+  } catch (e) {
+    console.error(e);
+    throw e;
   }
   throw Error('shows/addEpisodeWatched failed');
 });
@@ -103,18 +110,24 @@ export const removeEpisodeWatched = createAsyncThunk<
     episode: Episode;
   }
 >('shows/removeEpisodeWatched', async ({ show, episode }) => {
-  const { data } = await removeWatchedApi(episode, 'episode');
-  if (data.deleted.episodes) {
-    const { data: progress } = await getProgressApi(show.show.ids.trakt);
-    if (!progress.last_episode) {
-      return false;
-    } else {
-      return progress;
+  try {
+    const { data } = await removeWatchedApi(episode, 'episode');
+    if (data.deleted.episodes) {
+      const { data: progress } = await getProgressApi(show.show.ids.trakt);
+      if (!progress.last_episode) {
+        return false;
+      } else {
+        return progress;
+      }
     }
+  } catch (e) {
+    console.error(e);
+    throw e;
   }
   throw Error('shows/addEpisodeWatched failed');
 });
 
+// TODO remove _removeWatchlist and updateProgress dispatchs
 export const addSeasonWatched = createAsyncThunk(
   'shows/addSeasonWatched',
   async (
@@ -174,64 +187,76 @@ export const getShow = createAsyncThunk<
   Show,
   { id: number; type: 'watched' | 'watchlist' }
 >('shows/getShow', async ({ id }) => {
-  return _getRemoteWithTranslations(id);
+  try {
+    return _getRemoteWithTranslations(id);
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 });
 
-export const updateFullShow = createAsyncThunk(
-  'shows/updateFullShow',
-  async ({ outdated }: { outdated: ShowWatched }) => {
-    const showCopy = JSON.parse(JSON.stringify(outdated));
-    try {
-      const translationAvailable = showCopy.show.available_translations.includes(
-        'es'
-      );
-      const [seasons, progress, translations] = await Promise.all([
-        getSeasonsApi(showCopy.show.ids.trakt),
-        getProgressApi(showCopy.show.ids.trakt),
-        translationAvailable
-          ? getTranslationsApi(showCopy.show.ids.trakt, 'show')
-          : null,
-      ]);
-
-      showCopy.fullSeasons = seasons.data;
-      showCopy.progress = progress.data;
-      showCopy.last_watched_at = progress.data.last_watched_at;
-
-      if (translationAvailable && translations) {
-        showCopy.show.title = translations.title;
-        showCopy.show.overview = translations.overview;
-      }
-      return showCopy;
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
+export const updateFullShow = createAsyncThunk<
+  ShowWatched,
+  {
+    outdated: ShowWatched;
   }
-);
+>('shows/updateFullShow', async ({ outdated }) => {
+  const showCopy: ShowWatched = JSON.parse(JSON.stringify(outdated));
+  try {
+    const translationAvailable = showCopy.show.available_translations.includes(
+      'es'
+    );
+    const [seasons, progress, translations] = await Promise.all([
+      getSeasonsApi(showCopy.show.ids.trakt),
+      getProgressApi(showCopy.show.ids.trakt),
+      translationAvailable
+        ? getTranslationsApi(showCopy.show.ids.trakt, 'show')
+        : null,
+    ]);
+
+    showCopy.fullSeasons = seasons.data;
+    showCopy.progress = progress.data;
+    showCopy.last_watched_at = progress.data.last_watched_at;
+
+    if (translationAvailable && translations) {
+      showCopy.show.title = translations.title;
+      showCopy.show.overview = translations.overview;
+    }
+    return showCopy;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+});
 
 export const populateDetail = createAsyncThunk<
   Show,
   { id: number; show?: Show },
   { state: RootState }
 >('shows/populateDetail', async ({ id, show }, { getState }) => {
-  const state = getState();
-  const foundShow =
-    state.shows.watched.find((w) => w.show.ids.trakt === id) ||
-    state.shows.watchlist.find((w) => w.show.ids.trakt === id);
-  // found in local state
-  if (foundShow) {
-    return foundShow.show;
-  }
-
-  // only translations needed
-  if (show) {
-    if (show.available_translations.includes('es')) {
-      const { title, overview } = await getTranslationsApi(id, 'show');
-      show.title = title;
-      show.overview = overview;
+  try {
+    const state = getState();
+    const foundShow =
+      state.shows.watched.find((w) => w.show.ids.trakt === id) ||
+      state.shows.watchlist.find((w) => w.show.ids.trakt === id);
+    // found in local state
+    if (foundShow) {
+      return foundShow.show;
     }
-    return show;
-  }
 
-  return _getRemoteWithTranslations(id);
+    // only translations needed
+    if (show) {
+      if (show.available_translations.includes('es')) {
+        const { title, overview } = await getTranslationsApi(id, 'show');
+        show.title = title;
+        show.overview = overview;
+      }
+      return show;
+    }
+
+    return _getRemoteWithTranslations(id);
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 });

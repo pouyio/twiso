@@ -1,5 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Movie, SearchMovie } from 'models';
+import {
+  AddedWatched,
+  AddedWatchlist,
+  Movie,
+  RemovedWatched,
+  RemovedWatchlist,
+  SearchMovie,
+} from 'models';
 import { RootState } from 'state/store';
 import {
   addWatchedApi,
@@ -21,9 +28,9 @@ const _getRemoteWithTranslations = async (id: number) => {
   return movie;
 };
 
-export const addWatched = createAsyncThunk(
+export const addWatched = createAsyncThunk<AddedWatched, { movie: Movie }>(
   'movies/addWatched',
-  async ({ movie }: { movie: Movie }) => {
+  async ({ movie }) => {
     try {
       const { data } = await addWatchedApi(movie, 'movie');
       return data;
@@ -34,9 +41,9 @@ export const addWatched = createAsyncThunk(
   }
 );
 
-export const removeWatched = createAsyncThunk(
+export const removeWatched = createAsyncThunk<RemovedWatched, { movie: Movie }>(
   'movies/removeWatched',
-  async ({ movie }: { movie: Movie }) => {
+  async ({ movie }) => {
     try {
       const { data } = await removeWatchedApi(movie, 'movie');
       return data;
@@ -47,9 +54,9 @@ export const removeWatched = createAsyncThunk(
   }
 );
 
-export const addWatchlist = createAsyncThunk(
+export const addWatchlist = createAsyncThunk<AddedWatchlist, { movie: Movie }>(
   'movies/addWatchlist',
-  async ({ movie }: { movie: Movie }) => {
+  async ({ movie }) => {
     try {
       const { data } = await addWatchlistApi(movie, 'movie');
       return data;
@@ -60,18 +67,18 @@ export const addWatchlist = createAsyncThunk(
   }
 );
 
-export const removeWatchlist = createAsyncThunk(
-  'movies/removeWatchlist',
-  async ({ movie }: { movie: Movie }) => {
-    try {
-      const { data } = await removeWatchlistApi(movie, 'movie');
-      return data;
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
+export const removeWatchlist = createAsyncThunk<
+  RemovedWatchlist,
+  { movie: Movie }
+>('movies/removeWatchlist', async ({ movie }) => {
+  try {
+    const { data } = await removeWatchlistApi(movie, 'movie');
+    return data;
+  } catch (e) {
+    console.error(e);
+    throw e;
   }
-);
+});
 
 export const getMovie = createAsyncThunk<
   Movie,
@@ -85,23 +92,28 @@ export const populateDetail = createAsyncThunk<
   { id: number; movie?: Movie },
   { state: RootState }
 >('movies/populateDetail', async ({ id, movie }, { getState }) => {
-  const state = getState();
-  const foundMovie =
-    state.movies.watched.find((w) => w.movie.ids.trakt === id) ||
-    state.movies.watchlist.find((w) => w.movie.ids.trakt === id);
-  // found in local state
-  if (foundMovie) {
-    return foundMovie.movie;
-  }
-
-  // only translations needed
-  if (movie) {
-    if (movie.available_translations.includes('es')) {
-      const { title, overview } = await getTranslationsApi(id, 'movie');
-      movie.title = title;
-      movie.overview = overview;
+  try {
+    const state = getState();
+    const foundMovie =
+      state.movies.watched.find((w) => w.movie.ids.trakt === id) ||
+      state.movies.watchlist.find((w) => w.movie.ids.trakt === id);
+    // found in local state
+    if (foundMovie) {
+      return foundMovie.movie;
     }
-    return movie;
+
+    // only translations needed
+    if (movie) {
+      if (movie.available_translations.includes('es')) {
+        const { title, overview } = await getTranslationsApi(id, 'movie');
+        movie.title = title;
+        movie.overview = overview;
+      }
+      return movie;
+    }
+  } catch (e) {
+    console.error(e);
+    throw e;
   }
 
   return _getRemoteWithTranslations(id);
