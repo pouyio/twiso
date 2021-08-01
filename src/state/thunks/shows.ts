@@ -9,11 +9,6 @@ import {
   ShowProgress,
   ShowWatched,
 } from 'models';
-import {
-  updateProgress,
-  _removeWatched,
-  _removeWatchlist,
-} from 'state/slices/showsSlice';
 import { RootState } from 'state/store';
 import {
   addWatchedApi,
@@ -127,61 +122,66 @@ export const removeEpisodeWatched = createAsyncThunk<
   throw Error('shows/addEpisodeWatched failed');
 });
 
-// TODO remove _removeWatchlist and updateProgress dispatchs
-export const addSeasonWatched = createAsyncThunk(
-  'shows/addSeasonWatched',
-  async (
-    {
-      season,
-      show,
-    }: {
-      season: Season;
-      show: ShowWatched;
-    },
-    { dispatch }
-  ) => {
-    try {
-      const { data } = await addWatchedApi(season, 'season');
-      if (data.added.episodes) {
-        const { data: progress } = await getProgressApi(show.show.ids.trakt);
-        dispatch(_removeWatchlist(show.show.ids.trakt));
-        dispatch(updateProgress({ show, progress }));
-      }
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
-  }
-);
-
-export const removeSeasonWatched = createAsyncThunk(
-  'shows/removeSeasonWatched',
-  async (
-    {
-      season,
-      show,
-    }: {
-      season: Season;
-      show: ShowWatched;
-    },
-    { dispatch }
-  ) => {
-    try {
-      const { data } = await removeWatchedApi(season, 'season');
-      if (data.deleted.episodes) {
-        const { data: progress } = await getProgressApi(show.show.ids.trakt);
-        if (!progress.last_episode) {
-          dispatch(_removeWatched(show.show.ids.trakt));
-        } else {
-          dispatch(updateProgress({ show, progress }));
+export const addSeasonWatched = createAsyncThunk<
+  ShowWatched,
+  {
+    season: Season;
+    show: ShowWatched;
+  },
+  { state: RootState }
+>('shows/addSeasonWatched', async ({ season, show }, { getState }) => {
+  try {
+    const { data } = await addWatchedApi(season, 'season');
+    if (data.added.episodes) {
+      const { data: progress } = await getProgressApi(show.show.ids.trakt);
+      const state = getState();
+      const showIndex = state.shows.watched.findIndex(
+        (s) => s.show.ids.trakt === show.show.ids.trakt
+      );
+      const updatedShow: ShowWatched = JSON.parse(JSON.stringify(show));
+      if (showIndex === -1) {
+        if (show.show.available_translations.includes('es')) {
+          const { title, overview } = await getTranslationsApi(
+            show.show.ids.trakt,
+            'show'
+          );
+          updatedShow.show.title = title;
+          updatedShow.show.overview = overview;
         }
       }
-    } catch (e) {
-      console.error(e);
-      throw e;
+      return {
+        ...(showIndex === -1 ? updatedShow : state.shows.watched[showIndex]),
+        last_watched_at: progress.last_watched_at,
+        progress,
+      };
     }
+  } catch (e) {
+    console.error(e);
+    throw e;
   }
-);
+  throw Error('shows/addSeasonWatched failed');
+});
+
+export const removeSeasonWatched = createAsyncThunk<
+  ShowProgress | false,
+  { season: Season; show: ShowWatched }
+>('shows/removeSeasonWatched', async ({ season, show }) => {
+  try {
+    const { data } = await removeWatchedApi(season, 'season');
+    if (data.deleted.episodes) {
+      const { data: progress } = await getProgressApi(show.show.ids.trakt);
+      if (!progress.last_episode) {
+        return false;
+      } else {
+        return progress;
+      }
+    }
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+  throw Error('shows/removeSeasonWatched failed');
+});
 
 export const getShow = createAsyncThunk<
   Show,

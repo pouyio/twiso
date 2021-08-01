@@ -13,6 +13,7 @@ interface ISeasonsProps {
   episodes?: Episode[];
   showModal: (data: { title: string; overview: string }) => void;
   onlyView: boolean;
+  seasonId?: number;
 }
 
 const Episodes: React.FC<ISeasonsProps> = ({
@@ -24,8 +25,10 @@ const Episodes: React.FC<ISeasonsProps> = ({
   episodes = [],
   showModal,
   onlyView,
+  seasonId = 0,
 }) => {
   const watched = useAppSelector((state) => state.shows.pending.watched);
+  const pendings = useAppSelector((state) => state.shows.pending.seasons);
 
   const isEpisodeWatched = (episodeNumber: number) => {
     if (!seasonProgress) {
@@ -148,7 +151,14 @@ const Episodes: React.FC<ISeasonsProps> = ({
               className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
               onClick={() => removeSeasonWatched()}
             >
-              Marcar todo como no vistos
+              Marcar todo como no vistos{' '}
+              {pendings.includes(seasonId) && (
+                <Emoji
+                  emoji="⏳"
+                  rotating={true}
+                  className="inline-flex ml-2"
+                />
+              )}
             </button>
           ) : (
             <button
@@ -156,6 +166,13 @@ const Episodes: React.FC<ISeasonsProps> = ({
               onClick={() => addSeasonWatched()}
             >
               Marcar todo como vistos
+              {pendings.includes(seasonId) && (
+                <Emoji
+                  emoji="⏳"
+                  rotating={true}
+                  className="inline-flex ml-2"
+                />
+              )}
             </button>
           )}
         </div>

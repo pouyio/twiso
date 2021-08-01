@@ -61,19 +61,10 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       db.table(SHOWS).bulkDelete(action.payload.map((s) => s.show.ids.trakt));
       break;
     }
-    case 'shows/_removeWatched': {
-      db.table(SHOWS).delete(action.payload);
-      break;
-    }
     case 'shows/removeWatchlist/fulfilled': {
       if (action.payload.deleted.shows) {
         db.table(SHOWS).delete(action.meta.arg.show.ids.trakt);
       }
-      break;
-    }
-    // TODO remove if possible all _removewatchlist can be deleted
-    case 'shows/_removeWatchlist': {
-      db.table(SHOWS).delete(action.payload);
       break;
     }
     case 'shows/updateShow': {
@@ -115,14 +106,16 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       );
       break;
     }
-    case 'shows/addEpisodeWatched/fulfilled': {
+    case 'shows/addEpisodeWatched/fulfilled':
+    case 'shows/addSeasonWatched/fulfilled': {
       db.table(SHOWS).put({
         ...action.payload,
         localState: 'watched',
       });
       break;
     }
-    case 'shows/removeEpisodeWatched/fulfilled': {
+    case 'shows/removeEpisodeWatched/fulfilled':
+    case 'shows/removeSeasonWatched/fulfilled': {
       if (action.payload) {
         db.table(SHOWS).update(action.meta.arg.show.show.ids.trakt, {
           progress: action.payload,

@@ -170,6 +170,11 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       />
       {selectedSeason !== undefined && (
         <Episodes
+          seasonId={
+            (watchedShow?.fullSeasons ?? unTrackedSeasons).find(
+              (s) => s.number === selectedSeason
+            )?.ids.trakt
+          }
           seasonProgress={(
             watchedShow?.progress ?? unTrackedProgress
           )?.seasons.find((s) => s.number === selectedSeason)}

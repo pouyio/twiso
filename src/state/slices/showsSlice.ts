@@ -3,10 +3,12 @@ import { Season, Show, ShowProgress, ShowWatched, ShowWatchlist } from 'models';
 import { mergeDeepLeft } from 'ramda';
 import {
   addEpisodeWatched,
+  addSeasonWatched,
   addWatchlist,
   getShow,
   populateDetail,
   removeEpisodeWatched,
+  removeSeasonWatched,
   removeWatchlist,
   updateFullShow,
 } from 'state/thunks/shows';
@@ -16,6 +18,7 @@ interface ShowsState {
   pending: {
     watchlist: number[];
     watched: number[];
+    seasons: number[];
   };
   watched: ShowWatched[];
   watchlist: ShowWatchlist[];
@@ -27,6 +30,7 @@ const initialState: ShowsState = {
   pending: {
     watchlist: [],
     watched: [],
+    seasons: [],
   },
   watched: [],
   watchlist: [],
@@ -67,9 +71,6 @@ const showsSlice = createSlice({
         (s) => !payload.some((sd) => sd.show.ids.trakt === s.show.ids.trakt)
       );
     },
-    _removeWatched(state, { payload }: PayloadAction<number>) {
-      state.watched = state.watched.filter((s) => payload !== s.show.ids.trakt);
-    },
     updateSeasons(
       state,
       { payload }: PayloadAction<{ show: ShowWatched; seasons: Season[] }>
@@ -97,11 +98,6 @@ const showsSlice = createSlice({
         state.watched[showIndex].last_watched_at =
           payload.progress.last_watched_at;
       }
-    },
-    _removeWatchlist(state, { payload }: PayloadAction<number>) {
-      state.watchlist = state.watchlist.filter(
-        (m) => payload !== m.show.ids.trakt
-      );
     },
   },
   extraReducers: (builder) => {
@@ -190,6 +186,30 @@ const showsSlice = createSlice({
           (p) => p !== meta.arg.episode.ids.trakt
         );
       })
+      .addCase(addSeasonWatched.pending, (state, { meta }) => {
+        state.pending.seasons.push(meta.arg.season.ids.trakt);
+      })
+      .addCase(addSeasonWatched.fulfilled, (state, { meta, payload }) => {
+        state.watchlist = state.watchlist.filter(
+          (m) => meta.arg.show.show.ids.trakt !== m.show.ids.trakt
+        );
+        state.pending.seasons = state.pending.seasons.filter(
+          (p) => p !== meta.arg.season.ids.trakt
+        );
+        const showIndex = state.watched.findIndex(
+          (s) => s.show.ids.trakt === payload.show.ids.trakt
+        );
+        if (showIndex === -1) {
+          state.watched.push(payload);
+        } else {
+          state.watched[showIndex] = payload;
+        }
+      })
+      .addCase(addSeasonWatched.rejected, (state, { meta }) => {
+        state.pending.seasons = state.pending.seasons.filter(
+          (p) => p !== meta.arg.season.ids.trakt
+        );
+      })
       .addCase(removeEpisodeWatched.pending, (state, { meta }) => {
         state.pending.watched.push(meta.arg.episode.ids.trakt);
       })
@@ -214,6 +234,30 @@ const showsSlice = createSlice({
           (p) => p !== meta.arg.episode.ids.trakt
         );
       })
+      .addCase(removeSeasonWatched.pending, (state, { meta }) => {
+        state.pending.seasons.push(meta.arg.season.ids.trakt);
+      })
+      .addCase(removeSeasonWatched.fulfilled, (state, { meta, payload }) => {
+        state.pending.seasons = state.pending.seasons.filter(
+          (p) => p !== meta.arg.season.ids.trakt
+        );
+        if (payload) {
+          const showIndex = state.watched.findIndex(
+            (s) => s.show.ids.trakt === meta.arg.show.show.ids.trakt
+          );
+          state.watched[showIndex].progress = payload;
+          state.watched[showIndex].last_watched_at = payload.last_watched_at;
+        } else {
+          state.watched = state.watched.filter(
+            (s) => s.show.ids.trakt !== meta.arg.show.show.ids.trakt
+          );
+        }
+      })
+      .addCase(removeSeasonWatched.rejected, (state, { meta }) => {
+        state.pending.seasons = state.pending.seasons.filter(
+          (p) => p !== meta.arg.season.ids.trakt
+        );
+      })
       .addCase(populateDetail.pending, (state) => {
         state.detail = undefined;
       })
@@ -225,8 +269,6 @@ const showsSlice = createSlice({
       });
   },
 });
-
-export const { _removeWatchlist, _removeWatched } = showsSlice.actions;
 
 // actions
 export const {
