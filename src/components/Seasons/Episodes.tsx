@@ -29,6 +29,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
 }) => {
   const watched = useAppSelector((state) => state.shows.pending.watched);
   const pendings = useAppSelector((state) => state.shows.pending.seasons);
+  const language = useAppSelector((state) => state.config.language);
 
   const isEpisodeWatched = (episodeNumber: number) => {
     if (!seasonProgress) {
@@ -71,7 +72,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
 
   const getFormattedDate = (date: string, size: 'long' | 'short') => {
     return date
-      ? new Date(date).toLocaleDateString('es', {
+      ? new Date(date).toLocaleDateString(language, {
           year: 'numeric',
           month: size,
           day: 'numeric',

@@ -16,12 +16,13 @@ import {
   removeWatchedApi,
   removeWatchlistApi,
 } from 'utils/api';
+import { Language } from '../config';
 
-const _getRemoteWithTranslations = async (id: number) => {
+const _getRemoteWithTranslations = async (id: number, language: Language) => {
   const { data } = await getApi<SearchMovie>(id, 'movie');
   const movie = data[0].movie;
-  if (movie.available_translations.includes('es')) {
-    const { title, overview } = await getTranslationsApi(id, 'movie');
+  if (language !== 'en' && movie.available_translations.includes(language)) {
+    const { title, overview } = await getTranslationsApi(id, 'movie', language);
     movie.title = title;
     movie.overview = overview;
   }
@@ -82,9 +83,10 @@ export const removeWatchlist = createAsyncThunk<
 
 export const getMovie = createAsyncThunk<
   Movie,
-  { id: number; type: 'watched' | 'watchlist' }
->('movies/getMovie', async ({ id }) => {
-  return _getRemoteWithTranslations(id);
+  { id: number; type: 'watched' | 'watchlist' },
+  { state: RootState }
+>('movies/getMovie', async ({ id }, { getState }) => {
+  return _getRemoteWithTranslations(id, getState().config.language);
 });
 
 export const populateDetail = createAsyncThunk<
@@ -92,8 +94,8 @@ export const populateDetail = createAsyncThunk<
   { id: number; movie?: Movie },
   { state: RootState }
 >('movies/populateDetail', async ({ id, movie }, { getState }) => {
+  const state = getState();
   try {
-    const state = getState();
     const foundMovie =
       state.movies.watched.find((w) => w.movie.ids.trakt === id) ||
       state.movies.watchlist.find((w) => w.movie.ids.trakt === id);
@@ -104,8 +106,16 @@ export const populateDetail = createAsyncThunk<
 
     // only translations needed
     if (movie) {
-      if (movie.available_translations.includes('es')) {
-        const { title, overview } = await getTranslationsApi(id, 'movie');
+      const language = state.config.language;
+      if (
+        language !== 'en' &&
+        movie.available_translations.includes(language)
+      ) {
+        const { title, overview } = await getTranslationsApi(
+          id,
+          'movie',
+          language
+        );
         movie.title = title;
         movie.overview = overview;
       }
@@ -116,5 +126,5 @@ export const populateDetail = createAsyncThunk<
     throw e;
   }
 
-  return _getRemoteWithTranslations(id);
+  return _getRemoteWithTranslations(id, state.config.language);
 });

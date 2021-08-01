@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { getImgsConfigApi } from 'utils/api';
 import { ImgConfig } from 'models';
-export type Language = 'en' | 'es'
+export type Language = 'en' | 'es';
 
 interface ConfigState {
   img?: ImgConfig;
@@ -27,6 +27,7 @@ const configSlice = createSlice({
   initialState: initialState,
   reducers: {
     setLanguage(state, { payload }: PayloadAction<Language>) {
+      localStorage.setItem('language', payload);
       state.language = payload;
     },
   },

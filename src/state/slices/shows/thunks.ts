@@ -20,12 +20,13 @@ import {
   removeWatchedApi,
   removeWatchlistApi,
 } from 'utils/api';
+import { Language } from '../config';
 
-const _getRemoteWithTranslations = async (id: number) => {
+const _getRemoteWithTranslations = async (id: number, language: Language) => {
   const { data } = await getApi<SearchShow>(id, 'show');
   const show = data[0].show;
-  if (show.available_translations.includes('es')) {
-    const { title, overview } = await getTranslationsApi(id, 'show');
+  if (language !== 'en' && show.available_translations.includes(language)) {
+    const { title, overview } = await getTranslationsApi(id, 'show', language);
     show.title = title;
     show.overview = overview;
   }
@@ -76,10 +77,14 @@ export const addEpisodeWatched = createAsyncThunk<
       );
       const updatedShow: ShowWatched = JSON.parse(JSON.stringify(show));
       if (showIndex === -1) {
-        if (show.show.available_translations.includes('es')) {
+        if (
+          state.config.language !== 'en' &&
+          show.show.available_translations.includes(state.config.language)
+        ) {
           const { title, overview } = await getTranslationsApi(
             show.show.ids.trakt,
-            'show'
+            'show',
+            state.config.language
           );
           updatedShow.show.title = title;
           updatedShow.show.overview = overview;
@@ -140,10 +145,14 @@ export const addSeasonWatched = createAsyncThunk<
       );
       const updatedShow: ShowWatched = JSON.parse(JSON.stringify(show));
       if (showIndex === -1) {
-        if (show.show.available_translations.includes('es')) {
+        if (
+          state.config.language !== 'en' &&
+          show.show.available_translations.includes(state.config.language)
+        ) {
           const { title, overview } = await getTranslationsApi(
             show.show.ids.trakt,
-            'show'
+            'show',
+            state.config.language
           );
           updatedShow.show.title = title;
           updatedShow.show.overview = overview;
@@ -185,10 +194,11 @@ export const removeSeasonWatched = createAsyncThunk<
 
 export const getShow = createAsyncThunk<
   Show,
-  { id: number; type: 'watched' | 'watchlist' }
->('shows/getShow', async ({ id }) => {
+  { id: number; type: 'watched' | 'watchlist' },
+  { state: RootState }
+>('shows/getShow', async ({ id }, { getState }) => {
   try {
-    return _getRemoteWithTranslations(id);
+    return _getRemoteWithTranslations(id, getState().config.language);
   } catch (e) {
     console.error(e);
     throw e;
@@ -199,18 +209,25 @@ export const updateFullShow = createAsyncThunk<
   ShowWatched,
   {
     outdated: ShowWatched;
-  }
->('shows/updateFullShow', async ({ outdated }) => {
+  },
+  { state: RootState }
+>('shows/updateFullShow', async ({ outdated }, { getState }) => {
   const showCopy: ShowWatched = JSON.parse(JSON.stringify(outdated));
   try {
-    const translationAvailable = showCopy.show.available_translations.includes(
-      'es'
-    );
+    const language = getState().config.language;
+    const translationAvailable =
+      language !== 'en' &&
+      showCopy.show.available_translations.includes(language);
+
     const [seasons, progress, translations] = await Promise.all([
       getSeasonsApi(showCopy.show.ids.trakt),
       getProgressApi(showCopy.show.ids.trakt),
       translationAvailable
-        ? getTranslationsApi(showCopy.show.ids.trakt, 'show')
+        ? getTranslationsApi(
+            showCopy.show.ids.trakt,
+            'show',
+            getState().config.language
+          )
         : null,
     ]);
 
@@ -246,15 +263,22 @@ export const populateDetail = createAsyncThunk<
 
     // only translations needed
     if (show) {
-      if (show.available_translations.includes('es')) {
-        const { title, overview } = await getTranslationsApi(id, 'show');
+      if (
+        state.config.language !== 'en' &&
+        show.available_translations.includes(state.config.language)
+      ) {
+        const { title, overview } = await getTranslationsApi(
+          id,
+          'show',
+          state.config.language
+        );
         show.title = title;
         show.overview = overview;
       }
       return show;
     }
 
-    return _getRemoteWithTranslations(id);
+    return _getRemoteWithTranslations(id, state.config.language);
   } catch (e) {
     console.error(e);
     throw e;
