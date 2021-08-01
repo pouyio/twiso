@@ -1,29 +1,22 @@
-import Collapsable from '../components/Collapsable/Collapsable';
-import Rating from '../components/Rating';
 import React, { useContext, useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
-import { useAppSelector } from 'state/store';
 import { useLocation, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from 'state/store';
+import { populateDetail } from 'state/thunks/movies';
+import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
 import Image from '../components/Image';
 import People from '../components/People';
+import Rating from '../components/Rating';
 import Related from '../components/Related';
 import WatchButton from '../components/WatchButton';
 import { AlertContext } from '../contexts';
 import { useIsWatch, useShare } from '../hooks';
-import { Movie, People as IPeople, Ratings, SearchMovie } from '../models';
-import {
-  getApi,
-  getPeopleApi,
-  getRatingsApi,
-  getTranslationsApi,
-} from '../utils/api';
-import { getTranslation } from 'utils/getTranslations';
-import { allMovies } from 'state/slices/moviesSlice';
+import { Movie, People as IPeople, Ratings } from '../models';
+import { getPeopleApi, getRatingsApi } from '../utils/api';
 
 export default function MovieDetail() {
-  const [item, setItem] = useState<Movie>();
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const language = useAppSelector((state) => state.config.language);
@@ -31,44 +24,16 @@ export default function MovieDetail() {
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
-  const movies = useAppSelector(allMovies);
+  const item = useAppSelector((s) => s.movies.detail);
+  const dispatch = useAppDispatch();
 
   const { isWatchlist, isWatched } = useIsWatch();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    if (item) {
-      return;
-    }
-
-    if (state) {
-      setItem(state);
-      return;
-    }
-
-    const foundLocalMovie = movies.find((m) => m.movie.ids.trakt === +id);
-
-    if (foundLocalMovie) {
-      setItem(foundLocalMovie.movie);
-    }
-
-    const retrieveRemoteMovie = async () => {
-      const { data } = await getApi<SearchMovie>(+id, 'movie');
-      const movie = data[0].movie;
-      setItem(movie);
-      if (movie.available_translations.includes('es')) {
-        const { data: translations } = await getTranslationsApi(+id, 'movie');
-        const { title, overview } = getTranslation(translations);
-        movie.title = title;
-        movie.overview = overview;
-        setItem(movie);
-      }
-    };
-
-    retrieveRemoteMovie();
+    dispatch(populateDetail({ id: +id, movie: state }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state, id, movies]);
+  }, [state, id]);
 
   useEffect(() => {
     setPeople(undefined);

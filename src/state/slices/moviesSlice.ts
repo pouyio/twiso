@@ -1,19 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MovieWatchlist, MovieWatched } from 'models';
+import { MovieWatchlist, MovieWatched, Movie } from 'models';
 import {
   addWatched,
   addWatchlist as addWatchlistThunk,
   getMovie,
+  populateDetail,
   removeWatched,
   removeWatchlist as removeWatchlistThunk,
 } from 'state/thunks/movies';
-import { RootState } from 'state/store';
 
 interface MoviesState {
   ready: boolean;
   pending: { watched: number[]; watchlist: number[] };
   watched: MovieWatched[];
   watchlist: MovieWatchlist[];
+  detail?: Movie;
 }
 
 const initialState: MoviesState = {
@@ -145,6 +146,15 @@ const moviesSlice = createSlice({
           ...state[meta.arg.type][index],
           movie: payload,
         };
+      })
+      .addCase(populateDetail.pending, (state) => {
+        state.detail = undefined;
+      })
+      .addCase(populateDetail.fulfilled, (state, { payload }) => {
+        state.detail = payload;
+      })
+      .addCase(populateDetail.rejected, (state) => {
+        state.detail = undefined;
       });
   },
 });
@@ -161,9 +171,3 @@ export const {
 
 // reducer
 export const reducer = moviesSlice.reducer;
-
-// selectors
-export const allMovies = (state: RootState) => [
-  ...state.movies.watched,
-  ...state.movies.watchlist,
-];

@@ -23,7 +23,17 @@ import {
   removeWatchedApi,
   removeWatchlistApi,
 } from 'utils/api';
-import { getTranslation } from 'utils/getTranslations';
+
+const _getRemoteWithTranslations = async (id: number) => {
+  const { data } = await getApi<SearchShow>(id, 'show');
+  const show = data[0].show;
+  if (show.available_translations.includes('es')) {
+    const { title, overview } = await getTranslationsApi(id, 'show');
+    show.title = title;
+    show.overview = overview;
+  }
+  return show;
+};
 
 export const addWatchlist = createAsyncThunk(
   'shows/addWatchlist',
@@ -69,11 +79,10 @@ export const addEpisodeWatched = createAsyncThunk<
     const updatedShow = { ...show };
     if (showIndex === -1) {
       if (show.show.available_translations.includes('es')) {
-        const { data: translations } = await getTranslationsApi(
+        const { title, overview } = await getTranslationsApi(
           show.show.ids.trakt,
           'show'
         );
-        const { title, overview } = getTranslation(translations);
         updatedShow.show.title = title;
         updatedShow.show.overview = overview;
       }
@@ -161,25 +170,12 @@ export const removeSeasonWatched = createAsyncThunk(
   }
 );
 
-export const getShow = createAsyncThunk(
-  'shows/getShow',
-  async ({ id }: { id: number; type: 'watched' | 'watchlist' }) => {
-    try {
-      const { data } = await getApi<SearchShow>(id, 'show');
-      const show = data[0].show;
-      if (show.available_translations.includes('es')) {
-        const { data: translations } = await getTranslationsApi(id, 'show');
-        const { title, overview } = getTranslation(translations);
-        show.title = title;
-        show.overview = overview;
-      }
-      return show;
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
-  }
-);
+export const getShow = createAsyncThunk<
+  Show,
+  { id: number; type: 'watched' | 'watchlist' }
+>('shows/getShow', async ({ id }) => {
+  return _getRemoteWithTranslations(id);
+});
 
 export const updateFullShow = createAsyncThunk(
   'shows/updateFullShow',
@@ -202,9 +198,8 @@ export const updateFullShow = createAsyncThunk(
       showCopy.last_watched_at = progress.data.last_watched_at;
 
       if (translationAvailable && translations) {
-        const { title, overview } = getTranslation(translations.data);
-        showCopy.show.title = title;
-        showCopy.show.overview = overview;
+        showCopy.show.title = translations.title;
+        showCopy.show.overview = translations.overview;
       }
       return showCopy;
     } catch (e) {
@@ -213,3 +208,30 @@ export const updateFullShow = createAsyncThunk(
     }
   }
 );
+
+export const populateDetail = createAsyncThunk<
+  Show,
+  { id: number; show?: Show },
+  { state: RootState }
+>('shows/populateDetail', async ({ id, show }, { getState }) => {
+  const state = getState();
+  const foundShow =
+    state.shows.watched.find((w) => w.show.ids.trakt === id) ||
+    state.shows.watchlist.find((w) => w.show.ids.trakt === id);
+  // found in local state
+  if (foundShow) {
+    return foundShow.show;
+  }
+
+  // only translations needed
+  if (show) {
+    if (show.available_translations.includes('es')) {
+      const { title, overview } = await getTranslationsApi(id, 'show');
+      show.title = title;
+      show.overview = overview;
+    }
+    return show;
+  }
+
+  return _getRemoteWithTranslations(id);
+});

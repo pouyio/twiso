@@ -1,26 +1,21 @@
-import React, { useEffect, useState, useContext } from 'react';
-import {
-  getApi,
-  getPeopleApi,
-  getRatingsApi,
-  getTranslationsApi,
-} from '../utils/api';
-import Image from '../components/Image';
-import { useIsWatch, useShare } from '../hooks';
+import React, { useContext, useEffect, useState } from 'react';
+import Helmet from 'react-helmet';
+import { useLocation, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from 'state/store';
+import { populateDetail } from 'state/thunks/shows';
+import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';
+import Genres from '../components/Genres';
+import Image from '../components/Image';
+import People from '../components/People';
+import Rating from '../components/Rating';
 import Related from '../components/Related';
 import SeasonsContainer from '../components/Seasons/SeasonsContainer';
-import Genres from '../components/Genres';
 import ShowWatchButton from '../components/ShowWatchButton';
-import People from '../components/People';
-import { useLocation, useParams } from 'react-router-dom';
-import { SearchShow, People as IPeople, Show, Ratings } from '../models';
-import Helmet from 'react-helmet';
-import Rating from '../components/Rating';
 import { AlertContext } from '../contexts';
-import { useAppSelector } from 'state/store';
-import Collapsable from '../components/Collapsable/Collapsable';
-import { getTranslation } from 'utils/getTranslations';
+import { useIsWatch, useShare } from '../hooks';
+import { People as IPeople, Ratings, Show } from '../models';
+import { getPeopleApi, getRatingsApi } from '../utils/api';
 
 enum status {
   'returning series' = 'en antena',
@@ -31,7 +26,7 @@ enum status {
 }
 
 export default function ShowDetail() {
-  const [item, setItem] = useState<Show>();
+  // const [item, setItem] = useState<Show>();
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const [showProgressPercentage, setShowProgressPercentage] = useState(false);
@@ -39,36 +34,20 @@ export default function ShowDetail() {
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
+  const item = useAppSelector((state) => state.shows.detail);
   const progress = useAppSelector(
     (state) =>
       state.shows.watched.find((s) => s.show.ids.trakt === item?.ids.trakt)
         ?.progress
   );
+  const dispatch = useAppDispatch();
 
   const { isWatchlist, isWatched } = useIsWatch();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    if (state) {
-      setItem(state);
-      return;
-    }
-
-    const retrieveRemoteShow = async () => {
-      const { data } = await getApi<SearchShow>(+id, 'show');
-      const show = data[0].show;
-      setItem(show);
-      if (show.available_translations.includes('es')) {
-        const { data: translations } = await getTranslationsApi(+id, 'show');
-        const { title, overview } = getTranslation(translations);
-        show.title = title;
-        show.overview = overview;
-        setItem(show);
-      }
-    };
-
-    retrieveRemoteShow();
+    dispatch(populateDetail({ id: +id, show: state }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, id]);
 
   useEffect(() => {

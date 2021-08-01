@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Movie, SearchMovie } from 'models';
+import { RootState } from 'state/store';
 import {
   addWatchedApi,
   addWatchlistApi,
@@ -8,7 +9,17 @@ import {
   removeWatchedApi,
   removeWatchlistApi,
 } from 'utils/api';
-import { getTranslation } from 'utils/getTranslations';
+
+const _getRemoteWithTranslations = async (id: number) => {
+  const { data } = await getApi<SearchMovie>(id, 'movie');
+  const movie = data[0].movie;
+  if (movie.available_translations.includes('es')) {
+    const { title, overview } = await getTranslationsApi(id, 'movie');
+    movie.title = title;
+    movie.overview = overview;
+  }
+  return movie;
+};
 
 export const addWatched = createAsyncThunk(
   'movies/addWatched',
@@ -62,22 +73,36 @@ export const removeWatchlist = createAsyncThunk(
   }
 );
 
-export const getMovie = createAsyncThunk(
-  'movies/getMovie',
-  async ({ id }: { id: number; type: 'watched' | 'watchlist' }) => {
-    try {
-      const { data } = await getApi<SearchMovie>(id, 'movie');
-      const movie = data[0].movie;
-      if (movie.available_translations.includes('es')) {
-        const { data: translations } = await getTranslationsApi(id, 'movie');
-        const { title, overview } = getTranslation(translations);
-        movie.title = title;
-        movie.overview = overview;
-      }
-      return movie;
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
+export const getMovie = createAsyncThunk<
+  Movie,
+  { id: number; type: 'watched' | 'watchlist' }
+>('movies/getMovie', async ({ id }) => {
+  return _getRemoteWithTranslations(id);
+});
+
+export const populateDetail = createAsyncThunk<
+  Movie,
+  { id: number; movie?: Movie },
+  { state: RootState }
+>('movies/populateDetail', async ({ id, movie }, { getState }) => {
+  const state = getState();
+  const foundMovie =
+    state.movies.watched.find((w) => w.movie.ids.trakt === id) ||
+    state.movies.watchlist.find((w) => w.movie.ids.trakt === id);
+  // found in local state
+  if (foundMovie) {
+    return foundMovie.movie;
   }
-);
+
+  // only translations needed
+  if (movie) {
+    if (movie.available_translations.includes('es')) {
+      const { title, overview } = await getTranslationsApi(id, 'movie');
+      movie.title = title;
+      movie.overview = overview;
+    }
+    return movie;
+  }
+
+  return _getRemoteWithTranslations(id);
+});

@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Season, ShowProgress, ShowWatched, ShowWatchlist } from 'models';
+import { Season, Show, ShowProgress, ShowWatched, ShowWatchlist } from 'models';
 import { mergeDeepLeft } from 'ramda';
 import {
   addEpisodeWatched,
   addWatchlist,
   getShow,
+  populateDetail,
   removeEpisodeWatched,
   removeWatchlist,
   updateFullShow,
@@ -18,6 +19,7 @@ interface ShowsState {
   };
   watched: ShowWatched[];
   watchlist: ShowWatchlist[];
+  detail?: Show;
 }
 
 const initialState: ShowsState = {
@@ -211,6 +213,15 @@ const showsSlice = createSlice({
         state.pending.watched = state.pending.watched.filter(
           (p) => p !== meta.arg.episode.ids.trakt
         );
+      })
+      .addCase(populateDetail.pending, (state) => {
+        state.detail = undefined;
+      })
+      .addCase(populateDetail.fulfilled, (state, { payload }) => {
+        state.detail = payload;
+      })
+      .addCase(populateDetail.rejected, (state) => {
+        state.detail = undefined;
       });
   },
 });

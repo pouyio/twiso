@@ -31,6 +31,7 @@ import { config, IMG_URL, LOGIN_URL } from './apiConfig';
 import { authTraktClient, traktClient } from './axiosClients';
 import { Session } from './AuthService';
 import Bottleneck from 'bottleneck';
+import { getTranslation } from './getTranslations';
 
 const limiter = new Bottleneck({
   minTime: 4,
@@ -97,9 +98,13 @@ export const getProgressApi = (id: number) => {
   );
 };
 
-export const getTranslationsApi = limiter.wrap((id: number, type: ItemType) => {
-  return traktClient.get<Translation[]>(`/${type}s/${id}/translations/es`);
-});
+export const getTranslationsApi = limiter.wrap(
+  (id: number, type: ItemType) => {
+    return traktClient
+      .get<Translation[]>(`/${type}s/${id}/translations/es`)
+      .then(({ data }) => getTranslation(data));
+  }
+);
 
 export const searchApi = <T>(
   query: string,
