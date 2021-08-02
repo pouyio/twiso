@@ -35,8 +35,7 @@ import { getTranslation } from './getTranslations';
 import { Language } from 'state/slices/config';
 
 const limiter = new Bottleneck({
-  minTime: 40,
-  maxConcurrent: 10,
+  minTime: 300,
 });
 
 const limitClient = rateLimit(axios.create(), {
