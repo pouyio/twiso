@@ -27,8 +27,8 @@ const _getRemoteWithTranslations = async (id: number, language: Language) => {
   const show = data[0].show;
   if (language !== 'en' && show.available_translations.includes(language)) {
     const { title, overview } = await getTranslationsApi(id, 'show', language);
-    show.title = title;
-    show.overview = overview;
+    show.title = title || show.title;
+    show.overview = overview || show.overview;
   }
   return show;
 };
@@ -86,8 +86,8 @@ export const addEpisodeWatched = createAsyncThunk<
             'show',
             state.config.language
           );
-          updatedShow.show.title = title;
-          updatedShow.show.overview = overview;
+          updatedShow.show.title = title || show.show.title;
+          updatedShow.show.overview = overview || show.show.overview;
         }
       }
       return {
@@ -154,8 +154,8 @@ export const addSeasonWatched = createAsyncThunk<
             'show',
             state.config.language
           );
-          updatedShow.show.title = title;
-          updatedShow.show.overview = overview;
+          updatedShow.show.title = title || show.show.title;
+          updatedShow.show.overview = overview || show.show.overview;
         }
       }
       return {
@@ -236,8 +236,8 @@ export const updateFullShow = createAsyncThunk<
     showCopy.last_watched_at = progress.data.last_watched_at;
 
     if (translationAvailable && translations) {
-      showCopy.show.title = translations.title;
-      showCopy.show.overview = translations.overview;
+      showCopy.show.title = translations.title || showCopy.show.title;
+      showCopy.show.overview = translations.overview || showCopy.show.overview;
     }
     return showCopy;
   } catch (e) {
@@ -272,8 +272,8 @@ export const populateDetail = createAsyncThunk<
           'show',
           state.config.language
         );
-        show.title = title;
-        show.overview = overview;
+        show.title = title || show.title;
+        show.overview = overview || show.overview;
       }
       return show;
     }

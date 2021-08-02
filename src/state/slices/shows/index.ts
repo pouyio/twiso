@@ -99,6 +99,24 @@ const showsSlice = createSlice({
           payload.progress.last_watched_at;
       }
     },
+    updateTranslation(
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        translation: { title: string; overview: string };
+        id: number;
+        type: 'watched' | 'watchlist';
+      }>
+    ) {
+      const index = state[payload.type].findIndex(
+        (s) => s.show.ids.trakt === payload.id
+      );
+      if (index !== -1) {
+        state[payload.type][index].show.title = payload.translation.title;
+        state[payload.type][index].show.overview = payload.translation.overview;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder

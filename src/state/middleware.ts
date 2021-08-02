@@ -44,6 +44,13 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       db.table(MOVIES).put({ ...newMovie, localState: action.meta.arg.type });
       break;
     }
+    case 'movies/updateTranslation': {
+      db.table(MOVIES).update(action.payload.id, {
+        title: action.payload.translation.title,
+        overview: action.payload.translation.overview,
+      });
+      break;
+    }
     case 'shows/removeWatchlists': {
       db.table(SHOWS).bulkDelete(action.payload.map((s) => s.show.ids.trakt));
       break;
@@ -124,6 +131,13 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       } else {
         db.table(SHOWS).delete(action.meta.arg.show.show.ids.trakt);
       }
+      break;
+    }
+    case 'shows/updateTranslation': {
+      db.table(SHOWS).update(action.payload.id, {
+        title: action.payload.translation.title,
+        overview: action.payload.translation.overview,
+      });
       break;
     }
     case 'config/setLanguage': {

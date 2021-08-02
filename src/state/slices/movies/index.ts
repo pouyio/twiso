@@ -53,6 +53,25 @@ const moviesSlice = createSlice({
         (m) => !payload.some((md) => md.movie.ids.trakt === m.movie.ids.trakt)
       );
     },
+    updateTranslation(
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        translation: { title: string; overview: string };
+        id: number;
+        type: 'watched' | 'watchlist';
+      }>
+    ) {
+      const index = state[payload.type].findIndex(
+        (m) => m.movie.ids.trakt === payload.id
+      );
+      if (index !== -1) {
+        state[payload.type][index].movie.title = payload.translation.title;
+        state[payload.type][index].movie.overview =
+          payload.translation.overview;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -167,6 +186,7 @@ export const {
   addWatcheds,
   removeWatchlists,
   removeWatcheds,
+  updateTranslation,
 } = moviesSlice.actions;
 
 // reducer

@@ -23,8 +23,8 @@ const _getRemoteWithTranslations = async (id: number, language: Language) => {
   const movie = data[0].movie;
   if (language !== 'en' && movie.available_translations.includes(language)) {
     const { title, overview } = await getTranslationsApi(id, 'movie', language);
-    movie.title = title;
-    movie.overview = overview;
+    movie.title = title || movie.title;
+    movie.overview = overview || movie.overview;
   }
   return movie;
 };
@@ -116,8 +116,8 @@ export const populateDetail = createAsyncThunk<
           'movie',
           language
         );
-        movie.title = title;
-        movie.overview = overview;
+        movie.title = title || movie.title;
+        movie.overview = overview || movie.overview;
       }
       return movie;
     }
