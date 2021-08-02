@@ -86,7 +86,7 @@ export const getApi = <T>(id: number, type: ItemType) =>
 export const getSeasonsApi = (id: number, language: Language) => {
   return limiter.wrap(() =>
     traktClient.get<Season[]>(`/shows/${id}/seasons?translations=${language}`)
-  );
+  )();
 };
 
 export const getSeasonEpisodesApi = (
@@ -98,7 +98,7 @@ export const getSeasonEpisodesApi = (
     traktClient.get<Episode[]>(
       `/shows/${id}/seasons/${season}?extended=full&translations=${language}`
     )
-  );
+  )();
 };
 
 export const getProgressApi = (id: number) => {

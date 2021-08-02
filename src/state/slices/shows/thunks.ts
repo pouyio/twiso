@@ -220,7 +220,7 @@ export const updateFullShow = createAsyncThunk<
       showCopy.show.available_translations.includes(language);
 
     const [seasons, progress, translations] = await Promise.all([
-      getSeasonsApi(showCopy.show.ids.trakt),
+      getSeasonsApi(showCopy.show.ids.trakt, language),
       getProgressApi(showCopy.show.ids.trakt),
       translationAvailable
         ? getTranslationsApi(
