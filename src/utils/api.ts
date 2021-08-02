@@ -35,8 +35,8 @@ import { getTranslation } from './getTranslations';
 import { Language } from 'state/slices/config';
 
 const limiter = new Bottleneck({
-  minTime: 4,
-  maxConcurrent: 100,
+  minTime: 40,
+  maxConcurrent: 10,
 });
 
 const limitClient = rateLimit(axios.create(), {
@@ -83,13 +83,21 @@ export const getApi = <T>(id: number, type: ItemType) =>
     traktClient.get<T[]>(`/search/trakt/${id}?type=${type}&extended=full`)
   )();
 
-export const getSeasonsApi = (id: number) => {
-  return traktClient.get<Season[]>(`/shows/${id}/seasons?translations=es`);
+export const getSeasonsApi = (id: number, language: Language) => {
+  return limiter.wrap(() =>
+    traktClient.get<Season[]>(`/shows/${id}/seasons?translations=${language}`)
+  );
 };
 
-export const getSeasonEpisodesApi = (id: number, season: number) => {
-  return traktClient.get<Episode[]>(
-    `/shows/${id}/seasons/${season}?extended=full&translations=es`
+export const getSeasonEpisodesApi = (
+  id: number,
+  season: number,
+  language: Language
+) => {
+  return limiter.wrap(() =>
+    traktClient.get<Episode[]>(
+      `/shows/${id}/seasons/${season}?extended=full&translations=${language}`
+    )
   );
 };
 

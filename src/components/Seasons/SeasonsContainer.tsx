@@ -43,16 +43,19 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const watchedShow = useAppSelector((state) =>
     state.shows.watched.find((w) => w.show.ids.trakt === +showId)
   );
+  const language = useAppSelector((state) => state.config.language);
 
   useEffect(() => {
     if (watchedShow) {
       return;
     }
-    getSeasonsApi(showId).then(({ data }) => setUnTrackedSeasons(data));
+    getSeasonsApi(showId, language).then(({ data }) =>
+      setUnTrackedSeasons(data)
+    );
     if (isLogged) {
       getProgressApi(showId).then(({ data }) => setUnTrackedProgress(data));
     }
-  }, [isLogged, showId, watchedShow]);
+  }, [isLogged, showId, watchedShow, language]);
 
   useEffect(() => {
     if (selectedSeason === undefined) {
@@ -61,14 +64,14 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     if (selectedSeason !== undefined && episodes[selectedSeason]) {
       return;
     }
-    getSeasonEpisodesApi(showId, selectedSeason).then(({ data }) => {
+    getSeasonEpisodesApi(showId, selectedSeason, language).then(({ data }) => {
       setEpisodes((e) => {
         e[selectedSeason] = data;
         return [...e];
       });
     });
     // eslint-disable-next-line
-  }, [selectedSeason, showId]);
+  }, [selectedSeason, showId, language]);
 
   const watchedShowFullSeasonsRef = watchedShow?.fullSeasons;
   const watchedShowNextEpisodeRef = watchedShow?.progress?.next_episode;
