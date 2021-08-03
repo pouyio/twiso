@@ -2,8 +2,7 @@ import { getImgsApi } from '../utils/api';
 import { getFromCache, saveToCache } from '../utils/cache';
 import { useState, useEffect } from 'react';
 import { findFirstValid } from 'utils/findFirstValidImage';
-import { useSelector } from 'react-redux';
-import { IState } from 'state/state';
+import { useAppSelector } from 'state/store';
 
 export const useImage = (
   id: number,
@@ -15,10 +14,10 @@ export const useImage = (
   const [imgPreview, setImgPreview] = useState('');
   const [message, setMessage] = useState('');
 
-  const { language, config } = useSelector((state: IState) => {
+  const { language, config } = useAppSelector((state) => {
     return {
-      language: state.language,
-      config: state.config,
+      language: state.config.language,
+      config: state.config.img,
     };
   });
 

@@ -3,12 +3,11 @@ import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
 import { ShowWatched } from 'models';
-import { useSelector } from 'react-redux';
-import { IState } from 'state/state';
+import { useAppSelector } from 'state/store';
 
 const ShowsWatched: React.FC = () => {
   const [orderedShows, setOrderedShows] = useState<ShowWatched[]>([]);
-  const watched = useSelector((state: IState) => state.shows.watched);
+  const watched = useAppSelector((state) => state.shows.watched);
   const { getItemsByPage } = usePagination(orderedShows);
 
   useEffect(() => {

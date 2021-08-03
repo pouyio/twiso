@@ -6,18 +6,18 @@ import {
 } from '../../utils/api';
 import { ModalContext } from '../../contexts';
 import { Show, ShowProgress, Season, Episode, ShowWatched } from '../../models';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   addEpisodeWatched,
   removeEpisodeWatched,
   addSeasonWatched,
   removeSeasonWatched,
-} from '../../state/slices/showsSlice';
-import { IState } from 'state/state';
+} from 'state/slices/shows/thunks';
 import SeasonSelector from './SeasonSelector';
 import Episodes from './Episodes';
 import { useQueryParam, withDefault, NumberParam } from 'use-query-params';
 import { AuthService } from 'utils/AuthService';
+import { useAppSelector } from 'state/store';
 
 interface ISeasonsContainerProps {
   show: Show;
@@ -40,19 +40,22 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const isLogged = authService.isLoggedIn();
   const { toggle } = useContext(ModalContext);
   const dispatch = useDispatch();
-  const watchedShow = useSelector((state: IState) =>
+  const watchedShow = useAppSelector((state) =>
     state.shows.watched.find((w) => w.show.ids.trakt === +showId)
   );
+  const language = useAppSelector((state) => state.config.language);
 
   useEffect(() => {
     if (watchedShow) {
       return;
     }
-    getSeasonsApi(showId).then(({ data }) => setUnTrackedSeasons(data));
+    getSeasonsApi(showId, language).then(({ data }) =>
+      setUnTrackedSeasons(data)
+    );
     if (isLogged) {
       getProgressApi(showId).then(({ data }) => setUnTrackedProgress(data));
     }
-  }, [isLogged, showId, watchedShow]);
+  }, [isLogged, showId, watchedShow, language]);
 
   useEffect(() => {
     if (selectedSeason === undefined) {
@@ -61,14 +64,14 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     if (selectedSeason !== undefined && episodes[selectedSeason]) {
       return;
     }
-    getSeasonEpisodesApi(showId, selectedSeason).then(({ data }) => {
+    getSeasonEpisodesApi(showId, selectedSeason, language).then(({ data }) => {
       setEpisodes((e) => {
         e[selectedSeason] = data;
         return [...e];
       });
     });
     // eslint-disable-next-line
-  }, [selectedSeason, showId]);
+  }, [selectedSeason, showId, language]);
 
   const watchedShowFullSeasonsRef = watchedShow?.fullSeasons;
   const watchedShowNextEpisodeRef = watchedShow?.progress?.next_episode;
@@ -170,6 +173,11 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       />
       {selectedSeason !== undefined && (
         <Episodes
+          seasonId={
+            (watchedShow?.fullSeasons ?? unTrackedSeasons).find(
+              (s) => s.number === selectedSeason
+            )?.ids.trakt
+          }
           seasonProgress={(
             watchedShow?.progress ?? unTrackedProgress
           )?.seasons.find((s) => s.number === selectedSeason)}

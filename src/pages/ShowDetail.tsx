@@ -1,21 +1,21 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { getApi, getPeopleApi, getRatingsApi } from '../utils/api';
-import Image from '../components/Image';
-import { useTranslate, useIsWatch, useShare } from '../hooks';
+import React, { useContext, useEffect, useState } from 'react';
+import Helmet from 'react-helmet';
+import { useLocation, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from 'state/store';
+import { populateDetail } from 'state/slices/shows/thunks';
+import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';
+import Genres from '../components/Genres';
+import Image from '../components/Image';
+import People from '../components/People';
+import Rating from '../components/Rating';
 import Related from '../components/Related';
 import SeasonsContainer from '../components/Seasons/SeasonsContainer';
-import Genres from '../components/Genres';
 import ShowWatchButton from '../components/ShowWatchButton';
-import People from '../components/People';
-import { useLocation, useParams } from 'react-router-dom';
-import { SearchShow, People as IPeople, Show, Ratings } from '../models';
-import Helmet from 'react-helmet';
-import Rating from '../components/Rating';
 import { AlertContext } from '../contexts';
-import { useSelector } from 'react-redux';
-import { IState } from '../state/state';
-import Collapsable from '../components/Collapsable/Collapsable';
+import { useIsWatch, useShare } from '../hooks';
+import { People as IPeople, Ratings, Show } from '../models';
+import { getPeopleApi, getRatingsApi } from '../utils/api';
 
 enum status {
   'returning series' = 'en antena',
@@ -26,34 +26,28 @@ enum status {
 }
 
 export default function ShowDetail() {
-  const [item, setItem] = useState<Show>();
-  const [showOriginalTitle, setShowOriginalTitle] = useState(false);
+  // const [item, setItem] = useState<Show>();
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const [showProgressPercentage, setShowProgressPercentage] = useState(false);
-  const { title, overview } = useTranslate('show', item);
   const { state } = useLocation<Show>();
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
-  const progress = useSelector(
-    (state: IState) =>
+  const item = useAppSelector((state) => state.shows.detail);
+  const progress = useAppSelector(
+    (state) =>
       state.shows.watched.find((s) => s.show.ids.trakt === item?.ids.trakt)
         ?.progress
   );
+  const dispatch = useAppDispatch();
 
   const { isWatchlist, isWatched } = useIsWatch();
 
   useEffect(() => {
-    if (!state) {
-      getApi<SearchShow>(+id, 'show').then(({ data }) => {
-        const item = data[0];
-        setItem(item.show);
-      });
-      return;
-    }
-    setItem(state);
     window.scrollTo(0, 0);
+    dispatch(populateDetail({ id: +id, show: state }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, id]);
 
   useEffect(() => {
@@ -80,10 +74,6 @@ export default function ShowDetail() {
     return 'bg-gray-300';
   };
 
-  const toggleShowOriginalTitle = () => {
-    setShowOriginalTitle(!showOriginalTitle);
-  };
-
   const onShare = () => {
     share(item!.title).then((action) => {
       if (action === 'copied') {
@@ -95,7 +85,7 @@ export default function ShowDetail() {
   return item ? (
     <div className={getBgClassName()}>
       <Helmet>
-        <title>{title}</title>
+        <title>{item.title}</title>
       </Helmet>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
@@ -169,11 +159,8 @@ export default function ShowDetail() {
             </div>
 
             <div className="w-full max-w-3xl">
-              <h1
-                onClick={toggleShowOriginalTitle}
-                className="text-4xl leading-none text-center mb-4"
-              >
-                {showOriginalTitle ? item.title : title}
+              <h1 className="text-4xl leading-none text-center mb-4">
+                {item.title}
               </h1>
 
               <div className="flex mb-4 justify-between items-center text-gray-600">
@@ -232,7 +219,7 @@ export default function ShowDetail() {
           <div className="my-4">
             <p className="font-medium">Resumen:</p>
             <Collapsable heightInRem={7}>
-              {overview || 'Sin descripción'}
+              {item.overview || 'Sin descripción'}
             </Collapsable>
           </div>
 

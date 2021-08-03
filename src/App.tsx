@@ -8,15 +8,15 @@ import { ProgressBar } from './components/ProgressBar';
 import { Alert } from 'components/Alert/Alert';
 import { Providers } from 'components/Providers';
 import { GlobalSearch } from 'components/GlobalSearch';
-import { useSelector, useDispatch } from 'react-redux';
-import { IState } from 'state/state';
+import { useDispatch } from 'react-redux';
 import { firstLoad } from './state/firstLoadAction';
-import { loadImgConfig } from 'state/slices/defaultSlice';
+import { loadImgConfig } from 'state/slices/config';
 import * as Sentry from '@sentry/react';
 import { AuthService } from 'utils/AuthService';
 import { NewVersion } from 'components/NewVersion';
 import { NavigationTabs } from 'components/Navigation/NavigationTabs';
 import { useWindowSize } from './hooks';
+import { useAppSelector } from 'state/store';
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const Profile = lazy(() => import('./pages/Profile'));
 const MovieDetail = lazy(() => import('./pages/MovieDetail'));
@@ -48,13 +48,13 @@ const App: React.FC = () => {
   const [skipUpdate, setSkipUpdate] = useState(false);
   const { width: windowWidth } = useWindowSize();
 
-  const globalSearch = useSelector((state: IState) => state.globalSearch);
-  const serviceWorkerRegistration = useSelector(
-    (state: IState) => state.serviceWorkerRegistration
+  const globalSearch = useAppSelector((state) => state.root.globalSearch);
+  const serviceWorkerRegistration = useAppSelector(
+    (state) => state.root.serviceWorkerRegistration
   );
 
-  const moviesReady = useSelector<IState>((state) => state.movies.ready);
-  const showsReady = useSelector<IState>((state) => state.shows.ready);
+  const moviesReady = useAppSelector((state) => state.movies.ready);
+  const showsReady = useAppSelector((state) => state.shows.ready);
 
   const isLoggedIn = AuthService.getInstance().isLoggedIn();
   const dispatch = useDispatch();

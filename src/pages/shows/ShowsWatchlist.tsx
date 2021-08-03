@@ -3,14 +3,13 @@ import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
 import { ShowWatchlist } from 'models';
-import { useSelector } from 'react-redux';
-import { IState } from 'state/state';
+import { useAppSelector } from 'state/store';
 
 const ShowsWatchlist: React.FC = () => {
   const [orderedShows, setOrderedShows] = useState<ShowWatchlist[]>([]);
 
   const { getItemsByPage } = usePagination(orderedShows);
-  const watchlist = useSelector((state: IState) => state.shows.watchlist);
+  const watchlist = useAppSelector((state) => state.shows.watchlist);
 
   useEffect(() => {
     const nearFuture = new Date();

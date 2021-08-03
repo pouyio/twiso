@@ -9,6 +9,9 @@ import Helmet from 'react-helmet';
 import { ThemeContext, ThemeType } from '../contexts';
 import { LoginButton } from '../components/LoginButton';
 import { AuthService } from 'utils/AuthService';
+import { useDispatch } from 'react-redux';
+import { changeLanguage, Language } from 'state/slices/config';
+import { useAppSelector } from 'state/store';
 
 const authService = AuthService.getInstance();
 
@@ -17,6 +20,8 @@ export default function Profile() {
   const [stats, setStats] = useState<UserStats>();
   const [dev, setDev] = useState(false);
   const isLogged = authService.isLoggedIn();
+  const dispatch = useDispatch();
+  const language = useAppSelector((state) => state.config.language);
 
   useEffect(() => {
     if (isLogged) {
@@ -69,6 +74,29 @@ export default function Profile() {
               <option value="theme-dark">🌚 Dark</option>
               <option value="theme-light">🌞 Light</option>
               <option value="0">🌓 System</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg
+                className="fill-current h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg>
+            </div>
+          </li>
+          <li className="py-1 relative">
+            <select
+              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-none"
+              onChange={(e) => {
+                dispatch(
+                  changeLanguage({ language: e.target.value as Language })
+                );
+              }}
+              value={language}
+            >
+              <option value="en">🇬🇧 English</option>
+              <option value="es">🇪🇸 Español</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg

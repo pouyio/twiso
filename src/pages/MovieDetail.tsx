@@ -1,45 +1,38 @@
-import Collapsable from '../components/Collapsable/Collapsable';
-import Rating from '../components/Rating';
 import React, { useContext, useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
-import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
-import { IState } from 'state/state';
+import { useAppDispatch, useAppSelector } from 'state/store';
+import { populateDetail } from 'state/slices/movies/thunks';
+import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
 import Image from '../components/Image';
 import People from '../components/People';
+import Rating from '../components/Rating';
 import Related from '../components/Related';
 import WatchButton from '../components/WatchButton';
 import { AlertContext } from '../contexts';
-import { useIsWatch, useShare, useTranslate } from '../hooks';
-import { Movie, People as IPeople, Ratings, SearchMovie } from '../models';
-import { getApi, getPeopleApi, getRatingsApi } from '../utils/api';
+import { useIsWatch, useShare } from '../hooks';
+import { Movie, People as IPeople, Ratings } from '../models';
+import { getPeopleApi, getRatingsApi } from '../utils/api';
 
 export default function MovieDetail() {
-  const [item, setItem] = useState<Movie>();
-  const [showOriginalTitle, setShowOriginalTitle] = useState(false);
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
-  const language = useSelector((state: IState) => state.language);
-  const { title = '', overview = '' } = useTranslate('movie', item);
+  const language = useAppSelector((state) => state.config.language);
   const { state } = useLocation<Movie>();
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
+  const item = useAppSelector((s) => s.movies.detail);
+  const dispatch = useAppDispatch();
 
   const { isWatchlist, isWatched } = useIsWatch();
 
   useEffect(() => {
-    if (!state) {
-      getApi<SearchMovie>(+id, 'movie').then(({ data }) => {
-        const item = data[0];
-        setItem(item.movie);
-      });
-      return;
-    }
-    setItem(state);
     window.scrollTo(0, 0);
+    dispatch(populateDetail({ id: +id, movie: state }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, id]);
 
   useEffect(() => {
@@ -66,10 +59,6 @@ export default function MovieDetail() {
     return 'bg-gray-300';
   };
 
-  const toggleShowOriginalTitle = () => {
-    setShowOriginalTitle(!showOriginalTitle);
-  };
-
   const onShare = () => {
     share(item!.title).then((action) => {
       if (action === 'copied') {
@@ -81,7 +70,7 @@ export default function MovieDetail() {
   return item ? (
     <div className={getBgClassName()}>
       <Helmet>
-        <title>{title}</title>
+        <title>{item.title}</title>
       </Helmet>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
@@ -155,11 +144,8 @@ export default function MovieDetail() {
             </div>
 
             <div className="w-full">
-              <h1
-                onClick={toggleShowOriginalTitle}
-                className="text-4xl leading-none text-center"
-              >
-                {showOriginalTitle ? item.title : title}
+              <h1 className="text-4xl leading-none text-center">
+                {item.title}
               </h1>
               <h1 className="text-xl text-center mb-4 text-gray-300">
                 {new Date(item.released).toLocaleDateString(language, {
@@ -183,7 +169,7 @@ export default function MovieDetail() {
           <div className="my-4">
             <p className="font-medium">Resumen:</p>
             <Collapsable heightInRem={7}>
-              {overview || 'Sin descripción'}
+              {item.overview || 'Sin descripción'}
             </Collapsable>
           </div>
 

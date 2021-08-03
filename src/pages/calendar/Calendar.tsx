@@ -23,6 +23,7 @@ import './calendar.scss';
 import { ShowCalendar, MovieCalendar } from 'models';
 import { useQueryParam, withDefault, DateParam } from 'use-query-params';
 import { AuthService } from 'utils/AuthService';
+import { useAppSelector } from 'state/store';
 
 const localizer = dateFnsLocalizer({
   format,
@@ -67,6 +68,7 @@ export default function Calendar() {
     withDefault(DateParam, new Date())
   );
   const [only, setOnly] = useState<'movie' | 'show'>();
+  const language = useAppSelector((state) => state.config.language);
 
   useEffect(() => {
     if (!isLogged) {
@@ -122,7 +124,7 @@ export default function Calendar() {
               <Emoji emoji="⬅️" />
             </button>
             <h1 className="font-light capitalize ">
-              {selectedDate.toLocaleDateString('es', {
+              {selectedDate.toLocaleDateString(language, {
                 month: 'long',
               })}{' '}
               {getYear(selectedDate)}

@@ -4,9 +4,8 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import Emoji from '../../components/Emoji';
 import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';
-import { useSelector } from 'react-redux';
-import { IState } from '../../state/state';
 import { useWindowSize } from '../../hooks';
+import { useAppSelector } from 'state/store';
 
 export default function Movies() {
   const [mode, setMode] = useQueryParam(
@@ -15,7 +14,7 @@ export default function Movies() {
   );
   const { width } = useWindowSize();
 
-  const movies = useSelector((state: IState) => state.movies);
+  const { watchlist, watched } = useAppSelector((state) => state.movies);
 
   return (
     <>
@@ -34,7 +33,7 @@ export default function Movies() {
           }`}
           onClick={() => setMode('watchlist')}
         >
-          <Emoji emoji="⏱" /> Pendientes ({movies.watchlist.length})
+          <Emoji emoji="⏱" /> Pendientes ({watchlist.length})
         </button>
         <button
           className={`border-b-2 py-2 w-full ${
@@ -42,14 +41,14 @@ export default function Movies() {
           }`}
           onClick={() => setMode('watched')}
         >
-          <Emoji emoji="📚" /> Vistas ({movies.watched.length})
+          <Emoji emoji="📚" /> Vistas ({watched.length})
         </button>
       </div>
       <div className="py-3">
         {mode === 'watchlist' ? (
-          <MoviesWatchlist movies={movies.watchlist} />
+          <MoviesWatchlist movies={watchlist} />
         ) : (
-          <MoviesWatched movies={movies.watched} />
+          <MoviesWatched movies={watched} />
         )}
       </div>
     </>

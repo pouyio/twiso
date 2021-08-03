@@ -2,6 +2,7 @@ import React from 'react';
 import Emoji from '../Emoji';
 import { Episode, Season } from '../../models';
 import { EpisodesPlaceholder } from './EpisodesPlaceholder';
+import { useAppSelector } from 'state/store';
 
 interface ISeasonsProps {
   seasonProgress?: Season;
@@ -12,6 +13,7 @@ interface ISeasonsProps {
   episodes?: Episode[];
   showModal: (data: { title: string; overview: string }) => void;
   onlyView: boolean;
+  seasonId?: number;
 }
 
 const Episodes: React.FC<ISeasonsProps> = ({
@@ -23,7 +25,12 @@ const Episodes: React.FC<ISeasonsProps> = ({
   episodes = [],
   showModal,
   onlyView,
+  seasonId = 0,
 }) => {
+  const watched = useAppSelector((state) => state.shows.pending.watched);
+  const pendings = useAppSelector((state) => state.shows.pending.seasons);
+  const language = useAppSelector((state) => state.config.language);
+
   const isEpisodeWatched = (episodeNumber: number) => {
     if (!seasonProgress) {
       return false;
@@ -65,7 +72,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
 
   const getFormattedDate = (date: string, size: 'long' | 'short') => {
     return date
-      ? new Date(date).toLocaleDateString('es', {
+      ? new Date(date).toLocaleDateString(language, {
           year: 'numeric',
           month: size,
           day: 'numeric',
@@ -118,14 +125,21 @@ const Episodes: React.FC<ISeasonsProps> = ({
                     {getFormattedDate(e.first_aired, 'short')}
                   </span>
                 </div>
-                {isEpisodeAvailable(e) && (
-                  <button
-                    className="px-5 text-right"
-                    onClick={() => toggleEpisode(e)}
-                  >
-                    <Emoji emoji="▶️" className="text-xl" />
-                  </button>
-                )}
+                {isEpisodeAvailable(e) &&
+                  (watched.includes(e.ids.trakt) ? (
+                    <Emoji
+                      emoji="⏳"
+                      rotating={true}
+                      className="px-5 text-right"
+                    />
+                  ) : (
+                    <button
+                      className="px-5 text-right"
+                      onClick={() => toggleEpisode(e)}
+                    >
+                      <Emoji emoji="▶️" className="text-xl" />
+                    </button>
+                  ))}
               </div>
             </li>
           ))
@@ -138,7 +152,14 @@ const Episodes: React.FC<ISeasonsProps> = ({
               className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
               onClick={() => removeSeasonWatched()}
             >
-              Marcar todo como no vistos
+              Marcar todo como no vistos{' '}
+              {pendings.includes(seasonId) && (
+                <Emoji
+                  emoji="⏳"
+                  rotating={true}
+                  className="inline-flex ml-2"
+                />
+              )}
             </button>
           ) : (
             <button
@@ -146,6 +167,13 @@ const Episodes: React.FC<ISeasonsProps> = ({
               onClick={() => addSeasonWatched()}
             >
               Marcar todo como vistos
+              {pendings.includes(seasonId) && (
+                <Emoji
+                  emoji="⏳"
+                  rotating={true}
+                  className="inline-flex ml-2"
+                />
+              )}
             </button>
           )}
         </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import Emoji from '../Emoji';
 import { Season, Episode, ShowProgress } from '../../models';
+import { useAppSelector } from 'state/store';
 
 interface ISeasonsProps {
   progress?: ShowProgress;
@@ -27,6 +28,8 @@ const Seasons: React.FC<ISeasonsProps> = ({
   showModal,
   onlyView,
 }) => {
+  const language = useAppSelector((state) => state.config.language);
+
   const selectedClass = (season: Season) => {
     if (!selectedSeason) {
       return 'bg-white text-gray-600';
@@ -95,7 +98,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
 
   const getFormattedDate = (date: string, size: 'long' | 'short') => {
     return date
-      ? new Date(date).toLocaleDateString('es', {
+      ? new Date(date).toLocaleDateString(language, {
           year: 'numeric',
           month: size,
           day: 'numeric',
