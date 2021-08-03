@@ -1,3 +1,10 @@
+# [2.7.0](https://github.com/pouyio/twiso/compare/v2.6.32...v2.7.0) (2021-08-03)
+
+
+### :sparkles:
+
+* added language selector ([ebae0ef](https://github.com/pouyio/twiso/commit/ebae0ef34a94a1914c1aca878c4da5963b3ba353))
+
 ## [2.6.32](https://github.com/pouyio/twiso/compare/v2.6.31...v2.6.32) (2021-06-08)
 
 
