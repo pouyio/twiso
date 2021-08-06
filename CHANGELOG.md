@@ -1,3 +1,10 @@
+## [2.7.1](https://github.com/pouyio/twiso/compare/v2.7.0...v2.7.1) (2021-08-06)
+
+
+### :rocket:
+
+* removed some actions ([577bdc1](https://github.com/pouyio/twiso/commit/577bdc14655c7d9a27ac14620e0fe933cc5ccf9d))
+
 # [2.7.0](https://github.com/pouyio/twiso/compare/v2.6.32...v2.7.0) (2021-08-03)
 
 
