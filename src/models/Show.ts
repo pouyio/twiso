@@ -1,31 +1,23 @@
 import { Ids } from './Ids';
 
-export interface ShowWatched {
-  // last_updated_at: string;
+interface BaseShow {
+  listed_at: string;
+  show: Show;
+  type: 'show';
+}
+export interface ShowWatched extends BaseShow {
   last_watched_at: string;
   plays: number;
   reset_at: string;
-  listed_at: string;
-  // seasons: Array<{
-  //   episodes: Array<{
-  //     last_watched_at: string;
-  //     number: number;
-  //     plays: number;
-  //   }>;
-  //   number: number;
-  // }>;
-  show: Show;
-  type: 'show';
   progress?: ShowProgress;
   fullSeasons?: Season[];
+  localState: 'watched';
 }
 
-export interface ShowWatchlist {
+export interface ShowWatchlist extends BaseShow {
   id?: number;
-  listed_at?: string;
   rank?: number;
-  type: 'show';
-  show: Show;
+  localState: 'watchlist';
 }
 
 export interface Show {

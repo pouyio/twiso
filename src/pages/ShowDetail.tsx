@@ -14,7 +14,7 @@ import SeasonsContainer from '../components/Seasons/SeasonsContainer';
 import ShowWatchButton from '../components/ShowWatchButton';
 import { AlertContext } from '../contexts';
 import { useIsWatch, useShare } from '../hooks';
-import { People as IPeople, Ratings, Show } from '../models';
+import { People as IPeople, Ratings, Show, ShowWatched } from '../models';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
 
 enum status {
@@ -26,7 +26,6 @@ enum status {
 }
 
 export default function ShowDetail() {
-  // const [item, setItem] = useState<Show>();
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const [showProgressPercentage, setShowProgressPercentage] = useState(false);
@@ -37,8 +36,7 @@ export default function ShowDetail() {
   const item = useAppSelector((state) => state.shows.detail);
   const progress = useAppSelector(
     (state) =>
-      state.shows.watched.find((s) => s.show.ids.trakt === item?.ids.trakt)
-        ?.progress
+      (state.shows.shows[item?.ids.trakt ?? 0] as ShowWatched)?.progress
   );
   const dispatch = useAppDispatch();
 

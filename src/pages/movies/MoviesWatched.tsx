@@ -3,21 +3,22 @@ import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
 import { MovieWatched } from 'models';
+import { useAppSelector } from 'state/store';
+import { byType } from 'state/slices/movies';
 
-export const MoviesWatched: React.FC<{
-  movies: MovieWatched[];
-}> = ({ movies }) => {
+export const MoviesWatched: React.FC = () => {
   const [orderedMovies, setOrderedMovies] = useState<MovieWatched[]>([]);
   const { getItemsByPage } = usePagination(orderedMovies);
+  const { watched } = useAppSelector(byType);
 
   useEffect(() => {
-    const newItems = movies
+    const newItems = watched
       .map((m) => m)
       .sort((a, b) =>
         new Date(a.watched_at) < new Date(b.watched_at) ? 1 : -1
       );
     setOrderedMovies(newItems);
-  }, [movies]);
+  }, [watched]);
 
   return (
     <PaginationContainer items={orderedMovies}>

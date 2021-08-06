@@ -43,14 +43,27 @@ export const changeLanguage = createAsyncThunk<
   try {
     const state = getState();
 
-    const watchedMovies = state.movies.watched.filter(
-      hasLanguage(language, 'movie')
-    );
-    const watchlistMovies = state.movies.watchlist.filter(
-      hasLanguage(language, 'movie')
+    const {
+      watched: watchedMovies,
+      watchlist: watchlistMovies,
+    } = Object.values(state.movies.movies).reduce(
+      (
+        acc: {
+          watchlist: MovieWatchlist[];
+          watched: MovieWatched[];
+        },
+        s
+      ) => {
+        if (!s.localState) {
+          return acc;
+        }
+        acc[s.localState].push(s as any);
+        return acc;
+      },
+      { watchlist: [], watched: [] }
     );
 
-    watchedMovies.forEach(async (m) => {
+    watchedMovies.filter(hasLanguage(language, 'movie')).forEach(async (m) => {
       const {
         title = m.movie.title,
         overview = m.movie.overview,
@@ -59,32 +72,44 @@ export const changeLanguage = createAsyncThunk<
         updateTranslation({
           translation: { title, overview },
           id: m.movie.ids.trakt,
-          type: 'watched',
         })
       );
     });
-    watchlistMovies.forEach(async (m) => {
-      const {
-        title = m.movie.title,
-        overview = m.movie.overview,
-      } = await getTranslationsApi(m.movie.ids.trakt, 'show', language);
-      dispatch(
-        updateTranslation({
-          translation: { title, overview },
-          id: m.movie.ids.trakt,
-          type: 'watchlist',
-        })
-      );
-    });
+    watchlistMovies
+      .filter(hasLanguage(language, 'movie'))
+      .forEach(async (m) => {
+        const {
+          title = m.movie.title,
+          overview = m.movie.overview,
+        } = await getTranslationsApi(m.movie.ids.trakt, 'show', language);
+        dispatch(
+          updateTranslation({
+            translation: { title, overview },
+            id: m.movie.ids.trakt,
+          })
+        );
+      });
 
-    const watchedShows = state.shows.watched.filter(
-      hasLanguage(language, 'show')
-    );
-    const watchlistShows = state.shows.watchlist.filter(
-      hasLanguage(language, 'show')
+    const { watched: watchedShows, watchlist: watchlistShows } = Object.values(
+      state.shows.shows
+    ).reduce(
+      (
+        acc: {
+          watchlist: ShowWatchlist[];
+          watched: ShowWatched[];
+        },
+        s
+      ) => {
+        if (!s.localState) {
+          return acc;
+        }
+        acc[s.localState].push(s as any);
+        return acc;
+      },
+      { watchlist: [], watched: [] }
     );
 
-    watchedShows.forEach(async (s) => {
+    watchedShows.filter(hasLanguage(language, 'show')).forEach(async (s) => {
       const {
         title = s.show.title,
         overview = s.show.overview,
@@ -93,11 +118,10 @@ export const changeLanguage = createAsyncThunk<
         updateTranslation({
           translation: { title, overview },
           id: s.show.ids.trakt,
-          type: 'watched',
         })
       );
     });
-    watchlistShows.forEach(async (s) => {
+    watchlistShows.filter(hasLanguage(language, 'show')).forEach(async (s) => {
       const {
         title = s.show.title,
         overview = s.show.overview,
@@ -106,7 +130,6 @@ export const changeLanguage = createAsyncThunk<
         updateTranslation({
           translation: { title, overview },
           id: s.show.ids.trakt,
-          type: 'watchlist',
         })
       );
     });

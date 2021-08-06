@@ -4,17 +4,18 @@ import PaginationContainer from '../../components/Pagination/PaginationContainer
 import { usePagination } from '../../hooks';
 import { ShowWatchlist } from 'models';
 import { useAppSelector } from 'state/store';
+import { byType } from 'state/slices/shows';
 
 const ShowsWatchlist: React.FC = () => {
   const [orderedShows, setOrderedShows] = useState<ShowWatchlist[]>([]);
 
   const { getItemsByPage } = usePagination(orderedShows);
-  const watchlist = useAppSelector((state) => state.shows.watchlist);
+  const { watchlist } = useAppSelector(byType);
 
   useEffect(() => {
     const nearFuture = new Date();
     nearFuture.setDate(nearFuture.getDate() + 7);
-    const newItems = watchlist
+    const newItems = Object.values(watchlist)
       .map((s) => s)
       .sort((a, b) =>
         new Date(a.listed_at!) < new Date(b.listed_at!) ? -1 : 1

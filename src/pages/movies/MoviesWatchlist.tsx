@@ -3,17 +3,18 @@ import ImageLink from 'components/ImageLink';
 import PaginationContainer from 'components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
 import { MovieWatchlist } from 'models';
+import { useAppSelector } from 'state/store';
+import { byType } from 'state/slices/movies';
 
-export const MoviesWatchlist: React.FC<{
-  movies: MovieWatchlist[];
-}> = ({ movies }) => {
+export const MoviesWatchlist: React.FC = () => {
   const [orderedMovies, setOrderedMovies] = useState<MovieWatchlist[]>([]);
   const { getItemsByPage } = usePagination(orderedMovies);
+  const { watchlist } = useAppSelector(byType);
 
   useEffect(() => {
     const nearFuture = new Date();
     nearFuture.setDate(nearFuture.getDate() + 7);
-    const newItems = movies
+    const newItems = watchlist
       .map((m) => m)
       .sort((a, b) => (new Date(a.listed_at) < new Date(b.listed_at) ? -1 : 1))
       .reduce((acc: MovieWatchlist[], m) => {
@@ -28,7 +29,7 @@ export const MoviesWatchlist: React.FC<{
         }
       }, []);
     setOrderedMovies(newItems);
-  }, [movies]);
+  }, [watchlist]);
 
   return (
     <PaginationContainer items={orderedMovies}>

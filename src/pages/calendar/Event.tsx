@@ -9,23 +9,9 @@ export const Event: React.FC<EventProps<ICalendarEvent>> = ({
 }) => {
   const item = useAppSelector((state) => {
     if (event.resource.type === 'movie') {
-      return (
-        state.movies.watched.find(
-          (m) => m.movie.ids.trakt === event.resource.movie.ids.trakt
-        ) ||
-        state.movies.watchlist.find(
-          (m) => m.movie.ids.trakt === event.resource.movie.ids.trakt
-        )
-      );
+      return state.movies.movies[event.resource.movie.ids.trakt];
     }
-    return (
-      state.shows.watched.find(
-        (s) => s.show.ids.trakt === event.resource.show.ids.trakt
-      ) ||
-      state.shows.watchlist.find(
-        (s) => s.show.ids.trakt === event.resource.show.ids.trakt
-      )
-    );
+    return state.shows.shows[event.resource.show.ids.trakt];
   });
   return (
     <Link

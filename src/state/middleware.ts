@@ -31,15 +31,13 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       }
       break;
     }
-    case 'movies/removeWatchlists': {
+    case 'movies/remove': {
       db.table(MOVIES).bulkDelete(action.payload.map((m) => m.movie.ids.trakt));
       break;
     }
     case 'movies/getMovie/fulfilled': {
       const state = store.getState().movies;
-      const oldMovie = state[action.meta.arg.type].find(
-        (m) => m.movie.ids.trakt === action.meta.arg.id
-      );
+      const oldMovie = state.movies[action.meta.arg.id];
       const newMovie = { ...oldMovie, movie: action.payload };
       db.table(MOVIES).put({ ...newMovie, localState: action.meta.arg.type });
       break;
@@ -51,7 +49,7 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       });
       break;
     }
-    case 'shows/removeWatchlists': {
+    case 'shows/remove': {
       db.table(SHOWS).bulkDelete(action.payload.map((s) => s.show.ids.trakt));
       break;
     }
@@ -62,10 +60,6 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
           localState: 'watchlist',
         });
       }
-      break;
-    }
-    case 'shows/removeWatcheds': {
-      db.table(SHOWS).bulkDelete(action.payload.map((s) => s.show.ids.trakt));
       break;
     }
     case 'shows/removeWatchlist/fulfilled': {
@@ -99,11 +93,13 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
     }
     case 'shows/getShow/fulfilled': {
       const state = store.getState().shows;
-      const oldShow = state[action.meta.arg.type].find(
-        (s) => s.show.ids.trakt === action.meta.arg.id
-      );
-      const newShow = { ...oldShow, show: action.payload };
-      db.table(SHOWS).put({ ...newShow, localState: action.meta.arg.type });
+      const oldShow = state.shows[action.meta.arg.id];
+      const newShow = {
+        ...oldShow,
+        show: action.payload,
+        localState: 'watchlist',
+      };
+      db.table(SHOWS).put(newShow);
       break;
     }
     case 'shows/updateFullShow/fulfilled': {

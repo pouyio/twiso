@@ -72,11 +72,8 @@ export const addEpisodeWatched = createAsyncThunk<
     if (data.added.episodes) {
       const { data: progress } = await getProgressApi(show.show.ids.trakt);
       const state = getState();
-      const showIndex = state.shows.watched.findIndex(
-        (s) => s.show.ids.trakt === show.show.ids.trakt
-      );
       const updatedShow: ShowWatched = JSON.parse(JSON.stringify(show));
-      if (showIndex === -1) {
+      if (state.shows.shows[show.show.ids.trakt]) {
         if (
           state.config.language !== 'en' &&
           show.show.available_translations.includes(state.config.language)
@@ -91,10 +88,10 @@ export const addEpisodeWatched = createAsyncThunk<
         }
       }
       return {
-        ...(showIndex === -1 ? updatedShow : state.shows.watched[showIndex]),
+        ...(state.shows.shows[show.show.ids.trakt] || updatedShow),
         last_watched_at: progress.last_watched_at,
         progress,
-      };
+      } as ShowWatched;
     }
   } catch (e) {
     console.error(e);
@@ -140,11 +137,8 @@ export const addSeasonWatched = createAsyncThunk<
     if (data.added.episodes) {
       const { data: progress } = await getProgressApi(show.show.ids.trakt);
       const state = getState();
-      const showIndex = state.shows.watched.findIndex(
-        (s) => s.show.ids.trakt === show.show.ids.trakt
-      );
       const updatedShow: ShowWatched = JSON.parse(JSON.stringify(show));
-      if (showIndex === -1) {
+      if (!state.shows.shows[show.show.ids.trakt]) {
         if (
           state.config.language !== 'en' &&
           show.show.available_translations.includes(state.config.language)
@@ -159,10 +153,10 @@ export const addSeasonWatched = createAsyncThunk<
         }
       }
       return {
-        ...(showIndex === -1 ? updatedShow : state.shows.watched[showIndex]),
+        ...(state.shows.shows[show.show.ids.trakt] || updatedShow),
         last_watched_at: progress.last_watched_at,
         progress,
-      };
+      } as ShowWatched;
     }
   } catch (e) {
     console.error(e);
@@ -194,7 +188,7 @@ export const removeSeasonWatched = createAsyncThunk<
 
 export const getShow = createAsyncThunk<
   Show,
-  { id: number; type: 'watched' | 'watchlist' },
+  { id: number },
   { state: RootState }
 >('shows/getShow', async ({ id }, { getState }) => {
   try {
@@ -253,9 +247,7 @@ export const populateDetail = createAsyncThunk<
 >('shows/populateDetail', async ({ id, show }, { getState }) => {
   try {
     const state = getState();
-    const foundShow =
-      state.shows.watched.find((w) => w.show.ids.trakt === id) ||
-      state.shows.watchlist.find((w) => w.show.ids.trakt === id);
+    const foundShow = state.shows.shows[id];
     // found in local state
     if (foundShow) {
       return foundShow.show;

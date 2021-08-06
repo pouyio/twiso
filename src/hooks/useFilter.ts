@@ -10,12 +10,7 @@ export const useFilter = () => {
       return [];
     }
     const fuse = new Fuse(
-      [
-        ...movies.watched,
-        ...movies.watchlist,
-        ...shows.watched,
-        ...shows.watchlist,
-      ],
+      [...Object.values(movies.movies), ...Object.values(shows.shows)],
       {
         threshold: 0.4,
         keys: [
@@ -37,9 +32,9 @@ export const useFilter = () => {
 
     const originalItems: any[] =
       type === 'movie'
-        ? [...movies.watched, ...movies.watchlist]
+        ? [...Object.values(movies.movies)]
         : type === 'show'
-        ? [...shows.watched, ...shows.watchlist]
+        ? [...Object.values(shows.shows)]
         : [];
 
     const keys =

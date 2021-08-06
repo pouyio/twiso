@@ -6,6 +6,7 @@ import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';
 import { useWindowSize } from '../../hooks';
 import { useAppSelector } from 'state/store';
+import { totalByType } from 'state/slices/movies';
 
 export default function Movies() {
   const [mode, setMode] = useQueryParam(
@@ -14,7 +15,7 @@ export default function Movies() {
   );
   const { width } = useWindowSize();
 
-  const { watchlist, watched } = useAppSelector((state) => state.movies);
+  const { watched, watchlist } = useAppSelector(totalByType);
 
   return (
     <>
@@ -33,7 +34,7 @@ export default function Movies() {
           }`}
           onClick={() => setMode('watchlist')}
         >
-          <Emoji emoji="⏱" /> Pendientes ({watchlist.length})
+          <Emoji emoji="⏱" /> Pendientes ({watchlist})
         </button>
         <button
           className={`border-b-2 py-2 w-full ${
@@ -41,15 +42,11 @@ export default function Movies() {
           }`}
           onClick={() => setMode('watched')}
         >
-          <Emoji emoji="📚" /> Vistas ({watched.length})
+          <Emoji emoji="📚" /> Vistas ({watched})
         </button>
       </div>
       <div className="py-3">
-        {mode === 'watchlist' ? (
-          <MoviesWatchlist movies={watchlist} />
-        ) : (
-          <MoviesWatched movies={watched} />
-        )}
+        {mode === 'watchlist' ? <MoviesWatchlist /> : <MoviesWatched />}
       </div>
     </>
   );

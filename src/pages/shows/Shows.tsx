@@ -6,6 +6,7 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import Helmet from 'react-helmet';
 import { useAppSelector } from 'state/store';
 import { useWindowSize } from '../../hooks';
+import { totalByType } from 'state/slices/movies';
 
 export default function Shows() {
   const [mode, setMode] = useQueryParam(
@@ -14,7 +15,7 @@ export default function Shows() {
   );
   const { width } = useWindowSize();
 
-  const shows = useAppSelector((state) => state.shows);
+  const { watched, watchlist } = useAppSelector(totalByType);
 
   return (
     <>
@@ -33,7 +34,7 @@ export default function Shows() {
           }`}
           onClick={() => setMode('watchlist')}
         >
-          <Emoji emoji="⏱" /> Pendientes ({shows.watchlist.length})
+          <Emoji emoji="⏱" /> Pendientes ({watchlist})
         </button>
         <button
           className={`border-b-2 py-2 w-full ${
@@ -41,7 +42,7 @@ export default function Shows() {
           }`}
           onClick={() => setMode('watched')}
         >
-          <Emoji emoji="📚" /> Siguiendo ({shows.watched.length})
+          <Emoji emoji="📚" /> Siguiendo ({watched})
         </button>
       </div>
       <div className="py-3">

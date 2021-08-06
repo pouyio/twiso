@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MovieWatchlist, MovieWatched, Movie } from 'models';
 import {
   addWatched,
@@ -8,13 +8,13 @@ import {
   removeWatched,
   removeWatchlist as removeWatchlistThunk,
 } from 'state/slices/movies/thunks';
+import { RootState } from 'state/store';
 
 interface MoviesState {
   ready: boolean;
   pending: { watched: number[]; watchlist: number[] };
-  watched: MovieWatched[];
-  watchlist: MovieWatchlist[];
   detail?: Movie;
+  movies: Record<number, MovieWatched | MovieWatchlist>;
 }
 
 const initialState: MoviesState = {
@@ -23,35 +23,28 @@ const initialState: MoviesState = {
     watched: [],
     watchlist: [],
   },
-  watched: [],
-  watchlist: [],
+  movies: [],
 };
 
 const moviesSlice = createSlice({
   name: 'movies',
   initialState: initialState,
   reducers: {
-    setWatched(state, { payload }: PayloadAction<MovieWatched[]>) {
-      state.watched = payload;
+    set(
+      state,
+      { payload }: PayloadAction<Array<MovieWatched | MovieWatchlist>>
+    ) {
+      payload.forEach((movie) => {
+        state.movies[movie.movie.ids.trakt] = movie;
+      });
     },
-    setWatchlist(state, { payload }: PayloadAction<MovieWatchlist[]>) {
-      state.watchlist = payload;
-    },
-    addWatchlists(state, { payload }: PayloadAction<MovieWatchlist[]>) {
-      state.watchlist = [...state.watchlist, ...payload];
-    },
-    addWatcheds(state, { payload }: PayloadAction<MovieWatched[]>) {
-      state.watched = [...state.watched, ...payload];
-    },
-    removeWatchlists(state, { payload }: PayloadAction<MovieWatchlist[]>) {
-      state.watchlist = state.watchlist.filter(
-        (m) => !payload.some((md) => md.movie.ids.trakt === m.movie.ids.trakt)
-      );
-    },
-    removeWatcheds(state, { payload }: PayloadAction<MovieWatched[]>) {
-      state.watched = state.watched.filter(
-        (m) => !payload.some((md) => md.movie.ids.trakt === m.movie.ids.trakt)
-      );
+    remove(
+      state,
+      { payload }: PayloadAction<Array<MovieWatched | MovieWatchlist>>
+    ) {
+      payload.forEach((show) => {
+        delete state.movies[show.movie.ids.trakt];
+      });
     },
     updateTranslation(
       state,
@@ -60,16 +53,12 @@ const moviesSlice = createSlice({
       }: PayloadAction<{
         translation: { title: string; overview: string };
         id: number;
-        type: 'watched' | 'watchlist';
       }>
     ) {
-      const index = state[payload.type].findIndex(
-        (m) => m.movie.ids.trakt === payload.id
-      );
-      if (index !== -1) {
-        state[payload.type][index].movie.title = payload.translation.title;
-        state[payload.type][index].movie.overview =
-          payload.translation.overview;
+      const storedShow = state.movies[payload.id];
+      if (storedShow) {
+        storedShow.movie.title = payload.translation.title;
+        storedShow.movie.overview = payload.translation.overview;
       }
     },
   },
@@ -80,14 +69,12 @@ const moviesSlice = createSlice({
       })
       .addCase(addWatched.fulfilled, (state, { payload, meta }) => {
         if (payload?.added.movies) {
-          state.watchlist = state.watchlist.filter(
-            (m) => meta.arg.movie.ids.trakt !== m.movie.ids.trakt
-          );
-          state.watched.push({
+          state.movies[meta.arg.movie.ids.trakt] = {
             movie: meta.arg.movie,
             type: 'movie',
             watched_at: new Date().toISOString(),
-          });
+            localState: 'watched',
+          };
         }
         state.pending.watched = state.pending.watched.filter(
           (p) => p !== meta.arg.movie.ids.trakt
@@ -103,9 +90,7 @@ const moviesSlice = createSlice({
       })
       .addCase(removeWatched.fulfilled, (state, { payload, meta }) => {
         if (payload?.deleted.movies) {
-          state.watched = state.watched.filter(
-            (m) => meta.arg.movie.ids.trakt !== m.movie.ids.trakt
-          );
+          delete state.movies[meta.arg.movie.ids.trakt];
         }
         state.pending.watched = state.pending.watched.filter(
           (p) => p !== meta.arg.movie.ids.trakt
@@ -121,14 +106,12 @@ const moviesSlice = createSlice({
       })
       .addCase(addWatchlistThunk.fulfilled, (state, { payload, meta }) => {
         if (payload?.added.movies) {
-          state.watched = state.watched.filter(
-            (m) => meta.arg.movie.ids.trakt !== m.movie.ids.trakt
-          );
-          state.watchlist.push({
+          state.movies[meta.arg.movie.ids.trakt] = {
             movie: meta.arg.movie,
             type: 'movie',
             listed_at: new Date().toISOString(),
-          });
+            localState: 'watchlist',
+          };
           state.pending.watchlist = state.pending.watchlist.filter(
             (p) => p !== meta.arg.movie.ids.trakt
           );
@@ -144,9 +127,7 @@ const moviesSlice = createSlice({
       })
       .addCase(removeWatchlistThunk.fulfilled, (state, { payload, meta }) => {
         if (payload?.deleted.movies) {
-          state.watchlist = state.watchlist.filter(
-            (m) => meta.arg.movie.ids.trakt !== m.movie.ids.trakt
-          );
+          delete state.movies[meta.arg.movie.ids.trakt];
         }
         state.pending.watchlist = state.pending.watchlist.filter(
           (p) => p !== meta.arg.movie.ids.trakt
@@ -157,12 +138,9 @@ const moviesSlice = createSlice({
           (p) => p !== meta.arg.movie.ids.trakt
         );
       })
-      .addCase(getMovie.fulfilled, (state, { payload, meta }) => {
-        const index = state[meta.arg.type].findIndex(
-          (m) => m.movie.ids.trakt === payload.ids.trakt
-        );
-        state[meta.arg.type][index] = {
-          ...state[meta.arg.type][index],
+      .addCase(getMovie.fulfilled, (state, { payload }) => {
+        state.movies[payload.ids.trakt] = {
+          ...state.movies[payload.ids.trakt],
           movie: payload,
         };
       })
@@ -179,15 +157,34 @@ const moviesSlice = createSlice({
 });
 
 // actions
-export const {
-  setWatched,
-  setWatchlist,
-  addWatchlists,
-  addWatcheds,
-  removeWatchlists,
-  removeWatcheds,
-  updateTranslation,
-} = moviesSlice.actions;
+export const { set, remove, updateTranslation } = moviesSlice.actions;
 
 // reducer
 export const reducer = moviesSlice.reducer;
+
+// selectors
+export const byType = createSelector(
+  (state: RootState) => state.movies.movies,
+  (movies) => {
+    return Object.values(movies).reduce(
+      (
+        acc: {
+          watchlist: MovieWatchlist[];
+          watched: MovieWatched[];
+        },
+        s
+      ) => {
+        if (!s.localState) {
+          return acc;
+        }
+        acc[s.localState].push(s as any);
+        return acc;
+      },
+      { watchlist: [], watched: [] }
+    );
+  }
+);
+
+export const totalByType = createSelector(byType, ({ watchlist, watched }) => {
+  return { watchlist: watchlist.length, watched: watched.length };
+});

@@ -40,9 +40,9 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const isLogged = authService.isLoggedIn();
   const { toggle } = useContext(ModalContext);
   const dispatch = useDispatch();
-  const watchedShow = useAppSelector((state) =>
-    state.shows.watched.find((w) => w.show.ids.trakt === +showId)
-  );
+  const watchedShow = useAppSelector(
+    (state) => state.shows.shows[+showId]
+  ) as ShowWatched;
   const language = useAppSelector((state) => state.config.language);
 
   useEffect(() => {

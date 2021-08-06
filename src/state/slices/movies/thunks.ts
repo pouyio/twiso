@@ -85,7 +85,7 @@ export const getMovie = createAsyncThunk<
   Movie,
   { id: number; type: 'watched' | 'watchlist' },
   { state: RootState }
->('movies/getMovie', async ({ id }, { getState }) => {
+>('movies/getMovie', ({ id }, { getState }) => {
   return _getRemoteWithTranslations(id, getState().config.language);
 });
 
@@ -96,9 +96,7 @@ export const populateDetail = createAsyncThunk<
 >('movies/populateDetail', async ({ id, movie }, { getState }) => {
   const state = getState();
   try {
-    const foundMovie =
-      state.movies.watched.find((w) => w.movie.ids.trakt === id) ||
-      state.movies.watchlist.find((w) => w.movie.ids.trakt === id);
+    const foundMovie = state.movies.movies[id];
     // found in local state
     if (foundMovie) {
       return foundMovie.movie;

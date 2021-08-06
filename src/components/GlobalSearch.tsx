@@ -34,10 +34,10 @@ export const GlobalSearch = () => {
   const getBgClass = (
     item: MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist
   ) => {
-    if (isWatched(item[item.type || 'show'].ids.trakt, item.type || 'show')) {
+    if (isWatched(item[item.type]?.ids.trakt, item.type)) {
       return 'bg-green-400';
     }
-    if (isWatchlist(item[item.type || 'show'].ids.trakt, item.type || 'show')) {
+    if (isWatchlist(item[item.type]?.ids.trakt, item.type)) {
       return 'bg-blue-400';
     }
     return '';
@@ -69,9 +69,10 @@ export const GlobalSearch = () => {
       <ul className="flex flex-wrap items-stretch justify-center bg-white overflow-y-auto">
         {results &&
           results.map((item, i) => {
+            console.log(item);
             return (
               <li
-                key={`${item[item.type || 'show'].ids?.trakt}_${i}`}
+                key={`${item[item.type || 'show']?.ids?.trakt}_${i}`}
                 className="p-2"
                 style={{ flex: '1 0 50%', maxWidth: '10em' }}
                 onClick={() => dispatch(setGlobalSearch(false))}

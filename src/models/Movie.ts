@@ -8,6 +8,11 @@ interface SearchItem {
   type: ItemType;
 }
 
+interface BaseMovie {
+  movie: Movie;
+  type: 'movie';
+}
+
 export type SearchShow = SearchItem & {
   show: Show;
 };
@@ -20,21 +25,19 @@ export type SearchPerson = SearchItem & {
   person: Person;
 };
 
-export interface MovieWatchlist {
+export interface MovieWatchlist extends BaseMovie {
   id?: number;
   listed_at: string;
   rank?: number;
-  type: 'movie';
-  movie: Movie;
+  localState: 'watchlist';
 }
 
-export type MovieWatched = {
+export interface MovieWatched extends BaseMovie {
   action?: string;
   id?: number;
-  movie: Movie;
-  type: 'movie';
   watched_at: string;
-};
+  localState: 'watched';
+}
 
 export interface Movie {
   available_translations: string[];

@@ -4,14 +4,22 @@ export const useIsWatch = () => {
   const movies = useAppSelector((state) => state.movies);
   const shows = useAppSelector((state) => state.shows);
 
-  const isWatched = (id: number, type: 'show' | 'movie') => {
-    const items = `${type}s` === 'shows' ? shows : movies;
-    return items.watched.some((i: any) => i[type].ids.trakt === id);
+  const isWatched = (id: number, type: 'show' | 'movie' = 'show') => {
+    if (type === 'show') {
+      return shows.shows[id]?.localState === 'watched';
+    }
+    if (type === 'movie') {
+      return movies.movies[id]?.localState === 'watched';
+    }
   };
 
-  const isWatchlist = (id: number, type: 'show' | 'movie') => {
-    const items = `${type}s` === 'shows' ? shows : movies;
-    return items.watchlist.some((i: any) => i[type].ids.trakt === id);
+  const isWatchlist = (id: number, type: 'show' | 'movie' = 'show') => {
+    if (type === 'show') {
+      return shows.shows[id]?.localState === 'watchlist';
+    }
+    if (type === 'movie') {
+      return movies.movies[id]?.localState === 'watchlist';
+    }
   };
 
   return {
