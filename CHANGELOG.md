@@ -1,3 +1,10 @@
+## [2.7.4](https://github.com/pouyio/twiso/compare/v2.7.3...v2.7.4) (2021-08-07)
+
+
+### :rocket:
+
+* translated app texts ([aa39800](https://github.com/pouyio/twiso/commit/aa398003fb56aab06bddab49da85d5a6ce389687))
+
 ## [2.7.3](https://github.com/pouyio/twiso/compare/v2.7.2...v2.7.3) (2021-08-07)
 
 
