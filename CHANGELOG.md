@@ -1,3 +1,10 @@
+## [2.7.2](https://github.com/pouyio/twiso/compare/v2.7.1...v2.7.2) (2021-08-07)
+
+
+### :rocket:
+
+* updated sentry ([0b45d77](https://github.com/pouyio/twiso/commit/0b45d77c175801ad98e046342c846b7289bb3331))
+
 ## [2.7.1](https://github.com/pouyio/twiso/compare/v2.7.0...v2.7.1) (2021-08-06)
 
 
