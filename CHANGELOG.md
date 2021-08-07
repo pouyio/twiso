@@ -1,3 +1,10 @@
+## [2.7.3](https://github.com/pouyio/twiso/compare/v2.7.2...v2.7.3) (2021-08-07)
+
+
+### :rocket:
+
+* added sentry tracing ([0b2d2fb](https://github.com/pouyio/twiso/commit/0b2d2fbfab6db05a20d3ec545b1bd8067d3c4610))
+
 ## [2.7.2](https://github.com/pouyio/twiso/compare/v2.7.1...v2.7.2) (2021-08-07)
 
 
