@@ -1,3 +1,18 @@
+## [2.7.5](https://github.com/pouyio/twiso/compare/v2.7.4...v2.7.5) (2021-08-07)
+
+
+### :ambulance:
+
+* updated semantic release ([afdb7fb](https://github.com/pouyio/twiso/commit/afdb7fb2e9f2c76e5549be7f9a774e9abcdaa9f4))
+
+### :arrow_up:
+
+* Bump semantic-release from 15.14.0 to 17.2.3 ([fe17a0d](https://github.com/pouyio/twiso/commit/fe17a0d4e462550d0cd82056f607cd60a562ce0a))
+
+### :art:
+
+* updated translation ([82afb38](https://github.com/pouyio/twiso/commit/82afb382bcb057a0670959f7f24b1d1094fc9bdd))
+
 ## [2.7.4](https://github.com/pouyio/twiso/compare/v2.7.3...v2.7.4) (2021-08-07)
 
 
