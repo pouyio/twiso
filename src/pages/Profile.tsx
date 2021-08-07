@@ -110,18 +110,6 @@ export default function Profile() {
               </svg>
             </div>
           </li>
-          <li className="py-1">
-            {isLogged ? (
-              <button
-                onClick={logout}
-                className="bg-gray-200 px-4 py-1 rounded-full"
-              >
-                <Emoji emoji="❌" /> Logout
-              </button>
-            ) : (
-              <LoginButton small />
-            )}
-          </li>
         </ul>
         {isLogged ? (
           <>
@@ -129,7 +117,7 @@ export default function Profile() {
               <Emoji emoji="🎬" /> {t('movies')}
             </h1>
             <p className="text-center">
-              Vistas: {stats && stats.movies.watched} en{' '}
+              {t('have_watched_f')}: {stats && stats.movies.watched} en{' '}
               {convertMinutes(stats && stats.movies.minutes)}
             </p>
             <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
@@ -142,8 +130,18 @@ export default function Profile() {
           </>
         ) : null}
 
-        <div className="text-right pt-10 text-sm font-mono">
-          <h1>Version: {version}</h1>
+        <div className="flex justify-between pt-10 text-sm font-mono">
+          <h1 className="inline">Version: {version}</h1>
+          {isLogged ? (
+            <button
+              onClick={logout}
+              className="bg-gray-200 px-4 py-1 rounded-full"
+            >
+              <Emoji emoji="❌" /> Logout
+            </button>
+          ) : (
+            <LoginButton small />
+          )}
         </div>
 
         {dev ? (
