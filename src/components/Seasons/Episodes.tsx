@@ -3,6 +3,7 @@ import Emoji from '../Emoji';
 import { Episode, Season } from '../../models';
 import { EpisodesPlaceholder } from './EpisodesPlaceholder';
 import { useAppSelector } from 'state/store';
+import { useTranslate } from 'hooks';
 
 interface ISeasonsProps {
   seasonProgress?: Season;
@@ -30,6 +31,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
   const watched = useAppSelector((state) => state.shows.pending.watched);
   const pendings = useAppSelector((state) => state.shows.pending.seasons);
   const language = useAppSelector((state) => state.config.language);
+  const { t } = useTranslate();
 
   const isEpisodeWatched = (episodeNumber: number) => {
     if (!seasonProgress) {
@@ -152,7 +154,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
               className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
               onClick={() => removeSeasonWatched()}
             >
-              Marcar todo como no vistos{' '}
+              {t('mark_not_watched')}{' '}
               {pendings.includes(seasonId) && (
                 <Emoji
                   emoji="⏳"
@@ -166,7 +168,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
               className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
               onClick={() => addSeasonWatched()}
             >
-              Marcar todo como vistos
+              {t('mark_watched')}{' '}
               {pendings.includes(seasonId) && (
                 <Emoji
                   emoji="⏳"

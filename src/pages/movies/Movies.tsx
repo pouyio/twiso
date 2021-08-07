@@ -4,7 +4,7 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import Emoji from '../../components/Emoji';
 import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';
-import { useWindowSize } from '../../hooks';
+import { useTranslate, useWindowSize } from '../../hooks';
 import { useAppSelector } from 'state/store';
 import { totalByType } from 'state/slices/movies';
 
@@ -16,6 +16,7 @@ export default function Movies() {
   const { width } = useWindowSize();
 
   const { watched, watchlist } = useAppSelector(totalByType);
+  const { t } = useTranslate();
 
   return (
     <>
@@ -34,7 +35,7 @@ export default function Movies() {
           }`}
           onClick={() => setMode('watchlist')}
         >
-          <Emoji emoji="⏱" /> Pendientes ({watchlist})
+          <Emoji emoji="⏱" /> {t('watchlists')} ({watchlist})
         </button>
         <button
           className={`border-b-2 py-2 w-full ${
@@ -42,7 +43,7 @@ export default function Movies() {
           }`}
           onClick={() => setMode('watched')}
         >
-          <Emoji emoji="📚" /> Vistas ({watched})
+          <Emoji emoji="📚" /> {t('watcheds')} ({watched})
         </button>
       </div>
       <div className="py-3">

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useResize, useWindowSize } from '../../hooks';
+import { useResize, useTranslate, useWindowSize } from '../../hooks';
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Emoji from '../Emoji';
@@ -21,6 +21,7 @@ export const NavigationTabs: React.FC<{
     ])
   );
   const { width } = useWindowSize();
+  const { t } = useTranslate();
 
   useEffect(() => {
     const target = refs.current.get(pathname);
@@ -57,7 +58,7 @@ export const NavigationTabs: React.FC<{
               >
                 <Emoji emoji="🎬" />
                 <span className="ml-2 text-base hidden lg:inline">
-                  Películas
+                  {t('movies')}
                 </span>
               </NavLink>
             </li>
@@ -71,7 +72,9 @@ export const NavigationTabs: React.FC<{
                 className="flex items-center"
               >
                 <Emoji emoji="📺" />
-                <span className="ml-2 text-base hidden lg:inline">Series</span>
+                <span className="ml-2 text-base hidden lg:inline">
+                  {t('shows')}
+                </span>
               </NavLink>
             </li>
           </>
@@ -91,14 +94,18 @@ export const NavigationTabs: React.FC<{
           >
             <NavLink to="/calendar" className="flex items-center">
               <Emoji emoji="📅" />
-              <span className="ml-2 text-base hidden lg:inline">Calendar</span>
+              <span className="ml-2 text-base hidden lg:inline">
+                {t('calendar')}
+              </span>
             </NavLink>
           </li>
         ) : null}
         <li className="py-1" ref={(el) => refs.current.set('/profile', el)}>
           <NavLink to="/profile" className="flex items-center">
             <Emoji emoji="👤" />
-            <span className="ml-2 text-base hidden lg:inline">Perfil</span>
+            <span className="ml-2 text-base hidden lg:inline">
+              {t('profile')}
+            </span>
           </NavLink>
         </li>
       </ul>

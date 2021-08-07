@@ -1,3 +1,4 @@
+import { useTranslate } from 'hooks';
 import React, { useMemo, useState } from 'react';
 import Emoji from './Emoji';
 
@@ -8,6 +9,8 @@ interface IRatingProps {
 
 const Rating: React.FC<IRatingProps> = ({ rating = 0, votes = 0 }) => {
   const [showVotes, setShowVotes] = useState(true);
+  const { t } = useTranslate();
+
   const totalVotes = useMemo(() => {
     if (votes < 999) {
       return votes;
@@ -26,7 +29,7 @@ const Rating: React.FC<IRatingProps> = ({ rating = 0, votes = 0 }) => {
       ) : (
         <>
           <Emoji emoji="🗳" />
-          {totalVotes} votos
+          {totalVotes} {t('votes')}
         </>
       )}
     </div>

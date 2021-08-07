@@ -12,7 +12,7 @@ import Rating from '../components/Rating';
 import Related from '../components/Related';
 import WatchButton from '../components/WatchButton';
 import { AlertContext } from '../contexts';
-import { useIsWatch, useShare } from '../hooks';
+import { useIsWatch, useShare, useTranslate } from '../hooks';
 import { Movie, People as IPeople, Ratings } from '../models';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
 
@@ -26,6 +26,7 @@ export default function MovieDetail() {
   const { share } = useShare();
   const item = useAppSelector((s) => s.movies.detail);
   const dispatch = useAppDispatch();
+  const { t } = useTranslate();
 
   const { isWatchlist, isWatched } = useIsWatch();
 
@@ -62,7 +63,7 @@ export default function MovieDetail() {
   const onShare = () => {
     share(item!.title).then((action) => {
       if (action === 'copied') {
-        showAlert(`Enlace a "${item!.title}" copiado`);
+        showAlert(t('link_copied', item!.title));
       }
     });
   };

@@ -3,6 +3,7 @@ import ImageLink from './ImageLink';
 import { getPopularApi } from '../utils/api';
 import Emoji from './Emoji';
 import { Popular as IPopular } from '../models';
+import { useTranslate } from 'hooks';
 
 interface IPopularProps {
   type: 'movie' | 'show';
@@ -11,6 +12,7 @@ interface IPopularProps {
 const Popular: React.FC<IPopularProps> = ({ type }) => {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<IPopular[]>([]);
+  const { t } = useTranslate();
 
   useEffect(() => {
     let isSubscribed = true;
@@ -26,22 +28,11 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
     };
   }, [type]);
 
-  const getTitle = () => {
-    switch (type) {
-      case 'show':
-        return 'Series';
-      case 'movie':
-        return 'Películas';
-      default:
-        break;
-    }
-  };
-
   return (
     <>
       <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
         <Emoji emoji={loading ? '⏳' : '⭐'} rotating={loading} />
-        <span className="mx-2">{getTitle()} populares</span>
+        <span className="mx-2">{t(`popular_${type}`)}</span>
       </h1>
       <ul
         className="-mx-4 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto"

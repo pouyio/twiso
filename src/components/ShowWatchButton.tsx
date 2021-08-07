@@ -2,7 +2,7 @@ import React from 'react';
 import { Show } from '../models';
 import { LoginButton } from './LoginButton';
 import { removeWatchlist, addWatchlist } from 'state/slices/shows/thunks';
-import { useIsWatch } from 'hooks';
+import { useIsWatch, useTranslate } from 'hooks';
 import { AuthService } from 'utils/AuthService';
 import { useAppSelector } from 'state/store';
 import Emoji from './Emoji';
@@ -20,6 +20,7 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
   const isWatchlistPending = useAppSelector((state) => {
     return state.shows.pending.watchlist.includes(item.ids.trakt);
   });
+  const { t } = useTranslate();
 
   return (
     <div className="flex justify-around my-8">
@@ -30,7 +31,7 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
               className="bg-blue-400 py-3 px-12 rounded-full text-white font-bold"
               onClick={() => dispatch(removeWatchlist({ show: item }))}
             >
-              Pendiente{' '}
+              {t('add_watchlist')}{' '}
               {isWatchlistPending && (
                 <Emoji emoji="⏳" rotating={true} className="absolute ml-2" />
               )}
@@ -40,7 +41,7 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
               className="bg-gray-200 py-3 px-12 rounded-full text-gray-700 font-light"
               onClick={() => dispatch(addWatchlist({ show: item }))}
             >
-              Pendiente{' '}
+              {t('add_watchlist')}{' '}
               {isWatchlistPending && (
                 <Emoji emoji="⏳" rotating={true} className="absolute ml-2" />
               )}

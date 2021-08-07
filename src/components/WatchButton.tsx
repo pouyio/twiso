@@ -1,6 +1,6 @@
 import React from 'react';
 import { Movie } from '../models';
-import { useIsWatch } from '../hooks';
+import { useIsWatch, useTranslate } from '../hooks';
 import { LoginButton } from '../components/LoginButton';
 import {
   addWatched,
@@ -19,6 +19,7 @@ interface IWatchButtonProps {
 
 const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
   const { isWatchlist, isWatched } = useIsWatch();
+  const { t } = useTranslate();
 
   const isLoggedIn = AuthService.getInstance().isLoggedIn();
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
               className="bg-green-400 py-3 px-12 rounded-full text-white font-bold"
               onClick={async () => dispatch(removeWatched({ movie: item }))}
             >
-              ✓ Vista{' '}
+              ✓ {t('watched')}{' '}
               {isWatchedPending && (
                 <Emoji emoji="⏳" rotating={true} className="absolute ml-2" />
               )}
@@ -48,7 +49,7 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
               className="bg-gray-200 py-3 px-12 rounded-full text-gray-700 font-light"
               onClick={() => dispatch(addWatched({ movie: item }))}
             >
-              Vista{' '}
+              {t('watched')}{' '}
               {isWatchedPending && (
                 <Emoji emoji="⏳" rotating={true} className="absolute ml-2" />
               )}
@@ -59,7 +60,7 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
               className="bg-blue-400 py-3 px-12 rounded-full text-white font-bold"
               onClick={() => dispatch(removeWatchlist({ movie: item }))}
             >
-              Pendiente{' '}
+              {t('watchlist')}{' '}
               {isWatchlistPending && (
                 <Emoji emoji="⏳" rotating={true} className="absolute ml-2" />
               )}
@@ -69,7 +70,7 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
               className="bg-gray-200 py-3 px-12 rounded-full text-gray-700 font-light"
               onClick={() => dispatch(addWatchlist({ movie: item }))}
             >
-              Pendiente{' '}
+              {t('watchlist')}{' '}
               {isWatchlistPending && (
                 <Emoji emoji="⏳" rotating={true} className="absolute ml-2" />
               )}

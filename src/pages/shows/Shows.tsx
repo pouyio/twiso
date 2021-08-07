@@ -5,7 +5,7 @@ import ShowsWatched from './ShowsWatched';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import Helmet from 'react-helmet';
 import { useAppSelector } from 'state/store';
-import { useWindowSize } from '../../hooks';
+import { useTranslate, useWindowSize } from '../../hooks';
 import { totalByType } from 'state/slices/movies';
 
 export default function Shows() {
@@ -16,6 +16,7 @@ export default function Shows() {
   const { width } = useWindowSize();
 
   const { watched, watchlist } = useAppSelector(totalByType);
+  const { t } = useTranslate();
 
   return (
     <>
@@ -34,7 +35,7 @@ export default function Shows() {
           }`}
           onClick={() => setMode('watchlist')}
         >
-          <Emoji emoji="⏱" /> Pendientes ({watchlist})
+          <Emoji emoji="⏱" /> {t('watchlists')} ({watchlist})
         </button>
         <button
           className={`border-b-2 py-2 w-full ${
@@ -42,7 +43,7 @@ export default function Shows() {
           }`}
           onClick={() => setMode('watched')}
         >
-          <Emoji emoji="📚" /> Siguiendo ({watched})
+          <Emoji emoji="📚" /> {t('show_watcheds')} ({watched})
         </button>
       </div>
       <div className="py-3">

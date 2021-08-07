@@ -12,6 +12,7 @@ import { AuthService } from 'utils/AuthService';
 import { useDispatch } from 'react-redux';
 import { changeLanguage, Language } from 'state/slices/config';
 import { useAppSelector } from 'state/store';
+import { useTranslate } from 'hooks';
 
 const authService = AuthService.getInstance();
 
@@ -22,6 +23,7 @@ export default function Profile() {
   const isLogged = authService.isLoggedIn();
   const dispatch = useDispatch();
   const language = useAppSelector((state) => state.config.language);
+  const { t } = useTranslate();
 
   useEffect(() => {
     if (isLogged) {
@@ -71,9 +73,9 @@ export default function Profile() {
               }}
               value={theme || '0'}
             >
-              <option value="theme-dark">🌚 Dark</option>
-              <option value="theme-light">🌞 Light</option>
-              <option value="0">🌓 System</option>
+              <option value="theme-dark">🌚 {t('dark')}</option>
+              <option value="theme-light">🌞 {t('light')}</option>
+              <option value="0">🌓 {t('system')}</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
@@ -124,17 +126,17 @@ export default function Profile() {
         {isLogged ? (
           <>
             <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
-              <Emoji emoji="🎬" /> Películas
+              <Emoji emoji="🎬" /> {t('movies')}
             </h1>
             <p className="text-center">
               Vistas: {stats && stats.movies.watched} en{' '}
               {convertMinutes(stats && stats.movies.minutes)}
             </p>
             <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
-              <Emoji emoji="📺" /> Episodios
+              <Emoji emoji="📺" /> {t('episodes')}
             </h1>
             <p className="text-center">
-              Vistos: {stats && stats.episodes.watched} en{' '}
+              {t('have_watched')}: {stats && stats.episodes.watched} en{' '}
               {convertMinutes(stats && stats.episodes.minutes)}{' '}
             </p>{' '}
           </>

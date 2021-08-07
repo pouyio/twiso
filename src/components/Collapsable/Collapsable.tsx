@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useTranslate } from 'hooks';
 import React, { useEffect, useRef, useState } from 'react';
 import './collapsable.css';
 
@@ -29,6 +30,7 @@ const Collapsable: React.FC<ICollapsableProps> = ({
   const [opened, setOpened] = useState(false);
   const [isButtonShown, setIsButtonShown] = useState(false);
   const ref = useRef<HTMLParagraphElement>(null);
+  const { t } = useTranslate();
 
   useEffect(() => {
     setOpened(false);
@@ -57,7 +59,7 @@ const Collapsable: React.FC<ICollapsableProps> = ({
           className="text-right text-blue-500 cursor-pointer"
           onClick={() => setOpened((o) => !o)}
         >
-          Mostrar {opened ? 'menos' : 'más'}
+          {t('to_show', opened ? '-' : '+')}
         </span>
       )}
     </div>

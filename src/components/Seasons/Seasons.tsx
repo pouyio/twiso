@@ -2,6 +2,7 @@ import React from 'react';
 import Emoji from '../Emoji';
 import { Season, Episode, ShowProgress } from '../../models';
 import { useAppSelector } from 'state/store';
+import { useTranslate } from 'hooks';
 
 interface ISeasonsProps {
   progress?: ShowProgress;
@@ -29,6 +30,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
   onlyView,
 }) => {
   const language = useAppSelector((state) => state.config.language);
+  const { t } = useTranslate();
 
   const selectedClass = (season: Season) => {
     if (!selectedSeason) {
@@ -121,7 +123,7 @@ const Seasons: React.FC<ISeasonsProps> = ({
               selectedClass(s)
             }
           >
-            {s.number ? `Temporada ${s.number}` : 'Especiales'}
+            {s.number ? `${t('season')} ${s.number}` : t('specials')}
             {isSeasonWatched(s.number) ? (
               <span className="ml-2 text-gray-600">✓</span>
             ) : (
@@ -191,14 +193,14 @@ const Seasons: React.FC<ISeasonsProps> = ({
                   className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
                   onClick={() => removeSeasonWatched(selectedSeason)}
                 >
-                  Marcar todo como no vistos
+                  {t('mark_not_watched')}
                 </button>
               ) : (
                 <button
                   className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
                   onClick={() => addSeasonWatched(selectedSeason)}
                 >
-                  Marcar todo como vistos
+                  {t('mark_watched')}
                 </button>
               )}
             </div>

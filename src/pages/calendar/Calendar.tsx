@@ -24,6 +24,7 @@ import { ShowCalendar, MovieCalendar } from 'models';
 import { useQueryParam, withDefault, DateParam } from 'use-query-params';
 import { AuthService } from 'utils/AuthService';
 import { useAppSelector } from 'state/store';
+import { useTranslate } from 'hooks';
 
 const localizer = dateFnsLocalizer({
   format,
@@ -69,6 +70,7 @@ export default function Calendar() {
   );
   const [only, setOnly] = useState<'movie' | 'show'>();
   const language = useAppSelector((state) => state.config.language);
+  const { t } = useTranslate();
 
   useEffect(() => {
     if (!isLogged) {
@@ -142,7 +144,7 @@ export default function Calendar() {
                 only === 'movie' ? 'bg-gray-300' : 'bg-gray-100 opacity-75'
               } px-3 rounded-l`}
             >
-              Películas
+              {t('movies')}
             </button>
             <button
               onClick={() =>
@@ -152,7 +154,7 @@ export default function Calendar() {
                 only === 'show' ? 'bg-gray-300' : 'bg-gray-100 opacity-75'
               } px-3 rounded-r`}
             >
-              Series
+              {t('shows')}
             </button>
           </div>
         </div>

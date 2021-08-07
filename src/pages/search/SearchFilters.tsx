@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RemoteFilterTypes } from './Search';
 import { AuthService } from 'utils/AuthService';
+import { useTranslate } from 'hooks';
 
 export interface IFilters {
   remote: boolean;
@@ -18,6 +19,7 @@ export const SearchFilters: React.FC<ISearchFiltersProps> = ({
 }) => {
   const [filterBy, setFilterBy] = useState<RemoteFilterTypes>([]);
   const [remote, setRemote] = useState(true);
+  const { t } = useTranslate();
 
   const onFilterClick = (type: 'movie' | 'show' | 'person') => {
     setFilterBy((filters) => {
@@ -40,7 +42,7 @@ export const SearchFilters: React.FC<ISearchFiltersProps> = ({
             className="flex items-center cursor-pointer select-none"
             onClick={() => setRemote((a) => !a)}
           >
-            <p className={`mr-3 ${remote ? '' : 'opacity-75'}`}>Todo</p>
+            <p className={`mr-3 ${remote ? '' : 'opacity-75'}`}>{t('all')}</p>
 
             <div className="relative">
               <input
@@ -53,7 +55,9 @@ export const SearchFilters: React.FC<ISearchFiltersProps> = ({
               <div className="toggle__dot absolute w-5 h-5 bg-gray-200 rounded-full left-0"></div>
             </div>
 
-            <p className={`ml-3 ${remote ? 'opacity-75' : ''}`}>Mi coleción</p>
+            <p className={`ml-3 ${remote ? 'opacity-75' : ''}`}>
+              {t('my_collection')}
+            </p>
           </div>
         </div>
       )}
@@ -67,7 +71,7 @@ export const SearchFilters: React.FC<ISearchFiltersProps> = ({
               : 'bg-gray-100 opacity-75'
           } px-3 rounded-l`}
         >
-          Películas
+          {t('movies')}
         </button>
         <button
           onClick={() => onFilterClick('show')}
@@ -75,7 +79,7 @@ export const SearchFilters: React.FC<ISearchFiltersProps> = ({
             filterBy.includes('show') ? 'bg-gray-300' : 'bg-gray-100 opacity-75'
           } px-3 border-r border-l border-gray-100`}
         >
-          Series
+          {t('shows')}
         </button>
         <button
           onClick={() => onFilterClick('person')}
@@ -85,7 +89,7 @@ export const SearchFilters: React.FC<ISearchFiltersProps> = ({
               : 'bg-gray-100 opacity-75'
           } px-3 rounded-r`}
         >
-          Personas
+          {t('people')}
         </button>
       </div>
     </div>

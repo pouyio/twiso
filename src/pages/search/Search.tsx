@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import Emoji from '../../components/Emoji';
 import ImageLink from '../../components/ImageLink';
 import Popular from '../../components/Popular';
-import { useDebounce, useFilter, useSearch } from '../../hooks';
+import { useDebounce, useFilter, useSearch, useTranslate } from '../../hooks';
 import { SearchMovie, SearchPerson, SearchShow } from '../../models';
 import { searchApi } from '../../utils/api';
 
@@ -23,6 +23,7 @@ export default function Search() {
   });
   const { filterBy } = useFilter();
   const debouncedSearch = useDebounce(search, 500);
+  const { t } = useTranslate();
 
   const remoteSearch = (query: string, types: RemoteFilterTypes) => {
     setLoading(true);
@@ -86,7 +87,7 @@ export default function Search() {
         <input
           className="bg-gray-300 rounded text-black px-2 py-1 outline-none flex-grow text-gray-700 "
           type="text"
-          placeholder="🔍 Busca una película, serie o persona"
+          placeholder={t('search_placeholder')}
           autoFocus={true}
           onChange={(e) => setSearch(e.target.value)}
           value={search}
@@ -107,7 +108,7 @@ export default function Search() {
           {movieResults.length ? (
             <>
               <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
-                Películas
+                {t('movies')}
               </h1>
               <ul
                 className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto"
@@ -130,13 +131,13 @@ export default function Search() {
               </ul>
             </>
           ) : (
-            <h1 className="text-3xl mt-8 text-gray-700">No hay películas</h1>
+            <h1 className="text-3xl mt-8 text-gray-700">{t('no_movies')}</h1>
           )}
 
           {showResults.length ? (
             <>
               <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
-                Series
+                {t('shows')}
               </h1>
               <ul
                 className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
@@ -159,13 +160,13 @@ export default function Search() {
               </ul>
             </>
           ) : (
-            <h1 className="text-3xl mt-8 text-gray-700">No hay series</h1>
+            <h1 className="text-3xl mt-8 text-gray-700">{t('no_shows')}</h1>
           )}
 
           {peopleResults.length ? (
             <>
               <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
-                Personas
+                {t('people')}
               </h1>
               <ul
                 className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
@@ -188,7 +189,7 @@ export default function Search() {
               </ul>
             </>
           ) : (
-            <h1 className="text-3xl mt-8 text-gray-700">No hay personas</h1>
+            <h1 className="text-3xl mt-8 text-gray-700">{t('no_people')}</h1>
           )}
         </>
       ) : (

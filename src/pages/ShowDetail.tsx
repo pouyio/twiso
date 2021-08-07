@@ -13,7 +13,7 @@ import Related from '../components/Related';
 import SeasonsContainer from '../components/Seasons/SeasonsContainer';
 import ShowWatchButton from '../components/ShowWatchButton';
 import { AlertContext } from '../contexts';
-import { useIsWatch, useShare } from '../hooks';
+import { useIsWatch, useShare, useTranslate } from '../hooks';
 import { People as IPeople, Ratings, Show, ShowWatched } from '../models';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
 
@@ -39,6 +39,7 @@ export default function ShowDetail() {
       (state.shows.shows[item?.ids.trakt ?? 0] as ShowWatched)?.progress
   );
   const dispatch = useAppDispatch();
+  const { t } = useTranslate();
 
   const { isWatchlist, isWatched } = useIsWatch();
 
@@ -75,7 +76,7 @@ export default function ShowDetail() {
   const onShare = () => {
     share(item!.title).then((action) => {
       if (action === 'copied') {
-        showAlert(`Enlace a "${item!.title}" copiado`);
+        showAlert(t('link_copied', item!.title));
       }
     });
   };

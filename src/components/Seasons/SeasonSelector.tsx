@@ -1,3 +1,4 @@
+import { useTranslate } from 'hooks';
 import React, { useEffect, useRef } from 'react';
 import { Season, ShowProgress } from '../../models';
 
@@ -17,6 +18,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
   setSelectedSeason,
 }) => {
   const ref = useRef<HTMLUListElement>(null);
+  const { t } = useTranslate();
 
   useEffect(() => {
     if (!ref.current || !ref.current.children) {
@@ -86,7 +88,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
             selectedClass(s)
           }
         >
-          {s.number ? `Temporada ${s.number}` : 'Especiales'}
+          {s.number ? `${t('season')} ${s.number}` : t('specials')}
           {isSeasonWatched(s.number) ? (
             <span className="ml-2 text-gray-600">✓</span>
           ) : (
