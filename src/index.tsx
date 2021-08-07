@@ -11,12 +11,15 @@ import { setSWRegistration } from 'state/slices/root';
 import { store } from 'state/store';
 import { Provider } from 'react-redux';
 import 'scroll-behavior-polyfill';
+import { Integrations } from '@sentry/tracing';
 
 initReactFastclick();
 
 Sentry.init({
   release: `twiso@${version}`,
   dsn: process.env.REACT_APP_SENTRY_DSN,
+  integrations: [new Integrations.BrowserTracing()],
+  tracesSampleRate: 1.0,
 });
 
 ReactDOM.render(
