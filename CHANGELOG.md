@@ -1,3 +1,11 @@
+## [2.7.7](https://github.com/pouyio/twiso/compare/v2.7.6...v2.7.7) (2021-08-11)
+
+
+### :bug:
+
+* preserve localState ([9c2da6f](https://github.com/pouyio/twiso/commit/9c2da6f94076b0d36f7070101b03003a88412186))
+* upload loading state on episode watched ([ac06c41](https://github.com/pouyio/twiso/commit/ac06c41f4f102f7a2ea3018f7dc3fd89e9771de1))
+
 ## [2.7.6](https://github.com/pouyio/twiso/compare/v2.7.5...v2.7.6) (2021-08-11)
 
 
