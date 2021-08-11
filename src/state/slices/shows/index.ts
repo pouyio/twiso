@@ -141,7 +141,10 @@ const showsSlice = createSlice({
         state.shows[payload.ids.trakt].show = payload;
       })
       .addCase(updateFullShow.fulfilled, (state, { payload }) => {
-        state.shows[payload.show.ids.trakt] = payload;
+        state.shows[payload.show.ids.trakt] = {
+          ...state.shows[payload.show.ids.trakt],
+          ...payload,
+        };
       })
       .addCase(addEpisodeWatched.pending, (state, { meta }) => {
         state.pending.watched.push(meta.arg.episode.ids.trakt);
