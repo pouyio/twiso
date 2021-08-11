@@ -69,7 +69,6 @@ export const GlobalSearch = () => {
       <ul className="flex flex-wrap items-stretch justify-center bg-white overflow-y-auto">
         {results &&
           results.map((item, i) => {
-            console.log(item);
             return (
               <li
                 key={`${item[item.type || 'show']?.ids?.trakt}_${i}`}
