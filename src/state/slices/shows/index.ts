@@ -151,6 +151,9 @@ const showsSlice = createSlice({
       })
       .addCase(addEpisodeWatched.fulfilled, (state, { meta, payload }) => {
         state.shows[meta.arg.show.show.ids.trakt] = payload;
+        state.pending.watched = state.pending.watched.filter(
+          (p) => p !== meta.arg.episode.ids.trakt
+        );
       })
       .addCase(addEpisodeWatched.rejected, (state, { meta }) => {
         state.pending.watched = state.pending.watched.filter(
