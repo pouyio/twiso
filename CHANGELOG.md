@@ -1,3 +1,10 @@
+## [2.7.6](https://github.com/pouyio/twiso/compare/v2.7.5...v2.7.6) (2021-08-11)
+
+
+### :art:
+
+* removed console log ([13dfb78](https://github.com/pouyio/twiso/commit/13dfb787109e7c60cae3276c099a1ec75e2d4a11))
+
 ## [2.7.5](https://github.com/pouyio/twiso/compare/v2.7.4...v2.7.5) (2021-08-07)
 
 
