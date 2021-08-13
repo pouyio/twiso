@@ -47,7 +47,7 @@ app.get(ROUTES, (req, res) => {
           '<meta property="og:description" content="__OG_DESCRIPTION__"/>',
           ''
         )
-        .replace('__OG_URL__', `https://twiso.now.sh${req.path}`);
+        .replace('__OG_URL__', `https://twiso.vercel.app${req.path}`);
 
       res.send(data);
     }
