@@ -1,3 +1,10 @@
+## [2.7.8](https://github.com/pouyio/twiso/compare/v2.7.7...v2.7.8) (2021-08-13)
+
+
+### :art:
+
+* updated og url ([1ed713c](https://github.com/pouyio/twiso/commit/1ed713ce84f14a1ecbdcf8a299751d3b0a29f850))
+
 ## [2.7.7](https://github.com/pouyio/twiso/compare/v2.7.6...v2.7.7) (2021-08-11)
 
 
