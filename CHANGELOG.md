@@ -1,3 +1,10 @@
+## [2.7.10](https://github.com/pouyio/twiso/compare/v2.7.9...v2.7.10) (2021-09-04)
+
+
+### :art:
+
+* changed buggy loading bar for an indicator ([81689dd](https://github.com/pouyio/twiso/commit/81689dd2231decfd8d46605a4402e9710caa04b2))
+
 ## [2.7.9](https://github.com/pouyio/twiso/compare/v2.7.8...v2.7.9) (2021-09-04)
 
 
