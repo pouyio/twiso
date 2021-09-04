@@ -11,19 +11,19 @@ import {
 import { RootState } from 'state/store';
 
 interface MoviesState {
-  ready: boolean;
+  totalRequestsPending: number;
   pending: { watched: number[]; watchlist: number[] };
   detail?: Movie;
   movies: Record<number, MovieWatched | MovieWatchlist>;
 }
 
 const initialState: MoviesState = {
-  ready: true,
+  totalRequestsPending: 0,
   pending: {
     watched: [],
     watchlist: [],
   },
-  movies: [],
+  movies: {},
 };
 
 const moviesSlice = createSlice({
@@ -138,11 +138,18 @@ const moviesSlice = createSlice({
           (p) => p !== meta.arg.movie.ids.trakt
         );
       })
+      .addCase(getMovie.pending, (state) => {
+        state.totalRequestsPending = state.totalRequestsPending + 1;
+      })
+      .addCase(getMovie.rejected, (state) => {
+        state.totalRequestsPending = state.totalRequestsPending - 1;
+      })
       .addCase(getMovie.fulfilled, (state, { payload }) => {
         state.movies[payload.ids.trakt] = {
           ...state.movies[payload.ids.trakt],
           movie: payload,
         };
+        state.totalRequestsPending = state.totalRequestsPending - 1;
       })
       .addCase(populateDetail.pending, (state) => {
         state.detail = undefined;
@@ -171,12 +178,9 @@ export const byType = createSelector(moviesSelector, (movies) => {
         watchlist: MovieWatchlist[];
         watched: MovieWatched[];
       },
-      s
+      m
     ) => {
-      if (!s.localState) {
-        return acc;
-      }
-      acc[s.localState].push(s as any);
+      acc[m.localState].push(m as any);
       return acc;
     },
     { watchlist: [], watched: [] }

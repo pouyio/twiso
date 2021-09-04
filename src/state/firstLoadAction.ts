@@ -8,12 +8,6 @@ import { getWatchedApi, getWatchlistApi } from 'utils/api';
 import db from 'utils/db';
 import { set as setMovies, remove as removeMovies } from './slices/movies';
 import {
-  setTotalLoadingMovies,
-  setTotalLoadingShows,
-  updateTotalLoadingMovies,
-  updateTotalLoadingShows,
-} from './slices/root';
-import {
   set as setShows,
   addWatched as addWatchedShow,
   remove as removeShows,
@@ -64,14 +58,14 @@ const loadMovies = async (type: 'watched' | 'watchlist') => {
       return acc;
     }, []);
 
-  const moviesToAdd = data.filter(
-    (d) => !dbMovies.some((m) => m.movie.ids.trakt === d.movie.ids.trakt)
-  );
+  const moviesToAdd = data
+    .filter(
+      (d) => !dbMovies.some((m) => m.movie.ids.trakt === d.movie.ids.trakt)
+    )
+    .map((m) => ({ ...m, localState: type } as any));
   store.dispatch(setMovies(moviesToAdd));
 
   const outdatedMovies = [...moviesToAdd, ...moviesToUpdate];
-
-  store.dispatch(setTotalLoadingMovies(outdatedMovies.length));
 
   outdatedMovies.forEach(async (outdated) => {
     try {
@@ -79,7 +73,6 @@ const loadMovies = async (type: 'watched' | 'watchlist') => {
     } catch (error) {
       console.error(error);
     } finally {
-      store.dispatch(updateTotalLoadingMovies());
     }
   });
 };
@@ -117,14 +110,15 @@ const loadWatchlistShows = async () => {
       return acc;
     }, []);
 
-  const showsToAdd = data.filter(
-    (sd) => !showsWatchlist.some((s) => s.show.ids.trakt === sd.show.ids.trakt)
-  );
-  store.dispatch(setShows(showsToAdd));
+  const showsToAdd = data
+    .filter(
+      (sd) =>
+        !showsWatchlist.some((s) => s.show.ids.trakt === sd.show.ids.trakt)
+    )
+    .map((s) => ({ ...s, localState: 'watchlist' }));
+  store.dispatch(setShows(showsToAdd as ShowWatchlist[]));
 
   const outdatedShows = [...showsToAdd, ...showsToUpdate];
-
-  store.dispatch(setTotalLoadingShows(outdatedShows.length));
 
   outdatedShows.forEach(async (outdated) => {
     try {
@@ -132,7 +126,6 @@ const loadWatchlistShows = async () => {
     } catch (error) {
       console.error(error);
     } finally {
-      store.dispatch(updateTotalLoadingMovies());
     }
   });
 };
@@ -172,31 +165,31 @@ const loadWatchedShows = async () => {
       }
 
       if (shouldUpdate) {
-        acc.push({ ...newerShow! });
+        acc.push({ ...newerShow!, localState: 'watched' });
       }
 
       return acc;
     }, []);
 
-  const showsToAdd = data.filter(
-    (d) => !showsWatched.some((s) => s.show.ids.trakt === d.show.ids.trakt)
-  );
+  const showsToAdd = data
+    .filter(
+      (d) => !showsWatched.some((s) => s.show.ids.trakt === d.show.ids.trakt)
+    )
+    .map((s) => ({
+      ...s,
+      localState: 'watched' as 'watched',
+    }));
 
   showsToUpdate.forEach((s) => store.dispatch(updateShow(s)));
   showsToAdd.forEach((s) => store.dispatch(addWatchedShow(s)));
 
   const outdatedShows = [...showsToAdd, ...showsToUpdate];
 
-  store.dispatch(setTotalLoadingShows(outdatedShows.length));
-  store.dispatch(updateTotalLoadingShows(showsToDelete.length));
-
   outdatedShows.forEach(async (outdated) => {
     try {
       store.dispatch(updateFullShow({ outdated }));
     } catch (error) {
       console.error(error);
-    } finally {
-      store.dispatch(updateTotalLoadingShows());
     }
   });
 };

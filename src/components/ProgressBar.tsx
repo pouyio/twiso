@@ -1,29 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useAppSelector } from 'state/store';
+import Emoji from './Emoji';
 
 export const ProgressBar: React.FC = () => {
-  const [width, setWith] = useState<number>();
-  const current = useAppSelector((state) => state.root.loading.shows.current);
-  const total = useAppSelector((state) => state.root.loading.shows.total);
+  const shows = useAppSelector((state) => state.shows.totalRequestsPending);
+  const movies = useAppSelector((state) => state.movies.totalRequestsPending);
 
-  useEffect(() => {
-    if (!total) {
-      setWith(undefined);
-      return;
-    }
-    if (total && current !== total) {
-      setWith((current * 100) / total);
-      return;
-    }
-
-    setWith(undefined);
-  }, [current, total]);
-
-  return width ? (
-    <div
-      style={{ width: `${width}%`, transition: 'width 0.5s ease' }}
-      className="h-1 bg-gray-600 rounded-r-full lg:order-last"
-    ></div>
+  return movies + shows > 0 ? (
+    <div className="absolute right-0 flex justify-end text-sm pr-1">
+      <Emoji emoji="⏳" rotating={true} />
+    </div>
   ) : (
     <></>
   );

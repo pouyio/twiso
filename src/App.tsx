@@ -53,9 +53,6 @@ const App: React.FC = () => {
     (state) => state.root.serviceWorkerRegistration
   );
 
-  const moviesReady = useAppSelector((state) => state.movies.ready);
-  const showsReady = useAppSelector((state) => state.shows.ready);
-
   const isLoggedIn = AuthService.getInstance().isLoggedIn();
   const dispatch = useDispatch();
 
@@ -126,10 +123,10 @@ const App: React.FC = () => {
             >
               <Switch>
                 <ProtectedRoute path="/movies">
-                  {moviesReady ? <Movies /> : <h1>Cargando películas!</h1>}
+                  <Movies />
                 </ProtectedRoute>
                 <ProtectedRoute path="/shows">
-                  {showsReady ? <Shows /> : <h1>Cargando series!</h1>}
+                  <Shows />
                 </ProtectedRoute>
                 <ProtectedRoute path="/calendar">
                   <Calendar />

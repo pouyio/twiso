@@ -15,7 +15,7 @@ import {
 } from './thunks';
 
 interface ShowsState {
-  ready: boolean;
+  totalRequestsPending: number;
   pending: {
     watchlist: number[];
     watched: number[];
@@ -26,7 +26,7 @@ interface ShowsState {
 }
 
 const initialState: ShowsState = {
-  ready: true,
+  totalRequestsPending: 0,
   pending: {
     watchlist: [],
     watched: [],
@@ -137,14 +137,28 @@ const showsSlice = createSlice({
           (p) => p !== meta.arg.show.ids.trakt
         );
       })
+      .addCase(getShow.pending, (state) => {
+        state.totalRequestsPending = state.totalRequestsPending + 1;
+      })
+      .addCase(getShow.rejected, (state) => {
+        state.totalRequestsPending = state.totalRequestsPending - 1;
+      })
       .addCase(getShow.fulfilled, (state, { payload }) => {
+        state.totalRequestsPending = state.totalRequestsPending - 1;
         state.shows[payload.ids.trakt].show = payload;
+      })
+      .addCase(updateFullShow.pending, (state) => {
+        state.totalRequestsPending = state.totalRequestsPending + 1;
+      })
+      .addCase(updateFullShow.rejected, (state) => {
+        state.totalRequestsPending = state.totalRequestsPending - 1;
       })
       .addCase(updateFullShow.fulfilled, (state, { payload }) => {
         state.shows[payload.show.ids.trakt] = {
           ...state.shows[payload.show.ids.trakt],
           ...payload,
         };
+        state.totalRequestsPending = state.totalRequestsPending - 1;
       })
       .addCase(addEpisodeWatched.pending, (state, { meta }) => {
         state.pending.watched.push(meta.arg.episode.ids.trakt);
@@ -260,9 +274,6 @@ export const byType = createSelector(showsSelector, (shows) => {
       },
       s
     ) => {
-      if (!s.localState) {
-        return acc;
-      }
       acc[s.localState].push(s as any);
       return acc;
     },
