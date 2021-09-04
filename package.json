@@ -10,7 +10,7 @@
     "axios-rate-limit": "^1.2.1",
     "bottleneck": "^2.19.5",
     "date-fns": "^2.15.0",
-    "dexie": "^2.0.4",
+    "dexie": "^3.0.3",
     "framer-motion": "^2.6.6",
     "fuse.js": "^5.2.3",
     "query-string": "^6.13.1",
