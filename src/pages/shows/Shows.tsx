@@ -6,7 +6,7 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import Helmet from 'react-helmet';
 import { useAppSelector } from 'state/store';
 import { useTranslate, useWindowSize } from '../../hooks';
-import { totalByType } from 'state/slices/movies';
+import { totalByType } from 'state/slices/shows';
 
 export default function Shows() {
   const [mode, setMode] = useQueryParam(
