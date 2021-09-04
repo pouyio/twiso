@@ -163,27 +163,25 @@ export const { set, remove, updateTranslation } = moviesSlice.actions;
 export const reducer = moviesSlice.reducer;
 
 // selectors
-export const byType = createSelector(
-  (state: RootState) => state.movies.movies,
-  (movies) => {
-    return Object.values(movies).reduce(
-      (
-        acc: {
-          watchlist: MovieWatchlist[];
-          watched: MovieWatched[];
-        },
-        s
-      ) => {
-        if (!s.localState) {
-          return acc;
-        }
-        acc[s.localState].push(s as any);
-        return acc;
+const moviesSelector = (state: RootState) => state.movies.movies;
+export const byType = createSelector(moviesSelector, (movies) => {
+  return Object.values(movies).reduce(
+    (
+      acc: {
+        watchlist: MovieWatchlist[];
+        watched: MovieWatched[];
       },
-      { watchlist: [], watched: [] }
-    );
-  }
-);
+      s
+    ) => {
+      if (!s.localState) {
+        return acc;
+      }
+      acc[s.localState].push(s as any);
+      return acc;
+    },
+    { watchlist: [], watched: [] }
+  );
+});
 
 export const totalByType = createSelector(byType, ({ watchlist, watched }) => {
   return { watchlist: watchlist.length, watched: watched.length };

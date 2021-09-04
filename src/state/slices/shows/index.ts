@@ -250,27 +250,25 @@ export const {
 export const reducer = showsSlice.reducer;
 
 // selectors
-export const byType = createSelector(
-  (state: RootState) => state.shows.shows,
-  (shows) => {
-    return Object.values(shows).reduce(
-      (
-        acc: {
-          watchlist: ShowWatchlist[];
-          watched: ShowWatched[];
-        },
-        s
-      ) => {
-        if (!s.localState) {
-          return acc;
-        }
-        acc[s.localState].push(s as any);
-        return acc;
+const showsSelector = (state: RootState) => state.shows.shows;
+export const byType = createSelector(showsSelector, (shows) => {
+  return Object.values(shows).reduce(
+    (
+      acc: {
+        watchlist: ShowWatchlist[];
+        watched: ShowWatched[];
       },
-      { watchlist: [], watched: [] }
-    );
-  }
-);
+      s
+    ) => {
+      if (!s.localState) {
+        return acc;
+      }
+      acc[s.localState].push(s as any);
+      return acc;
+    },
+    { watchlist: [], watched: [] }
+  );
+});
 
 export const totalByType = createSelector(byType, ({ watchlist, watched }) => {
   return { watchlist: watchlist.length, watched: watched.length };
