@@ -1,3 +1,10 @@
+## [2.7.11](https://github.com/pouyio/twiso/compare/v2.7.10...v2.7.11) (2021-09-04)
+
+
+### :art:
+
+* fix ipad padding ([ee64f59](https://github.com/pouyio/twiso/commit/ee64f59ea987e08691c67726f23d903d08af744f))
+
 ## [2.7.10](https://github.com/pouyio/twiso/compare/v2.7.9...v2.7.10) (2021-09-04)
 
 
