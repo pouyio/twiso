@@ -1,3 +1,19 @@
+## [2.7.9](https://github.com/pouyio/twiso/compare/v2.7.8...v2.7.9) (2021-09-04)
+
+
+### :arrow_up:
+
+* Bump path-parse from 1.0.6 to 1.0.7 ([9223edd](https://github.com/pouyio/twiso/commit/9223edd760ee8feeb98adbef03eae3e588b9b145))
+
+### :bug:
+
+* show correct counters on shows ([03fe2bf](https://github.com/pouyio/twiso/commit/03fe2bf1db7fc7cb500a3300517d6616516cdb54))
+
+### :rocket:
+
+* improve selectors ([8c87451](https://github.com/pouyio/twiso/commit/8c87451273ec095ef644d87b221792bf646fd85d))
+* updated dexie db ([d890700](https://github.com/pouyio/twiso/commit/d89070053c07df4f3fa27b53824b5bb18ca7c3bf))
+
 ## [2.7.8](https://github.com/pouyio/twiso/compare/v2.7.7...v2.7.8) (2021-08-13)
 
 
