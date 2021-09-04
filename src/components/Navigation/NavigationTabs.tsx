@@ -114,7 +114,8 @@ export const NavigationTabs: React.FC<{
         className="absolute bg-gray-600 bottom-0 rounded"
         initial={false}
         style={{
-          bottom: 'calc(env(safe-area-inset-bottom) + 4px)',
+          bottom:
+            width < 1024 ? `calc(env(safe-area-inset-bottom) + 4px)` : '4px',
           height: '2px',
           width: slider.width,
         }}
