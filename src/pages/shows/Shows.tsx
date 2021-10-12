@@ -7,6 +7,7 @@ import Helmet from 'react-helmet';
 import { useAppSelector } from 'state/store';
 import { useTranslate, useWindowSize } from '../../hooks';
 import { totalByType } from 'state/slices/shows';
+import { motion } from 'framer-motion';
 
 export default function Shows() {
   const [mode, setMode] = useQueryParam(
@@ -19,7 +20,7 @@ export default function Shows() {
   const { t } = useTranslate();
 
   return (
-    <>
+    <motion.div exit={{ opacity: 0 }}>
       <Helmet>
         <title>Shows</title>
       </Helmet>
@@ -49,6 +50,6 @@ export default function Shows() {
       <div className="py-3">
         {mode === 'watchlist' ? <ShowsWatchlist /> : <ShowsWatched />}
       </div>
-    </>
+    </motion.div>
   );
 }

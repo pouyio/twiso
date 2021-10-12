@@ -13,8 +13,9 @@ import Related from '../components/Related';
 import WatchButton from '../components/WatchButton';
 import { AlertContext } from '../contexts';
 import { useIsWatch, useShare, useTranslate } from '../hooks';
-import { Movie, People as IPeople, Ratings } from '../models';
+import { Ids, Movie, People as IPeople, Ratings } from '../models';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
+import { motion } from 'framer-motion';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -68,24 +69,35 @@ export default function MovieDetail() {
     });
   };
 
-  return item ? (
-    <div className={getBgClassName()}>
+  return (
+    <motion.div className={getBgClassName()} exit={{}}>
       <Helmet>
-        <title>{item.title}</title>
+        <title>{item?.title}</title>
       </Helmet>
       <div className="lg:max-w-5xl lg:mx-auto">
-        <div
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.25 }}
           className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
           style={{ minHeight: '15em' }}
         >
           <Image
-            ids={item.ids}
+            ids={
+              item?.ids ??
+              ({
+                trakt: 0,
+                slug: 0,
+                imdb: 0,
+                tmdb: 0,
+              } as any)
+            }
             style={{ marginTop: 'env(safe-area-inset-top)' }}
-            text={item.title}
+            text={item?.title ?? ''}
             type="movie"
             size="big"
           />
-          {item.trailer && (
+          {item?.trailer && (
             <a
               className="absolute"
               style={{ right: '4em', bottom: '4em' }}
@@ -103,8 +115,11 @@ export default function MovieDetail() {
           >
             <Emoji emoji="📤" className="text-4xl" title="Share" />
           </button>
-        </div>
-        <article
+        </motion.div>
+        <motion.article
+          initial={{ y: '100%' }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.25 }}
           className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none"
           style={{ transform: 'translate3d(0,0,0)' }}
         >
@@ -115,12 +130,20 @@ export default function MovieDetail() {
               style={{ minWidth: '10em', maxWidth: '10em' }}
             >
               <Image
-                ids={item.ids}
-                text={item.title}
+                ids={
+                  item?.ids ??
+                  ({
+                    trakt: 0,
+                    slug: 0,
+                    imdb: 0,
+                    tmdb: 0,
+                  } as any)
+                }
+                text={item?.title ?? ''}
                 type="movie"
                 size="small"
               />
-              {item.trailer && (
+              {item?.trailer && (
                 <a
                   className="absolute"
                   style={{ right: '15%', bottom: '5%' }}
@@ -146,10 +169,10 @@ export default function MovieDetail() {
 
             <div className="w-full">
               <h1 className="text-4xl leading-none text-center">
-                {item.title}
+                {item?.title}
               </h1>
               <h1 className="text-xl text-center mb-4 text-gray-300">
-                {new Date(item.released).toLocaleDateString(language, {
+                {new Date(item?.released ?? '').toLocaleDateString(language, {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
@@ -162,21 +185,21 @@ export default function MovieDetail() {
                     votes={ratings?.votes ?? 0}
                   />
                 </h2>
-                <h2>{item.runtime || '?'} mins</h2>
+                <h2>{item?.runtime || '?'} mins</h2>
               </div>
-              <WatchButton item={item} />
+              {item && <WatchButton item={item} />}
             </div>
           </div>
           <div className="my-4">
             <p className="font-medium">Resumen:</p>
             <Collapsable heightInRem={7}>
-              {item.overview || 'Sin descripción'}
+              {item?.overview || 'Sin descripción'}
             </Collapsable>
           </div>
 
           <div className="my-4">
             <p className="font-medium">Géneros:</p>
-            <Genres genres={item.genres} />
+            <Genres genres={item?.genres ?? []} />
           </div>
 
           <div className="my-4">
@@ -185,17 +208,10 @@ export default function MovieDetail() {
 
           <div className="my-4">
             <p className="font-medium">Relacionados:</p>
-            <Related itemId={item.ids.trakt} type="movie" />
+            <Related itemId={item?.ids.trakt ?? 0} type="movie" />
           </div>
-        </article>
+        </motion.article>
       </div>
-    </div>
-  ) : (
-    <div
-      className="flex justify-center text-6xl items-center"
-      style={{ marginTop: 'env(safe-area-inset-top)' }}
-    >
-      <Emoji emoji="⏳" rotating={true} />
-    </div>
+    </motion.div>
   );
 }

@@ -36,10 +36,10 @@ const Image: React.FC<IImageProps> = ({
   const getBorderClass = () => {
     if (type === 'person') return '';
     if (isWatched(ids.trakt, type)) {
-      return 'border-2 border-green-400';
+      return 'border-2 border-green-400 bg-green-400';
     }
     if (isWatchlist(ids.trakt, type)) {
-      return 'border-2 border-blue-400';
+      return 'border-2 border-blue-400 bg-blue-400';
     }
     return '';
   };

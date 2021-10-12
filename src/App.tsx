@@ -1,8 +1,6 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { Route, Redirect, useLocation, Switch } from 'react-router-dom';
-import CacheRoute from 'react-router-cache-route';
+import React, { useState, useEffect, Suspense } from 'react';
+import { Route, Redirect, useLocation } from 'react-router-dom';
 import Login from './components/Login';
-import ProtectedRoute from './components/ProtectedRoute';
 import Emoji from './components/Emoji';
 import { ProgressBar } from './components/ProgressBar';
 import { Alert } from 'components/Alert/Alert';
@@ -17,14 +15,7 @@ import { NewVersion } from 'components/NewVersion';
 import { NavigationTabs } from 'components/Navigation/NavigationTabs';
 import { useWindowSize } from './hooks';
 import { useAppSelector } from 'state/store';
-const Movies = lazy(() => import('./pages/movies/Movies'));
-const Profile = lazy(() => import('./pages/Profile'));
-const MovieDetail = lazy(() => import('./pages/MovieDetail'));
-const ShowDetail = lazy(() => import('./pages/ShowDetail'));
-const Person = lazy(() => import('./pages/Person'));
-const Shows = lazy(() => import('./pages/shows/Shows'));
-const Search = lazy(() => import('./pages/search/Search'));
-const Calendar = lazy(() => import('./pages/calendar/Calendar'));
+import { Routes } from 'routes';
 
 const ParamsComponent: React.FC = () => {
   const location = useLocation();
@@ -121,32 +112,7 @@ const App: React.FC = () => {
                 </div>
               }
             >
-              <Switch>
-                <ProtectedRoute path="/movies">
-                  <Movies />
-                </ProtectedRoute>
-                <ProtectedRoute path="/shows">
-                  <Shows />
-                </ProtectedRoute>
-                <ProtectedRoute path="/calendar">
-                  <Calendar />
-                </ProtectedRoute>
-                <CacheRoute path="/search">
-                  <Search />
-                </CacheRoute>
-                <Route path="/movie/:id">
-                  <MovieDetail />
-                </Route>
-                <Route path="/show/:id">
-                  <ShowDetail />
-                </Route>
-                <Route path="/person/:id">
-                  <Person />
-                </Route>
-                <Route path="/profile">
-                  <Profile />
-                </Route>
-              </Switch>
+              <Routes />
             </Suspense>
             <ul
               className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"

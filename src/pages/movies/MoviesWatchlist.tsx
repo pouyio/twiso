@@ -5,6 +5,7 @@ import { usePagination } from '../../hooks';
 import { MovieWatchlist } from 'models';
 import { useAppSelector } from 'state/store';
 import { byType } from 'state/slices/movies';
+import { motion } from 'framer-motion';
 
 export const MoviesWatchlist: React.FC = () => {
   const [orderedMovies, setOrderedMovies] = useState<MovieWatchlist[]>([]);
@@ -35,7 +36,7 @@ export const MoviesWatchlist: React.FC = () => {
     <PaginationContainer items={orderedMovies}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
         {getItemsByPage().map((m, i) => (
-          <li
+          <motion.li
             key={`${m.movie.ids.trakt}_${i}`}
             className="p-2"
             style={{ flex: '1 0 50%', maxWidth: '10em' }}
@@ -47,7 +48,7 @@ export const MoviesWatchlist: React.FC = () => {
               style={{ minHeight: '13.5em' }}
               type="movie"
             />
-          </li>
+          </motion.li>
         ))}
       </ul>
     </PaginationContainer>

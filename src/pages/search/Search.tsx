@@ -7,6 +7,7 @@ import Popular from '../../components/Popular';
 import { useDebounce, useFilter, useSearch, useTranslate } from '../../hooks';
 import { SearchMovie, SearchPerson, SearchShow } from '../../models';
 import { searchApi } from '../../utils/api';
+import { motion } from 'framer-motion';
 
 export type RemoteFilterTypes = Array<'movie' | 'show' | 'person'>;
 type LocalFilterTypes = Array<'movie' | 'show'>;
@@ -79,7 +80,11 @@ export default function Search() {
   }, [filters, debouncedSearch]);
 
   return (
-    <div className="m-4" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+    <motion.div
+      className="m-4"
+      style={{ paddingTop: 'env(safe-area-inset-top)' }}
+      exit={{}}
+    >
       <Helmet>
         <title>Search</title>
       </Helmet>
@@ -198,6 +203,6 @@ export default function Search() {
           <Popular type="show" />
         </>
       )}
-    </div>
+    </motion.div>
   );
 }

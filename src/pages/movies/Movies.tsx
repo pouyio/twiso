@@ -7,6 +7,7 @@ import { MoviesWatchlist } from './MoviesWatchlist';
 import { useTranslate, useWindowSize } from '../../hooks';
 import { useAppSelector } from 'state/store';
 import { totalByType } from 'state/slices/movies';
+import { motion } from 'framer-motion';
 
 export default function Movies() {
   const [mode, setMode] = useQueryParam(
@@ -19,7 +20,7 @@ export default function Movies() {
   const { t } = useTranslate();
 
   return (
-    <>
+    <motion.div exit={{}}>
       <Helmet>
         <title>Movies</title>
       </Helmet>
@@ -49,6 +50,6 @@ export default function Movies() {
       <div className="py-3">
         {mode === 'watchlist' ? <MoviesWatchlist /> : <MoviesWatched />}
       </div>
-    </>
+    </motion.div>
   );
 }
