@@ -31,7 +31,7 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
               className="bg-blue-400 py-3 px-12 rounded-full text-white font-bold"
               onClick={() => dispatch(removeWatchlist({ show: item }))}
             >
-              {t('add_watchlist')}{' '}
+              {t('added_watchlist')}{' '}
               {isWatchlistPending && (
                 <Emoji emoji="⏳" rotating={true} className="absolute ml-2" />
               )}
