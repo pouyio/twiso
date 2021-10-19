@@ -1,3 +1,11 @@
+## [2.7.13](https://github.com/pouyio/twiso/compare/v2.7.12...v2.7.13) (2021-10-19)
+
+
+### :art:
+
+* added margin to emojis ([4a8065b](https://github.com/pouyio/twiso/commit/4a8065bad75ad6698911b2018d05162567bfbfe2))
+* updated translation ([33c7432](https://github.com/pouyio/twiso/commit/33c74328286da14a267f22966102c9f1289b243a))
+
 ## [2.7.12](https://github.com/pouyio/twiso/compare/v2.7.11...v2.7.12) (2021-09-04)
 
 
