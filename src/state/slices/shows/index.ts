@@ -6,7 +6,6 @@ import {
   addEpisodeWatched,
   addSeasonWatched,
   addWatchlist,
-  getShow,
   populateDetail,
   removeEpisodeWatched,
   removeSeasonWatched,
@@ -136,16 +135,6 @@ const showsSlice = createSlice({
         state.pending.watchlist = state.pending.watchlist.filter(
           (p) => p !== meta.arg.show.ids.trakt
         );
-      })
-      .addCase(getShow.pending, (state) => {
-        state.totalRequestsPending = state.totalRequestsPending + 1;
-      })
-      .addCase(getShow.rejected, (state) => {
-        state.totalRequestsPending = state.totalRequestsPending - 1;
-      })
-      .addCase(getShow.fulfilled, (state, { payload }) => {
-        state.totalRequestsPending = state.totalRequestsPending - 1;
-        state.shows[payload.ids.trakt].show = payload;
       })
       .addCase(updateFullShow.pending, (state) => {
         state.totalRequestsPending = state.totalRequestsPending + 1;

@@ -15,7 +15,7 @@ import {
 } from './slices/shows';
 import { store } from './store';
 import { getMovie } from './slices/movies/thunks';
-import { getShow, updateFullShow } from 'state/slices/shows/thunks';
+import { updateFullShow } from 'state/slices/shows/thunks';
 
 const loadMovies = async (type: 'watched' | 'watchlist') => {
   const dbMovies = await db
@@ -110,19 +110,19 @@ const loadWatchlistShows = async () => {
       return acc;
     }, []);
 
-  const showsToAdd = data
+  const showsToAdd: ShowWatchlist[] = data
     .filter(
       (sd) =>
         !showsWatchlist.some((s) => s.show.ids.trakt === sd.show.ids.trakt)
     )
     .map((s) => ({ ...s, localState: 'watchlist' }));
-  store.dispatch(setShows(showsToAdd as ShowWatchlist[]));
+  store.dispatch(setShows(showsToAdd));
 
   const outdatedShows = [...showsToAdd, ...showsToUpdate];
 
   outdatedShows.forEach(async (outdated) => {
     try {
-      store.dispatch(getShow({ id: outdated.show.ids.trakt }));
+      store.dispatch(updateFullShow({ outdated }));
     } catch (error) {
       console.error(error);
     } finally {

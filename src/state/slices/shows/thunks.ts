@@ -8,6 +8,7 @@ import {
   Show,
   ShowProgress,
   ShowWatched,
+  ShowWatchlist,
 } from 'models';
 import { RootState } from 'state/store';
 import {
@@ -186,27 +187,16 @@ export const removeSeasonWatched = createAsyncThunk<
   throw Error('shows/removeSeasonWatched failed');
 });
 
-export const getShow = createAsyncThunk<
-  Show,
-  { id: number },
-  { state: RootState }
->('shows/getShow', async ({ id }, { getState }) => {
-  try {
-    return _getRemoteWithTranslations(id, getState().config.language);
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
-});
-
 export const updateFullShow = createAsyncThunk<
-  ShowWatched,
+  ShowWatched | ShowWatchlist,
   {
-    outdated: ShowWatched;
+    outdated: ShowWatched | ShowWatchlist;
   },
   { state: RootState }
 >('shows/updateFullShow', async ({ outdated }, { getState }) => {
-  const showCopy: ShowWatched = JSON.parse(JSON.stringify(outdated));
+  const showCopy: ShowWatched | ShowWatchlist = JSON.parse(
+    JSON.stringify(outdated)
+  );
   try {
     const language = getState().config.language;
     const translationAvailable =
@@ -227,7 +217,7 @@ export const updateFullShow = createAsyncThunk<
 
     showCopy.fullSeasons = seasons.data;
     showCopy.progress = progress.data;
-    showCopy.last_watched_at = progress.data.last_watched_at;
+    showCopy.last_watched_at = progress?.data.last_watched_at;
 
     if (translationAvailable && translations) {
       showCopy.show.title = translations.title || showCopy.show.title;

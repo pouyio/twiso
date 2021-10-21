@@ -91,22 +91,8 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       });
       break;
     }
-    case 'shows/getShow/fulfilled': {
-      const state = store.getState().shows;
-      const oldShow = state.shows[action.meta.arg.id];
-      const newShow = {
-        ...oldShow,
-        show: action.payload,
-        localState: 'watchlist',
-      };
-      db.table(SHOWS).put(newShow);
-      break;
-    }
     case 'shows/updateFullShow/fulfilled': {
-      db.table(SHOWS).update(
-        action.meta.arg.outdated.show.ids.trakt,
-        action.payload
-      );
+      db.table(SHOWS).put(action.payload);
       break;
     }
     case 'shows/addEpisodeWatched/fulfilled':

@@ -18,6 +18,9 @@ export interface ShowWatchlist extends BaseShow {
   id?: number;
   rank?: number;
   localState: 'watchlist';
+  fullSeasons?: Season[];
+  progress?: ShowProgress;
+  last_watched_at?: string;
 }
 
 export interface Show {
