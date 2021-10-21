@@ -1,3 +1,10 @@
+## [2.7.14](https://github.com/pouyio/twiso/compare/v2.7.13...v2.7.14) (2021-10-21)
+
+
+### :bug:
+
+* fix watchlist shows load ([337377e](https://github.com/pouyio/twiso/commit/337377e80c3648739804d36f78b96a62baee5fe8))
+
 ## [2.7.13](https://github.com/pouyio/twiso/compare/v2.7.12...v2.7.13) (2021-10-19)
 
 
