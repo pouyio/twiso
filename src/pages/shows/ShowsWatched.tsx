@@ -1,35 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import ImageLink from '../../components/ImageLink';
-import PaginationContainer from '../../components/Pagination/PaginationContainer';
-import { usePagination } from '../../hooks';
+import { PaginationContainerOLD } from 'components/Pagination/PaginationContainerOLD';
+import { usePaginationOLD } from 'hooks/usePaginationOLD';
 import { ShowWatched } from 'models';
-import { useAppSelector } from 'state/store';
-import { byType } from 'state/slices/shows';
+import React, { useEffect, useState } from 'react';
+import { getWatchedApi } from 'utils/api';
+import ImageLink from '../../components/ImageLink';
 
 const ShowsWatched: React.FC = () => {
   const [orderedShows, setOrderedShows] = useState<ShowWatched[]>([]);
-  const { watched } = useAppSelector(byType);
+  const { getItemsByPage } = usePaginationOLD(orderedShows);
 
   useEffect(() => {
-    setOrderedShows(
-      watched.sort((a, b) => {
-        if (!a.progress?.next_episode) {
-          return 1;
-        }
-        if (!b.progress?.next_episode) {
-          return -1;
-        }
-        const aDate = new Date(a.progress?.last_watched_at ?? '');
-        const bDate = new Date(b.progress?.last_watched_at ?? '');
-        return aDate < bDate ? 1 : -1;
-      })
+    getWatchedApi<ShowWatched>('show').then((shows) =>
+      setOrderedShows(shows.data)
     );
-  }, [watched]);
-
-  const { getItemsByPage } = usePagination(orderedShows);
+  }, []);
 
   return (
-    <PaginationContainer items={orderedShows}>
+    <PaginationContainerOLD items={orderedShows}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
         {getItemsByPage().map((m) => (
           <li
@@ -43,11 +30,12 @@ const ShowsWatched: React.FC = () => {
               text={m.show.title}
               style={{ minHeight: '13.5em' }}
               type="show"
+              status="watched"
             />
           </li>
         ))}
       </ul>
-    </PaginationContainer>
+    </PaginationContainerOLD>
   );
 };
 

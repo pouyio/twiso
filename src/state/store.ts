@@ -3,7 +3,8 @@ import { reducer as moviesReducer } from './slices/movies';
 import { reducer as showsReducer } from './slices/shows';
 import { reducer as configReducer } from './slices/config';
 import { reducer as rootReducer } from './slices/root';
-import { dbMiddleware } from './middleware';
+// TODO middleware disasbled to test if before deleting it
+// import { dbMiddleware } from './middleware';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 export const store = configureStore({
@@ -17,7 +18,8 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
       immutableCheck: false,
-    }).concat(dbMiddleware),
+    }),
+  // .concat(dbMiddleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

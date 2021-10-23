@@ -4,200 +4,226 @@ import {
   ShowWatched,
   ShowWatchlist,
 } from 'models';
-import { getWatchedApi, getWatchlistApi } from 'utils/api';
-import db from 'utils/db';
-import { set as setMovies, remove as removeMovies } from './slices/movies';
 import {
-  set as setShows,
-  addWatched as addWatchedShow,
-  remove as removeShows,
-  updateShow,
+  // getWatchedApi,
+  // getWatchlistApi,
+  getAllWatchlistApi,
+  getAllWatchedApi,
+} from 'utils/api';
+// import db from 'utils/db';
+import {
+  // set as setMovies,
+  // remove as removeMovies,
+  setWatchlist as setMovieWatchlist,
+  setWatched as setMovieWatched,
+} from './slices/movies';
+import {
+  // set as setShows,
+  // addWatched as addWatchedShow,
+  // remove as removeShows,
+  // updateShow,
+  setWatchlist as setShowWatchlist,
+  setWatched as setShowWatched,
 } from './slices/shows';
 import { store } from './store';
-import { getMovie } from './slices/movies/thunks';
-import { updateFullShow } from 'state/slices/shows/thunks';
+// import { getMovie } from './slices/movies/thunks';
+// import { updateFullShow } from 'state/slices/shows/thunks';
 
-const loadMovies = async (type: 'watched' | 'watchlist') => {
-  const dbMovies = await db
-    .table<MovieWatchlist | MovieWatched>('movies')
-    .where({ localState: type })
-    .toArray();
+const loadMovies = async () => {
+  const watchlist = await getAllWatchlistApi<MovieWatchlist>('movie');
+  store.dispatch(setMovieWatchlist(watchlist));
+  const watched = await getAllWatchedApi<MovieWatched>('movie');
+  store.dispatch(setMovieWatched(watched));
 
-  store.dispatch(setMovies(dbMovies));
+  // const dbMovies = await db
+  //   .table<MovieWatchlist | MovieWatched>('movies')
+  //   .where({ localState: type })
+  //   .toArray();
 
-  const {
-    data,
-  }: { data: Array<MovieWatchlist | MovieWatched> } = await (type ===
-  'watchlist'
-    ? getWatchlistApi<MovieWatchlist>('movie')
-    : getWatchedApi<MovieWatched>('movie'));
+  // store.dispatch(setMovies(dbMovies));
 
-  const moviesToDelete = dbMovies.filter(
-    (d) => !data.some((m) => m.movie.ids.trakt === d.movie.ids.trakt)
-  );
+  // const {
+  //   data,
+  // }: { data: Array<MovieWatchlist | MovieWatched> } = await (type ===
+  // 'watchlist'
+  //   ? getWatchlistApi<MovieWatchlist>('movie')
+  //   : getWatchedApi<MovieWatched>('movie'));
 
-  store.dispatch(removeMovies(moviesToDelete));
+  // const moviesToDelete = dbMovies.filter(
+  //   (d) => !data.some((m) => m.movie.ids.trakt === d.movie.ids.trakt)
+  // );
 
-  const moviesToUpdate = dbMovies
-    .filter((m) => data.some((md) => md.movie.ids.trakt === m.movie.ids.trakt))
-    .reduce<Array<MovieWatchlist | MovieWatched>>((acc, m) => {
-      const newerMovie = data.find(
-        (md) => m.movie.ids.trakt === md.movie.ids.trakt
-      );
+  // store.dispatch(removeMovies(moviesToDelete));
 
-      let shouldUpdate = false;
+  // const moviesToUpdate = dbMovies
+  //   .filter((m) => data.some((md) => md.movie.ids.trakt === m.movie.ids.trakt))
+  //   .reduce<Array<MovieWatchlist | MovieWatched>>((acc, m) => {
+  //     const newerMovie = data.find(
+  //       (md) => m.movie.ids.trakt === md.movie.ids.trakt
+  //     );
 
-      if (m.movie.updated_at !== newerMovie?.movie.updated_at) {
-        shouldUpdate = true;
-      }
+  //     let shouldUpdate = false;
 
-      if (shouldUpdate) {
-        acc.push({ ...newerMovie! });
-      }
+  //     if (m.movie.updated_at !== newerMovie?.movie.updated_at) {
+  //       shouldUpdate = true;
+  //     }
 
-      return acc;
-    }, []);
+  //     if (shouldUpdate) {
+  //       acc.push({ ...newerMovie! });
+  //     }
 
-  const moviesToAdd = data
-    .filter(
-      (d) => !dbMovies.some((m) => m.movie.ids.trakt === d.movie.ids.trakt)
-    )
-    .map((m) => ({ ...m, localState: type } as any));
-  store.dispatch(setMovies(moviesToAdd));
+  //     return acc;
+  //   }, []);
 
-  const outdatedMovies = [...moviesToAdd, ...moviesToUpdate];
+  // const moviesToAdd = data
+  //   .filter(
+  //     (d) => !dbMovies.some((m) => m.movie.ids.trakt === d.movie.ids.trakt)
+  //   )
+  //   .map((m) => ({ ...m, localState: type } as any));
+  // store.dispatch(setMovies(moviesToAdd));
 
-  outdatedMovies.forEach(async (outdated) => {
-    try {
-      store.dispatch(getMovie({ id: outdated.movie.ids.trakt, type }));
-    } catch (error) {
-      console.error(error);
-    } finally {
-    }
-  });
+  // const outdatedMovies = [...moviesToAdd, ...moviesToUpdate];
+
+  // outdatedMovies.forEach(async (outdated) => {
+  //   try {
+  //     store.dispatch(getMovie({ id: outdated.movie.ids.trakt, type }));
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //   }
+  // });
 };
 
-const loadWatchlistShows = async () => {
-  const showsWatchlist = await db
-    .table<ShowWatchlist>('shows')
-    .where({ localState: 'watchlist' })
-    .toArray();
-  store.dispatch(setShows(showsWatchlist));
-  const { data } = await getWatchlistApi<ShowWatchlist>('show');
-
-  const showsToDelete = showsWatchlist.filter(
-    (s) => !data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt)
-  );
-  store.dispatch(removeShows(showsToDelete));
-
-  const showsToUpdate = showsWatchlist
-    .filter((s) => data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt))
-    .reduce<ShowWatchlist[]>((acc, s) => {
-      const newerShow = data.find(
-        (sd) => s.show.ids.trakt === sd.show.ids.trakt
-      );
-
-      let shouldUpdate = false;
-
-      if (s.show.updated_at !== newerShow?.show.updated_at) {
-        shouldUpdate = true;
-      }
-
-      if (shouldUpdate) {
-        acc.push({ ...newerShow! });
-      }
-
-      return acc;
-    }, []);
-
-  const showsToAdd: ShowWatchlist[] = data
-    .filter(
-      (sd) =>
-        !showsWatchlist.some((s) => s.show.ids.trakt === sd.show.ids.trakt)
-    )
-    .map((s) => ({ ...s, localState: 'watchlist' }));
-  store.dispatch(setShows(showsToAdd));
-
-  const outdatedShows = [...showsToAdd, ...showsToUpdate];
-
-  outdatedShows.forEach(async (outdated) => {
-    try {
-      store.dispatch(updateFullShow({ outdated }));
-    } catch (error) {
-      console.error(error);
-    } finally {
-    }
-  });
+const loadShows = async () => {
+  const watchlist = await getAllWatchlistApi<ShowWatchlist>('show');
+  store.dispatch(setShowWatchlist(watchlist));
+  const watched = await getAllWatchedApi<ShowWatched>('show');
+  store.dispatch(setShowWatched(watched));
 };
 
-const loadWatchedShows = async () => {
-  const showsWatched = await db
-    .table<ShowWatched>('shows')
-    .where({ localState: 'watched' })
-    .toArray();
-  store.dispatch(setShows(showsWatched));
+// const loadWatchlistShows = async () => {
+//   const showsWatchlist = await db
+//     .table<ShowWatchlist>('shows')
+//     .where({ localState: 'watchlist' })
+//     .toArray();
+//   store.dispatch(setShows(showsWatchlist));
+//   const { data } = await getWatchlistApi<ShowWatchlist>('show');
 
-  const { data } = await getWatchedApi<ShowWatched>('show');
+//   const showsToDelete = showsWatchlist.filter(
+//     (s) => !data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt)
+//   );
+//   store.dispatch(removeShows(showsToDelete));
 
-  const showsToDelete = showsWatched.filter(
-    (s) => !data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt)
-  );
-  store.dispatch(removeShows(showsToDelete));
+//   const showsToUpdate = showsWatchlist
+//     .filter((s) => data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt))
+//     .reduce<ShowWatchlist[]>((acc, s) => {
+//       const newerShow = data.find(
+//         (sd) => s.show.ids.trakt === sd.show.ids.trakt
+//       );
 
-  const showsToUpdate = showsWatched
-    .filter((s) => data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt))
-    .reduce<ShowWatched[]>((acc, s) => {
-      const newerShow = data.find(
-        (sd) => s.show.ids.trakt === sd.show.ids.trakt
-      );
+//       let shouldUpdate = false;
 
-      let shouldUpdate = false;
+//       if (s.show.updated_at !== newerShow?.show.updated_at) {
+//         shouldUpdate = true;
+//       }
 
-      if (!newerShow || !s.progress) {
-        shouldUpdate = true;
-      }
+//       if (shouldUpdate) {
+//         acc.push({ ...newerShow! });
+//       }
 
-      if (
-        s.show.updated_at !== newerShow?.show.updated_at ||
-        s.last_watched_at !== newerShow?.last_watched_at
-      ) {
-        shouldUpdate = true;
-      }
+//       return acc;
+//     }, []);
 
-      if (shouldUpdate) {
-        acc.push({ ...newerShow!, localState: 'watched' });
-      }
+//   const showsToAdd: ShowWatchlist[] = data
+//     .filter(
+//       (sd) =>
+//         !showsWatchlist.some((s) => s.show.ids.trakt === sd.show.ids.trakt)
+//     )
+//     .map((s) => ({ ...s, localState: 'watchlist' }));
+//   store.dispatch(setShows(showsToAdd));
 
-      return acc;
-    }, []);
+//   const outdatedShows = [...showsToAdd, ...showsToUpdate];
 
-  const showsToAdd = data
-    .filter(
-      (d) => !showsWatched.some((s) => s.show.ids.trakt === d.show.ids.trakt)
-    )
-    .map((s) => ({
-      ...s,
-      localState: 'watched' as 'watched',
-    }));
+//   outdatedShows.forEach(async (outdated) => {
+//     try {
+//       store.dispatch(updateFullShow({ outdated }));
+//     } catch (error) {
+//       console.error(error);
+//     } finally {
+//     }
+//   });
+// };
 
-  showsToUpdate.forEach((s) => store.dispatch(updateShow(s)));
-  showsToAdd.forEach((s) => store.dispatch(addWatchedShow(s)));
+// const loadWatchedShows = async () => {
+//   const showsWatched = await db
+//     .table<ShowWatched>('shows')
+//     .where({ localState: 'watched' })
+//     .toArray();
+//   store.dispatch(setShows(showsWatched));
 
-  const outdatedShows = [...showsToAdd, ...showsToUpdate];
+//   const { data } = await getWatchedApi<ShowWatched>('show');
 
-  outdatedShows.forEach(async (outdated) => {
-    try {
-      store.dispatch(updateFullShow({ outdated }));
-    } catch (error) {
-      console.error(error);
-    }
-  });
-};
+//   const showsToDelete = showsWatched.filter(
+//     (s) => !data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt)
+//   );
+//   store.dispatch(removeShows(showsToDelete));
+
+//   const showsToUpdate = showsWatched
+//     .filter((s) => data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt))
+//     .reduce<ShowWatched[]>((acc, s) => {
+//       const newerShow = data.find(
+//         (sd) => s.show.ids.trakt === sd.show.ids.trakt
+//       );
+
+//       let shouldUpdate = false;
+
+//       if (!newerShow || !s.progress) {
+//         shouldUpdate = true;
+//       }
+
+//       if (
+//         s.show.updated_at !== newerShow?.show.updated_at ||
+//         s.last_watched_at !== newerShow?.last_watched_at
+//       ) {
+//         shouldUpdate = true;
+//       }
+
+//       if (shouldUpdate) {
+//         acc.push({ ...newerShow!, localState: 'watched' });
+//       }
+
+//       return acc;
+//     }, []);
+
+//   const showsToAdd = data
+//     .filter(
+//       (d) => !showsWatched.some((s) => s.show.ids.trakt === d.show.ids.trakt)
+//     )
+//     .map((s) => ({
+//       ...s,
+//       localState: 'watched' as 'watched',
+//     }));
+
+//   showsToUpdate.forEach((s) => store.dispatch(updateShow(s)));
+//   showsToAdd.forEach((s) => store.dispatch(addWatchedShow(s)));
+
+//   const outdatedShows = [...showsToAdd, ...showsToUpdate];
+
+//   outdatedShows.forEach(async (outdated) => {
+//     try {
+//       store.dispatch(updateFullShow({ outdated }));
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   });
+// };
 
 export const firstLoad = async () => {
-  loadMovies('watchlist');
-  loadMovies('watched');
+  loadMovies();
+  // loadMovies('watchlist');
+  // loadMovies('watched');
 
-  loadWatchlistShows();
-  loadWatchedShows();
+  loadShows();
+  // loadWatchlistShows();
+  // loadWatchedShows();
 };

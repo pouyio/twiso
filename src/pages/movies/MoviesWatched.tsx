@@ -1,29 +1,28 @@
+import { MovieWatched } from 'models';
 import React, { useEffect, useState } from 'react';
+import { useAppSelector } from 'state/store';
+import { getWatchedApi } from 'utils/api';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
-import { MovieWatched } from 'models';
-import { useAppSelector } from 'state/store';
-import { byType } from 'state/slices/movies';
 
 export const MoviesWatched: React.FC = () => {
   const [orderedMovies, setOrderedMovies] = useState<MovieWatched[]>([]);
-  const { getItemsByPage } = usePagination(orderedMovies);
-  const { watched } = useAppSelector(byType);
+  const total = useAppSelector(
+    (state) => Object.keys(state.movies.watched).length
+  );
+  const { currentPage } = usePagination(total);
 
   useEffect(() => {
-    const newItems = watched
-      .map((m) => m)
-      .sort((a, b) =>
-        new Date(a.watched_at) < new Date(b.watched_at) ? 1 : -1
-      );
-    setOrderedMovies(newItems);
-  }, [watched]);
+    getWatchedApi<MovieWatched>('movie', currentPage).then((movies) =>
+      setOrderedMovies(movies.data)
+    );
+  }, [currentPage]);
 
   return (
-    <PaginationContainer items={orderedMovies}>
+    <PaginationContainer total={total}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
-        {getItemsByPage().map((m, i) => (
+        {orderedMovies.map((m, i) => (
           <li
             key={`${m.movie.ids.trakt}_${i}`}
             className="p-2"

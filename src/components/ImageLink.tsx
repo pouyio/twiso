@@ -9,6 +9,7 @@ interface IImageLinkProps {
   text: string;
   style?: React.CSSProperties;
   type: 'movie' | 'show' | 'person';
+  status?: 'watched' | 'watchlist';
 }
 
 const ImageLink: React.FC<IImageLinkProps> = ({
@@ -17,6 +18,7 @@ const ImageLink: React.FC<IImageLinkProps> = ({
   text,
   style,
   type,
+  status,
   children = '',
 }) => {
   return (
@@ -26,7 +28,7 @@ const ImageLink: React.FC<IImageLinkProps> = ({
         state: item,
       }}
     >
-      <Image ids={ids} text={text} style={style} type={type} />
+      <Image ids={ids} text={text} style={style} type={type} status={status} />
       {children}
     </Link>
   );

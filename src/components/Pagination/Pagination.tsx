@@ -20,20 +20,32 @@ const Pagination: React.FC<IPaginationProps> = ({
 }) => {
   return (
     <div className="flex justify-center text-2xl">
-      <button className="mr-10" onClick={setFirst}>
+      <button
+        className={`mr-10 ${page === 1 ? 'opacity-50' : ''}`}
+        onClick={setFirst}
+      >
         <Emoji emoji="⏮" />
       </button>
-      <button className="mr-10" onClick={setPrev}>
+      <button
+        className={`mr-10 ${page === 1 ? 'opacity-50' : ''}`}
+        onClick={setPrev}
+      >
         <Emoji emoji="⬅️" />
       </button>
       <h1 className="font-light">
         {' '}
         {page} ... {last}{' '}
       </h1>
-      <button className="ml-10" onClick={setNext}>
+      <button
+        className={`ml-10 ${page === last ? 'opacity-50' : ''}`}
+        onClick={setNext}
+      >
         <Emoji emoji="➡️" />
       </button>
-      <button className="ml-10" onClick={setLast}>
+      <button
+        className={`ml-10 ${page === last ? 'opacity-50' : ''}`}
+        onClick={setLast}
+      >
         <Emoji emoji="⏭" />
       </button>
     </div>

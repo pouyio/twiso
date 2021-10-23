@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useQueryParam, NumberParam, withDefault } from 'use-query-params';
 export const PAGE_SIZE = 20;
 
-export const usePagination = (total: number) => {
+export const usePaginationOLD = <T,>(items: T[]) => {
   const [currentPage, setCurrentPage] = useQueryParam(
     'page',
     withDefault(NumberParam, 1)
@@ -10,9 +10,9 @@ export const usePagination = (total: number) => {
   const [lastPage, setLastPage] = useState(1);
 
   useEffect(() => {
-    const localLastPage = Math.ceil(total / PAGE_SIZE);
+    const localLastPage = Math.ceil(items.length / PAGE_SIZE);
     setLastPage(localLastPage);
-  }, [total]);
+  }, [items.length]);
 
   const turnSafePage = (direction: 1 | -1) => {
     if (currentPage === 1 && direction === -1) {
@@ -32,9 +32,14 @@ export const usePagination = (total: number) => {
     setCurrentPage(localPage);
   };
 
+  const getItemsByPage = () => {
+    return items.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  };
+
   return {
     currentPage,
     lastPage,
+    getItemsByPage,
     setFirst: () => setSafePage('first'),
     setLast: () => setSafePage('last'),
     setPrev: () => turnSafePage(-1),

@@ -1,40 +1,29 @@
-import React, { useState, useEffect } from 'react';
 import ImageLink from 'components/ImageLink';
 import PaginationContainer from 'components/Pagination/PaginationContainer';
-import { usePagination } from '../../hooks';
+import { usePagination } from 'hooks';
 import { MovieWatchlist } from 'models';
+import React, { useEffect, useState } from 'react';
 import { useAppSelector } from 'state/store';
-import { byType } from 'state/slices/movies';
+import { getWatchlistApi } from 'utils/api';
 
 export const MoviesWatchlist: React.FC = () => {
   const [orderedMovies, setOrderedMovies] = useState<MovieWatchlist[]>([]);
-  const { getItemsByPage } = usePagination(orderedMovies);
-  const { watchlist } = useAppSelector(byType);
+  const total = useAppSelector(
+    (state) => Object.keys(state.movies.watchlist).length
+  );
+
+  const { currentPage } = usePagination(total);
 
   useEffect(() => {
-    const nearFuture = new Date();
-    nearFuture.setDate(nearFuture.getDate() + 7);
-    const newItems = watchlist
-      .map((m) => m)
-      .sort((a, b) => (new Date(a.listed_at) < new Date(b.listed_at) ? -1 : 1))
-      .reduce((acc: MovieWatchlist[], m) => {
-        if (!m.movie.released) {
-          return [...acc, m];
-        }
-        const released = new Date(m.movie.released);
-        if (released < nearFuture) {
-          return [m, ...acc];
-        } else {
-          return [...acc, m];
-        }
-      }, []);
-    setOrderedMovies(newItems);
-  }, [watchlist]);
+    getWatchlistApi<MovieWatchlist>('movie', currentPage).then((movies) =>
+      setOrderedMovies(movies.data)
+    );
+  }, [currentPage]);
 
   return (
-    <PaginationContainer items={orderedMovies}>
+    <PaginationContainer total={total}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
-        {getItemsByPage().map((m, i) => (
+        {orderedMovies.map((m, i) => (
           <li
             key={`${m.movie.ids.trakt}_${i}`}
             className="p-2"

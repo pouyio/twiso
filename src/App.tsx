@@ -7,7 +7,6 @@ import Emoji from './components/Emoji';
 import { ProgressBar } from './components/ProgressBar';
 import { Alert } from 'components/Alert/Alert';
 import { Providers } from 'components/Providers';
-import { GlobalSearch } from 'components/GlobalSearch';
 import { useDispatch } from 'react-redux';
 import { firstLoad } from './state/firstLoadAction';
 import { loadImgConfig } from 'state/slices/config';
@@ -48,7 +47,6 @@ const App: React.FC = () => {
   const [skipUpdate, setSkipUpdate] = useState(false);
   const { width: windowWidth } = useWindowSize();
 
-  const globalSearch = useAppSelector((state) => state.root.globalSearch);
   const serviceWorkerRegistration = useAppSelector(
     (state) => state.root.serviceWorkerRegistration
   );
@@ -107,7 +105,6 @@ const App: React.FC = () => {
             <NavigationTabs logged={isLoggedIn} />
           </nav>
           <>
-            {globalSearch && <GlobalSearch />}
             <Route exact path="/">
               <ParamsComponent />
             </Route>

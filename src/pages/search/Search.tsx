@@ -1,15 +1,14 @@
-import { SearchFilters, IFilters } from '../../pages/search/SearchFilters';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import Emoji from '../../components/Emoji';
 import ImageLink from '../../components/ImageLink';
 import Popular from '../../components/Popular';
-import { useDebounce, useFilter, useSearch, useTranslate } from '../../hooks';
+import { useDebounce, useSearch, useTranslate } from '../../hooks';
 import { SearchMovie, SearchPerson, SearchShow } from '../../models';
+import { IFilters, SearchFilters } from '../../pages/search/SearchFilters';
 import { searchApi } from '../../utils/api';
 
 export type RemoteFilterTypes = Array<'movie' | 'show' | 'person'>;
-type LocalFilterTypes = Array<'movie' | 'show'>;
 
 export default function Search() {
   const { search, setSearch } = useSearch();
@@ -18,10 +17,8 @@ export default function Search() {
   const [showResults, setShowResults] = useState<SearchShow[]>([]);
   const [peopleResults, setPeopleResults] = useState<SearchPerson[]>([]);
   const [filters, setFilters] = useState<IFilters>({
-    remote: false,
     types: [],
   });
-  const { filterBy } = useFilter();
   const debouncedSearch = useDebounce(search, 500);
   const { t } = useTranslate();
 
@@ -41,20 +38,6 @@ export default function Search() {
     });
   };
 
-  const localSearch = useCallback((query: string, types: LocalFilterTypes) => {
-    setMovieResults([]);
-    setShowResults([]);
-    setPeopleResults([]);
-
-    if (types.includes('movie')) {
-      setMovieResults(filterBy(query, 'movie'));
-    }
-    if (types.includes('show')) {
-      setShowResults(filterBy(query, 'show'));
-    }
-    // eslint-disable-next-line
-  }, []);
-
   useEffect(() => {
     if (!debouncedSearch) {
       setMovieResults([]);
@@ -63,18 +46,11 @@ export default function Search() {
       return;
     }
 
-    if (filters.remote) {
-      const fullTypes: RemoteFilterTypes = filters.types.length
-        ? filters.types
-        : ['movie', 'show', 'person'];
-      remoteSearch(debouncedSearch, fullTypes);
-      return;
-    }
+    const fullTypes: RemoteFilterTypes = filters.types.length
+      ? filters.types
+      : ['movie', 'show', 'person'];
+    remoteSearch(debouncedSearch, fullTypes);
 
-    const fullTypes = filters.types.filter((f) => f !== 'person').length
-      ? filters.types.filter((f) => f !== 'person')
-      : ['movie', 'show'];
-    localSearch(debouncedSearch, fullTypes as LocalFilterTypes);
     // eslint-disable-next-line
   }, [filters, debouncedSearch]);
 

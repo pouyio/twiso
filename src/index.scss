@@ -126,16 +126,6 @@ button:focus {
   outline: 0;
 }
 
-.toggle__dot {
-  top: -0.25rem;
-  left: -0.25rem;
-  transition: all 0.3s ease-in-out;
-}
-
-input:not(:checked) ~ .toggle__dot {
-  transform: translateX(100%);
-}
-
 @keyframes twist-up {
   to {
     transform: rotateX(360deg);

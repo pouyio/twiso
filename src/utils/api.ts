@@ -33,6 +33,7 @@ import { Session } from './AuthService';
 import Bottleneck from 'bottleneck';
 import { getTranslation } from './getTranslations';
 import { Language } from 'state/slices/config';
+import { PAGE_SIZE } from 'hooks/usePagination';
 
 const limiter = new Bottleneck({
   reservoir: 1000,
@@ -129,14 +130,27 @@ export const searchApi = <T>(
 };
 
 export const getWatchedApi = <T extends MovieWatched | ShowWatched>(
+  type: ItemType,
+  page = 1
+) => {
+  const url =
+    type === 'movie'
+      ? `/sync/history/movies?page=${page}&limit=${PAGE_SIZE}&extended=full`
+      : `/sync/watched/shows?page=${page}&limit=${PAGE_SIZE}&extended=full`;
+
+  return authTraktClient.get<T[]>(url);
+};
+
+export const getAllWatchedApi = async <T extends MovieWatched | ShowWatched>(
   type: ItemType
 ) => {
   const url =
     type === 'movie'
-      ? `/sync/history/movies?page=1&limit=10000&extended=full`
-      : `/sync/watched/shows?extended=full`;
+      ? `/sync/history/movies?page=1&limit=10000`
+      : `/sync/watched/shows?extended=noseasons&page=1&limit=10000`;
 
-  return authTraktClient.get<T[]>(url);
+  const result = await authTraktClient.get<T[]>(url);
+  return result.data;
 };
 
 export const addWatchedApi = (
@@ -158,19 +172,23 @@ export const removeWatchedApi = (
 };
 
 export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
+  type: 'movie' | 'show',
+  page = 1
+) => {
+  return authTraktClient.get<T[]>(
+    `/sync/watchlist/${type}s/added?extended=full&page=${page}&limit=${PAGE_SIZE}`
+  );
+};
+
+export const getAllWatchlistApi = async <
+  T extends MovieWatchlist | ShowWatchlist
+>(
   type: 'movie' | 'show'
 ) => {
-  return authTraktClient
-    .get<T[]>(`/sync/watchlist/${type}s?extended=full`)
-    .then((res) => {
-      const ordered = res.data.sort(
-        (a, b) =>
-          (new Date(b.listed_at as string) as any) -
-          (new Date(a.listed_at as string) as any)
-      );
-      res.data = ordered;
-      return res;
-    });
+  const result = await authTraktClient.get<T[]>(
+    `/sync/watchlist/${type}s?page=1&limit=10000`
+  );
+  return result.data;
 };
 
 export const addWatchlistApi = (item: Show | Movie, type: ItemType) => {

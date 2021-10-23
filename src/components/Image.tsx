@@ -12,6 +12,7 @@ interface IImageProps {
   className?: string;
   style?: React.CSSProperties;
   size?: 'small' | 'big';
+  status?: 'watched' | 'watchlist';
 }
 
 const Image: React.FC<IImageProps> = ({
@@ -21,6 +22,7 @@ const Image: React.FC<IImageProps> = ({
   className = '',
   style = {},
   size = 'small',
+  status,
   ...props
 }) => {
   const { isWatchlist, isWatched } = useIsWatch();
@@ -35,10 +37,10 @@ const Image: React.FC<IImageProps> = ({
 
   const getBorderClass = () => {
     if (type === 'person') return '';
-    if (isWatched(ids.trakt, type)) {
+    if (isWatched(ids.trakt, type) || status === 'watched') {
       return 'border-2 border-green-400';
     }
-    if (isWatchlist(ids.trakt, type)) {
+    if (isWatchlist(ids.trakt, type)  || status === 'watchlist') {
       return 'border-2 border-blue-400';
     }
     return '';

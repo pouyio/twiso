@@ -1,0 +1,27 @@
+.alert-container {
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  transition: top 0.3s cubic-bezier(0, 0, 0.6, 1.32);
+  &.inside {
+    top: 2.5em;
+  }
+  &.outside {
+    top: -10em;
+  }
+  .progress {
+    background-color: var(--gray-300);
+    border: none;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    box-shadow: none;
+    background-color: var(--gray-800);
+    transition: width 5s linear;
+  }
+  .empty {
+    width: 0%;
+  }
+  .full {
+    width: 100%;
+  }
+}

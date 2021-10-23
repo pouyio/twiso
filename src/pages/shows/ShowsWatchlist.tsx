@@ -1,43 +1,28 @@
+import { ShowWatchlist } from 'models';
 import React, { useEffect, useState } from 'react';
+import { useAppSelector } from 'state/store';
+import { getWatchlistApi } from 'utils/api';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
-import { ShowWatchlist } from 'models';
-import { useAppSelector } from 'state/store';
-import { byType } from 'state/slices/shows';
 
 const ShowsWatchlist: React.FC = () => {
   const [orderedShows, setOrderedShows] = useState<ShowWatchlist[]>([]);
-
-  const { getItemsByPage } = usePagination(orderedShows);
-  const { watchlist } = useAppSelector(byType);
+  const total = useAppSelector(
+    (state) => Object.keys(state.shows.watchlist).length
+  );
+  const { currentPage } = usePagination(total);
 
   useEffect(() => {
-    const nearFuture = new Date();
-    nearFuture.setDate(nearFuture.getDate() + 7);
-    const newItems = Object.values(watchlist)
-      .map((s) => s)
-      .sort((a, b) =>
-        new Date(a.listed_at!) < new Date(b.listed_at!) ? -1 : 1
-      )
-      .reduce((acc: ShowWatchlist[], s) => {
-        if (!s.show.first_aired) {
-          return [...acc, s];
-        }
-        const released = new Date(s.show.first_aired);
-        if (released < nearFuture) {
-          return [s, ...acc];
-        } else {
-          return [...acc, s];
-        }
-      }, []);
-    setOrderedShows(newItems);
-  }, [watchlist]);
+    getWatchlistApi<ShowWatchlist>('show', currentPage).then((shows) =>
+      setOrderedShows(shows.data)
+    );
+  }, [currentPage]);
 
   return (
-    <PaginationContainer items={orderedShows}>
+    <PaginationContainer total={total}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
-        {getItemsByPage().map((m) => (
+        {orderedShows.map((m) => (
           <li
             key={m.show.ids.trakt}
             className="p-2"
@@ -49,6 +34,7 @@ const ShowsWatchlist: React.FC = () => {
               text={m.show.title}
               style={{ minHeight: '13.5em' }}
               type="show"
+              status="watchlist"
             />
           </li>
         ))}

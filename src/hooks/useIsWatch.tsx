@@ -1,24 +1,26 @@
 import { useAppSelector } from 'state/store';
 
 export const useIsWatch = () => {
-  const movies = useAppSelector((state) => state.movies);
-  const shows = useAppSelector((state) => state.shows);
+  const moviesWatchlist = useAppSelector((state) => state.movies.watchlist);
+  const moviesWatched = useAppSelector((state) => state.movies.watched);
+  const showsWatchlist = useAppSelector((state) => state.shows.watchlist);
+  const showsWatched = useAppSelector((state) => state.shows.watched);
 
   const isWatched = (id: number, type: 'show' | 'movie' = 'show') => {
     if (type === 'show') {
-      return shows.shows[id]?.localState === 'watched';
+      return !!showsWatched[id];
     }
     if (type === 'movie') {
-      return movies.movies[id]?.localState === 'watched';
+      return !!moviesWatched[id];
     }
   };
 
   const isWatchlist = (id: number, type: 'show' | 'movie' = 'show') => {
     if (type === 'show') {
-      return shows.shows[id]?.localState === 'watchlist';
+      return !!showsWatchlist[id];
     }
     if (type === 'movie') {
-      return movies.movies[id]?.localState === 'watchlist';
+      return !!moviesWatchlist[id];
     }
   };
 

@@ -14,8 +14,9 @@ import SeasonsContainer from '../components/Seasons/SeasonsContainer';
 import ShowWatchButton from '../components/ShowWatchButton';
 import { AlertContext } from '../contexts';
 import { useIsWatch, useShare, useTranslate } from '../hooks';
-import { People as IPeople, Ratings, Show, ShowWatched } from '../models';
-import { getPeopleApi, getRatingsApi } from '../utils/api';
+import { People as IPeople, Ratings, Show, ShowProgress } from '../models';
+import { getPeopleApi, getProgressApi, getRatingsApi } from '../utils/api';
+import { AuthService } from 'utils/AuthService';
 
 enum status {
   'returning series' = 'en antena',
@@ -25,21 +26,21 @@ enum status {
   ended = 'terminada',
 }
 
+const authService = AuthService.getInstance();
+
 export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
+  const [progress, setProgress] = useState<ShowProgress>();
   const [showProgressPercentage, setShowProgressPercentage] = useState(false);
   const { state } = useLocation<Show>();
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
   const item = useAppSelector((state) => state.shows.detail);
-  const progress = useAppSelector(
-    (state) =>
-      (state.shows.shows[item?.ids.trakt ?? 0] as ShowWatched)?.progress
-  );
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
+  const isLogged = authService.isLoggedIn();
 
   const { isWatchlist, isWatched } = useIsWatch();
 
@@ -58,7 +59,14 @@ export default function ShowDetail() {
     getRatingsApi(+id, 'show').then(({ data }) => {
       setRatings(data);
     });
-  }, [id]);
+    if (isLogged) {
+      getProgressApi(+id).then(({ data }) => setProgress(data));
+    }
+  }, [id, isLogged]);
+
+  const updateProgress = () => {
+    getProgressApi(+id).then(({ data }) => setProgress(data));
+  };
 
   const getBgClassName = () => {
     if (!item) {
@@ -187,7 +195,9 @@ export default function ShowDetail() {
                           ((progress?.completed ?? 0) * 100) /
                             (progress?.aired ?? 1)
                         )}% completado`
-                      : `${progress?.completed}/${progress?.aired} episodios`}
+                      : `${progress?.completed ?? 0}/${
+                          progress?.aired ?? 0
+                        } episodios`}
                     <div className="bg-green-100 rounded">
                       <div
                         className="bg-green-400 h-1 rounded text-white text-xs"
@@ -210,7 +220,11 @@ export default function ShowDetail() {
                 </div>
               )}
               <div className="my-4">
-                <SeasonsContainer show={item} showId={+id} />
+                <SeasonsContainer
+                  showId={+id}
+                  progress={progress}
+                  onUpdateProgress={updateProgress}
+                />
               </div>
             </div>
           </div>
