@@ -36,43 +36,51 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
         <>
           {isWatched(item.ids.trakt, 'movie') ? (
             <button
-              className="bg-green-400 py-3 px-12 rounded-full text-white font-bold"
+              className={`bg-green-400 py-3 pl-12 rounded-full text-white font-bold ${
+                isWatchedPending ? 'pr-6' : 'pr-12'
+              }`}
               onClick={async () => dispatch(removeWatched({ movie: item }))}
             >
               ✓ {t('watched')}{' '}
               {isWatchedPending && (
-                <Emoji emoji="⏳" rotating={true} className="absolute ml-2" />
+                <Emoji emoji="⏳" rotating={true} className="inline-block" />
               )}
             </button>
           ) : (
             <button
-              className="bg-gray-200 py-3 px-12 rounded-full text-gray-700 font-light"
+              className={`bg-gray-200 py-3 pl-12 rounded-full text-gray-700 font-light ${
+                isWatchedPending ? 'pr-6' : 'pr-12'
+              }`}
               onClick={() => dispatch(addWatched({ movie: item }))}
             >
               {t('watched')}{' '}
               {isWatchedPending && (
-                <Emoji emoji="⏳" rotating={true} className="absolute ml-2" />
+                <Emoji emoji="⏳" rotating={true} className="inline-block" />
               )}
             </button>
           )}
           {isWatchlist(item.ids.trakt, 'movie') ? (
             <button
-              className="bg-blue-400 py-3 px-12 rounded-full text-white font-bold"
+              className={`bg-blue-400 py-3 pl-12 rounded-full text-white font-bold ${
+                isWatchlistPending ? 'pr-6' : 'pr-12'
+              }`}
               onClick={() => dispatch(removeWatchlist({ movie: item }))}
             >
               {t('watchlist')}{' '}
               {isWatchlistPending && (
-                <Emoji emoji="⏳" rotating={true} className="absolute ml-2" />
+                <Emoji emoji="⏳" rotating={true} className="inline-block" />
               )}
             </button>
           ) : (
             <button
-              className="bg-gray-200 py-3 px-12 rounded-full text-gray-700 font-light"
+              className={`bg-gray-200 py-3 pl-12 rounded-full text-gray-700 font-light ${
+                isWatchlistPending ? 'pr-6' : 'pr-12'
+              }`}
               onClick={() => dispatch(addWatchlist({ movie: item }))}
             >
               {t('watchlist')}{' '}
               {isWatchlistPending && (
-                <Emoji emoji="⏳" rotating={true} className="absolute ml-2" />
+                <Emoji emoji="⏳" rotating={true} className="inline-block" />
               )}
             </button>
           )}

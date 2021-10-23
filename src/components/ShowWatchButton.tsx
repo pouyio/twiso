@@ -28,22 +28,26 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
         <>
           {isWatchlist(item.ids.trakt, 'show') ? (
             <button
-              className="bg-blue-400 py-3 px-12 rounded-full text-white font-bold"
+              className={`bg-blue-400 py-3 pl-12 rounded-full text-white font-bold ${
+                isWatchlistPending ? 'pr-6' : 'pr-12'
+              }`}
               onClick={() => dispatch(removeWatchlist({ show: item }))}
             >
               {t('added_watchlist')}{' '}
               {isWatchlistPending && (
-                <Emoji emoji="⏳" rotating={true} className="absolute ml-2" />
+                <Emoji emoji="⏳" rotating={true} className="inline-block" />
               )}
             </button>
           ) : (
             <button
-              className="bg-gray-200 py-3 px-12 rounded-full text-gray-700 font-light"
+              className={`bg-gray-200 py-3 pl-12 rounded-full text-gray-700 font-light ${
+                isWatchlistPending ? 'pr-6' : 'pr-12'
+              }`}
               onClick={() => dispatch(addWatchlist({ show: item }))}
             >
               {t('add_watchlist')}{' '}
               {isWatchlistPending && (
-                <Emoji emoji="⏳" rotating={true} className="absolute ml-2" />
+                <Emoji emoji="⏳" rotating={true} className="inline-block" />
               )}
             </button>
           )}
