@@ -33,7 +33,7 @@ import { Session } from './AuthService';
 import Bottleneck from 'bottleneck';
 import { getTranslation } from './getTranslations';
 import { Language } from 'state/slices/config';
-import { PAGE_SIZE } from 'hooks/usePagination';
+import { PAGE_SIZE } from '../hooks/usePagination';
 
 const limiter = new Bottleneck({
   reservoir: 1000,

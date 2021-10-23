@@ -3,7 +3,7 @@ import { usePaginationOLD } from 'hooks/usePaginationOLD';
 import { ShowWatched } from 'models';
 import React, { useEffect, useState } from 'react';
 import { getWatchedApi } from 'utils/api';
-import ImageLink from '../../components/ImageLink';
+import ImageLink from 'components/ImageLink';
 
 const ShowsWatched: React.FC = () => {
   const [orderedShows, setOrderedShows] = useState<ShowWatched[]>([]);

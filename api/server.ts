@@ -74,7 +74,7 @@ app.get('/movie/:id', (req, res) => {
         .replace('__OG_TYPE__', 'video.movie')
         .replace('__OG_TITLE__', item?.title)
         .replace('__OG_IMAGE__', imgUrl)
-        .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
+        .replace(/__OG_URL__/, `https://twiso.vercel.app${req.path}`)
         .replace('__OG_DESCRIPTION__', item?.overview);
 
       res.send(finalData);
@@ -102,7 +102,7 @@ app.get('/show/:id', (req, res) => {
         .replace('__OG_TYPE__', 'video.tv_show')
         .replace('__OG_TITLE__', item?.title)
         .replace('__OG_IMAGE__', imgUrl)
-        .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
+        .replace(/__OG_URL__/, `https://twiso.vercel.app${req.path}`)
         .replace('__OG_DESCRIPTION__', item?.overview);
 
       res.send(finalData);
@@ -130,7 +130,7 @@ app.get('/person/:id', (req, res) => {
         .replace('__OG_TYPE__', 'profile')
         .replace('__OG_TITLE__', item.name)
         .replace('__OG_IMAGE__', imgUrl)
-        .replace('__OG_URL__', `https://twiso.now.sh${req.path}`)
+        .replace('__OG_URL__', `https://twiso.vercel.app${req.path}`)
         .replace('__OG_DESCRIPTION__', item.biography);
 
       res.send(finalData);
