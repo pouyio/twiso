@@ -1,3 +1,10 @@
+## [2.7.15](https://github.com/pouyio/twiso/compare/v2.7.14...v2.7.15) (2021-10-23)
+
+
+### :art:
+
+* improve rotating emojis in ios ([2e1d591](https://github.com/pouyio/twiso/commit/2e1d59113be7da583f4e7a4ff233fa5541b05c7f))
+
 ## [2.7.14](https://github.com/pouyio/twiso/compare/v2.7.13...v2.7.14) (2021-10-21)
 
 
