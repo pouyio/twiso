@@ -160,17 +160,9 @@ export const removeWatchedApi = (
 export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
   type: 'movie' | 'show'
 ) => {
-  return authTraktClient
-    .get<T[]>(`/sync/watchlist/${type}s?extended=full`)
-    .then((res) => {
-      const ordered = res.data.sort(
-        (a, b) =>
-          (new Date(b.listed_at as string) as any) -
-          (new Date(a.listed_at as string) as any)
-      );
-      res.data = ordered;
-      return res;
-    });
+  return authTraktClient.get<T[]>(
+    `/sync/watchlist/${type}s/added?extended=full`
+  );
 };
 
 export const addWatchlistApi = (item: Show | Movie, type: ItemType) => {

@@ -6,11 +6,13 @@ interface BaseShow {
   type: 'show';
 }
 export interface ShowWatched extends BaseShow {
+  last_updated_at: string;
   last_watched_at: string;
   plays: number;
   reset_at: string;
   progress?: ShowProgress;
   fullSeasons?: Season[];
+  seasons?: Season[];
   localState: 'watched';
 }
 

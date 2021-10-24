@@ -16,6 +16,62 @@ import {
 import { store } from './store';
 import { getMovie } from './slices/movies/thunks';
 import { updateFullShow } from 'state/slices/shows/thunks';
+import equal from 'fast-deep-equal';
+// import diff from 'json-diff';
+
+// const _mustUpdateMovie = (old: any, newer?: any) => {
+//   if(old.movie.updated_at !== newer.movie.updated_at){
+//     return true;
+//   }
+//   const oldMovie = JSON.parse(JSON.stringify(old));
+//   const newerMovie = JSON.parse(JSON.stringify(newer));
+//   const { votes: v1, localState, rank: r1, ...stripOld } = oldMovie as any;
+//   const { votes: v2, rank: r2, ...stripNew } = newerMovie as any;
+//   delete stripOld.movie.votes;
+//   delete stripOld.movie.rating;
+//   delete stripOld.movie.title;
+//   delete stripOld.movie.overview;
+//   delete stripOld.movie.comment_count;
+//   delete stripOld.movie.updated_at;
+//   delete stripNew.movie.votes;
+//   delete stripNew.movie.rating;
+//   delete stripNew.movie.title;
+//   delete stripNew.movie.overview;
+//   delete stripNew.movie.comment_count;
+//   delete stripNew.movie.updated_at;
+
+//   if (!equal(stripOld, stripNew)) {
+//     console.log(old.movie.title);
+//     console.log(diff.diffString(stripOld, stripNew));
+//     return true;
+//   }
+//   return false;
+// };
+
+const _mustUpdateShowWatched = (
+  oldShow: ShowWatched,
+  newerShow?: ShowWatched
+) => {
+  if (!newerShow) {
+    return true;
+  }
+  if (!oldShow.progress) {
+    return true;
+  }
+  if (oldShow.last_updated_at !== newerShow?.last_updated_at) {
+    return true;
+  }
+  if (oldShow.last_watched_at !== newerShow?.last_watched_at) {
+    return true;
+  }
+  if (oldShow.plays !== newerShow?.plays) {
+    return true;
+  }
+  if (!equal(oldShow.seasons, newerShow?.seasons)) {
+    return true;
+  }
+  return false;
+};
 
 const loadMovies = async (type: 'watched' | 'watchlist') => {
   const dbMovies = await db
@@ -47,6 +103,7 @@ const loadMovies = async (type: 'watched' | 'watchlist') => {
 
       let shouldUpdate = false;
 
+      // if (_mustUpdateMovie(m, newerMovie)) {
       if (m.movie.updated_at !== newerMovie?.movie.updated_at) {
         shouldUpdate = true;
       }
@@ -99,7 +156,7 @@ const loadWatchlistShows = async () => {
 
       let shouldUpdate = false;
 
-      if (s.show.updated_at !== newerShow?.show.updated_at) {
+      if (!s.fullSeasons || s.show.updated_at !== newerShow?.show.updated_at) {
         shouldUpdate = true;
       }
 
@@ -157,10 +214,7 @@ const loadWatchedShows = async () => {
         shouldUpdate = true;
       }
 
-      if (
-        s.show.updated_at !== newerShow?.show.updated_at ||
-        s.last_watched_at !== newerShow?.last_watched_at
-      ) {
+      if (_mustUpdateShowWatched(s, newerShow)) {
         shouldUpdate = true;
       }
 
