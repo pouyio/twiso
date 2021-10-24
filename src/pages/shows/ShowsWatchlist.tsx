@@ -1,3 +1,4 @@
+import Emoji from 'components/Emoji';
 import { ShowWatchlist } from 'models';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from 'state/store';
@@ -5,6 +6,10 @@ import { getWatchlistApi } from 'utils/api';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
+
+const isReleased = (episodes: number) => {
+  return episodes > 0;
+};
 
 const ShowsWatchlist: React.FC = () => {
   const [orderedShows, setOrderedShows] = useState<ShowWatchlist[]>([]);
@@ -25,9 +30,15 @@ const ShowsWatchlist: React.FC = () => {
         {orderedShows.map((m) => (
           <li
             key={m.show.ids.trakt}
-            className="p-2"
+            className="p-2 relative"
             style={{ flex: '1 0 50%', maxWidth: '10em' }}
           >
+            {isReleased(m.show.aired_episodes) ? null : (
+              <Emoji
+                emoji="🔜"
+                className="absolute top-0 right-0 bg-white rounded-full px-1"
+              />
+            )}
             <ImageLink
               item={m.show}
               ids={m.show.ids}

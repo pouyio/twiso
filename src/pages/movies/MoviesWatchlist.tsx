@@ -1,3 +1,4 @@
+import Emoji from 'components/Emoji';
 import ImageLink from 'components/ImageLink';
 import PaginationContainer from 'components/Pagination/PaginationContainer';
 import { usePagination } from 'hooks';
@@ -5,6 +6,10 @@ import { MovieWatchlist } from 'models';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from 'state/store';
 import { getWatchlistApi } from 'utils/api';
+
+const isReleased = (date: string) => {
+  return new Date(date) < new Date();
+};
 
 export const MoviesWatchlist: React.FC = () => {
   const [orderedMovies, setOrderedMovies] = useState<MovieWatchlist[]>([]);
@@ -26,9 +31,15 @@ export const MoviesWatchlist: React.FC = () => {
         {orderedMovies.map((m, i) => (
           <li
             key={`${m.movie.ids.trakt}_${i}`}
-            className="p-2"
+            className="p-2 relative"
             style={{ flex: '1 0 50%', maxWidth: '10em' }}
           >
+            {isReleased(m.movie.released) ? null : (
+              <Emoji
+                emoji="🔜"
+                className="absolute top-0 right-0 bg-white rounded-full px-1"
+              />
+            )}
             <ImageLink
               text={m.movie.title}
               ids={m.movie.ids}
