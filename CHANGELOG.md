@@ -1,3 +1,10 @@
+## [2.7.16](https://github.com/pouyio/twiso/compare/v2.7.15...v2.7.16) (2021-10-24)
+
+
+### :art:
+
+* improve first load ([b58b5eb](https://github.com/pouyio/twiso/commit/b58b5ebf1c2dee84da2deb238ee17217e1074d1c))
+
 ## [2.7.15](https://github.com/pouyio/twiso/compare/v2.7.14...v2.7.15) (2021-10-23)
 
 
