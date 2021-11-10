@@ -8,7 +8,7 @@ export const ProgressBar: React.FC = () => {
 
   return movies + shows > 0 ? (
     <div className="absolute right-0 flex justify-end text-sm pr-1">
-      <Emoji emoji="⏳" rotating={true} />
+      <Emoji emoji="⏳" rotating={true} className="inline-block" />
     </div>
   ) : (
     <></>
