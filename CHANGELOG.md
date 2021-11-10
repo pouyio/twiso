@@ -1,3 +1,10 @@
+## [2.7.19](https://github.com/pouyio/twiso/compare/v2.7.18...v2.7.19) (2021-11-10)
+
+
+### :art:
+
+* ios center loading icon ([8654ed8](https://github.com/pouyio/twiso/commit/8654ed80318c7cce450ca871a791f600831d1518))
+
 ## [2.7.18](https://github.com/pouyio/twiso/compare/v2.7.17...v2.7.18) (2021-11-10)
 
 
