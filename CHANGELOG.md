@@ -1,3 +1,10 @@
+## [2.7.17](https://github.com/pouyio/twiso/compare/v2.7.16...v2.7.17) (2021-11-10)
+
+
+### :art:
+
+* updated favicons ([ca7ac8a](https://github.com/pouyio/twiso/commit/ca7ac8ac237d5df73f29a515c52b68a88f931b34))
+
 ## [2.7.16](https://github.com/pouyio/twiso/compare/v2.7.15...v2.7.16) (2021-10-24)
 
 
