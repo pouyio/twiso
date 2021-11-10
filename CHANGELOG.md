@@ -1,3 +1,10 @@
+## [2.7.20](https://github.com/pouyio/twiso/compare/v2.7.19...v2.7.20) (2021-11-10)
+
+
+### :art:
+
+* removed icons ([ad47f21](https://github.com/pouyio/twiso/commit/ad47f21798b89b681f5c17fad7fe9e706eb41e14))
+
 ## [2.7.19](https://github.com/pouyio/twiso/compare/v2.7.18...v2.7.19) (2021-11-10)
 
 
