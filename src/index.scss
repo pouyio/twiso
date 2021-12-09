@@ -1,6 +1,11 @@
 body,
 .theme-wrapper {
   transition: background-color 0.25s, color 0.25s;
+  font-family: Nunito, sans-serif;
+}
+
+.font-family-text {
+  font-family: Railway, sans-serif;
 }
 
 @mixin theme-light {
