@@ -1,3 +1,22 @@
+## [2.7.21](https://github.com/pouyio/twiso/compare/v2.7.20...v2.7.21) (2021-12-13)
+
+
+### :arrow_up:
+
+* Bump axios from 0.21.1 to 0.21.2 ([5b77b98](https://github.com/pouyio/twiso/commit/5b77b982c00408fa81c9288029472f4db6d09f45))
+* Bump merge-deep from 3.0.2 to 3.0.3 ([dc0d29a](https://github.com/pouyio/twiso/commit/dc0d29a8efd350503c1a13a72f88fa115da7ed6f))
+* Bump tmpl from 1.0.4 to 1.0.5 ([b9a3bb0](https://github.com/pouyio/twiso/commit/b9a3bb01c771d15fed0c36e51e401afd9c3fbee0))
+* Bump ws from 5.2.2 to 5.2.3 ([d708883](https://github.com/pouyio/twiso/commit/d708883c40ab183c5c919b566cec23478c01d760))
+
+### :art:
+
+* make collapsables clickables ([da93d3f](https://github.com/pouyio/twiso/commit/da93d3f01873dd8b13cb4dacda6843e682935edd))
+* updated fonts ([9ed960d](https://github.com/pouyio/twiso/commit/9ed960d75f6215808437318ce656b87823d8f87e))
+
+### :bug:
+
+* fix sentry https://sentry.io/organizations/twiso/issues/2734343280/ ([9bac545](https://github.com/pouyio/twiso/commit/9bac545e22fff43d2036ec0c10a2069e4884abf8))
+
 ## [2.7.20](https://github.com/pouyio/twiso/compare/v2.7.19...v2.7.20) (2021-11-10)
 
 
