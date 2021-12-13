@@ -10,6 +10,9 @@ module.exports = {
   },
   theme: {
     extend: {},
+    fontFamily: {
+      sans: ['Nunito', 'sans-serif'],
+    },
     colors: {
       white: 'var(--primary-light)',
       black: 'var(--primary-dark)',

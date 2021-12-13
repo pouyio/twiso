@@ -66,7 +66,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
     <>
       {type === 'movie' && (
         <div className="my-4">
-          <p className="font-medium">Dirección:</p>
+          <p className="font-medium font-family-text font-family-text">Dirección:</p>
           <ul
             className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
@@ -101,7 +101,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
       )}
 
       <div className="my-4">
-        <p className="font-medium">Reparto:</p>
+        <p className="font-medium font-family-text font-family-text">Reparto:</p>
         <Collapsable heightInRem={10} disable={width < 1024}>
           <ul
             className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap justify-between"
