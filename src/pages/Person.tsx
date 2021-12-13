@@ -133,13 +133,13 @@ const Person: React.FC = () => {
           </div>
 
           <div className="my-4 relative">
-            <p className="font-medium">{t('bio')}:</p>
+            <p className="font-medium font-family-text">{t('bio')}:</p>
             <Collapsable heightInRem={7}>
               {localState.biography || 'Sin descripción'}
             </Collapsable>
           </div>
 
-          <h1 className="font-medium">{t('movies')} </h1>
+          <h1 className="font-medium font-family-text">{t('movies')} </h1>
           <ul
             className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
@@ -177,7 +177,7 @@ const Person: React.FC = () => {
             )}
           </ul>
 
-          <h1 className="font-medium">{t('shows')} </h1>
+          <h1 className="font-medium font-family-text">{t('shows')} </h1>
           <ul
             className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}

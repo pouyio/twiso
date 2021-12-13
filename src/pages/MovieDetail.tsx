@@ -168,14 +168,14 @@ export default function MovieDetail() {
             </div>
           </div>
           <div className="my-4">
-            <p className="font-medium">Resumen:</p>
+            <p className="font-medium font-family-text">Resumen:</p>
             <Collapsable heightInRem={7}>
               {item.overview || 'Sin descripción'}
             </Collapsable>
           </div>
 
           <div className="my-4">
-            <p className="font-medium">Géneros:</p>
+            <p className="font-medium font-family-text">Géneros:</p>
             <Genres genres={item.genres} />
           </div>
 
@@ -184,7 +184,7 @@ export default function MovieDetail() {
           </div>
 
           <div className="my-4">
-            <p className="font-medium">Relacionados:</p>
+            <p className="font-medium font-family-text">Relacionados:</p>
             <Related itemId={item.ids.trakt} type="movie" />
           </div>
         </article>

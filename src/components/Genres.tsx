@@ -18,7 +18,7 @@ const Genres: React.FC<IGenresProps> = ({ genres }) => {
       {genres.length ? (
         genres.map((g) => (
           <li key={g}>
-            <div className="bg-gray-100 font-light px-2 py-1 rounded-full mx-1 whitespace-pre">
+            <div className="bg-gray-100 font-light px-2 py-1 rounded-full mx-1 whitespace-pre font-family-text">
               <Emoji emoji={getGenre(g)} /> {t(g)}
             </div>
           </li>
