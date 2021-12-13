@@ -79,8 +79,8 @@ export const GlobalSearch = () => {
               >
                 <div className={`rounded-lg ${getBgClass(item)}`}>
                   <ImageLink
-                    text={item[item.type || 'show'].title}
-                    ids={item[item.type || 'show'].ids}
+                    text={item[item.type || 'show']?.title}
+                    ids={item[item.type || 'show']?.ids}
                     item={item[item.type || 'show']}
                     style={{ minHeight: '13.5em' }}
                     type={item.type || 'show'}
