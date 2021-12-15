@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useContext, useEffect, useState } from 'react';
-import { version } from '../../package.json';
+import packageInfo from '../../package.json';
 import Emoji from '../components/Emoji';
 import { getStatsApi, getProfileApi } from '../utils/api';
 import { UserStats } from '../models';
@@ -131,7 +131,7 @@ export default function Profile() {
         ) : null}
 
         <div className="flex justify-between pt-10 text-sm font-mono">
-          <h1 className="inline">Version: {version}</h1>
+          <h1 className="inline">Version: {packageInfo.version}</h1>
           {isLogged ? (
             <button
               onClick={logout}

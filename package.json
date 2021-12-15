@@ -27,7 +27,7 @@
     "react-redux": "^7.2.4",
     "react-router-cache-route": "^1.8.4",
     "react-router-dom": "^5.1.1",
-    "react-scripts": "^3.4.3",
+    "react-scripts": "5.0.0",
     "scroll-behavior-polyfill": "^2.0.13",
     "use-query-params": "^1.1.6"
   },
