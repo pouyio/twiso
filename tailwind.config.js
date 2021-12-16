@@ -1,13 +1,5 @@
 module.exports = {
-  future: {
-    removeDeprecatedGapUtilities: true,
-  },
-  purge: {
-    content: ['./src/**/*.html', './src/**/*.jsx', './src/**/*.tsx'],
-    options: {
-      whitelist: ['body', 'html'],
-    },
-  },
+  content: ['./src/**/*.html', './src/**/*.{jsx,tsx}'],
   theme: {
     extend: {},
     fontFamily: {
@@ -63,6 +55,5 @@ module.exports = {
       },
     },
   },
-  variants: {},
   plugins: [],
 };

@@ -52,7 +52,7 @@ export const GlobalSearch = () => {
         <input
           ref={ref}
           autoFocus
-          className="bg-blue-100 w-full text-black px-2 py-2 outline-none flex-grow text-gray-700 "
+          className="bg-blue-100 w-full text-black px-2 py-2 outline-none grow text-gray-700 "
           placeholder="🔍 Escribe un título de tu colección"
           type="text"
           onChange={onFilter}

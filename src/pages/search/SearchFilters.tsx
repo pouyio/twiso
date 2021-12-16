@@ -37,7 +37,7 @@ export const SearchFilters: React.FC<ISearchFiltersProps> = ({
   return (
     <div className="my-2 lg:max-w-lg mx-auto flex flex-wrap items-center justify-center lg:justify-between">
       {authService.isLoggedIn() && (
-        <div className="flex whitespace-no-wrap items-center my-1 lg:my-0 justify-center">
+        <div className="flex whitespace-nowrap items-center my-1 lg:my-0 justify-center">
           <div
             className="flex items-center cursor-pointer select-none"
             onClick={() => setRemote((a) => !a)}
