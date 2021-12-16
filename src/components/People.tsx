@@ -8,47 +8,47 @@ import { Empty } from './Empty';
 const placeholders = [
   <li
     key="placeholder-1"
-    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col flex-shrink-0 text-center w-32 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
+    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-32 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
   ></li>,
   <li
     key="placeholder-2"
-    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col flex-shrink-0 text-center w-40 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
+    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-40 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
   ></li>,
   <li
     key="placeholder-3"
-    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col flex-shrink-0 text-center w-20 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
+    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-20 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
   ></li>,
   <li
     key="placeholder-4"
-    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col flex-shrink-0 text-center w-32 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
+    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-32 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
   ></li>,
   <li
     key="placeholder-5"
-    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col flex-shrink-0 text-center w-40 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
+    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-40 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
   ></li>,
   <li
     key="placeholder-6"
-    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col flex-shrink-0 text-center w-32 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
+    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-32 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
   ></li>,
   <li
     key="placeholder-7"
-    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col flex-shrink-0 text-center w-24 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
+    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-24 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
   ></li>,
   <li
     key="placeholder-8"
-    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col flex-shrink-0 text-center w-32 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
+    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-32 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
   ></li>,
   <li
     key="placeholder-9"
-    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col flex-shrink-0 text-center w-24 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
+    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-24 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
   ></li>,
   <li
     key="placeholder-10"
-    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col flex-shrink-0 text-center w-32 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
+    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-32 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
   ></li>,
   <li
     key="placeholder-11"
-    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col flex-shrink-0 text-center w-40 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
+    className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-40 h-12 from-gray-300 bg-gradient-to-r animate-pulse"
   ></li>,
 ];
 
@@ -93,7 +93,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
               )
             ) : (
               <li className="my-1">
-                <div className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col flex-shrink-0 text-center w-40 h-10 bg-gradient-to-r animate-pulse"></div>
+                <div className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-40 h-10 bg-gradient-to-r animate-pulse"></div>
               </li>
             )}
           </ul>

@@ -85,7 +85,7 @@ export default function Search() {
       </Helmet>
       <div className="w-full bg-gray-300 rounded flex items-center my-2 m-auto lg:max-w-lg">
         <input
-          className="bg-gray-300 rounded text-black px-2 py-1 outline-none flex-grow text-gray-700 "
+          className="bg-gray-300 rounded text-black px-2 py-1 outline-none grow text-gray-700 "
           type="text"
           placeholder={t('search_placeholder')}
           autoFocus={true}

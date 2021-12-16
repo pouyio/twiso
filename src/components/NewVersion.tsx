@@ -10,7 +10,7 @@ interface INewVersionProps {
 export const NewVersion: React.FC<INewVersionProps> = ({ update, close }) => {
   const { t } = useTranslate();
   return (
-    <div className="alert-container fixed z-10 text-center bg-gray-300 bg-white rounded-lg leading-tight flex flex-col overflow-hidden shadow-lg inside whitespace-no-wrap">
+    <div className="alert-container fixed z-10 text-center bg-gray-300 bg-white rounded-lg leading-tight flex flex-col overflow-hidden shadow-lg inside whitespace-nowrap">
       <div className="flex px-4 py-2 items-center">
         <span>
           {t('new_version')}{' '}

@@ -118,7 +118,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
                       )}\n${getTranslated('overview', e)}`,
                     })
                   }
-                  className={`flex-grow flex flex-col ${
+                  className={`grow flex flex-col ${
                     isEpisodeWatched(e.number) ? 'text-gray-600' : ''
                   }`}
                 >
