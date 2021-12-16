@@ -1,3 +1,13 @@
+## [2.7.22](https://github.com/pouyio/twiso/compare/v2.7.21...v2.7.22) (2021-12-16)
+
+
+### :rocket:
+
+* updated caniuse browser list ([c3a4fd8](https://github.com/pouyio/twiso/commit/c3a4fd8140e65282e154d5f066badfc86713ed3e))
+* updated react-scripts ([81936f7](https://github.com/pouyio/twiso/commit/81936f7386daa6de1d02912c65f6b62153f34bd8))
+* updated redux ([788499a](https://github.com/pouyio/twiso/commit/788499af738031f37e5d4fef9c32c63d0468140e))
+* updated tailwindcss ([ee2a812](https://github.com/pouyio/twiso/commit/ee2a81239be567fdea11e81725eb92a20e649cce))
+
 ## [2.7.21](https://github.com/pouyio/twiso/compare/v2.7.20...v2.7.21) (2021-12-13)
 
 
