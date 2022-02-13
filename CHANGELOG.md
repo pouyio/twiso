@@ -1,3 +1,10 @@
+## [2.7.23](https://github.com/pouyio/twiso/compare/v2.7.22...v2.7.23) (2022-02-13)
+
+
+### :bug:
+
+* dont update watched movies to save time ([ff72509](https://github.com/pouyio/twiso/commit/ff7250948e277812706eb7085f4195581ab7b5ea))
+
 ## [2.7.22](https://github.com/pouyio/twiso/compare/v2.7.21...v2.7.22) (2021-12-16)
 
 
