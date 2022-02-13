@@ -1,3 +1,19 @@
+## [2.7.24](https://github.com/pouyio/twiso/compare/v2.7.23...v2.7.24) (2022-02-13)
+
+
+### :arrow_up:
+
+* Bump browserslist from 4.14.0 to 4.19.1 ([ff8c5b9](https://github.com/pouyio/twiso/commit/ff8c5b95b56cf0419d7e4338cd191422d3876d76))
+* Bump follow-redirects from 1.14.5 to 1.14.8 ([8002d17](https://github.com/pouyio/twiso/commit/8002d173f2884110602967c49881e24150874c01))
+* Bump lodash from 4.17.20 to 4.17.21 ([3deb9b1](https://github.com/pouyio/twiso/commit/3deb9b1cd34fc651ae077b5f924d645f1af2c00c))
+* Bump nanoid from 3.1.30 to 3.2.0 ([94ed00c](https://github.com/pouyio/twiso/commit/94ed00c6db4fcb3bca93f982150dba0ed209bfbb))
+* Bump node-fetch from 2.6.1 to 2.6.7 ([025f58a](https://github.com/pouyio/twiso/commit/025f58a54f67034775b0412a7a1447de0711d6da))
+* Bump trim-off-newlines from 1.0.1 to 1.0.3 ([5395478](https://github.com/pouyio/twiso/commit/5395478b6e7e4bee98753ecf08537a39884752c4))
+
+### :bug:
+
+* remove type from model ([54b80da](https://github.com/pouyio/twiso/commit/54b80da358520218ffdd34ff3b3c2d2fbcae8bc4))
+
 ## [2.7.23](https://github.com/pouyio/twiso/compare/v2.7.22...v2.7.23) (2022-02-13)
 
 
