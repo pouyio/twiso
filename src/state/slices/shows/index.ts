@@ -106,7 +106,6 @@ const showsSlice = createSlice({
         if (payload?.added.shows) {
           state.shows[meta.arg.show.ids.trakt] = {
             show: meta.arg.show,
-            type: 'show',
             listed_at: new Date().toISOString(),
             localState: 'watchlist',
           };

@@ -21,10 +21,10 @@ import { useTranslate } from 'hooks';
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
   const [movieResults, setMovieResults] = useState<
-    { movie: Movie; type: string; title: string }[]
+    { movie: Movie; title: string }[]
   >();
   const [showResults, setShowResults] = useState<
-    { show: Show; type: 'show'; title: string }[]
+    { show: Show; title: string }[]
   >();
   const language = useAppSelector((state) => state.config.language);
 
@@ -42,7 +42,7 @@ const Person: React.FC = () => {
           .filter(
             (r) => !(r.character === 'Himself' || r.character === 'Herself')
           )
-          .map((r) => ({ show: r.show, type: 'show', title: r.character }))
+          .map((r) => ({ show: r.show, title: r.character }))
       );
     });
     getPersonItemsApi<PersonMovies>(id, 'movie').then(({ data }) => {
@@ -53,11 +53,10 @@ const Person: React.FC = () => {
           )
           .map((r) => ({
             movie: r.movie,
-            type: 'movie',
             title: r.character,
           })),
         ...((data.crew || {}).directing || [])
-          .map((r) => ({ movie: r.movie, type: 'movie', title: r.job }))
+          .map((r) => ({ movie: r.movie, title: r.job }))
           .filter((r) => !(r.title === 'Himself' || r.title === 'Herself')),
       ]);
     });

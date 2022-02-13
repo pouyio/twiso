@@ -3,7 +3,6 @@ import { Ids } from './Ids';
 interface BaseShow {
   listed_at: string;
   show: Show;
-  type: 'show';
 }
 export interface ShowWatched extends BaseShow {
   last_updated_at: string;

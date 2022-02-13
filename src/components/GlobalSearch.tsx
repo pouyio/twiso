@@ -10,6 +10,7 @@ import Emoji from './Emoji';
 import ImageLink from './ImageLink';
 import { useDispatch } from 'react-redux';
 import { setGlobalSearch } from 'state/slices/root';
+import { getType } from 'utils/getType';
 
 export const GlobalSearch = () => {
   const { filter } = useFilter();
@@ -32,12 +33,13 @@ export const GlobalSearch = () => {
   };
 
   const getBgClass = (
-    item: MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist
+    item: MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist,
+    type: 'movie' | 'show'
   ) => {
-    if (isWatched(item[item.type]?.ids.trakt, item.type)) {
+    if (isWatched(item[type]?.ids.trakt, type)) {
       return 'bg-green-400';
     }
-    if (isWatchlist(item[item.type]?.ids.trakt, item.type)) {
+    if (isWatchlist(item[type]?.ids.trakt, type)) {
       return 'bg-blue-400';
     }
     return '';
@@ -69,25 +71,26 @@ export const GlobalSearch = () => {
       <ul className="flex flex-wrap items-stretch justify-center bg-white overflow-y-auto">
         {results &&
           results.map((item, i) => {
+            const type = getType(item);
             return (
               <li
-                key={`${item[item.type || 'show']?.ids?.trakt}_${i}`}
+                key={`${item[type]?.ids?.trakt}_${i}`}
                 className="p-2"
                 style={{ flex: '1 0 50%', maxWidth: '10em' }}
                 onClick={() => dispatch(setGlobalSearch(false))}
                 tabIndex={i + 1}
               >
-                <div className={`rounded-lg ${getBgClass(item)}`}>
+                <div className={`rounded-lg ${getBgClass(item, type)}`}>
                   <ImageLink
-                    text={item[item.type || 'show']?.title}
-                    ids={item[item.type || 'show']?.ids}
-                    item={item[item.type || 'show']}
+                    text={item[type]?.title}
+                    ids={item[type]?.ids}
+                    item={item[type]}
                     style={{ minHeight: '13.5em' }}
-                    type={item.type || 'show'}
+                    type={type}
                   >
-                    {item[item.type || 'show'].title && (
+                    {item[type].title && (
                       <p className="text-sm text-center py-1">
-                        {item[item.type || 'show'].title}
+                        {item[type].title}
                       </p>
                     )}
                   </ImageLink>

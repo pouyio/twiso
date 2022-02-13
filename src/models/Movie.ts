@@ -10,7 +10,6 @@ interface SearchItem {
 
 interface BaseMovie {
   movie: Movie;
-  type: 'movie';
 }
 
 export type SearchShow = SearchItem & {

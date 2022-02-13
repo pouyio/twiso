@@ -71,7 +71,6 @@ const moviesSlice = createSlice({
         if (payload?.added.movies) {
           state.movies[meta.arg.movie.ids.trakt] = {
             movie: meta.arg.movie,
-            type: 'movie',
             watched_at: new Date().toISOString(),
             localState: 'watched',
           };
@@ -108,7 +107,6 @@ const moviesSlice = createSlice({
         if (payload?.added.movies) {
           state.movies[meta.arg.movie.ids.trakt] = {
             movie: meta.arg.movie,
-            type: 'movie',
             listed_at: new Date().toISOString(),
             localState: 'watchlist',
           };
