@@ -94,26 +94,31 @@ const loadMovies = async (type: 'watched' | 'watchlist') => {
 
   store.dispatch(removeMovies(moviesToDelete));
 
-  const moviesToUpdate = dbMovies
-    .filter((m) => data.some((md) => md.movie.ids.trakt === m.movie.ids.trakt))
-    .reduce<Array<MovieWatchlist | MovieWatched>>((acc, m) => {
-      const newerMovie = data.find(
-        (md) => m.movie.ids.trakt === md.movie.ids.trakt
-      );
+  const moviesToUpdate: Array<MovieWatchlist | MovieWatched> =
+    type === 'watched'
+      ? []
+      : dbMovies
+          .filter((m) =>
+            data.some((md) => md.movie.ids.trakt === m.movie.ids.trakt)
+          )
+          .reduce<Array<MovieWatchlist | MovieWatched>>((acc, m) => {
+            const newerMovie = data.find(
+              (md) => m.movie.ids.trakt === md.movie.ids.trakt
+            );
 
-      let shouldUpdate = false;
+            let shouldUpdate = false;
 
-      // if (_mustUpdateMovie(m, newerMovie)) {
-      if (m.movie.updated_at !== newerMovie?.movie.updated_at) {
-        shouldUpdate = true;
-      }
+            // if (_mustUpdateMovie(m, newerMovie)) {
+            if (m.movie.updated_at !== newerMovie?.movie.updated_at) {
+              shouldUpdate = true;
+            }
 
-      if (shouldUpdate) {
-        acc.push({ ...newerMovie! });
-      }
+            if (shouldUpdate) {
+              acc.push({ ...newerMovie! });
+            }
 
-      return acc;
-    }, []);
+            return acc;
+          }, []);
 
   const moviesToAdd = data
     .filter(
@@ -251,7 +256,6 @@ const loadWatchedShows = async () => {
 export const firstLoad = async () => {
   loadMovies('watchlist');
   loadMovies('watched');
-
   loadWatchlistShows();
   loadWatchedShows();
 };
