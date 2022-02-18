@@ -34,18 +34,18 @@ const _getRemoteWithTranslations = async (id: number, language: Language) => {
   return show;
 };
 
-export const addWatchlist = createAsyncThunk<AddedWatchlist, { show: Show }>(
-  'shows/addWatchlist',
-  async ({ show }) => {
-    try {
-      const { data } = await addWatchlistApi(show, 'show');
-      return data;
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
+export const addWatchlist = createAsyncThunk<
+  AddedWatchlist & { listed_at: string },
+  { show: Show }
+>('shows/addWatchlist', async ({ show }) => {
+  try {
+    const { data } = await addWatchlistApi(show, 'show');
+    return { ...data, listed_at: new Date().toISOString() };
+  } catch (e) {
+    console.error(e);
+    throw e;
   }
-);
+});
 
 export const removeWatchlist = createAsyncThunk<
   RemovedWatchlist,

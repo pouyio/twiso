@@ -10,7 +10,7 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       if (action.payload.added.movies) {
         db.table(MOVIES).put({
           movie: action.meta.arg.movie,
-          watched_at: new Date().toISOString(),
+          watched_at: action.payload.watched_at,
           localState: 'watched',
         });
       }
@@ -27,6 +27,7 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       if (action.payload.added.movies) {
         db.table(MOVIES).put({
           movie: action.meta.arg.movie,
+          listed_at: action.payload.listed_at,
           localState: 'watchlist',
         });
       }
@@ -58,6 +59,7 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       if (action.payload.added.shows) {
         db.table(SHOWS).put({
           show: action.meta.arg.show,
+          listed_at: action.payload.listed_at,
           localState: 'watchlist',
         });
       }

@@ -29,18 +29,18 @@ const _getRemoteWithTranslations = async (id: number, language: Language) => {
   return movie;
 };
 
-export const addWatched = createAsyncThunk<AddedWatched, { movie: Movie }>(
-  'movies/addWatched',
-  async ({ movie }) => {
-    try {
-      const { data } = await addWatchedApi(movie, 'movie');
-      return data;
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
+export const addWatched = createAsyncThunk<
+  AddedWatched & { watched_at: string },
+  { movie: Movie }
+>('movies/addWatched', async ({ movie }) => {
+  try {
+    const { data } = await addWatchedApi(movie, 'movie');
+    return { ...data, watched_at: new Date().toISOString() };
+  } catch (e) {
+    console.error(e);
+    throw e;
   }
-);
+});
 
 export const removeWatched = createAsyncThunk<RemovedWatched, { movie: Movie }>(
   'movies/removeWatched',
@@ -55,18 +55,18 @@ export const removeWatched = createAsyncThunk<RemovedWatched, { movie: Movie }>(
   }
 );
 
-export const addWatchlist = createAsyncThunk<AddedWatchlist, { movie: Movie }>(
-  'movies/addWatchlist',
-  async ({ movie }) => {
-    try {
-      const { data } = await addWatchlistApi(movie, 'movie');
-      return data;
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
+export const addWatchlist = createAsyncThunk<
+  AddedWatchlist & { listed_at: string },
+  { movie: Movie }
+>('movies/addWatchlist', async ({ movie }) => {
+  try {
+    const { data } = await addWatchlistApi(movie, 'movie');
+    return { ...data, listed_at: new Date().toISOString() };
+  } catch (e) {
+    console.error(e);
+    throw e;
   }
-);
+});
 
 export const removeWatchlist = createAsyncThunk<
   RemovedWatchlist,
