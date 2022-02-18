@@ -1,3 +1,10 @@
+## [2.7.26](https://github.com/pouyio/twiso/compare/v2.7.25...v2.7.26) (2022-02-18)
+
+
+### :bug:
+
+* add local listed/watched time to movies ([0071584](https://github.com/pouyio/twiso/commit/007158499201a4149e0c45c8dadc5b68fcdd7550))
+
 ## [2.7.25](https://github.com/pouyio/twiso/compare/v2.7.24...v2.7.25) (2022-02-18)
 
 
