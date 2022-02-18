@@ -10,6 +10,7 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
       if (action.payload.added.movies) {
         db.table(MOVIES).put({
           movie: action.meta.arg.movie,
+          watched_at: new Date().toISOString(),
           localState: 'watched',
         });
       }
