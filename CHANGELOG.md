@@ -1,3 +1,10 @@
+## [2.7.25](https://github.com/pouyio/twiso/compare/v2.7.24...v2.7.25) (2022-02-18)
+
+
+### :bug:
+
+* add local watched time to watched movie ([21227bb](https://github.com/pouyio/twiso/commit/21227bbfcfbd044fdd833cb6464fa968c54e29ae))
+
 ## [2.7.24](https://github.com/pouyio/twiso/compare/v2.7.23...v2.7.24) (2022-02-13)
 
 
