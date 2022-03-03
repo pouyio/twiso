@@ -6,6 +6,5 @@ export * from './useShare';
 export * from './useImage';
 export * from './useDebounce';
 export * from './useFilter';
-export * from './useResize';
 export * from './useWindowSize';
 export * from './useTranslate';

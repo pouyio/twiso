@@ -1,128 +1,102 @@
 import { motion } from 'framer-motion';
-import { useResize, useTranslate, useWindowSize } from '../../hooks';
-import React, { useEffect, useRef, useState } from 'react';
+import { useTranslate, useWindowSize } from '../../hooks';
+import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Emoji from '../Emoji';
 import LongPress from '../Longpress';
+import { ROUTES } from 'utils/routes';
+
+const Underline: React.FC<{ width: number }> = ({ width }) => {
+  return (
+    <motion.div
+      layoutId="underline"
+      className="bg-gray-600 rounded"
+      initial={false}
+      style={{
+        bottom:
+          width < 1024 ? `calc(env(safe-area-inset-bottom) + 4px)` : '4px',
+        height: '2px',
+      }}
+    />
+  );
+};
 
 export const NavigationTabs: React.FC<{
   logged: boolean;
 }> = ({ logged }) => {
   const { pathname } = useLocation();
-  const { bounds, ref } = useResize();
-  const [slider, setSlider] = useState({ left: 0, width: 0 });
-  const refs = useRef(
-    new Map<string, HTMLLIElement | null>([
-      ['/shows', null],
-      ['/search', null],
-      ['/calendar', null],
-      ['/profile', null],
-      ['/movies', null],
-    ])
-  );
   const { width } = useWindowSize();
   const { t } = useTranslate();
 
-  useEffect(() => {
-    const target = refs.current.get(pathname);
-    if (target) {
-      const tRect = target.getBoundingClientRect();
-
-      setSlider({
-        left: tRect.left,
-        width: tRect.width,
-      });
-    }
-  }, [pathname, bounds]);
-
   return (
-    <>
-      <ul
-        className="flex justify-around px-2 text-center bg-gray-200"
-        style={{
-          ...(width >= 1024
-            ? { paddingTop: 'env(safe-area-inset-top)' }
-            : { paddingBottom: 'env(safe-area-inset-bottom)' }),
-        }}
-        ref={ref}
-      >
-        {logged ? (
-          <>
-            <li
-              className="py-1"
-              onClick={() => window.scrollTo(0, 0)}
-              ref={(el) => refs.current.set('/movies', el)}
+    <ul
+      className="flex justify-around px-2 text-center bg-gray-200"
+      style={{
+        ...(width >= 1024
+          ? { paddingTop: 'env(safe-area-inset-top)' }
+          : { paddingBottom: 'env(safe-area-inset-bottom)' }),
+      }}
+    >
+      {logged ? (
+        <>
+          <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
+            <NavLink
+              to={`${ROUTES.movies}?mode=watchlist&page=1`}
+              className="flex items-center"
             >
-              <NavLink
-                to="/movies?mode=watchlist&page=1"
-                className="flex items-center"
-              >
-                <Emoji emoji="🎬" />
-                <span className="ml-2 text-base hidden lg:inline">
-                  {t('movies')}
-                </span>
-              </NavLink>
-            </li>
-            <li
-              className="py-1"
-              onClick={() => window.scrollTo(0, 0)}
-              ref={(el) => refs.current.set('/shows', el)}
-            >
-              <NavLink
-                to="/shows?mode=watched&page=1"
-                className="flex items-center"
-              >
-                <Emoji emoji="📺" />
-                <span className="ml-2 text-base hidden lg:inline">
-                  {t('shows')}
-                </span>
-              </NavLink>
-            </li>
-          </>
-        ) : null}
-        <li
-          className="py-1"
-          onClick={() => window.scrollTo(0, 0)}
-          ref={(el) => refs.current.set('/search', el)}
-        >
-          <LongPress />
-        </li>
-        {logged ? (
-          <li
-            className="py-1"
-            onClick={() => window.scrollTo(0, 0)}
-            ref={(el) => refs.current.set('/calendar', el)}
-          >
-            <NavLink to="/calendar" className="flex items-center">
-              <Emoji emoji="📅" />
+              <Emoji emoji="🎬" />
               <span className="ml-2 text-base hidden lg:inline">
-                {t('calendar')}
+                {t('movies')}
               </span>
             </NavLink>
+            {pathname.startsWith(ROUTES.movies) && <Underline width={width} />}
           </li>
-        ) : null}
-        <li className="py-1" ref={(el) => refs.current.set('/profile', el)}>
-          <NavLink to="/profile" className="flex items-center">
-            <Emoji emoji="👤" />
+          <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
+            <NavLink
+              to={`${ROUTES.shows}?mode=watched&page=1`}
+              className="flex items-center"
+            >
+              <Emoji emoji="📺" />
+              <span className="ml-2 text-base hidden lg:inline">
+                {t('shows')}
+              </span>
+            </NavLink>
+            {pathname.startsWith(ROUTES.shows) && <Underline width={width} />}
+          </li>
+        </>
+      ) : null}
+      <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
+        <LongPress />
+        {pathname.startsWith(ROUTES.search) && <Underline width={width} />}
+      </li>
+      {logged ? (
+        <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
+          <NavLink to={ROUTES.calendar} className="flex items-center">
+            <Emoji emoji="📅" />
             <span className="ml-2 text-base hidden lg:inline">
-              {t('profile')}
+              {t('calendar')}
             </span>
           </NavLink>
+          {pathname.startsWith(ROUTES.calendar) && <Underline width={width} />}
         </li>
-      </ul>
-      <motion.div
-        className="absolute bg-gray-600 bottom-0 rounded"
-        initial={false}
-        style={{
-          bottom:
-            width < 1024 ? `calc(env(safe-area-inset-bottom) + 4px)` : '4px',
-          height: '2px',
-          width: slider.width,
-        }}
-        animate={{
-          left: slider.left,
-        }}
-      />
-    </>
+      ) : null}
+      <li className="py-1">
+        <NavLink to={ROUTES.profile} className="flex items-center">
+          <Emoji emoji="👤" />
+          <span className="ml-2 text-base hidden lg:inline">
+            {t('profile')}
+          </span>
+        </NavLink>
+        {pathname.startsWith(ROUTES.profile) && <Underline width={width} />}
+        {!Object.values(ROUTES).includes(pathname) && (
+          <div
+            style={{
+              height: '2px',
+              width: 0,
+            }}
+          />
+        )}
+      </li>
+    </ul>
   );
 };

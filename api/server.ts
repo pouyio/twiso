@@ -1,12 +1,11 @@
 import { getApi, getImgsApi } from '../src/utils/api';
+import { ROUTES, ROUTE } from '../src/utils/routes';
 import { findFirstValid } from '../src/utils/findFirstValidImage';
 import { SearchMovie, SearchShow, SearchPerson } from '../src/models';
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
 const app = express();
-
-const ROUTES = ['/', '/search', '/movies', '/shows', '/profile', '/calendar'];
 
 const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   type: 'movie' | 'show' | 'person',
@@ -29,7 +28,7 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   return { item, imgUrl };
 };
 
-app.get(ROUTES, (req, res) => {
+app.get(['/', ...Object.values(ROUTES)], (req, res) => {
   fs.readFile(
     path.join(__dirname + '/../build/index.html'),
     'utf8',
@@ -54,7 +53,7 @@ app.get(ROUTES, (req, res) => {
   );
 });
 
-app.get('/movie/:id', (req, res) => {
+app.get(ROUTE.movie, (req, res) => {
   fs.readFile(
     path.join(__dirname + '/../build/index.html'),
     'utf8',
@@ -82,7 +81,7 @@ app.get('/movie/:id', (req, res) => {
   );
 });
 
-app.get('/show/:id', (req, res) => {
+app.get(ROUTE.show, (req, res) => {
   fs.readFile(
     path.join(__dirname + '/../build/index.html'),
     'utf8',
@@ -110,7 +109,7 @@ app.get('/show/:id', (req, res) => {
   );
 });
 
-app.get('/person/:id', (req, res) => {
+app.get(ROUTE.person, (req, res) => {
   fs.readFile(
     path.join(__dirname + '/../build/index.html'),
     'utf8',

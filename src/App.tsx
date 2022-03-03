@@ -17,6 +17,7 @@ import { NewVersion } from 'components/NewVersion';
 import { NavigationTabs } from 'components/Navigation/NavigationTabs';
 import { useWindowSize } from './hooks';
 import { useAppSelector } from 'state/store';
+import { ROUTE, ROUTES } from 'utils/routes';
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const Profile = lazy(() => import('./pages/Profile'));
 const MovieDetail = lazy(() => import('./pages/MovieDetail'));
@@ -122,28 +123,28 @@ const App: React.FC = () => {
               }
             >
               <Switch>
-                <ProtectedRoute path="/movies">
+                <ProtectedRoute path={ROUTES.movies}>
                   <Movies />
                 </ProtectedRoute>
-                <ProtectedRoute path="/shows">
+                <ProtectedRoute path={ROUTES.shows}>
                   <Shows />
                 </ProtectedRoute>
-                <ProtectedRoute path="/calendar">
+                <ProtectedRoute path={ROUTES.calendar}>
                   <Calendar />
                 </ProtectedRoute>
-                <CacheRoute path="/search">
+                <CacheRoute path={ROUTES.search}>
                   <Search />
                 </CacheRoute>
-                <Route path="/movie/:id">
+                <Route path={ROUTE.movie}>
                   <MovieDetail />
                 </Route>
-                <Route path="/show/:id">
+                <Route path={ROUTE.show}>
                   <ShowDetail />
                 </Route>
-                <Route path="/person/:id">
+                <Route path={ROUTE.person}>
                   <Person />
                 </Route>
-                <Route path="/profile">
+                <Route path={ROUTES.profile}>
                   <Profile />
                 </Route>
               </Switch>
