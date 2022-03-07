@@ -1,6 +1,6 @@
 {
   "name": "twiso",
-  "version": "2.7.28",
+  "version": "2.7.29",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.7.0",

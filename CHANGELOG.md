@@ -1,3 +1,10 @@
+## [2.7.29](https://github.com/pouyio/twiso/compare/v2.7.28...v2.7.29) (2022-03-07)
+
+
+### :art:
+
+* added tabs animation in movies ([250295b](https://github.com/pouyio/twiso/commit/250295b3b669932603584aa97c129eafd973216b))
+
 ## [2.7.28](https://github.com/pouyio/twiso/compare/v2.7.27...v2.7.28) (2022-03-07)
 
 
