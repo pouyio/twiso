@@ -9,7 +9,7 @@ import { ROUTES } from 'utils/routes';
 const Underline: React.FC<{ width: number }> = ({ width }) => {
   return (
     <motion.div
-      layoutId="underline"
+      layoutId="underline-section"
       className="bg-gray-600 rounded"
       initial={false}
       style={{
