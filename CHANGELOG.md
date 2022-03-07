@@ -1,3 +1,15 @@
+## [2.7.27](https://github.com/pouyio/twiso/compare/v2.7.26...v2.7.27) (2022-03-07)
+
+
+### :art:
+
+* improve translation ([7f9364e](https://github.com/pouyio/twiso/commit/7f9364e3af209d46bd917781f3360737407175ca))
+* improved routes & navbar animation ([684779f](https://github.com/pouyio/twiso/commit/684779fa5998266d34bb504d7789bc6cdd3a064e))
+
+### :bug:
+
+* update shows with diff aired_episodes local/remote ([f7834c9](https://github.com/pouyio/twiso/commit/f7834c98aaf7182df99ee4eb513c66e234b0299b))
+
 ## [2.7.26](https://github.com/pouyio/twiso/compare/v2.7.25...v2.7.26) (2022-02-18)
 
 
