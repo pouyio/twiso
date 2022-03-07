@@ -9,7 +9,7 @@ import { useTranslate, useWindowSize } from '../../hooks';
 import { totalByType } from 'state/slices/shows';
 import { motion } from 'framer-motion';
 
-const Underline: React.FC<{ selected: boolean }> = ({ selected }) => {
+export const Underline: React.FC<{ selected: boolean }> = ({ selected }) => {
   return (
     <div className="border-b-2 border-transparent h-0.5 w-full">
       {selected && (
