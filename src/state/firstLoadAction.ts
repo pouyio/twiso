@@ -70,6 +70,9 @@ const _mustUpdateShowWatched = (
   if (!equal(oldShow.seasons, newerShow?.seasons)) {
     return true;
   }
+  if (oldShow.show.aired_episodes !== newerShow.show.aired_episodes) {
+    return true;
+  }
   return false;
 };
 
@@ -214,10 +217,6 @@ const loadWatchedShows = async () => {
       );
 
       let shouldUpdate = false;
-
-      if (!newerShow || !s.progress) {
-        shouldUpdate = true;
-      }
 
       if (_mustUpdateShowWatched(s, newerShow)) {
         shouldUpdate = true;
