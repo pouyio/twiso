@@ -1,3 +1,10 @@
+## [2.7.28](https://github.com/pouyio/twiso/compare/v2.7.27...v2.7.28) (2022-03-07)
+
+
+### :art:
+
+* added tabs animation ([4f7e876](https://github.com/pouyio/twiso/commit/4f7e8765d54328ff0e97b49b2a00f5bf03acd2d9))
+
 ## [2.7.27](https://github.com/pouyio/twiso/compare/v2.7.26...v2.7.27) (2022-03-07)
 
 
