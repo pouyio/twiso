@@ -1,3 +1,10 @@
+## [2.7.30](https://github.com/pouyio/twiso/compare/v2.7.29...v2.7.30) (2022-06-12)
+
+
+### :rocket:
+
+* updated to react 18 ([01066a4](https://github.com/pouyio/twiso/commit/01066a43fffcae74587060bebca91bdb009e7825))
+
 ## [2.7.29](https://github.com/pouyio/twiso/compare/v2.7.28...v2.7.29) (2022-03-07)
 
 
