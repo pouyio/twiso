@@ -5,7 +5,7 @@ import {
   ShowWatched,
   ShowWatchlist,
 } from 'models';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Emoji from './Emoji';
 import ImageLink from './ImageLink';
 import { useDispatch } from 'react-redux';
@@ -14,18 +14,12 @@ import { getType } from 'utils/getType';
 
 export const GlobalSearch = () => {
   const { filter } = useFilter();
-  const [results, setResults] = useState<
-    Array<MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist>
-  >();
+  const [results, setResults] =
+    useState<
+      Array<MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist>
+    >();
   const { isWatched, isWatchlist } = useIsWatch();
-  const ref = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.focus();
-    }
-  }, []);
 
   const onFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
     const a = filter(event.target.value);
@@ -50,10 +44,8 @@ export const GlobalSearch = () => {
       className="fixed w-full z-30 top-0 flex flex-col h-full"
       style={{ marginTop: 'env(safe-area-inset-top)' }}
     >
-      <div className="w-full bg-blue-100 flex items-center">
+      <div className="w-full bg-blue-100 flex items-center border-b-2">
         <input
-          ref={ref}
-          autoFocus
           className="bg-blue-100 w-full text-black px-2 py-2 outline-none grow text-gray-700 "
           placeholder="🔍 Escribe un título de tu colección"
           type="text"
@@ -68,7 +60,7 @@ export const GlobalSearch = () => {
           <Emoji className="ml-3 mr-2" emoji="❌" />
         </button>
       </div>
-      <ul className="flex flex-wrap items-stretch justify-center bg-white overflow-y-auto">
+      <ul className="flex flex-wrap items-stretch justify-center bg-blue-100 overflow-y-auto">
         {results &&
           results.map((item, i) => {
             const type = getType(item);
