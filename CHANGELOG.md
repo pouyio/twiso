@@ -1,3 +1,10 @@
+## [2.7.32](https://github.com/pouyio/twiso/compare/v2.7.31...v2.7.32) (2022-06-12)
+
+
+### :bug:
+
+* fix global search navigation ([eddcb56](https://github.com/pouyio/twiso/commit/eddcb569e0ef6ba2a61fe4dce2000f8779360008))
+
 ## [2.7.31](https://github.com/pouyio/twiso/compare/v2.7.30...v2.7.31) (2022-06-12)
 
 
