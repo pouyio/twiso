@@ -8,9 +8,8 @@ import {
   addWatchlist,
   removeWatchlist,
 } from 'state/slices/movies/thunks';
-import { useDispatch } from 'react-redux';
 import { AuthService } from 'utils/AuthService';
-import { useAppSelector } from 'state/store';
+import { useAppDispatch, useAppSelector } from 'state/store';
 import Emoji from './Emoji';
 
 interface IWatchButtonProps {
@@ -22,7 +21,7 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
   const { t } = useTranslate();
 
   const isLoggedIn = AuthService.getInstance().isLoggedIn();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isWatchlistPending = useAppSelector((state) => {
     return state.movies.pending.watchlist.includes(item.ids.trakt);
   });

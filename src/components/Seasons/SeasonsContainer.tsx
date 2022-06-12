@@ -6,7 +6,6 @@ import {
 } from '../../utils/api';
 import { ModalContext } from '../../contexts';
 import { Show, ShowProgress, Season, Episode, ShowWatched } from '../../models';
-import { useDispatch } from 'react-redux';
 import {
   addEpisodeWatched,
   removeEpisodeWatched,
@@ -15,9 +14,9 @@ import {
 } from 'state/slices/shows/thunks';
 import SeasonSelector from './SeasonSelector';
 import Episodes from './Episodes';
-import { useQueryParam, withDefault, NumberParam } from 'use-query-params';
 import { AuthService } from 'utils/AuthService';
-import { useAppSelector } from 'state/store';
+import { useAppDispatch, useAppSelector } from 'state/store';
+import { useSearchParams } from 'react-router-dom';
 
 interface ISeasonsContainerProps {
   show: Show;
@@ -30,16 +29,17 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   show,
   showId,
 }) => {
-  const [selectedSeason, setSelectedSeason] = useQueryParam(
-    'season',
-    withDefault(NumberParam, undefined)
-  );
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const selectedSeason = !searchParams.get('season')
+    ? undefined
+    : +searchParams.get('season')!;
   const [unTrackedProgress, setUnTrackedProgress] = useState<ShowProgress>();
   const [unTrackedSeasons, setUnTrackedSeasons] = useState<Season[]>([]);
   const [episodes, setEpisodes] = useState<Episode[][]>([]);
   const isLogged = authService.isLoggedIn();
   const { toggle } = useContext(ModalContext);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const watchedShow = useAppSelector(
     (state) => state.shows.shows[+showId]
   ) as ShowWatched;
@@ -83,27 +83,31 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     ) {
       return;
     }
-    setSelectedSeason(
-      watchedShowFullSeasonsRef.find(
-        (s) => s.number === watchedShowNextEpisodeRef.season
-      )?.number,
-      'replace'
+    setSearchParams(
+      {
+        season:
+          '' +
+          watchedShowFullSeasonsRef.find(
+            (s) => s.number === watchedShowNextEpisodeRef.season
+          )?.number,
+      },
+      { replace: true }
     );
   }, [
     watchedShowFullSeasonsRef,
     watchedShowNextEpisodeRef,
-    setSelectedSeason,
+    setSearchParams,
     selectedSeason,
   ]);
 
   const addEpisode = (episode: Episode) => {
     const generatedShow =
       watchedShow ||
-      (({
+      ({
         show,
         progress: unTrackedSeasons,
         fullSeasons: unTrackedSeasons,
-      } as unknown) as ShowWatched);
+      } as unknown as ShowWatched);
     dispatch(addEpisodeWatched({ show: generatedShow, episode }));
   };
 
@@ -127,11 +131,11 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     } else {
       dispatch(
         addSeasonWatched({
-          show: ({
+          show: {
             show,
             progress: unTrackedProgress,
             fullSeasons: unTrackedSeasons,
-          } as unknown) as ShowWatched,
+          } as unknown as ShowWatched,
           season: getFullSeason(selectedSeason)!,
         })
       );
@@ -169,7 +173,9 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
         seasons={watchedShow?.fullSeasons ?? unTrackedSeasons}
         progress={watchedShow?.progress ?? unTrackedProgress}
         selectedSeason={getFullSeason(selectedSeason)}
-        setSelectedSeason={(s) => setSelectedSeason(s, 'replace')}
+        setSelectedSeason={(s) =>
+          setSearchParams({ season: `${s}` }, { replace: true })
+        }
       />
       {selectedSeason !== undefined && (
         <Episodes

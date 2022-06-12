@@ -9,22 +9,22 @@ import startOfWeek from 'date-fns/startOfWeek';
 import addDays from 'date-fns/addDays';
 import getDaysInMonth from 'date-fns/getDaysInMonth';
 import startOfMonth from 'date-fns/startOfMonth';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Calendar as BigCalendar,
   dateFnsLocalizer,
   Event as ICalendarEvent,
 } from 'react-big-calendar';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { getCalendar } from 'utils/api';
 import { Event } from './Event';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './calendar.scss';
 import { ShowCalendar, MovieCalendar } from 'models';
-import { useQueryParam, withDefault, DateParam } from 'use-query-params';
 import { AuthService } from 'utils/AuthService';
 import { useAppSelector } from 'state/store';
 import { useTranslate } from 'hooks';
+import { useSearchParams } from 'react-router-dom';
 
 const localizer = dateFnsLocalizer({
   format,
@@ -64,9 +64,12 @@ const authService = AuthService.getInstance();
 export default function Calendar() {
   const isLogged = authService.isLoggedIn();
   const [events, setEvents] = useState<ICalendarEvent[]>([]);
-  const [selectedDate, setSelectedDate] = useQueryParam(
-    'date',
-    withDefault(DateParam, new Date())
+  const [searchParams, setSearchParams] = useSearchParams({
+    date: new Date().toISOString(),
+  });
+  const selectedDate = useMemo<Date>(
+    () => new Date(searchParams.get('date') ?? new Date()),
+    [searchParams]
   );
   const [only, setOnly] = useState<'movie' | 'show'>();
   const language = useAppSelector((state) => state.config.language);
@@ -77,18 +80,15 @@ export default function Calendar() {
       return;
     }
 
-    const { prevMonthDay, nextMonthDay, firstDate, daysInMonth } = getAllDates(
-      selectedDate
-    );
+    const { prevMonthDay, nextMonthDay, firstDate, daysInMonth } =
+      getAllDates(selectedDate);
 
     getCalendar<MovieCalendar>('movie', prevMonthDay, 6).then(({ data }) =>
       setEvents((e) => [...e, ...data.map(mapMovie)])
     );
-    getCalendar<MovieCalendar>(
-      'movie',
-      firstDate,
-      daysInMonth
-    ).then(({ data }) => setEvents((e) => [...e, ...data.map(mapMovie)]));
+    getCalendar<MovieCalendar>('movie', firstDate, daysInMonth).then(
+      ({ data }) => setEvents((e) => [...e, ...data.map(mapMovie)])
+    );
     getCalendar<MovieCalendar>('movie', nextMonthDay, 6).then(({ data }) =>
       setEvents((e) => [...e, ...data.map(mapMovie)])
     );
@@ -106,7 +106,7 @@ export default function Calendar() {
   }, [isLogged, selectedDate]);
 
   const changeMonth = (direction: number) => {
-    setSelectedDate(addMonths(selectedDate, direction));
+    setSearchParams({ date: addMonths(selectedDate, direction).toISOString() });
     setEvents([]);
   };
 

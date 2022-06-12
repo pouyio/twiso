@@ -2,7 +2,7 @@ import React from 'react';
 import { useAppSelector } from 'state/store';
 import Emoji from './Emoji';
 
-export const ProgressBar: React.FC = () => {
+export const ProgressBar: React.FC<React.PropsWithChildren<unknown>> = () => {
   const shows = useAppSelector((state) => state.shows.totalRequestsPending);
   const movies = useAppSelector((state) => state.movies.totalRequestsPending);
 

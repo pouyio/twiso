@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Helmet from 'react-helmet';
 import { useLocation, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import { populateDetail } from 'state/slices/shows/thunks';
@@ -16,6 +15,7 @@ import { AlertContext } from '../contexts';
 import { useIsWatch, useShare, useTranslate } from '../hooks';
 import { People as IPeople, Ratings, Show, ShowWatched } from '../models';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
+import { Helmet } from 'react-helmet';
 
 enum status {
   'returning series' = 'en antena',
@@ -29,7 +29,7 @@ export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const [showProgressPercentage, setShowProgressPercentage] = useState(false);
-  const { state } = useLocation<Show>();
+  const { state } = useLocation() as { state: Show };
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
@@ -45,17 +45,17 @@ export default function ShowDetail() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(populateDetail({ id: +id, show: state }));
+    dispatch(populateDetail({ id: +id!, show: state }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, id]);
 
   useEffect(() => {
     setPeople(undefined);
     setRatings(undefined);
-    getPeopleApi(+id, 'show').then(({ data }) => {
+    getPeopleApi(+id!, 'show').then(({ data }) => {
       setPeople(data);
     });
-    getRatingsApi(+id, 'show').then(({ data }) => {
+    getRatingsApi(+id!, 'show').then(({ data }) => {
       setRatings(data);
     });
   }, [id]);
@@ -64,10 +64,10 @@ export default function ShowDetail() {
     if (!item) {
       return;
     }
-    if (isWatched(+id, 'show')) {
+    if (isWatched(+id!, 'show')) {
       return 'bg-green-400';
     }
-    if (isWatchlist(+id, 'show')) {
+    if (isWatchlist(+id!, 'show')) {
       return 'bg-blue-400';
     }
     return 'bg-gray-300';
@@ -175,7 +175,7 @@ export default function ShowDetail() {
                     votes={ratings?.votes ?? 0}
                   />
                 </h2>
-                {isWatched(+id, 'show') && (
+                {isWatched(+id!, 'show') && (
                   <h2
                     className="text-sm cursor-pointer text-center"
                     style={{ minWidth: '8rem' }}
@@ -204,13 +204,13 @@ export default function ShowDetail() {
                 <h2>{item.network}</h2>
               </div>
 
-              {!isWatched(+id, 'show') && (
+              {!isWatched(+id!, 'show') && (
                 <div className="my-4">
                   <ShowWatchButton item={item} />
                 </div>
               )}
               <div className="my-4">
-                <SeasonsContainer show={item} showId={+id} />
+                <SeasonsContainer show={item} showId={+id!} />
               </div>
             </div>
           </div>

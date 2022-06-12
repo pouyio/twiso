@@ -23,9 +23,8 @@ export const Event: React.FC<EventProps<ICalendarEvent>> = ({
           event.resource.type === 'show'
             ? `?season=${event.resource.episode.season}`
             : '',
-        state:
-          event.resource.type === 'movie' ? item?.['movie'] : item?.['show'],
       }}
+      state={event.resource.type === 'movie' ? item?.['movie'] : item?.['show']}
     >
       <article className="text-xs lg:text-sm">{title}</article>
     </Link>

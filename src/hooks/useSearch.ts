@@ -1,17 +1,17 @@
 import { useEffect, useState, useCallback } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export const useSearch = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const [localSearch, setLocalSearch] = useState('');
 
   const setSearch = useCallback(
     (query: string) => {
-      history.replace({ search: `?query=${query}` });
+      navigate({ search: `?query=${query}` }, { replace: true });
       setLocalSearch(query);
     },
-    [history]
+    [navigate]
   );
 
   useEffect(() => {

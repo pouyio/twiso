@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Helmet from 'react-helmet';
 import { useLocation, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import { populateDetail } from 'state/slices/movies/thunks';
@@ -15,12 +14,13 @@ import { AlertContext } from '../contexts';
 import { useIsWatch, useShare, useTranslate } from '../hooks';
 import { Movie, People as IPeople, Ratings } from '../models';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
+import { Helmet } from 'react-helmet';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const language = useAppSelector((state) => state.config.language);
-  const { state } = useLocation<Movie>();
+  const { state } = useLocation() as { state: Movie };
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
@@ -32,17 +32,17 @@ export default function MovieDetail() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(populateDetail({ id: +id, movie: state }));
+    dispatch(populateDetail({ id: +id!, movie: state }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, id]);
 
   useEffect(() => {
     setPeople(undefined);
     setRatings(undefined);
-    getPeopleApi(+id, 'movie').then(({ data }) => {
+    getPeopleApi(+id!, 'movie').then(({ data }) => {
       setPeople(data);
     });
-    getRatingsApi(+id, 'movie').then(({ data }) => {
+    getRatingsApi(+id!, 'movie').then(({ data }) => {
       setRatings(data);
     });
   }, [id]);
@@ -51,10 +51,10 @@ export default function MovieDetail() {
     if (!item) {
       return;
     }
-    if (isWatched(+id, 'movie')) {
+    if (isWatched(+id!, 'movie')) {
       return 'bg-green-400';
     }
-    if (isWatchlist(+id, 'movie')) {
+    if (isWatchlist(+id!, 'movie')) {
       return 'bg-blue-400';
     }
     return 'bg-gray-300';

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { Route, Redirect, useLocation, Switch } from 'react-router-dom';
-import CacheRoute from 'react-router-cache-route';
+import { Route, Navigate, useLocation, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import Emoji from './components/Emoji';
@@ -8,7 +7,6 @@ import { ProgressBar } from './components/ProgressBar';
 import { Alert } from 'components/Alert/Alert';
 import { Providers } from 'components/Providers';
 import { GlobalSearch } from 'components/GlobalSearch';
-import { useDispatch } from 'react-redux';
 import { firstLoad } from './state/firstLoadAction';
 import { loadImgConfig } from 'state/slices/config';
 import * as Sentry from '@sentry/react';
@@ -16,7 +14,7 @@ import { AuthService } from 'utils/AuthService';
 import { NewVersion } from 'components/NewVersion';
 import { NavigationTabs } from 'components/Navigation/NavigationTabs';
 import { useWindowSize } from './hooks';
-import { useAppSelector } from 'state/store';
+import { useAppDispatch, useAppSelector } from 'state/store';
 import { ROUTE, ROUTES } from 'utils/routes';
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const Profile = lazy(() => import('./pages/Profile'));
@@ -27,24 +25,24 @@ const Shows = lazy(() => import('./pages/shows/Shows'));
 const Search = lazy(() => import('./pages/search/Search'));
 const Calendar = lazy(() => import('./pages/calendar/Calendar'));
 
-const ParamsComponent: React.FC = () => {
+const ParamsComponent: React.FC<React.PropsWithChildren<unknown>> = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
   return AuthService.getInstance().isLoggedIn() ? (
-    <Redirect to="/movies" />
+    <Navigate to="/movies" />
   ) : (
     <div className="text-center pt-20">
       {params.get('code') ? (
         <Login code={params.get('code') || ''} />
       ) : (
-        <Redirect to="/search" />
+        <Navigate to="/search" />
       )}
     </div>
   );
 };
 
-const App: React.FC = () => {
+const App: React.FC<React.PropsWithChildren<unknown>> = () => {
   const [ref, setRef] = useState<HTMLDivElement | null>();
   const [skipUpdate, setSkipUpdate] = useState(false);
   const { width: windowWidth } = useWindowSize();
@@ -55,7 +53,7 @@ const App: React.FC = () => {
   );
 
   const isLoggedIn = AuthService.getInstance().isLoggedIn();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(loadImgConfig());
@@ -109,9 +107,6 @@ const App: React.FC = () => {
           </nav>
           <>
             {globalSearch && <GlobalSearch />}
-            <Route exact path="/">
-              <ParamsComponent />
-            </Route>
             <Suspense
               fallback={
                 <div
@@ -122,32 +117,38 @@ const App: React.FC = () => {
                 </div>
               }
             >
-              <Switch>
-                <ProtectedRoute path={ROUTES.movies}>
-                  <Movies />
-                </ProtectedRoute>
-                <ProtectedRoute path={ROUTES.shows}>
-                  <Shows />
-                </ProtectedRoute>
-                <ProtectedRoute path={ROUTES.calendar}>
-                  <Calendar />
-                </ProtectedRoute>
-                <CacheRoute path={ROUTES.search}>
-                  <Search />
-                </CacheRoute>
-                <Route path={ROUTE.movie}>
-                  <MovieDetail />
-                </Route>
-                <Route path={ROUTE.show}>
-                  <ShowDetail />
-                </Route>
-                <Route path={ROUTE.person}>
-                  <Person />
-                </Route>
-                <Route path={ROUTES.profile}>
-                  <Profile />
-                </Route>
-              </Switch>
+              <Routes>
+                <Route path="/" element={<ParamsComponent />} />
+                <Route
+                  path={ROUTES.movies}
+                  element={
+                    <ProtectedRoute>
+                      <Movies />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path={ROUTES.shows}
+                  element={
+                    <ProtectedRoute>
+                      <Shows />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path={ROUTES.calendar}
+                  element={
+                    <ProtectedRoute>
+                      <Calendar />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path={ROUTES.search} element={<Search />} />
+                <Route path={ROUTE.movie} element={<MovieDetail />} />
+                <Route path={ROUTE.show} element={<ShowDetail />} />
+                <Route path={ROUTE.person} element={<Person />} />
+                <Route path={ROUTES.profile} element={<Profile />} />
+              </Routes>
             </Suspense>
             <ul
               className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"

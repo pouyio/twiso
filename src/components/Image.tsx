@@ -14,7 +14,7 @@ interface IImageProps {
   size?: 'small' | 'big';
 }
 
-const Image: React.FC<IImageProps> = ({
+const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
   ids,
   text,
   type,

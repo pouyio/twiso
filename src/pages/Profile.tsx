@@ -5,13 +5,12 @@ import Emoji from '../components/Emoji';
 import { getStatsApi, getProfileApi } from '../utils/api';
 import { UserStats } from '../models';
 import { removeImgCaches, removeCaches } from '../utils/cache';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { ThemeContext, ThemeType } from '../contexts';
 import { LoginButton } from '../components/LoginButton';
 import { AuthService } from 'utils/AuthService';
-import { useDispatch } from 'react-redux';
 import { changeLanguage, Language } from 'state/slices/config';
-import { useAppSelector } from 'state/store';
+import { useAppDispatch, useAppSelector } from 'state/store';
 import { useTranslate } from 'hooks';
 
 const authService = AuthService.getInstance();
@@ -21,7 +20,7 @@ export default function Profile() {
   const [stats, setStats] = useState<UserStats>();
   const [dev, setDev] = useState(false);
   const isLogged = authService.isLoggedIn();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.config.language);
   const { t } = useTranslate();
 

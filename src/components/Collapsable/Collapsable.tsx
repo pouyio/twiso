@@ -22,7 +22,7 @@ const isOverflown = (
 
   return isOverflowing;
 };
-const Collapsable: React.FC<ICollapsableProps> = ({
+const Collapsable: React.FC<React.PropsWithChildren<ICollapsableProps>> = ({
   heightInRem,
   children,
   disable,

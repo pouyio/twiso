@@ -4,9 +4,8 @@ import { LoginButton } from './LoginButton';
 import { removeWatchlist, addWatchlist } from 'state/slices/shows/thunks';
 import { useIsWatch, useTranslate } from 'hooks';
 import { AuthService } from 'utils/AuthService';
-import { useAppSelector } from 'state/store';
+import { useAppSelector, useAppDispatch } from 'state/store';
 import Emoji from './Emoji';
-import { useDispatch } from 'react-redux';
 
 interface IShowWatchButtonProps {
   item: Show;
@@ -15,7 +14,7 @@ interface IShowWatchButtonProps {
 const authService = AuthService.getInstance();
 
 const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { isWatchlist } = useIsWatch();
   const isWatchlistPending = useAppSelector((state) => {
     return state.shows.pending.watchlist.includes(item.ids.trakt);

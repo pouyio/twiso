@@ -14,18 +14,16 @@ import {
 } from '../models';
 import { placeholders } from '../components/Related';
 import { Empty } from '../components/Empty';
-import Helmet from 'react-helmet';
 import { useAppSelector } from 'state/store';
 import { useTranslate } from 'hooks';
+import { Helmet } from 'react-helmet';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
-  const [movieResults, setMovieResults] = useState<
-    { movie: Movie; title: string }[]
-  >();
-  const [showResults, setShowResults] = useState<
-    { show: Show; title: string }[]
-  >();
+  const [movieResults, setMovieResults] =
+    useState<{ movie: Movie; title: string }[]>();
+  const [showResults, setShowResults] =
+    useState<{ show: Show; title: string }[]>();
   const language = useAppSelector((state) => state.config.language);
 
   const { id } = useParams<{ id: string }>();
@@ -34,8 +32,8 @@ const Person: React.FC = () => {
   useEffect(() => {
     setShowResults(undefined);
     setMovieResults(undefined);
-    getPersonApi(+id).then(({ data }) => setLocalState(data));
-    getPersonItemsApi<PersonShows>(id, 'show').then(({ data }) => {
+    getPersonApi(+id!).then(({ data }) => setLocalState(data));
+    getPersonItemsApi<PersonShows>(id!, 'show').then(({ data }) => {
       setShowResults(
         data.cast
           .filter((r) => r.series_regular)
@@ -45,7 +43,7 @@ const Person: React.FC = () => {
           .map((r) => ({ show: r.show, title: r.character }))
       );
     });
-    getPersonItemsApi<PersonMovies>(id, 'movie').then(({ data }) => {
+    getPersonItemsApi<PersonMovies>(id!, 'movie').then(({ data }) => {
       setMovieResults([
         ...data.cast
           .filter(

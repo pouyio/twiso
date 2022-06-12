@@ -30,7 +30,7 @@ const Modal: React.FC<IModalProps> = ({ modalRef }) => {
         </div>
       </div>
     </div>,
-    modalRef,
+    modalRef
   );
 };
 

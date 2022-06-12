@@ -67,6 +67,8 @@ const en = {
   dark: 'Dark',
   light: 'Light',
   system: 'System',
+  direction: "Director",
+  cast: "Cast"
 };
 
 const es = {
@@ -135,6 +137,8 @@ const es = {
   dark: 'Oscuro',
   light: 'Claro',
   system: 'Sistema',
+  direction: "Dirección",
+  cast: "Reparto"
 };
 
 const translations: Record<Language, Record<string, string>> = {

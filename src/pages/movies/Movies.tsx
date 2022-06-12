@@ -1,6 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { StringParam, useQueryParam, withDefault } from 'use-query-params';
+import { useSearchParams } from 'react-router-dom';
 import Emoji from '../../components/Emoji';
 import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';
@@ -10,11 +10,11 @@ import { totalByType } from 'state/slices/movies';
 import { Underline } from '../shows/Shows';
 
 export default function Movies() {
-  const [mode, setMode] = useQueryParam(
-    'mode',
-    withDefault(StringParam, 'watchlist')
-  );
+  const [searchParams, setSearchParams] = useSearchParams({
+    mode: 'watchlist',
+  });
   const { width } = useWindowSize();
+  const mode = searchParams.get('mode');
 
   const { watched, watchlist } = useAppSelector(totalByType);
   const { t } = useTranslate();
@@ -31,13 +31,19 @@ export default function Movies() {
         }}
       >
         <div className="w-full">
-          <button className="py-2 w-full" onClick={() => setMode('watchlist')}>
+          <button
+            className="py-2 w-full"
+            onClick={() => setSearchParams({ mode: 'watchlist' })}
+          >
             <Emoji emoji="⏱" /> {t('watchlists')} ({watchlist})
           </button>
           <Underline selected={mode === 'watchlist'} />
         </div>
         <div className="w-full">
-          <button className="py-2 w-full" onClick={() => setMode('watched')}>
+          <button
+            className="py-2 w-full"
+            onClick={() => setSearchParams({ mode: 'watched' })}
+          >
             <Emoji emoji="📚" /> {t('watcheds')} ({watched})
           </button>
           <Underline selected={mode === 'watched'} />

@@ -7,7 +7,7 @@ interface IPaginationContainerProps {
   items: any[];
 }
 
-const PaginationContainer: React.FC<IPaginationContainerProps> = ({
+const PaginationContainer: React.FC<React.PropsWithChildren<IPaginationContainerProps>> = ({
   children,
   items,
 }) => {

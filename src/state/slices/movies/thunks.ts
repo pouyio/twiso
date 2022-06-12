@@ -95,6 +95,7 @@ export const populateDetail = createAsyncThunk<
   { state: RootState }
 >('movies/populateDetail', async ({ id, movie }, { getState }) => {
   const state = getState();
+  const updatedMovie: Movie = JSON.parse(JSON.stringify(movie));
   try {
     const foundMovie = state.movies.movies[id];
     // found in local state
@@ -114,10 +115,10 @@ export const populateDetail = createAsyncThunk<
           'movie',
           language
         );
-        movie.title = title || movie.title;
-        movie.overview = overview || movie.overview;
+        updatedMovie.title = title || movie.title;
+        updatedMovie.overview = overview || movie.overview;
       }
-      return movie;
+      return updatedMovie;
     }
   } catch (e) {
     console.error(e);

@@ -11,7 +11,7 @@ interface IImageLinkProps {
   type: 'movie' | 'show' | 'person';
 }
 
-const ImageLink: React.FC<IImageLinkProps> = ({
+const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
   item,
   ids,
   text,
@@ -23,8 +23,8 @@ const ImageLink: React.FC<IImageLinkProps> = ({
     <Link
       to={{
         pathname: `/${type}/${ids.trakt}`,
-        state: item,
       }}
+      state={item}
     >
       <Image ids={ids} text={text} style={style} type={type} />
       {children}

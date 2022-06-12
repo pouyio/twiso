@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useQueryParam, NumberParam, withDefault } from 'use-query-params';
+import { useSearchParams } from 'react-router-dom';
 export const PAGE_SIZE = 40;
 
 export const usePagination = <T,>(items: T[]) => {
-  const [currentPage, setCurrentPage] = useQueryParam(
-    'page',
-    withDefault(NumberParam, 1)
-  );
+  const [searchParams, setSearchParams] = useSearchParams({ page: '1' });
+  const currentPage = +(searchParams.get('page') || 1);
   const [lastPage, setLastPage] = useState(1);
 
   useEffect(() => {
@@ -23,13 +21,13 @@ export const usePagination = <T,>(items: T[]) => {
       return;
     }
 
-    setCurrentPage(currentPage + direction);
+    setSearchParams({ page: `${currentPage + direction}` });
     window.scrollTo(0, 0);
   };
 
   const setSafePage = (page: 'first' | 'last') => {
     const localPage = page === 'first' ? 1 : lastPage;
-    setCurrentPage(localPage);
+    setSearchParams({ page: `${localPage}` });
   };
 
   const getItemsByPage = () => {

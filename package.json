@@ -2,35 +2,6 @@
   "name": "twiso",
   "version": "2.7.29",
   "private": true,
-  "dependencies": {
-    "@reduxjs/toolkit": "^1.7.0",
-    "@sentry/react": "6.11.0",
-    "@sentry/tracing": "^6.11.0",
-    "axios": "^0.21.2",
-    "axios-rate-limit": "^1.2.1",
-    "bottleneck": "^2.19.5",
-    "date-fns": "^2.15.0",
-    "dexie": "^3.0.3",
-    "fast-deep-equal": "^3.1.3",
-    "framer-motion": "^6.2.8",
-    "fuse.js": "^5.2.3",
-    "query-string": "^6.13.1",
-    "ramda": "^0.27.1",
-    "react": "^16.8.6",
-    "react-big-calendar": "^0.26.0",
-    "react-dom": "^16.8.6",
-    "react-fastclick": "^3.0.2",
-    "react-helmet": "^6.1.0",
-    "react-hook-inview": "^4.0.0",
-    "react-image": "^2.3.0",
-    "react-longpressable": "^1.1.1",
-    "react-redux": "^7.2.4",
-    "react-router-cache-route": "^1.8.4",
-    "react-router-dom": "^5.1.1",
-    "react-scripts": "5.0.0",
-    "scroll-behavior-polyfill": "^2.0.13",
-    "use-query-params": "^1.1.6"
-  },
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
     "tailwind:css": "tailwind build -i ./src/tailwind.src.css -o ./src/tailwind.css",
@@ -41,37 +12,48 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.8.1",
+    "@sentry/react": "6.19.7",
+    "@sentry/tracing": "6.19.7",
+    "axios": "^0.21.2",
+    "axios-rate-limit": "^1.2.1",
+    "bottleneck": "^2.19.5",
+    "date-fns": "^2.15.0",
+    "dexie": "^3.0.3",
+    "fast-deep-equal": "^3.1.3",
+    "framer-motion": "^6.2.8",
+    "fuse.js": "^5.2.3",
+    "query-string": "^6.13.1",
+    "ramda": "^0.27.1",
+    "react": "^18.0.0",
+    "react-big-calendar": "^0.40.1",
+    "react-dom": "^18.0.0",
+    "react-fastclick": "^3.0.2",
+    "react-helmet": "^6.1.0",
+    "react-hook-inview": "^4.0.0",
+    "react-image": "^2.3.0",
+    "react-longpressable": "^1.1.1",
+    "react-redux": "^8.0.1",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "5.0.1",
+    "scroll-behavior-polyfill": "^2.0.13"
   },
   "devDependencies": {
     "@now/node": "^1.5.1",
     "@semantic-release/changelog": "^5.0.0",
     "@semantic-release/git": "^9.0.0",
-    "@sentry/browser": "6.11.0",
+    "@sentry/browser": "6.19.7",
     "@types/express": "^4.17.6",
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.4",
     "@types/ramda": "^0.27.20",
-    "@types/react": "^16.9.2",
-    "@types/react-big-calendar": "^0.24.5",
-    "@types/react-dom": "^16.9.0",
-    "@types/react-helmet": "^6.1.0",
+    "@types/react": "^18.0.0",
+    "@types/react-big-calendar": "^0.38.0",
+    "@types/react-dom": "^18.0.0",
+    "@types/react-helmet": "^6.1.5",
     "@types/react-outside-click-handler": "^1.3.0",
-    "@types/react-redux": "^7.1.18",
-    "@types/react-router-dom": "^5.1.0",
+    "@types/react-redux": "^7.1.23",
     "@types/resize-observer-browser": "^0.1.3",
     "autoprefixer": "^10.4.0",
     "conventional-changelog-atom": "^2.0.3",
@@ -87,5 +69,20 @@
     "source-map-explorer": "^2.2.1",
     "tailwindcss": "^3.0.5",
     "typescript": "^4.0.2"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
