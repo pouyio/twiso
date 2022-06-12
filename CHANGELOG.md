@@ -1,3 +1,10 @@
+## [2.7.33](https://github.com/pouyio/twiso/compare/v2.7.32...v2.7.33) (2022-06-12)
+
+
+### :art:
+
+* added color-scheme to root ([2cc3e8b](https://github.com/pouyio/twiso/commit/2cc3e8bc0cdabc095d23a268e355112931fd18cb))
+
 ## [2.7.32](https://github.com/pouyio/twiso/compare/v2.7.31...v2.7.32) (2022-06-12)
 
 
