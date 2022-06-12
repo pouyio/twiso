@@ -50,11 +50,6 @@ export const GlobalSearch = () => {
           placeholder="🔍 Escribe un título de tu colección"
           type="text"
           onChange={onFilter}
-          onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (e.keyCode === 27 || e.charCode === 27) {
-              dispatch(setGlobalSearch(false));
-            }
-          }}
         />
         <button onClick={() => dispatch(setGlobalSearch(false))} tabIndex={-1}>
           <Emoji className="ml-3 mr-2" emoji="❌" />
@@ -69,7 +64,6 @@ export const GlobalSearch = () => {
                 key={`${item[type]?.ids?.trakt}_${i}`}
                 className="p-2"
                 style={{ flex: '1 0 50%', maxWidth: '10em' }}
-                onClick={() => dispatch(setGlobalSearch(false))}
                 tabIndex={i + 1}
               >
                 <div className={`rounded-lg ${getBgClass(item, type)}`}>
@@ -79,6 +73,7 @@ export const GlobalSearch = () => {
                     item={item[type]}
                     style={{ minHeight: '13.5em' }}
                     type={type}
+                    onClick={() => dispatch(setGlobalSearch(false))}
                   >
                     {item[type].title && (
                       <p className="text-sm text-center py-1">

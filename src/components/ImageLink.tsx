@@ -9,6 +9,7 @@ interface IImageLinkProps {
   text: string;
   style?: React.CSSProperties;
   type: 'movie' | 'show' | 'person';
+  onClick?: React.MouseEventHandler<HTMLAnchorElement> | undefined;
 }
 
 const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
@@ -18,6 +19,7 @@ const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
   style,
   type,
   children = '',
+  onClick = () => {},
 }) => {
   return (
     <Link
@@ -25,6 +27,7 @@ const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
         pathname: `/${type}/${ids.trakt}`,
       }}
       state={item}
+      onClick={onClick}
     >
       <Image ids={ids} text={text} style={style} type={type} />
       {children}
