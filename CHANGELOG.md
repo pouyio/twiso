@@ -1,3 +1,17 @@
+## [2.7.31](https://github.com/pouyio/twiso/compare/v2.7.30...v2.7.31) (2022-06-12)
+
+
+### :arrow_up:
+
+* Bump dexie from 3.0.3 to 3.2.2 ([0da9898](https://github.com/pouyio/twiso/commit/0da9898901cadc6c5773c834d6a36081596e54fe))
+* Bump ejs from 3.1.5 to 3.1.8 ([48513a9](https://github.com/pouyio/twiso/commit/48513a91601efc3ca14285f92d22e27d43f6bd4c))
+* Bump semantic-release from 17.2.3 to 19.0.3 ([0d659b4](https://github.com/pouyio/twiso/commit/0d659b401a2c88005c75e9159c5dd2a7f50cc1bd))
+* Bump semver-regex from 3.1.3 to 3.1.4 ([41926b2](https://github.com/pouyio/twiso/commit/41926b26462e20ffdbd97a7a31e1833aa49ae00f))
+
+### :art:
+
+* updated global filter colors ([534f64f](https://github.com/pouyio/twiso/commit/534f64fbae66baec8ddd2d5f3c43cf9c22b5787e))
+
 ## [2.7.30](https://github.com/pouyio/twiso/compare/v2.7.29...v2.7.30) (2022-06-12)
 
 
