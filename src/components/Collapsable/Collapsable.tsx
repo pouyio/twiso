@@ -47,7 +47,13 @@ const Collapsable: React.FC<React.PropsWithChildren<ICollapsableProps>> = ({
         className={`leading-tight font-light overflow-hidden relative ${
           isButtonShown && !opened ? 'collapsable' : ''
         }`}
-        initial={false}
+        initial={{
+          height: isButtonShown
+            ? opened
+              ? 'auto'
+              : `${heightInRem}rem`
+            : undefined,
+        }}
         {...(isButtonShown
           ? { animate: { height: opened ? 'auto' : `${heightInRem}rem` } }
           : {})}
