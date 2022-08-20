@@ -8,3 +8,4 @@ export * from './useDebounce';
 export * from './useFilter';
 export * from './useWindowSize';
 export * from './useTranslate';
+export * from './useSearchParams';

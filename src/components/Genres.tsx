@@ -6,9 +6,11 @@ import { useTranslate } from 'hooks';
 
 interface IGenresProps {
   genres: string[];
+  selected?: string[];
+  onClick?: (key: string) => void;
 }
 
-const Genres: React.FC<IGenresProps> = ({ genres }) => {
+const Genres: React.FC<IGenresProps> = ({ genres, onClick }) => {
   const { t } = useTranslate();
   return (
     <ul
@@ -17,7 +19,11 @@ const Genres: React.FC<IGenresProps> = ({ genres }) => {
     >
       {genres.length ? (
         genres.map((g) => (
-          <li key={g}>
+          <li
+            key={g}
+            {...(onClick ? { onClick: () => onClick(g) } : {})}
+            className={onClick ? 'cursor-pointer' : ''}
+          >
             <div className="bg-gray-100 font-light px-2 py-1 rounded-full mx-1 whitespace-pre font-family-text">
               <Emoji emoji={getGenre(g)} /> {t(g)}
             </div>

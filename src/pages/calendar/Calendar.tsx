@@ -24,7 +24,7 @@ import { ShowCalendar, MovieCalendar } from 'models';
 import { AuthService } from 'utils/AuthService';
 import { useAppSelector } from 'state/store';
 import { useTranslate } from 'hooks';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'hooks';
 
 const localizer = dateFnsLocalizer({
   format,
