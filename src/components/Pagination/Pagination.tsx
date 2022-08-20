@@ -1,5 +1,5 @@
 import Genres from 'components/Genres';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { genres } from 'utils/getGenre';
 import Emoji from '../Emoji';
 
@@ -36,6 +36,12 @@ const Pagination: React.FC<IPaginationProps> = ({
     });
   };
 
+  useEffect(() => {
+    if (!showFilters) {
+      selectedGenres.forEach(toggleGenre);
+    }
+  }, [showFilters]);
+
   return (
     <>
       <div className="flex justify-evenly text-2xl max-w-3xl m-auto">
@@ -60,7 +66,7 @@ const Pagination: React.FC<IPaginationProps> = ({
             <Emoji
               className="cursor-pointer"
               onClick={() => setShowFilters((s) => !s)}
-              emoji="🪀"
+              emoji="🗂️"
             />
           )}
         </h1>
@@ -80,24 +86,28 @@ const Pagination: React.FC<IPaginationProps> = ({
         </button>
       </div>
       {showFilters && (
-        <div className="inline-flex bg-blue-100 py-2 px-4 w-full sticky top-0 flex-col">
-          <Genres
-            genres={Object.keys(genres).filter(
-              (g) => !selectedGenres.includes(g)
-            )}
-            onClick={toggleGenre}
-            selected={selectedGenres}
-          />
-          {selectedGenres.length ? (
+        <>
+          <div className="inline-flex bg-blue-100 py-2 px-4 w-full sticky top-0 flex-col border-b-2">
             <Genres
-              genres={selectedGenres}
+              genres={Object.keys(genres).filter(
+                (g) => !selectedGenres.includes(g)
+              )}
               onClick={toggleGenre}
               selected={selectedGenres}
             />
-          ) : (
-            'Selecciona alguno'
-          )}
-        </div>
+          </div>
+          <div className="inline-flex bg-blue-100 py-2 px-4 w-full sticky top-0 flex-col border-b-2">
+            {selectedGenres.length ? (
+              <Genres
+                genres={selectedGenres}
+                onClick={toggleGenre}
+                selected={selectedGenres}
+              />
+            ) : (
+              'Selecciona alguno'
+            )}
+          </div>
+        </>
       )}
     </>
   );

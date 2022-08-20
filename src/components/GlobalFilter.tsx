@@ -69,7 +69,7 @@ export const GlobalFilter = () => {
           <Emoji className="ml-3 mr-2" emoji="❌" />
         </button>
       </div>
-      <div className="inline-flex bg-blue-100 py-2 px-4">
+      <div className="inline-flex bg-blue-100 py-2 px-4 border-b-2">
         <Genres
           genres={Object.keys(genres).filter(
             (g) => !selectedGenres.includes(g)
