@@ -1,3 +1,17 @@
+# [2.8.0](https://github.com/pouyio/twiso/compare/v2.7.33...v2.8.0) (2022-08-20)
+
+
+### :art:
+
+* added correct translation ([2143384](https://github.com/pouyio/twiso/commit/21433841978f860abed6c62251b6e4693daa6e12))
+* fix initial state of collapsable ([e56bc86](https://github.com/pouyio/twiso/commit/e56bc8632c16735a2eb72d1cc3df7332eb49b8e3))
+* improved filters ([7a68f9f](https://github.com/pouyio/twiso/commit/7a68f9f686c2a9303f3138aaf8785c97480e3ec5))
+
+### :sparkles:
+
+* added filter by genres on pagination ([9e016a3](https://github.com/pouyio/twiso/commit/9e016a3971456f172b1bed46dea4582e3e84dbb1))
+* added movies as director in person detail ([995831e](https://github.com/pouyio/twiso/commit/995831edb7850f7770299e1ee099f1664b074b1c))
+
 ## [2.7.33](https://github.com/pouyio/twiso/compare/v2.7.32...v2.7.33) (2022-06-12)
 
 
