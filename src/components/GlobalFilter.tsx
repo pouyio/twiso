@@ -1,4 +1,4 @@
-import { useFilter, useIsWatch } from 'hooks';
+import { useFilter, useIsWatch, useTranslate } from 'hooks';
 import {
   MovieWatched,
   MovieWatchlist,
@@ -24,6 +24,7 @@ export const GlobalFilter = () => {
   const [searchValue, setSearchValue] = useState<string>();
   const { isWatched, isWatchlist } = useIsWatch();
   const dispatch = useDispatch();
+  const { t } = useTranslate();
 
   useEffect(() => {
     if (searchValue) {
@@ -86,7 +87,7 @@ export const GlobalFilter = () => {
             selected={selectedGenres}
           />
         ) : (
-          'Selecciona alguno'
+          t('select_any')
         )}
       </div>
       <ul className="flex flex-wrap items-stretch justify-center bg-blue-100 overflow-y-auto">

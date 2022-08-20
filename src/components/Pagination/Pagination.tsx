@@ -1,4 +1,5 @@
 import Genres from 'components/Genres';
+import { useTranslate } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { genres } from 'utils/getGenre';
 import Emoji from '../Emoji';
@@ -24,6 +25,7 @@ const Pagination: React.FC<IPaginationProps> = ({
 }) => {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const { t } = useTranslate();
   const toggleGenre = (genre: string) => {
     setSelectedGenres((g) => {
       const newGenres = g.includes(genre)
@@ -104,7 +106,7 @@ const Pagination: React.FC<IPaginationProps> = ({
                 selected={selectedGenres}
               />
             ) : (
-              'Selecciona alguno'
+              t('select_any')
             )}
           </div>
         </>

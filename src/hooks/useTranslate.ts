@@ -68,7 +68,8 @@ const en = {
   light: 'Light',
   system: 'System',
   direction: "Director",
-  cast: "Cast"
+  cast: "Cast",
+  select_any: "Select some"
 };
 
 const es = {
@@ -138,7 +139,8 @@ const es = {
   light: 'Claro',
   system: 'Sistema',
   direction: "Dirección",
-  cast: "Reparto"
+  cast: "Reparto",
+  select_any: "Selecciona alguno"
 };
 
 const translations: Record<Language, Record<string, string>> = {
