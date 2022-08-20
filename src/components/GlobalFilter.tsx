@@ -1,29 +1,44 @@
-import { useFilter, useIsWatch } from 'hooks';
+import { useFilter, useIsWatch, useTranslate } from 'hooks';
 import {
   MovieWatched,
   MovieWatchlist,
   ShowWatched,
   ShowWatchlist,
 } from 'models';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Emoji from './Emoji';
 import ImageLink from './ImageLink';
 import { useDispatch } from 'react-redux';
 import { setGlobalSearch } from 'state/slices/root';
 import { getType } from 'utils/getType';
+import Genres from './Genres';
+import { genres } from 'utils/getGenre';
 
-export const GlobalSearch = () => {
+export const GlobalFilter = () => {
   const { filter } = useFilter();
   const [results, setResults] =
     useState<
       Array<MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist>
     >();
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [searchValue, setSearchValue] = useState<string>();
   const { isWatched, isWatchlist } = useIsWatch();
   const dispatch = useDispatch();
+  const { t } = useTranslate();
 
-  const onFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const a = filter(event.target.value);
-    setResults(a.slice(0, 10));
+  useEffect(() => {
+    if (searchValue) {
+      const a = filter(searchValue, selectedGenres);
+      setResults(a.slice(0, 10));
+    }
+  }, [searchValue, selectedGenres]);
+
+  const toggleGenre = (genre: string) => {
+    setSelectedGenres((g) => {
+      return g.includes(genre)
+        ? g.filter((g) => g !== genre)
+        : [...selectedGenres, genre];
+    });
   };
 
   const getBgClass = (
@@ -46,14 +61,34 @@ export const GlobalSearch = () => {
     >
       <div className="w-full bg-blue-100 flex items-center border-b-2">
         <input
-          className="bg-blue-100 w-full text-black px-2 py-2 outline-none grow text-gray-700 "
+          className="bg-blue-100 w-full px-2 py-2 outline-none grow text-gray-700 "
           placeholder="🔍 Escribe un título de tu colección"
           type="text"
-          onChange={onFilter}
+          onChange={(e) => setSearchValue(e.target.value)}
         />
         <button onClick={() => dispatch(setGlobalSearch(false))} tabIndex={-1}>
           <Emoji className="ml-3 mr-2" emoji="❌" />
         </button>
+      </div>
+      <div className="inline-flex bg-blue-100 py-2 px-4 border-b-2">
+        <Genres
+          genres={Object.keys(genres).filter(
+            (g) => !selectedGenres.includes(g)
+          )}
+          onClick={toggleGenre}
+          selected={selectedGenres}
+        />
+      </div>
+      <div className="inline-flex bg-blue-100 py-2 px-4">
+        {selectedGenres.length ? (
+          <Genres
+            genres={selectedGenres}
+            onClick={toggleGenre}
+            selected={selectedGenres}
+          />
+        ) : (
+          t('select_any')
+        )}
       </div>
       <ul className="flex flex-wrap items-stretch justify-center bg-blue-100 overflow-y-auto">
         {results &&

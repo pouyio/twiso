@@ -254,7 +254,10 @@ export const reducer = showsSlice.reducer;
 // selectors
 const showsSelector = (state: RootState) => state.shows.shows;
 export const byType = createSelector(showsSelector, (shows) => {
-  return Object.values(shows).reduce(
+  return Object.values(shows).reduce<{
+    watchlist: ShowWatchlist[];
+    watched: ShowWatched[];
+  }>(
     (
       acc: {
         watchlist: ShowWatchlist[];
@@ -268,6 +271,18 @@ export const byType = createSelector(showsSelector, (shows) => {
     { watchlist: [], watched: [] }
   );
 });
+
+export const filterByGenres = (genres: string[]) =>
+  createSelector(byType, (shows) => {
+    return {
+      watchlist: shows.watchlist.filter((i) =>
+        genres.every((g) => i.show.genres.includes(g))
+      ),
+      watched: shows.watched.filter((i) =>
+        genres.every((g) => i.show.genres.includes(g))
+      ),
+    };
+  });
 
 export const totalByType = createSelector(byType, ({ watchlist, watched }) => {
   return { watchlist: watchlist.length, watched: watched.length };

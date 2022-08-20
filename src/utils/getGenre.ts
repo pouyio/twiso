@@ -1,4 +1,4 @@
-const genres: {
+export const genres: {
   [key: string]: string;
 } = {
   action: '👊',

@@ -16,7 +16,7 @@ import SeasonSelector from './SeasonSelector';
 import Episodes from './Episodes';
 import { AuthService } from 'utils/AuthService';
 import { useAppDispatch, useAppSelector } from 'state/store';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'hooks';
 
 interface ISeasonsContainerProps {
   show: Show;

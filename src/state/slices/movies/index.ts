@@ -170,7 +170,10 @@ export const reducer = moviesSlice.reducer;
 // selectors
 const moviesSelector = (state: RootState) => state.movies.movies;
 export const byType = createSelector(moviesSelector, (movies) => {
-  return Object.values(movies).reduce(
+  return Object.values(movies).reduce<{
+    watchlist: MovieWatchlist[];
+    watched: MovieWatched[];
+  }>(
     (
       acc: {
         watchlist: MovieWatchlist[];
@@ -184,6 +187,18 @@ export const byType = createSelector(moviesSelector, (movies) => {
     { watchlist: [], watched: [] }
   );
 });
+
+export const filterByGenres = (genres: string[]) =>
+  createSelector(byType, (movies) => {
+    return {
+      watchlist: movies.watchlist.filter((i) =>
+        genres.every((g) => i.movie.genres.includes(g))
+      ),
+      watched: movies.watched.filter((i) =>
+        genres.every((g) => i.movie.genres.includes(g))
+      ),
+    };
+  });
 
 export const totalByType = createSelector(byType, ({ watchlist, watched }) => {
   return { watchlist: watchlist.length, watched: watched.length };

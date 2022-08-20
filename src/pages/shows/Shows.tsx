@@ -7,7 +7,7 @@ import { useAppSelector } from 'state/store';
 import { useTranslate, useWindowSize } from '../../hooks';
 import { totalByType } from 'state/slices/shows';
 import { motion } from 'framer-motion';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'hooks';
 
 export const Underline: React.FC<{ selected: boolean }> = ({ selected }) => {
   return (

@@ -1,5 +1,5 @@
+import { useSearchParams } from 'hooks';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 export const PAGE_SIZE = 40;
 
 export const usePagination = <T,>(items: T[]) => {

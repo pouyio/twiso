@@ -1,14 +1,15 @@
+import { ShowWatched } from 'models';
 import React, { useEffect, useState } from 'react';
+import { filterByGenres } from 'state/slices/shows';
+import { useAppSelector } from 'state/store';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
-import { ShowWatched } from 'models';
-import { useAppSelector } from 'state/store';
-import { byType } from 'state/slices/shows';
 
 const ShowsWatched: React.FC = () => {
   const [orderedShows, setOrderedShows] = useState<ShowWatched[]>([]);
-  const { watched } = useAppSelector(byType);
+  const [genres, setGenres] = useState<string[]>([]);
+  const { watched } = useAppSelector(filterByGenres(genres));
 
   useEffect(() => {
     setOrderedShows(
@@ -29,7 +30,7 @@ const ShowsWatched: React.FC = () => {
   const { getItemsByPage } = usePagination(orderedShows);
 
   return (
-    <PaginationContainer items={orderedShows}>
+    <PaginationContainer items={orderedShows} onFilter={setGenres}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
         {getItemsByPage().map((m) => (
           <li

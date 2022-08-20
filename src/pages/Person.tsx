@@ -22,6 +22,8 @@ const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
   const [movieResults, setMovieResults] =
     useState<{ movie: Movie; title: string }[]>();
+  const [movieDirectorResults, setMovieDirectorResults] =
+    useState<{ movie: Movie; title: string }[]>();
   const [showResults, setShowResults] =
     useState<{ show: Show; title: string }[]>();
   const language = useAppSelector((state) => state.config.language);
@@ -53,6 +55,8 @@ const Person: React.FC = () => {
             movie: r.movie,
             title: r.character,
           })),
+      ]);
+      setMovieDirectorResults([
         ...((data.crew || {}).directing || [])
           .map((r) => ({ movie: r.movie, title: r.job }))
           .filter((r) => !(r.title === 'Himself' || r.title === 'Herself')),
@@ -144,6 +148,44 @@ const Person: React.FC = () => {
             {movieResults ? (
               movieResults.length ? (
                 movieResults.map((r, i) => (
+                  <li
+                    key={`${r.movie.ids.trakt}-movie-${i}`}
+                    className="p-2 h-full"
+                    style={{ flex: '1 0 50%', maxWidth: '10em' }}
+                  >
+                    <div className="bg-gray-300 rounded-lg">
+                      <ImageLink
+                        ids={r.movie.ids}
+                        text={r.movie.title}
+                        item={r.movie}
+                        type="movie"
+                        style={{ minHeight: '13.5em' }}
+                      >
+                        {r.title && (
+                          <p className="text-sm text-gray-700 text-center py-1">
+                            {r.title}
+                          </p>
+                        )}
+                      </ImageLink>
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <Empty />
+              )
+            ) : (
+              placeholders
+            )}
+          </ul>
+
+          <h1 className="font-medium font-family-text">{t('direction')} </h1>
+          <ul
+            className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {movieDirectorResults ? (
+              movieDirectorResults.length ? (
+                movieDirectorResults.map((r, i) => (
                   <li
                     key={`${r.movie.ids.trakt}-movie-${i}`}
                     className="p-2 h-full"

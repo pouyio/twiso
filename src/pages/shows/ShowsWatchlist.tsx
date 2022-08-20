@@ -1,16 +1,17 @@
+import { ShowWatchlist } from 'models';
 import React, { useEffect, useState } from 'react';
+import { filterByGenres } from 'state/slices/shows';
+import { useAppSelector } from 'state/store';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
-import { ShowWatchlist } from 'models';
-import { useAppSelector } from 'state/store';
-import { byType } from 'state/slices/shows';
 
 const ShowsWatchlist: React.FC = () => {
   const [orderedShows, setOrderedShows] = useState<ShowWatchlist[]>([]);
 
   const { getItemsByPage } = usePagination(orderedShows);
-  const { watchlist } = useAppSelector(byType);
+  const [genres, setGenres] = useState<string[]>([]);
+  const { watchlist } = useAppSelector(filterByGenres(genres));
 
   useEffect(() => {
     const nearFuture = new Date();
@@ -35,7 +36,7 @@ const ShowsWatchlist: React.FC = () => {
   }, [watchlist]);
 
   return (
-    <PaginationContainer items={orderedShows}>
+    <PaginationContainer items={orderedShows} onFilter={setGenres}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
         {getItemsByPage().map((m) => (
           <li

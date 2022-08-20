@@ -5,7 +5,7 @@ export const useFilter = () => {
   const movies = useAppSelector((state) => state.movies);
   const shows = useAppSelector((state) => state.shows);
 
-  const filter = (text: string) => {
+  const filter = (text: string, genres: string[] = []) => {
     if (!text) {
       return [];
     }
@@ -22,7 +22,14 @@ export const useFilter = () => {
       }
     );
 
-    return fuse.search(text).map((r) => r.item);
+    return fuse
+      .search(text)
+      .map((r) => r.item)
+      .filter((i) => {
+        return genres.length
+          ? genres.every((g) => (i['movie'] || i['show']).genres.includes(g))
+          : true;
+      });
   };
 
   const filterBy = (text: string, type: 'movie' | 'show') => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'hooks';
 import Emoji from '../../components/Emoji';
 import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';

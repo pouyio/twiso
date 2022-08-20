@@ -6,7 +6,7 @@ import Emoji from './components/Emoji';
 import { ProgressBar } from './components/ProgressBar';
 import { Alert } from 'components/Alert/Alert';
 import { Providers } from 'components/Providers';
-import { GlobalSearch } from 'components/GlobalSearch';
+import { GlobalFilter } from 'components/GlobalFilter';
 import { firstLoad } from './state/firstLoadAction';
 import { loadImgConfig } from 'state/slices/config';
 import * as Sentry from '@sentry/react';
@@ -106,7 +106,7 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
             <NavigationTabs logged={isLoggedIn} />
           </nav>
           <>
-            {globalSearch && <GlobalSearch />}
+            {globalSearch && <GlobalFilter />}
             <Suspense
               fallback={
                 <div

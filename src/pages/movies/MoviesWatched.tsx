@@ -1,15 +1,16 @@
+import { MovieWatched } from 'models';
 import React, { useEffect, useState } from 'react';
+import { filterByGenres } from 'state/slices/movies';
+import { useAppSelector } from 'state/store';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
-import { MovieWatched } from 'models';
-import { useAppSelector } from 'state/store';
-import { byType } from 'state/slices/movies';
 
 export const MoviesWatched: React.FC = () => {
   const [orderedMovies, setOrderedMovies] = useState<MovieWatched[]>([]);
   const { getItemsByPage } = usePagination(orderedMovies);
-  const { watched } = useAppSelector(byType);
+  const [genres, setGenres] = useState<string[]>([]);
+  const { watched } = useAppSelector(filterByGenres(genres));
 
   useEffect(() => {
     const newItems = watched
@@ -21,7 +22,7 @@ export const MoviesWatched: React.FC = () => {
   }, [watched]);
 
   return (
-    <PaginationContainer items={orderedMovies}>
+    <PaginationContainer items={orderedMovies} onFilter={setGenres}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
         {getItemsByPage().map((m, i) => (
           <li
