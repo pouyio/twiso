@@ -1,3 +1,21 @@
+## [2.8.1](https://github.com/pouyio/twiso/compare/v2.8.0...v2.8.1) (2022-12-07)
+
+
+### :arg:
+
+* fix scroll ([41d9d18](https://github.com/pouyio/twiso/commit/41d9d18019c35ce8abdc8479bb32ecaae883f8b0))
+
+### :arrow_up:
+
+* Bump async from 2.6.3 to 2.6.4 ([517f938](https://github.com/pouyio/twiso/commit/517f9387c271fd466b220e2a6d1e17a46f58a6c8))
+* Bump decode-uri-component from 0.2.0 to 0.2.2 ([fde823b](https://github.com/pouyio/twiso/commit/fde823b163e3aebc9fe77c1b6f1e10462fd48b55))
+* Bump loader-utils from 1.4.0 to 1.4.2 ([3f944c9](https://github.com/pouyio/twiso/commit/3f944c94428d0d8e77958bcacd2e7d8170103083))
+* Bump terser from 4.8.0 to 4.8.1 ([732ebe1](https://github.com/pouyio/twiso/commit/732ebe14da556dd00751c9f4d5fb68f12b51797b))
+
+### :rocket:
+
+* update caniuse ([8556ebb](https://github.com/pouyio/twiso/commit/8556ebb6cddb50cd40a5c6354d381765442e1036))
+
 # [2.8.0](https://github.com/pouyio/twiso/compare/v2.7.33...v2.8.0) (2022-08-20)
 
 
