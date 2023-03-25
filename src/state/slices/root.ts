@@ -2,12 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface RootState {
   globalSearch: boolean;
-  serviceWorkerRegistration: ServiceWorkerRegistration | null;
 }
 
 export const initialState: RootState = {
   globalSearch: false,
-  serviceWorkerRegistration: null,
 };
 
 const rootSlice = createSlice({
@@ -17,17 +15,11 @@ const rootSlice = createSlice({
     setGlobalSearch(state, { payload }: PayloadAction<boolean>) {
       state.globalSearch = payload;
     },
-    setSWRegistration(
-      state,
-      { payload }: PayloadAction<ServiceWorkerRegistration | null>
-    ) {
-      state.serviceWorkerRegistration = payload;
-    },
   },
 });
 
 // actions
-export const { setGlobalSearch, setSWRegistration } = rootSlice.actions;
+export const { setGlobalSearch } = rootSlice.actions;
 
 // reducer
 export const reducer = rootSlice.reducer;

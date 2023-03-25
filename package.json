@@ -3,14 +3,11 @@
   "version": "2.8.1",
   "private": true,
   "scripts": {
-    "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
+    "analyze": "npm run build && source-map-explorer 'dist/assets/*.js'",
     "tailwind:css": "tailwind build -i ./src/tailwind.src.css -o ./src/tailwind.css",
-    "custom-sw": "cra-append-sw src/custom-sw.js -s",
-    "start": "npm run tailwind:css && react-scripts start",
-    "build": "NODE_ENV=production npm run tailwind:css && react-scripts build && npm run custom-sw",
-    "now-build": "npm run build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "npm run tailwind:css && vite",
+    "build": "NODE_ENV=production npm run tailwind:css && tsc && vite build",
+    "now-build": "npm run build"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
@@ -32,11 +29,10 @@
     "react-fastclick": "^3.0.2",
     "react-helmet": "^6.1.0",
     "react-hook-inview": "^4.0.0",
-    "react-image": "^2.3.0",
+    "react-image": "4.1.0",
     "react-longpressable": "^1.1.1",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
     "scroll-behavior-polyfill": "^2.0.13"
   },
   "devDependencies": {
@@ -55,6 +51,7 @@
     "@types/react-outside-click-handler": "^1.3.0",
     "@types/react-redux": "^7.1.23",
     "@types/resize-observer-browser": "^0.1.3",
+    "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.0",
     "conventional-changelog-atom": "^2.0.3",
     "cra-append-sw": "^2.7.0",
@@ -65,10 +62,14 @@
     "node-sass": "^7.0.1",
     "postcss": "^8.4.5",
     "prettier": "^2.0.5",
+    "rollup-plugin-visualizer": "^5.9.0",
+    "sass": "^1.60.0",
     "semantic-release": "^19.0.3",
-    "source-map-explorer": "^2.2.1",
     "tailwindcss": "3.1.8",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.2",
+    "vite": "^4.2.1",
+    "vite-plugin-pwa": "^0.14.6",
+    "vite-tsconfig-paths": "^4.0.7"
   },
   "eslintConfig": {
     "extends": "react-app"

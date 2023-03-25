@@ -44,13 +44,9 @@ const ParamsComponent: React.FC<React.PropsWithChildren<unknown>> = () => {
 
 const App: React.FC<React.PropsWithChildren<unknown>> = () => {
   const [ref, setRef] = useState<HTMLDivElement | null>();
-  const [skipUpdate, setSkipUpdate] = useState(false);
   const { width: windowWidth } = useWindowSize();
 
   const globalSearch = useAppSelector((state) => state.root.globalSearch);
-  const serviceWorkerRegistration = useAppSelector(
-    (state) => state.root.serviceWorkerRegistration
-  );
 
   const isLoggedIn = AuthService.getInstance().isLoggedIn();
   const dispatch = useAppDispatch();
@@ -63,31 +59,11 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
     // eslint-disable-next-line
   }, [isLoggedIn]);
 
-  const updateServiceWorker = () => {
-    if (!serviceWorkerRegistration) {
-      return;
-    }
-    const registrationWaiting = serviceWorkerRegistration.waiting;
-    if (registrationWaiting) {
-      registrationWaiting.postMessage({ type: 'SKIP_WAITING' });
-      registrationWaiting.addEventListener('statechange', (e) => {
-        if ((e.target as ServiceWorker).state === 'activated') {
-          window.location.reload();
-        }
-      });
-    }
-  };
-
   return (
     <Sentry.ErrorBoundary>
       <div ref={setRef}>
         <Providers modalRef={ref!}>
-          {!!serviceWorkerRegistration && !skipUpdate && (
-            <NewVersion
-              close={() => setSkipUpdate(true)}
-              update={updateServiceWorker}
-            />
-          )}
+          <NewVersion />
           <Alert />
           <ul
             className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block select-none"

@@ -1,5 +1,5 @@
 import React from 'react';
-const redirect_url = process.env.REACT_APP_REDIRECT_URL;
+const redirect_url = import.meta.env.VITE_REDIRECT_URL;
 
 export const LoginButton: React.FC<{ small?: boolean }> = ({ small }) => {
   return (

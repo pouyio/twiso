@@ -3,7 +3,7 @@ import { useInView } from 'react-hook-inview';
 import Emoji from './Emoji';
 import { Ids } from '../models';
 import { useIsWatch, useImage } from '../hooks';
-import Img from 'react-image';
+import { Img } from 'react-image';
 
 interface IImageProps {
   ids: Ids;
@@ -30,7 +30,7 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
     ids.tmdb,
     type,
     size,
-    inView,
+    inView
   );
 
   const getBorderClass = () => {
