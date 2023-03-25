@@ -1,3 +1,10 @@
+## [2.8.2](https://github.com/pouyio/twiso/compare/v2.8.1...v2.8.2) (2023-03-25)
+
+
+### :rocket:
+
+* moved from cra to vite ([48500ce](https://github.com/pouyio/twiso/commit/48500cefd7b665dc3d7489c86558c9bc52d6111b))
+
 ## [2.8.1](https://github.com/pouyio/twiso/compare/v2.8.0...v2.8.1) (2022-12-07)
 
 
