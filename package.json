@@ -3,7 +3,7 @@
   "version": "2.8.1",
   "private": true,
   "scripts": {
-    "analyze": "npm run build && source-map-explorer 'dist/assets/*.js'",
+    "analyze": "npm run build && source-map-explorer 'build/assets/*.js'",
     "tailwind:css": "tailwind build -i ./src/tailwind.src.css -o ./src/tailwind.css",
     "start": "npm run tailwind:css && vite",
     "build": "NODE_ENV=production npm run tailwind:css && tsc && vite build",
