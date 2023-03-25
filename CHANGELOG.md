@@ -1,3 +1,10 @@
+## [2.8.3](https://github.com/pouyio/twiso/compare/v2.8.2...v2.8.3) (2023-03-25)
+
+
+### :bug:
+
+* update build directory ([079c30d](https://github.com/pouyio/twiso/commit/079c30dfae3869dccf5d4c4368ffb3cbd8033757))
+
 ## [2.8.2](https://github.com/pouyio/twiso/compare/v2.8.1...v2.8.2) (2023-03-25)
 
 
