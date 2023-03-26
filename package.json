@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^1.8.1",
     "@sentry/react": "7.45.0",
     "@sentry/tracing": "7.45.0",
+    "@vercel/og": "^0.4.1",
     "axios": "^0.21.2",
     "axios-rate-limit": "^1.2.1",
     "bottleneck": "^2.19.5",
