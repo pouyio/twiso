@@ -1,3 +1,10 @@
+## [2.8.7](https://github.com/pouyio/twiso/compare/v2.8.6...v2.8.7) (2023-03-26)
+
+
+### :rocket:
+
+* update ci/cd ([85f1391](https://github.com/pouyio/twiso/commit/85f1391971853e3345defe30eb6e80cfdddfb5b0))
+
 ## [2.8.6](https://github.com/pouyio/twiso/compare/v2.8.5...v2.8.6) (2023-03-26)
 
 
