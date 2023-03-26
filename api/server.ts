@@ -12,6 +12,12 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   id: number
 ) => {
   const searchResponses = await getApi<T>(id, type);
+  let imgUrl = 'https://via.placeholder.com/185x330';
+
+  if (!searchResponses.data[0]) {
+    console.log(`Data no with id:${id} not found`);
+    return { imgUrl };
+  }
 
   const item = searchResponses.data[0][type];
 
@@ -21,7 +27,6 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
     'es'
   );
 
-  let imgUrl = 'https://via.placeholder.com/185x330';
   if (poster) {
     imgUrl = `https://image.tmdb.org/t/p/w185${poster.file_path}`;
   }
