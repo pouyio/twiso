@@ -137,6 +137,6 @@ app.get(ROUTE.person, (req, res) => {
   );
 });
 
-app.use(express.static(path.join(__dirname, '/../build')));
+app.use(express.static(path.join(__dirname, '/..')));
 
 export default app;
