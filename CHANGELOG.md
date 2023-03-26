@@ -1,3 +1,10 @@
+## [2.8.9](https://github.com/pouyio/twiso/compare/v2.8.8...v2.8.9) (2023-03-26)
+
+
+### :rocket:
+
+* fix server ([17947de](https://github.com/pouyio/twiso/commit/17947de260cd49876347ed876479ac3a95835b8b))
+
 ## [2.8.8](https://github.com/pouyio/twiso/compare/v2.8.7...v2.8.8) (2023-03-26)
 
 
