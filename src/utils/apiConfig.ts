@@ -1,6 +1,6 @@
-const trakt_api_key = import.meta.env.VITE_TRAKT_API_KEY;
-const tmbdb_api_key = import.meta.env.VITE_TMDB_API_KEY;
-const redirect_url = import.meta.env.VITE_REDIRECT_URL;
+const trakt_api_key = process.env.VITE_TRAKT_API_KEY;
+const tmbdb_api_key = process.env.VITE_TMDB_API_KEY;
+const redirect_url = process.env.VITE_REDIRECT_URL;
 
 export const CONTENT_TYPE = 'application/json';
 export const TRAKT_API_VERSION = 2;

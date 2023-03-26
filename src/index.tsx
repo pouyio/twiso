@@ -15,7 +15,7 @@ initReactFastclick();
 
 Sentry.init({
   release: `twiso@${packageInfo.version}`,
-  dsn: import.meta.env.VITE_SENTRY_DSN,
+  dsn: process.env.SENTRY_DSN,
   integrations: [new BrowserTracing()],
   tracesSampleRate: 1.0,
 });
