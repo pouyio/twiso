@@ -1,3 +1,11 @@
+## [2.8.5](https://github.com/pouyio/twiso/compare/v2.8.4...v2.8.5) (2023-03-26)
+
+
+### :bug:
+
+* fix sentry ([5790cb9](https://github.com/pouyio/twiso/commit/5790cb9132bc35b6d5838bf97129230f772f8539))
+* fix server ([1bc4be1](https://github.com/pouyio/twiso/commit/1bc4be1d43bd3ff1dc4ec4e5165c07c3f3cc590a))
+
 ## [2.8.4](https://github.com/pouyio/twiso/compare/v2.8.3...v2.8.4) (2023-03-25)
 
 
