@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "functions": {
+    "api/server.ts": { "runtime": "@vercel/node@1.8.3" }
+  },
+  "env": {
+    "VITE_TRAKT_API_KEY": "@react_app_trakt_api_key",
+    "VITE_TMDB_API_KEY": "@react_app_tmdb_api_key",
+    "VITE_REDIRECT_URL": "@react_app_redirect_url",
+    "SENTRY_DSN": "@sentry_dsn"
+  },
+  "routes": [{ "src": "/.*", "dest": "api/server.ts" }]
+}
