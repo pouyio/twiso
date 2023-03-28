@@ -9,5 +9,5 @@
     "VITE_REDIRECT_URL": "@react_app_redirect_url",
     "SENTRY_DSN": "@sentry_dsn"
   },
-  "rewrites": [{ "source": "/.*", "destintation": "api/server.ts" }]
+  "rewrites": [{ "source": "/.*", "destination": "api/server.ts" }]
 }
