@@ -7,6 +7,10 @@
   },
   "rewrites": [
     {
+      "source": "/movie/:id",
+      "destination": "/api/server"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

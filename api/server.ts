@@ -8,7 +8,7 @@ import {
 } from '../src/models';
 import express from 'express';
 import path from 'path';
-import fs from 'fs';
+import fs, { readFileSync } from 'fs';
 import {
   BASE_URL,
   config,
@@ -186,7 +186,7 @@ app.get(ROUTE.person, (req, res) => {
         .replace('__OG_TYPE__', 'profile')
         .replace('__OG_TITLE__', item.name)
         .replace('__OG_IMAGE__', imgUrl)
-        .replace('__OG_URL__', `https://twiso.now.sh${req.path}`)
+        .replace('__OG_URL__', `https://twiso.vercel.app${req.path}`)
         .replace('__OG_DESCRIPTION__', item.biography);
 
       res.send(finalData);
@@ -196,4 +196,12 @@ app.get(ROUTE.person, (req, res) => {
 
 app.use(express.static(path.join(__dirname, '../build')));
 
-export default app;
+// export default app;
+
+export default function handler(req, res) {
+  const file = path.join(__dirname + './../index.html');
+  const stringified = readFileSync(file, 'utf8');
+
+  res.setHeader('Content-Type', 'application/json');
+  return res.end(stringified);
+}
