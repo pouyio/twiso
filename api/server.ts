@@ -69,7 +69,7 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
 
 app.get(['/', ...Object.values(ROUTES)], (req, res) => {
   fs.readFile(
-    path.join(__dirname + '/../asstets/index.html'),
+    path.join(__dirname + '/../build/index.html'),
     'utf8',
     async (err, data) => {
       if (err) {
@@ -94,7 +94,7 @@ app.get(['/', ...Object.values(ROUTES)], (req, res) => {
 
 app.get(ROUTE.movie, (req, res) => {
   fs.readFile(
-    path.join(__dirname + '/../asstets/index.html'),
+    path.join(__dirname + '/../build/index.html'),
     'utf8',
     async (err, data) => {
       if (err) {
@@ -122,7 +122,7 @@ app.get(ROUTE.movie, (req, res) => {
 
 app.get(ROUTE.show, (req, res) => {
   fs.readFile(
-    path.join(__dirname + '/../asstets/index.html'),
+    path.join(__dirname + '/../build/index.html'),
     'utf8',
     async (err, data) => {
       if (err) {
@@ -150,7 +150,7 @@ app.get(ROUTE.show, (req, res) => {
 
 app.get(ROUTE.person, (req, res) => {
   fs.readFile(
-    path.join(__dirname + '/../asstets/index.html'),
+    path.join(__dirname + '/../build/index.html'),
     'utf8',
     async (err, data) => {
       if (err) {
@@ -176,6 +176,6 @@ app.get(ROUTE.person, (req, res) => {
   );
 });
 
-app.use(express.static(path.join(__dirname, '../asstets')));
+app.use(express.static(path.join(__dirname, '../build')));
 
 export default app;
