@@ -1,5 +1,4 @@
 {
-  "version": 2,
   "functions": {
     "api/server.ts": { "runtime": "@vercel/node@1.8.3" }
   },
@@ -9,5 +8,5 @@
     "VITE_REDIRECT_URL": "@react_app_redirect_url",
     "SENTRY_DSN": "@sentry_dsn"
   },
-  "rewrites": [{ "source": "/.*", "destination": "api/server" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "api/server" }]
 }
