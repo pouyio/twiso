@@ -1,11 +1,10 @@
-import { ROUTES, ROUTE } from '../src/utils/routes';
-import { findFirstValid } from '../src/utils/findFirstValidImage';
 import {
   SearchMovie,
   SearchShow,
   SearchPerson,
   ItemType,
   ImageResponse,
+  BaseImage,
 } from '../src/models';
 import express from 'express';
 import path from 'path';
@@ -19,6 +18,24 @@ import {
 } from '../src/utils/apiConfig';
 import axios from 'axios';
 const app = express();
+
+const ROUTES = {
+  shows: '/shows',
+  movies: '/movies',
+  search: '/search',
+  calendar: '/calendar',
+  profile: '/profile',
+};
+
+const ROUTE = {
+  movie: '/movie/:id',
+  show: '/show/:id',
+  person: '/person/:id',
+};
+const findFirstValid = (images: BaseImage[], language: string) => {
+  const p = images.find((p) => p.iso_639_1 === language);
+  return p || images.find((p) => p.iso_639_1 === 'en') || images[0];
+};
 
 const tracktClient = axios.create({
   baseURL: BASE_URL,
