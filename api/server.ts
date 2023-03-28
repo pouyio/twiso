@@ -1,17 +1,51 @@
-import { getApi, getImgsApi } from '../src/utils/api';
 import { ROUTES, ROUTE } from '../src/utils/routes';
 import { findFirstValid } from '../src/utils/findFirstValidImage';
-import { SearchMovie, SearchShow, SearchPerson } from '../src/models';
+import {
+  SearchMovie,
+  SearchShow,
+  SearchPerson,
+  ItemType,
+  ImageResponse,
+} from '../src/models';
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
+import {
+  BASE_URL,
+  config,
+  CONTENT_TYPE,
+  IMG_URL,
+  TRAKT_API_VERSION,
+} from '../src/utils/apiConfig';
+import axios from 'axios';
 const app = express();
+
+const tracktClient = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    'content-type': CONTENT_TYPE,
+    'trakt-api-key': config.traktApiKey,
+    'trakt-api-version': TRAKT_API_VERSION,
+  },
+});
+
+export const getImgsApi = (id: number, type: ItemType) => {
+  let newType: string = type;
+  if (type === 'show') {
+    newType = 'tv';
+  }
+  return axios.get<ImageResponse>(
+    `${IMG_URL}/${newType}/${id}/images?api_key=${config.tmdbApiKey}`
+  );
+};
 
 const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   type: 'movie' | 'show' | 'person',
   id: number
 ) => {
-  const searchResponses = await getApi<T>(id, type);
+  const searchResponses = await tracktClient.get<T>(
+    `/search/trakt/${id}?type=${type}&extended=full`
+  );
   let imgUrl = 'https://via.placeholder.com/185x330';
 
   if (!searchResponses.data[0]) {
