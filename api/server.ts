@@ -5,7 +5,6 @@ type SearchPerson = any;
 type ItemType = any;
 type ImageResponse = any;
 type BaseImage = any;
-import { config } from 'https://deno.land/x/dotenv@v3.2.2/mod.ts';
 import { serve } from "https://deno.land/std@0.140.0/http/server.ts";
 // import express from 'npm:express@4.17.1';
 // import path from 'node:path';
@@ -43,7 +42,7 @@ const tracktClient = {
     return fetch(BASE_URL + path, {
       headers: {
         'content-type': CONTENT_TYPE,
-        'trakt-api-key': config().VITE_TRAKT_API_KEY,
+        'trakt-api-key': Deno.env.get("VITE_TRAKT_API_KEY"),
         'trakt-api-version': TRAKT_API_VERSION,
       },
     })
@@ -66,7 +65,7 @@ export const getImgsApi = (id: number, type: ItemType) => {
     newType = 'tv';
   }
   return fetch(
-    `${IMG_URL}/${newType}/${id}/images?api_key=${config().VITE_TMDB_API_KEY}`
+    `${IMG_URL}/${newType}/${id}/images?api_key=${Deno.env.get("VITE_TMDB_API_KEY")}`
   )
     .then((r) => r.json())
     .then<ImageResponse>((r) => ({ data: r }));
