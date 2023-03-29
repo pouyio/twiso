@@ -12,7 +12,7 @@ import { config } from 'https://deno.land/x/dotenv@v3.2.2/mod.ts';
 // const __dirname = new URL('.', import.meta.url).pathname;
 
 export const CONTENT_TYPE = 'application/json';
-export const TRAKT_API_VERSION = 2;
+export const TRAKT_API_VERSION = '2';
 export const BASE_URL = 'https://api.trakt.tv';
 export const LOGIN_URL = 'https://trakt.tv/oauth/token';
 export const IMG_URL = 'https://api.themoviedb.org/3';
@@ -47,7 +47,7 @@ const tracktClient = {
       },
     })
       .then((r) => r.json())
-      .then<T[]>((r) => ({ data: r }));
+      .then<{ data: T[] }>((r) => ({ data: r }));
   },
 };
 // const tracktClient = axios.create({
@@ -125,7 +125,8 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
 // });
 
 const app = async (req: Request) => {
-  const data = Deno.readTextFileSync('./build/index.html');
+  console.log(Deno.cwd());
+  const data = Deno.readTextFileSync('./index.html');
   const id = new URL(req.url).searchParams.get('id') ?? '';
   const { item, imgUrl } = await fetchData<SearchMovie>('movie', +id);
 
@@ -133,7 +134,7 @@ const app = async (req: Request) => {
     .replace('__OG_TYPE__', 'video.movie')
     .replace('__OG_TITLE__', item?.title)
     .replace('__OG_IMAGE__', imgUrl)
-    .replace('/__OG_URL__/', `https://twiso.now.sh${req.path}`)
+    .replace('__OG_URL__', `https://twiso.now.sh${req.path}`)
     .replace('__OG_DESCRIPTION__', item?.overview);
 
   return new Response(finalData, {
