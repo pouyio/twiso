@@ -183,7 +183,7 @@ export const getImgsApi = (id: number, type: ItemType) => {
 // app.use(express.static(path.join(__dirname, '../build')));
 
 export default async function handle(req: VercelRequest, res: VercelResponse) {
-  const file = path.join(process.cwd(), '/api/server/cosa.html');
+  const file = path.join(process.cwd(), '/api/server/cosa.txt');
   const data = fs.readFileSync(file, 'utf8');
   const { item, imgUrl } = await fetchData<SearchMovie>('movie', +req.query.id);
 
@@ -191,7 +191,10 @@ export default async function handle(req: VercelRequest, res: VercelResponse) {
     .replace('__OG_TYPE__', 'video.movie')
     .replace('__OG_TITLE__', item?.title)
     .replace('__OG_IMAGE__', imgUrl)
-    .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
+    .replace(
+      /__OG_URL__/,
+      `https://twiso.now.sh${new URL(req.url ?? '').pathname}`
+    )
     .replace('__OG_DESCRIPTION__', item?.overview);
 
   res.send(finalData);
