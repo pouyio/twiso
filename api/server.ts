@@ -1,3 +1,4 @@
+#!/usr/bin/env deno run --allow-read --allow-env --allow-net
 import type {
   SearchMovie,
   SearchShow,
@@ -197,4 +198,5 @@ app.get(ROUTE.person, (req, res) => {
 
 app.use(express.static(path.join(__dirname, '../build')));
 
-app.listen(8000, () => console.log('Listening on http://localhost:8000'));
+export default app;
+// app.listen(8000, () => console.log('Listening on http://localhost:8000'));
