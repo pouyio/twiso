@@ -127,7 +127,7 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
 
 const app = async (req: Request) => {
   	
-  const data = Deno.readTextFileSync('index.html');
+  const data = await Deno.readTextFile('index.html');
   const id = new URL(req.url).searchParams.get('id') ?? '';
   const { item, imgUrl } = await fetchData<SearchMovie>('movie', +id);
 
