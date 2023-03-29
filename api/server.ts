@@ -6,7 +6,7 @@ type ImageResponse = any;
 type BaseImage = any;
 import { ROUTES, ROUTE } from '../src/utils/routes';
 // import express from 'express';
-const path = requrie('path');
+const path = require('path');
 const fs = require('fs');
 // const app = express();
 export const CONTENT_TYPE = 'application/json';
