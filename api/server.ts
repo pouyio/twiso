@@ -1,22 +1,24 @@
-import {
+import type {
   SearchMovie,
   SearchShow,
   SearchPerson,
   ItemType,
   ImageResponse,
   BaseImage,
-} from '../src/models';
-import express from 'express';
-import path from 'path';
-import fs, { readFileSync } from 'fs';
-import {
-  BASE_URL,
-  config,
-  CONTENT_TYPE,
-  IMG_URL,
-  TRAKT_API_VERSION,
-} from '../src/utils/apiConfig';
-import axios from 'axios';
+} from '../src/models/index';
+import { config } from 'https://deno.land/x/dotenv@v3.2.2/mod.ts';
+import express from 'npm:express@4.17.1';
+import path from 'node:path';
+import fs from 'node:fs';
+import axios from 'npm:axios@0.21.2';
+const __dirname = new URL('.', import.meta.url).pathname;
+
+export const CONTENT_TYPE = 'application/json';
+export const TRAKT_API_VERSION = 2;
+export const BASE_URL = 'https://api.trakt.tv';
+export const LOGIN_URL = 'https://trakt.tv/oauth/token';
+export const IMG_URL = 'https://api.themoviedb.org/3';
+
 const app = express();
 
 const ROUTES = {
@@ -41,7 +43,7 @@ const tracktClient = axios.create({
   baseURL: BASE_URL,
   headers: {
     'content-type': CONTENT_TYPE,
-    'trakt-api-key': config.traktApiKey,
+    'trakt-api-key': config().VITE_TRAKT_API_KEY,
     'trakt-api-version': TRAKT_API_VERSION,
   },
 });
@@ -52,7 +54,7 @@ export const getImgsApi = (id: number, type: ItemType) => {
     newType = 'tv';
   }
   return axios.get<ImageResponse>(
-    `${IMG_URL}/${newType}/${id}/images?api_key=${config.tmdbApiKey}`
+    `${IMG_URL}/${newType}/${id}/images?api_key=${config().VITE_TMDB_API_KEY}`
   );
 };
 
@@ -110,32 +112,31 @@ app.get(['/', ...Object.values(ROUTES)], (req, res) => {
 });
 
 app.get(ROUTE.movie, (req, res) => {
-  // fs.readFile(
-  //   path.join(__dirname + '/../build/index.html'),
-  //   'utf8',
-  //   async (err, data) => {
-  //     if (err) {
-  //       console.log(err);
-  //       res.status(404).send('There was a problem 😿');
-  //       return;
-  //     }
+  fs.readFile(
+    path.join(__dirname + '/../build/index.html'),
+    'utf8',
+    async (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(404).send('There was a problem 😿');
+        return;
+      }
 
-  //     const { item, imgUrl } = await fetchData<SearchMovie>(
-  //       'movie',
-  //       +req.params.id
-  //     );
+      const { item, imgUrl } = await fetchData<SearchMovie>(
+        'movie',
+        +req.params.id
+      );
 
-  //     const finalData = data
-  //       .replace('__OG_TYPE__', 'video.movie')
-  //       .replace('__OG_TITLE__', item?.title)
-  //       .replace('__OG_IMAGE__', imgUrl)
-  //       .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
-  //       .replace('__OG_DESCRIPTION__', item?.overview);
+      const finalData = data
+        .replace('__OG_TYPE__', 'video.movie')
+        .replace('__OG_TITLE__', item?.title)
+        .replace('__OG_IMAGE__', imgUrl)
+        .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
+        .replace('__OG_DESCRIPTION__', item?.overview);
 
-  //     res.send(finalData);
-  //   }
-  // );
-  res.send('ok movie');
+      res.send(finalData);
+    }
+  );
 });
 
 app.get(ROUTE.show, (req, res) => {
@@ -196,12 +197,4 @@ app.get(ROUTE.person, (req, res) => {
 
 app.use(express.static(path.join(__dirname, '../build')));
 
-// export default app;
-
-export default function handler(req, res) {
-  const file = path.join(__dirname + './../index.html');
-  const stringified = readFileSync(file, 'utf8');
-
-  res.setHeader('Content-Type', 'application/json');
-  return res.end(stringified);
-}
+app.listen(8000, () => console.log('Listening on http://localhost:8000'));

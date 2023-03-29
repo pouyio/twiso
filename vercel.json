@@ -5,6 +5,11 @@
     "VITE_REDIRECT_URL": "@react_app_redirect_url",
     "SENTRY_DSN": "@sentry_dsn"
   },
+  "functions": {
+    "api/server.ts": {
+      "runtime": "vercel-deno@3.0.2"
+    }
+  },
   "rewrites": [
     {
       "source": "/movie/:id",
