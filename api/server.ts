@@ -7,10 +7,10 @@ type ImageResponse = any;
 type BaseImage = any;
 import { config } from 'https://deno.land/x/dotenv@v3.2.2/mod.ts';
 import express from 'npm:express@4.17.1';
-import path from 'node:path';
+// import path from 'node:path';
 // import fs from 'node:fs';
 import axios from 'npm:axios@0.21.2';
-const __dirname = new URL('.', import.meta.url).pathname;
+// const __dirname = new URL('.', import.meta.url).pathname;
 
 export const CONTENT_TYPE = 'application/json';
 export const TRAKT_API_VERSION = 2;
