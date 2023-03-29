@@ -126,6 +126,10 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
 
 const app = async (req: Request) => {
   	
+  console.log("bin directory:");
+  for await (const dirEntry of Deno.readDir('./bin')) {
+    console.log(dirEntry);
+  }
   console.log("local directory");
   for await (const dirEntry of Deno.readDir('.')) {
     console.log(dirEntry);
