@@ -182,7 +182,8 @@ export const getImgsApi = (id: number, type: ItemType) => {
 // app.use(express.static(path.join(__dirname, '../build')));
 
 export default async function handle(req, res) {
-  const data = readFileSync('../build/index.html', 'utf8');
+  const file = path.join(process.cwd(), '../build', 'index.html');
+  const data = readFileSync(file, 'utf8');
   const { item, imgUrl } = await fetchData<SearchMovie>('movie', +req.query.id);
 
   const finalData = data
