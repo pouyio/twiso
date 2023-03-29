@@ -125,10 +125,9 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
 // });
 
 const app = async (req: Request) => {
-  	
   const data = await Deno.readTextFile('index.html');
   const url = new URL(req.url);
-  const id = url.searchParams.get('id') ?? '';
+  const id = url.pathname.split("/")[2];
   const { item, imgUrl } = await fetchData<SearchMovie>('movie', +id);
 
   const finalData = data
