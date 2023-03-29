@@ -183,7 +183,7 @@ export const getImgsApi = (id: number, type: ItemType) => {
 // app.use(express.static(path.join(__dirname, '../build')));
 
 export default async function handle(req: VercelRequest, res: VercelResponse) {
-  const file = path.join(process.cwd(), '/api/server/index.html');
+  const file = path.join(process.cwd(), '/api/server/cosa.html');
   const data = fs.readFileSync(file, 'utf8');
   const { item, imgUrl } = await fetchData<SearchMovie>('movie', +req.query.id);
 
