@@ -15,10 +15,11 @@ jobs:
 
       # TODO: add a build step here
       - run: yarn
-      - run: yarn build
+      - run: yarn deno-deploy
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: "pouyio-twiso-fix-server"
-          entrypoint: "./api/server.ts"
+          entrypoint: "./server.ts"
+          root: api
