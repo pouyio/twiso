@@ -5,10 +5,10 @@ type ItemType = any;
 type ImageResponse = any;
 type BaseImage = any;
 import { ROUTES, ROUTE } from '../src/utils/routes';
-import express from 'express';
+// import express from 'express';
 import path from 'path';
-import fs from 'fs';
-const app = express();
+import fs, { readFileSync } from 'fs';
+// const app = express();
 export const CONTENT_TYPE = 'application/json';
 export const TRAKT_API_VERSION = '2';
 export const BASE_URL = 'https://api.trakt.tv';
@@ -70,115 +70,130 @@ export const getImgsApi = (id: number, type: ItemType) => {
     .then<ImageResponse>((r) => ({ data: r }));
 };
 
-app.get(['/', ...Object.values(ROUTES)], (req, res) => {
-  fs.readFile(
-    path.join(__dirname + '/../build/index.html'),
-    'utf8',
-    async (err, data) => {
-      if (err) {
-        console.log(err);
-        res.status(404).send();
-        return;
-      }
-      data = data
-        .replace('__OG_TYPE__', 'website')
-        .replace('<meta property="og:title" content="__OG_TITLE__"/>', '')
-        .replace('<meta property="og:image" content="__OG_IMAGE__"/>', '')
-        .replace(
-          '<meta property="og:description" content="__OG_DESCRIPTION__"/>',
-          ''
-        )
-        .replace('__OG_URL__', `https://twiso.vercel.app${req.path}`);
+// app.get(['/', ...Object.values(ROUTES)], (req, res) => {
+//   fs.readFile(
+//     path.join(__dirname + '/../build/index.html'),
+//     'utf8',
+//     async (err, data) => {
+//       if (err) {
+//         console.log(err);
+//         res.status(404).send();
+//         return;
+//       }
+//       data = data
+//         .replace('__OG_TYPE__', 'website')
+//         .replace('<meta property="og:title" content="__OG_TITLE__"/>', '')
+//         .replace('<meta property="og:image" content="__OG_IMAGE__"/>', '')
+//         .replace(
+//           '<meta property="og:description" content="__OG_DESCRIPTION__"/>',
+//           ''
+//         )
+//         .replace('__OG_URL__', `https://twiso.vercel.app${req.path}`);
 
-      res.send(data);
-    }
+//       res.send(data);
+//     }
+//   );
+// });
+
+// app.get(ROUTE.movie, (req, res) => {
+//   fs.readFile(
+//     path.join(__dirname + '/../build/index.html'),
+//     'utf8',
+//     async (err, data) => {
+//       if (err) {
+//         console.log(err);
+//         res.status(404).send('There was a problem 😿');
+//         return;
+//       }
+
+//       const { item, imgUrl } = await fetchData<SearchMovie>(
+//         'movie',
+//         +req.params.id
+//       );
+
+//       const finalData = data
+//         .replace('__OG_TYPE__', 'video.movie')
+//         .replace('__OG_TITLE__', item?.title)
+//         .replace('__OG_IMAGE__', imgUrl)
+//         .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
+//         .replace('__OG_DESCRIPTION__', item?.overview);
+
+//       res.send(finalData);
+//     }
+//   );
+// });
+
+// app.get(ROUTE.show, (req, res) => {
+//   fs.readFile(
+//     path.join(__dirname + '/../build/index.html'),
+//     'utf8',
+//     async (err, data) => {
+//       if (err) {
+//         console.log(err);
+//         res.status(404).send('There was a problem 😿');
+//         return;
+//       }
+
+//       const { item, imgUrl } = await fetchData<SearchShow>(
+//         'show',
+//         +req.params.id
+//       );
+
+//       const finalData = data
+//         .replace('__OG_TYPE__', 'video.tv_show')
+//         .replace('__OG_TITLE__', item?.title)
+//         .replace('__OG_IMAGE__', imgUrl)
+//         .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
+//         .replace('__OG_DESCRIPTION__', item?.overview);
+
+//       res.send(finalData);
+//     }
+//   );
+// });
+
+// app.get(ROUTE.person, (req, res) => {
+//   fs.readFile(
+//     path.join(__dirname + '/../build/index.html'),
+//     'utf8',
+//     async (err, data) => {
+//       if (err) {
+//         console.log(err);
+//         res.status(404).send('There was a problem 😿');
+//         return;
+//       }
+
+//       const { item, imgUrl } = await fetchData<SearchPerson>(
+//         'person',
+//         +req.params.id
+//       );
+
+//       const finalData = data
+//         .replace('__OG_TYPE__', 'profile')
+//         .replace('__OG_TITLE__', item.name)
+//         .replace('__OG_IMAGE__', imgUrl)
+//         .replace('__OG_URL__', `https://twiso.now.sh${req.path}`)
+//         .replace('__OG_DESCRIPTION__', item.biography);
+
+//       res.send(finalData);
+//     }
+//   );
+// });
+
+// app.use(express.static(path.join(__dirname, '../build')));
+
+export default async function handle(req, res) {
+  const data = readFileSync('/../build/index.html', 'utf8');
+  const { item, imgUrl } = await fetchData<SearchMovie>(
+    'movie',
+    +req.params.id
   );
-});
 
-app.get(ROUTE.movie, (req, res) => {
-  fs.readFile(
-    path.join(__dirname + '/../build/index.html'),
-    'utf8',
-    async (err, data) => {
-      if (err) {
-        console.log(err);
-        res.status(404).send('There was a problem 😿');
-        return;
-      }
+  const finalData = data
+    .replace('__OG_TYPE__', 'video.movie')
+    .replace('__OG_TITLE__', item?.title)
+    .replace('__OG_IMAGE__', imgUrl)
+    .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
+    .replace('__OG_DESCRIPTION__', item?.overview);
 
-      const { item, imgUrl } = await fetchData<SearchMovie>(
-        'movie',
-        +req.params.id
-      );
-
-      const finalData = data
-        .replace('__OG_TYPE__', 'video.movie')
-        .replace('__OG_TITLE__', item?.title)
-        .replace('__OG_IMAGE__', imgUrl)
-        .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
-        .replace('__OG_DESCRIPTION__', item?.overview);
-
-      res.send(finalData);
-    }
-  );
-});
-
-app.get(ROUTE.show, (req, res) => {
-  fs.readFile(
-    path.join(__dirname + '/../build/index.html'),
-    'utf8',
-    async (err, data) => {
-      if (err) {
-        console.log(err);
-        res.status(404).send('There was a problem 😿');
-        return;
-      }
-
-      const { item, imgUrl } = await fetchData<SearchShow>(
-        'show',
-        +req.params.id
-      );
-
-      const finalData = data
-        .replace('__OG_TYPE__', 'video.tv_show')
-        .replace('__OG_TITLE__', item?.title)
-        .replace('__OG_IMAGE__', imgUrl)
-        .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
-        .replace('__OG_DESCRIPTION__', item?.overview);
-
-      res.send(finalData);
-    }
-  );
-});
-
-app.get(ROUTE.person, (req, res) => {
-  fs.readFile(
-    path.join(__dirname + '/../build/index.html'),
-    'utf8',
-    async (err, data) => {
-      if (err) {
-        console.log(err);
-        res.status(404).send('There was a problem 😿');
-        return;
-      }
-
-      const { item, imgUrl } = await fetchData<SearchPerson>(
-        'person',
-        +req.params.id
-      );
-
-      const finalData = data
-        .replace('__OG_TYPE__', 'profile')
-        .replace('__OG_TITLE__', item.name)
-        .replace('__OG_IMAGE__', imgUrl)
-        .replace('__OG_URL__', `https://twiso.now.sh${req.path}`)
-        .replace('__OG_DESCRIPTION__', item.biography);
-
-      res.send(finalData);
-    }
-  );
-});
-
-app.use(express.static(path.join(__dirname, '../build')));
-
-export default app;
+  res.send(finalData);
+}
