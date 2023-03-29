@@ -24,7 +24,7 @@ const tracktClient = {
     return fetch(BASE_URL + path, {
       headers: {
         'content-type': CONTENT_TYPE,
-        'trakt-api-key': process.env.VITE_TRAKT_API_KEY,
+        'trakt-api-key': process.env.VITE_TRAKT_API_KEY ?? '',
         'trakt-api-version': TRAKT_API_VERSION,
       },
     })
@@ -182,11 +182,8 @@ export const getImgsApi = (id: number, type: ItemType) => {
 // app.use(express.static(path.join(__dirname, '../build')));
 
 export default async function handle(req, res) {
-  const data = readFileSync('../index.html', 'utf8');
-  const { item, imgUrl } = await fetchData<SearchMovie>(
-    'movie',
-    +req.params.id
-  );
+  const data = readFileSync('./index.html', 'utf8');
+  const { item, imgUrl } = await fetchData<SearchMovie>('movie', +req.query.id);
 
   const finalData = data
     .replace('__OG_TYPE__', 'video.movie')
