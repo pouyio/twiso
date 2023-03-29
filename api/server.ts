@@ -125,18 +125,27 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
 // });
 
 const app = async (req: Request) => {
-  const data = Deno.readTextFileSync('./index.html');
-  const id = new URL(req.url).searchParams.get('id') ?? '';
-  const { item, imgUrl } = await fetchData<SearchMovie>('movie', +id);
+  	
+  console.log("local directory");
+  for await (const dirEntry of Deno.readDir('.')) {
+    console.log(dirEntry);
+  }
+  console.log("up directory");
+  for await (const dirEntry of Deno.readDir('../')) {
+    console.log(dirEntry);
+  }
+  // const data = Deno.readTextFileSync('./index.html');
+  // const id = new URL(req.url).searchParams.get('id') ?? '';
+  // const { item, imgUrl } = await fetchData<SearchMovie>('movie', +id);
 
-  const finalData = data
-    .replace('__OG_TYPE__', 'video.movie')
-    .replace('__OG_TITLE__', item?.title)
-    .replace('__OG_IMAGE__', imgUrl)
-    .replace('__OG_URL__', `https://twiso.now.sh${req.path}`)
-    .replace('__OG_DESCRIPTION__', item?.overview);
+  // const finalData = data
+  //   .replace('__OG_TYPE__', 'video.movie')
+  //   .replace('__OG_TITLE__', item?.title)
+  //   .replace('__OG_IMAGE__', imgUrl)
+  //   .replace('__OG_URL__', `https://twiso.now.sh${req.path}`)
+  //   .replace('__OG_DESCRIPTION__', item?.overview);
 
-  return new Response(finalData, {
+  return new Response("finalData", {
     headers: {
       'content-type': 'text/html',
     },
