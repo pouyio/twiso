@@ -6,6 +6,7 @@ type ItemType = any;
 type ImageResponse = any;
 type BaseImage = any;
 import { config } from 'https://deno.land/x/dotenv@v3.2.2/mod.ts';
+import { serve } from "https://deno.land/std@0.140.0/http/server.ts";
 // import express from 'npm:express@4.17.1';
 // import path from 'node:path';
 // import fs from 'node:fs';
@@ -202,5 +203,5 @@ const app = async (req: Request) => {
 
 // app.use(express.static(path.join(__dirname, '../build')));
 
-export default app;
+serve(app)
 // app.listen(8000, () => console.log('Listening on http://localhost:8000'));
