@@ -126,6 +126,11 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
 
 const app = async (req: Request) => {
   	
+  console.log(Deno.cwd());
+  console.log("Deno.cwd()");
+  for await (const dirEntry of Deno.readDir(Deno.cwd())) {
+    console.log(dirEntry);
+  }
   console.log(".vercel directory:");
   for await (const dirEntry of Deno.readDir('./.vercel')) {
     console.log(dirEntry);
