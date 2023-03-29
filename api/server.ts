@@ -126,33 +126,16 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
 
 const app = async (req: Request) => {
   	
-  console.log(Deno.cwd());
-  console.log("Deno.cwd()");
-  for await (const dirEntry of Deno.readDir(Deno.cwd())) {
-    console.log(dirEntry);
-  }
-  console.log(".vercel directory:");
-  for await (const dirEntry of Deno.readDir('./.vercel')) {
-    console.log(dirEntry);
-  }
-  console.log("local directory");
-  for await (const dirEntry of Deno.readDir('.')) {
-    console.log(dirEntry);
-  }
-  console.log("up directory");
-  for await (const dirEntry of Deno.readDir('../')) {
-    console.log(dirEntry);
-  }
-  // const data = Deno.readTextFileSync('./index.html');
-  // const id = new URL(req.url).searchParams.get('id') ?? '';
-  // const { item, imgUrl } = await fetchData<SearchMovie>('movie', +id);
+  const data = Deno.readTextFileSync('../build/index.html');
+  const id = new URL(req.url).searchParams.get('id') ?? '';
+  const { item, imgUrl } = await fetchData<SearchMovie>('movie', +id);
 
-  // const finalData = data
-  //   .replace('__OG_TYPE__', 'video.movie')
-  //   .replace('__OG_TITLE__', item?.title)
-  //   .replace('__OG_IMAGE__', imgUrl)
-  //   .replace('__OG_URL__', `https://twiso.now.sh${req.path}`)
-  //   .replace('__OG_DESCRIPTION__', item?.overview);
+  const finalData = data
+    .replace('__OG_TYPE__', 'video.movie')
+    .replace('__OG_TITLE__', item?.title)
+    .replace('__OG_IMAGE__', imgUrl)
+    .replace('__OG_URL__', `https://twiso.now.sh${req.path}`)
+    .replace('__OG_DESCRIPTION__', item?.overview);
 
   return new Response("finalData", {
     headers: {
