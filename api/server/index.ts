@@ -1,10 +1,11 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 type SearchMovie = any;
 type SearchShow = any;
 type SearchPerson = any;
 type ItemType = any;
 type ImageResponse = any;
 type BaseImage = any;
-import { ROUTES, ROUTE } from '../src/utils/routes';
+// import { ROUTES, ROUTE } from '../src/utils/routes';
 // import express from 'express';
 const path = require('path');
 const fs = require('fs');
@@ -181,8 +182,8 @@ export const getImgsApi = (id: number, type: ItemType) => {
 
 // app.use(express.static(path.join(__dirname, '../build')));
 
-export default async function handle(req, res) {
-  const file = path.join(process.cwd(), '/api/index.html');
+export default async function handle(req: VercelRequest, res: VercelResponse) {
+  const file = path.join(process.cwd(), '/api/server/index.html');
   const data = fs.readFileSync(file, 'utf8');
   const { item, imgUrl } = await fetchData<SearchMovie>('movie', +req.query.id);
 
