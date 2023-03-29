@@ -126,8 +126,8 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
 
 const app = async (req: Request) => {
   	
-  console.log("bin directory:");
-  for await (const dirEntry of Deno.readDir('./bin')) {
+  console.log(".vercel directory:");
+  for await (const dirEntry of Deno.readDir('./.vercel')) {
     console.log(dirEntry);
   }
   console.log("local directory");
