@@ -6,8 +6,8 @@ type ImageResponse = any;
 type BaseImage = any;
 import { ROUTES, ROUTE } from '../src/utils/routes';
 // import express from 'express';
-import path from 'path';
-import fs, { readFileSync } from 'fs';
+const path = requrie('path');
+const fs = require('fs');
 // const app = express();
 export const CONTENT_TYPE = 'application/json';
 export const TRAKT_API_VERSION = '2';
@@ -183,7 +183,7 @@ export const getImgsApi = (id: number, type: ItemType) => {
 
 export default async function handle(req, res) {
   const file = path.join(process.cwd(), 'build', 'index.html');
-  const data = readFileSync(file, 'utf8');
+  const data = fs.readFileSync(file, 'utf8');
   const { item, imgUrl } = await fetchData<SearchMovie>('movie', +req.query.id);
 
   const finalData = data
