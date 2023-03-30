@@ -1,4 +1,3 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 type SearchMovie = any;
 type SearchShow = any;
 type SearchPerson = any;
@@ -19,6 +18,7 @@ const findFirstValid = (images: BaseImage[], language: string) => {
   const p = images.find((p) => p.iso_639_1 === language);
   return p || images.find((p) => p.iso_639_1 === 'en') || images[0];
 };
+import { Handler, HandlerEvent, HandlerContext } from '@netlify/functions';
 
 const tracktClient = {
   get: <T>(path: string) => {
@@ -182,20 +182,22 @@ export const getImgsApi = (id: number, type: ItemType) => {
 
 // app.use(express.static(path.join(__dirname, '../build')));
 
-export default async function handle(req: VercelRequest, res: VercelResponse) {
+const handler: Handler = async (req: HandlerEvent, context: HandlerContext) => {
   const file = path.join(process.cwd(), '/api/server/cosa.json');
   const data = fs.readFileSync(file, 'utf8');
-  const { item, imgUrl } = await fetchData<SearchMovie>('movie', +req.query.id);
+  const { item, imgUrl } = await fetchData<SearchMovie>(
+    'movie',
+    +(req.queryStringParameters?.id ?? 0)
+  );
 
   const finalData = data
     .replace('__OG_TYPE__', 'video.movie')
     .replace('__OG_TITLE__', item?.title)
     .replace('__OG_IMAGE__', imgUrl)
-    .replace(
-      /__OG_URL__/,
-      `https://twiso.now.sh${new URL(req.url ?? '').pathname}`
-    )
+    .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
     .replace('__OG_DESCRIPTION__', item?.overview);
 
-  res.send(finalData);
-}
+  return finalData;
+};
+
+export { handler };
