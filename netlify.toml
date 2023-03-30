@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/movie/*"
+  to = "/.netlify/functions/server"
+  status = 200
