@@ -2,3 +2,6 @@
   from = "/movie/*"
   to = "/.netlify/functions/server"
   status = 200
+
+[functions]
+  included_files = ["api/server/cosa.json"]
