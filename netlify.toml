@@ -4,4 +4,4 @@
   status = 200
 
 [functions]
-  included_files = ["api/server/index.html"]
+  included_files = ["build/index.html"]

@@ -179,18 +179,18 @@ export const getImgsApi = (id: number, type: ItemType) => {
 // app.use(express.static(path.join(__dirname, '../build')));
 
 const handler: Handler = async (req: HandlerEvent, context: HandlerContext) => {
-  const file = path.join(process.cwd(), '/api/server/index.html');
+  const file = path.join(process.cwd(), '/build/index.html');
   const data = fs.readFileSync(file, 'utf8');
   const { item, imgUrl } = await fetchData<SearchMovie>(
     'movie',
-    +(req.queryStringParameters?.id ?? 0)
+    +req.path.split('/')[2]
   );
 
   const finalData = data
     .replace('__OG_TYPE__', 'video.movie')
     .replace('__OG_TITLE__', item?.title)
     .replace('__OG_IMAGE__', imgUrl)
-    .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
+    .replace(/__OG_URL__/, `https://twiso.vercel.app${req.path}`)
     .replace('__OG_DESCRIPTION__', item?.overview);
 
   return {
