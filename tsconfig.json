@@ -18,5 +18,5 @@
     "jsx": "preserve",
     "baseUrl": "src"
   },
-  "include": ["src"]
+  "include": ["src", "functions"]
 }
