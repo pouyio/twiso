@@ -179,7 +179,7 @@ export const getImgsApi = (id: number, type: ItemType) => {
 // app.use(express.static(path.join(__dirname, '../build')));
 
 const handler: Handler = async (req: HandlerEvent, context: HandlerContext) => {
-  const file = path.join(process.cwd(), '/api/server/cosa.json');
+  const file = path.join(process.cwd(), '/api/server/index.html');
   const data = fs.readFileSync(file, 'utf8');
   const { item, imgUrl } = await fetchData<SearchMovie>(
     'movie',
@@ -193,7 +193,13 @@ const handler: Handler = async (req: HandlerEvent, context: HandlerContext) => {
     .replace(/__OG_URL__/, `https://twiso.now.sh${req.path}`)
     .replace('__OG_DESCRIPTION__', item?.overview);
 
-  return finalData;
+  return {
+    statusCode: 200,
+    headers: {
+      'Content-type': 'text/html; charset=UTF-8',
+    },
+    body: finalData,
+  };
 };
 
 export { handler };
