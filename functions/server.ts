@@ -6,6 +6,7 @@ type ImageResponse = any;
 type BaseImage = any;
 // import { ROUTES, ROUTE } from '../src/utils/routes';
 // import express from 'express';
+import axios from 'axios';
 const path = require('path');
 const fs = require('fs');
 // const app = express();
@@ -18,8 +19,7 @@ const findFirstValid = (images: BaseImage[], language: string) => {
   const p = images.find((p) => p.iso_639_1 === language);
   return p || images.find((p) => p.iso_639_1 === 'en') || images[0];
 };
-import { Handler, HandlerEvent, HandlerContext } from '@netlify/functions';
-import axios from 'axios';
+import { Handler, HandlerEvent } from '@netlify/functions';
 const tracktClient = {
   get: <T>(path: string) => {
     return axios.get(BASE_URL + path, {
@@ -177,20 +177,24 @@ export const getImgsApi = (id: number, type: ItemType) => {
 // });
 
 // app.use(express.static(path.join(__dirname, '../build')));
+const TYPE_MAP = {
+  movie: 'video.movie',
+  show: 'video.tv_show',
+  person: 'video.profile',
+};
 
-const handler: Handler = async (req: HandlerEvent, context: HandlerContext) => {
+const handler: Handler = async (req: HandlerEvent) => {
   const file = path.join(process.cwd(), '/build/index.html');
   const data = fs.readFileSync(file, 'utf8');
-  const { item, imgUrl } = await fetchData<SearchMovie>(
-    'movie',
-    +req.path.split('/')[2]
-  );
+  const type = req.path.split('/')[1] as 'movie' | 'person' | 'show';
+  const id = +req.path.split('/')[2];
+  const { item, imgUrl } = await fetchData<SearchMovie>(type, id);
 
   const finalData = data
-    .replace('__OG_TYPE__', 'video.movie')
+    .replace('__OG_TYPE__', TYPE_MAP[type])
     .replace('__OG_TITLE__', item?.title)
     .replace('__OG_IMAGE__', imgUrl)
-    .replace(/__OG_URL__/, `https://twiso.vercel.app${req.path}`)
+    .replace('__OG_URL__', `https://twiso.netlify.app${req.path}`)
     .replace('__OG_DESCRIPTION__', item?.overview);
 
   return {
