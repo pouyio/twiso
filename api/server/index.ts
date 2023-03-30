@@ -19,18 +19,16 @@ const findFirstValid = (images: BaseImage[], language: string) => {
   return p || images.find((p) => p.iso_639_1 === 'en') || images[0];
 };
 import { Handler, HandlerEvent, HandlerContext } from '@netlify/functions';
-
+import axios from 'axios';
 const tracktClient = {
   get: <T>(path: string) => {
-    return fetch(BASE_URL + path, {
+    return axios.get(BASE_URL + path, {
       headers: {
         'content-type': CONTENT_TYPE,
         'trakt-api-key': process.env.VITE_TRAKT_API_KEY ?? '',
         'trakt-api-version': TRAKT_API_VERSION,
       },
-    })
-      .then((r) => r.json())
-      .then<{ data: T[] }>((r) => ({ data: r }));
+    });
   },
 };
 
@@ -64,11 +62,9 @@ export const getImgsApi = (id: number, type: ItemType) => {
   if (type === 'show') {
     newType = 'tv';
   }
-  return fetch(
+  return axios.get(
     `${IMG_URL}/${newType}/${id}/images?api_key=${process.env.VITE_TMDB_API_KEY}`
-  )
-    .then((r) => r.json())
-    .then<ImageResponse>((r) => ({ data: r }));
+  );
 };
 
 // app.get(['/', ...Object.values(ROUTES)], (req, res) => {
