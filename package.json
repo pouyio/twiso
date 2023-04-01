@@ -2,7 +2,6 @@
   "name": "twiso",
   "version": "2.8.10",
   "private": true,
-  "type": "module",
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/assets/*.js'",
     "tailwind:css": "tailwind build -i ./src/tailwind.src.css -o ./src/tailwind.css",
