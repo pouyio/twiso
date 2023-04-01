@@ -1,31 +1,20 @@
-// type SearchMovie = any;
-// type SearchShow = any;
-// type SearchPerson = any;
-// type ItemType = any;
-// type ImageResponse = any;
-// type BaseImage = any;
-// const CONTENT_TYPE = 'application/json';
-// const TRAKT_API_VERSION = '2';
-// const BASE_URL = 'https://api.trakt.tv';
-// const LOGIN_URL = 'https://trakt.tv/oauth/token';
-// const IMG_URL = 'https://api.themoviedb.org/3';
-
 import { Handler, HandlerEvent } from '@netlify/functions';
 import axios from 'axios';
 import fs from 'fs';
 import {
   BaseImage,
-  ImageResponse,
-  ItemType,
+  // ImageResponse,
+  // ItemType,
   SearchMovie,
   SearchPerson,
   SearchShow,
 } from 'models';
 import path from 'path';
+import { getImgsApi } from 'utils/api';
 import {
   BASE_URL,
   CONTENT_TYPE,
-  IMG_URL,
+  // IMG_URL,
   TRAKT_API_VERSION,
 } from 'utils/apiConfig';
 const findFirstValid = (images: BaseImage[], language: string) => {
@@ -51,15 +40,15 @@ const TYPE_MAP = {
   person: 'video.profile',
 };
 
-const getImgsApi = (id: number, type: ItemType) => {
-  let newType: string = type;
-  if (type === 'show') {
-    newType = 'tv';
-  }
-  return axios.get<ImageResponse>(
-    `${IMG_URL}/${newType}/${id}/images?api_key=${process.env.VITE_TMDB_API_KEY}`
-  );
-};
+// const getImgsApi = (id: number, type: ItemType) => {
+//   let newType: string = type;
+//   if (type === 'show') {
+//     newType = 'tv';
+//   }
+//   return axios.get<ImageResponse>(
+//     `${IMG_URL}/${newType}/${id}/images?api_key=${process.env.VITE_TMDB_API_KEY}`
+//   );
+// };
 
 const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   type: 'movie' | 'show' | 'person',
@@ -93,12 +82,15 @@ const handler: Handler = async (req: HandlerEvent) => {
   const id = +req.path.split('/')[2];
   const { item, imgUrl } = await fetchData<SearchMovie>(type, id);
 
-  const finalData = data
-    .replace('__OG_TYPE__', TYPE_MAP[type])
-    .replace('__OG_TITLE__', item?.title)
-    .replace('__OG_IMAGE__', imgUrl)
-    .replace('__OG_URL__', `https://twiso.netlify.app${req.path}`)
-    .replace('__OG_DESCRIPTION__', item?.overview);
+  const finalData = data.replace(
+    '<!-- __META_OG__ -->',
+    `<meta property="og:type" content="${TYPE_MAP[type]}" />
+    <meta property="og:title" content="${item?.title}" />
+    <meta property="og:image" content="${imgUrl}" />
+    <meta property="og:url" content="https://twiso.netlify.app${req.path}}" />
+    <meta property="og:description" content="${item?.overview}" />
+    `
+  );
 
   return {
     statusCode: 200,

@@ -8,8 +8,7 @@
     "tailwind:css": "tailwind build -i ./src/tailwind.src.css -o ./src/tailwind.css",
     "start": "npm run tailwind:css && vite",
     "build": "NODE_ENV=production npm run tailwind:css && tsc && vite build",
-    "now-build": "npm run build",
-    "deno-deploy": "npm run build && cp build/index.html api/"
+    "now-build": "npm run build"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
