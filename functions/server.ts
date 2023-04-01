@@ -1,38 +1,9 @@
 import { Handler, HandlerEvent } from '@netlify/functions';
-import axios from 'axios';
 import fs from 'fs';
-import {
-  BaseImage,
-  // ImageResponse,
-  // ItemType,
-  SearchMovie,
-  SearchPerson,
-  SearchShow,
-} from 'models';
+import { SearchMovie, SearchPerson, SearchShow } from 'models';
 import path from 'path';
-import { getImgsApi } from 'utils/api';
-import {
-  BASE_URL,
-  CONTENT_TYPE,
-  // IMG_URL,
-  TRAKT_API_VERSION,
-} from 'utils/apiConfig';
-const findFirstValid = (images: BaseImage[], language: string) => {
-  const p = images.find((p) => p.iso_639_1 === language);
-  return p || images.find((p) => p.iso_639_1 === 'en') || images[0];
-};
-
-const tracktClient = {
-  get: <T>(path: string) => {
-    return axios.get(BASE_URL + path, {
-      headers: {
-        'content-type': CONTENT_TYPE,
-        'trakt-api-key': process.env.VITE_TRAKT_API_KEY ?? '',
-        'trakt-api-version': TRAKT_API_VERSION,
-      },
-    });
-  },
-};
+import { getApi, getImgsApi } from 'utils/api';
+import { findFirstValid } from 'utils/findFirstValidImage';
 
 const TYPE_MAP = {
   movie: 'video.movie',
@@ -40,23 +11,11 @@ const TYPE_MAP = {
   person: 'video.profile',
 };
 
-// const getImgsApi = (id: number, type: ItemType) => {
-//   let newType: string = type;
-//   if (type === 'show') {
-//     newType = 'tv';
-//   }
-//   return axios.get<ImageResponse>(
-//     `${IMG_URL}/${newType}/${id}/images?api_key=${process.env.VITE_TMDB_API_KEY}`
-//   );
-// };
-
 const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   type: 'movie' | 'show' | 'person',
   id: number
 ) => {
-  const searchResponses = await tracktClient.get<T>(
-    `/search/trakt/${id}?type=${type}&extended=full`
-  );
+  const searchResponses = await getApi<T>(id, type);
   let imgUrl = 'https://via.placeholder.com/185x330';
 
   if (!searchResponses.data[0]) {
