@@ -1,18 +1,16 @@
-import { useFilter, useIsWatch, useTranslate } from 'hooks';
+import { useFilter, useIsWatch } from 'hooks';
 import {
   MovieWatched,
   MovieWatchlist,
   ShowWatched,
   ShowWatchlist,
 } from 'models';
-import React, { useEffect, useState } from 'react';
-import Emoji from './Emoji';
-import ImageLink from './ImageLink';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setGlobalSearch } from 'state/slices/root';
 import { getType } from 'utils/getType';
-import Genres from './Genres';
-import { genres } from 'utils/getGenre';
+import Emoji from './Emoji';
+import ImageLink from './ImageLink';
 
 export const GlobalFilter = () => {
   const { filter } = useFilter();
@@ -20,26 +18,16 @@ export const GlobalFilter = () => {
     useState<
       Array<MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist>
     >();
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState<string>();
   const { isWatched, isWatchlist } = useIsWatch();
   const dispatch = useDispatch();
-  const { t } = useTranslate();
 
   useEffect(() => {
     if (searchValue) {
-      const a = filter(searchValue, selectedGenres);
+      const a = filter(searchValue);
       setResults(a.slice(0, 10));
     }
-  }, [searchValue, selectedGenres]);
-
-  const toggleGenre = (genre: string) => {
-    setSelectedGenres((g) => {
-      return g.includes(genre)
-        ? g.filter((g) => g !== genre)
-        : [...selectedGenres, genre];
-    });
-  };
+  }, [searchValue]);
 
   const getBgClass = (
     item: MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist,
@@ -69,26 +57,6 @@ export const GlobalFilter = () => {
         <button onClick={() => dispatch(setGlobalSearch(false))} tabIndex={-1}>
           <Emoji className="ml-3 mr-2" emoji="❌" />
         </button>
-      </div>
-      <div className="inline-flex bg-blue-100 py-2 px-4 border-b-2">
-        <Genres
-          genres={Object.keys(genres).filter(
-            (g) => !selectedGenres.includes(g)
-          )}
-          onClick={toggleGenre}
-          selected={selectedGenres}
-        />
-      </div>
-      <div className="inline-flex bg-blue-100 py-2 px-4">
-        {selectedGenres.length ? (
-          <Genres
-            genres={selectedGenres}
-            onClick={toggleGenre}
-            selected={selectedGenres}
-          />
-        ) : (
-          t('select_any')
-        )}
       </div>
       <ul className="flex flex-wrap items-stretch justify-center bg-blue-100 overflow-y-auto">
         {results &&
