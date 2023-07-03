@@ -1,3 +1,10 @@
+## [2.8.13](https://github.com/pouyio/twiso/compare/v2.8.12...v2.8.13) (2023-07-03)
+
+
+### :art:
+
+* improve empty state on search page ([a249809](https://github.com/pouyio/twiso/commit/a249809758d07a042b38f6e126b2d457d666b94b))
+
 ## [2.8.12](https://github.com/pouyio/twiso/compare/v2.8.11...v2.8.12) (2023-07-03)
 
 
