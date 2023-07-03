@@ -52,7 +52,6 @@ export default function Search() {
     if (types.includes('show')) {
       setShowResults(filterBy(query, 'show'));
     }
-    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -75,7 +74,6 @@ export default function Search() {
       ? filters.types.filter((f) => f !== 'person')
       : ['movie', 'show'];
     localSearch(debouncedSearch, fullTypes as LocalFilterTypes);
-    // eslint-disable-next-line
   }, [filters, debouncedSearch]);
 
   return (
@@ -85,7 +83,7 @@ export default function Search() {
       </Helmet>
       <div className="w-full bg-gray-300 rounded flex items-center my-2 m-auto lg:max-w-lg">
         <input
-          className="bg-gray-300 rounded text-black px-2 py-1 outline-none grow text-gray-700 "
+          className="bg-gray-300 rounded text-black px-2 py-1 outline-none grow"
           type="text"
           placeholder={t('search_placeholder')}
           autoFocus={true}
@@ -105,92 +103,104 @@ export default function Search() {
 
       {search ? (
         <>
-          {movieResults.length ? (
-            <>
-              <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
-                {t('movies')}
-              </h1>
-              <ul
-                className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto"
-                style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
-              >
-                {movieResults.map((r) => (
-                  <li
-                    key={r.movie.ids.slug}
-                    className="p-2"
-                    style={{ height: '13.5em', width: '9.5em' }}
-                  >
-                    <ImageLink
-                      ids={r.movie.ids}
-                      text={r.movie.title}
-                      item={r.movie}
-                      type="movie"
-                    />
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : (
-            <h1 className="text-3xl mt-8 text-gray-700">{t('no_movies')}</h1>
-          )}
+          {(filters.types.length === 0 || filters.types.includes('movie')) &&
+            (movieResults.length ? (
+              <>
+                <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
+                  {t('movies')}
+                </h1>
+                <ul
+                  className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto"
+                  style={{
+                    WebkitOverflowScrolling: 'touch',
+                    maxHeight: '30em',
+                  }}
+                >
+                  {movieResults.map((r) => (
+                    <li
+                      key={r.movie.ids.slug}
+                      className="p-2"
+                      style={{ height: '13.5em', width: '9.5em' }}
+                    >
+                      <ImageLink
+                        ids={r.movie.ids}
+                        text={r.movie.title}
+                        item={r.movie}
+                        type="movie"
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <h1 className="text-3xl mt-8 text-gray-700">{t('no_movies')}</h1>
+            ))}
 
-          {showResults.length ? (
-            <>
-              <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
-                {t('shows')}
-              </h1>
-              <ul
-                className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
-                style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
-              >
-                {showResults.map((r) => (
-                  <li
-                    key={r.show.ids.slug}
-                    className="p-2"
-                    style={{ height: '13.5em', width: '9.5em' }}
-                  >
-                    <ImageLink
-                      ids={r.show.ids}
-                      text={r.show.title}
-                      item={r.show}
-                      type="show"
-                    />
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : (
-            <h1 className="text-3xl mt-8 text-gray-700">{t('no_shows')}</h1>
-          )}
+          {(filters.types.length === 0 || filters.types.includes('show')) &&
+            (showResults.length ? (
+              <>
+                <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
+                  {t('shows')}
+                </h1>
+                <ul
+                  className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
+                  style={{
+                    WebkitOverflowScrolling: 'touch',
+                    maxHeight: '30em',
+                  }}
+                >
+                  {showResults.map((r) => (
+                    <li
+                      key={r.show.ids.slug}
+                      className="p-2"
+                      style={{ height: '13.5em', width: '9.5em' }}
+                    >
+                      <ImageLink
+                        ids={r.show.ids}
+                        text={r.show.title}
+                        item={r.show}
+                        type="show"
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <h1 className="text-3xl mt-8 text-gray-700">{t('no_shows')}</h1>
+            ))}
 
-          {peopleResults.length ? (
-            <>
-              <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
-                {t('people')}
-              </h1>
-              <ul
-                className="-mx-2 -mt-2 flex flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
-                style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
-              >
-                {peopleResults.map((r) => (
-                  <li
-                    key={r.person.ids.slug}
-                    className="p-2"
-                    style={{ height: '13.5em', width: '9.5em' }}
-                  >
-                    <ImageLink
-                      ids={r.person.ids}
-                      text={r.person.name}
-                      item={r.person}
-                      type="person"
-                    />
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : (
-            <h1 className="text-3xl mt-8 text-gray-700">{t('no_people')}</h1>
-          )}
+          {(filters.types.length === 0 || filters.types.includes('person')) &&
+            (peopleResults.length ? (
+              <>
+                <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
+                  {t('people')}
+                </h1>
+                <ul
+                  className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
+                  style={{
+                    WebkitOverflowScrolling: 'touch',
+                    maxHeight: '30em',
+                  }}
+                >
+                  {peopleResults.map((r) => (
+                    <li
+                      key={r.person.ids.slug}
+                      className="p-2"
+                      style={{ height: '13.5em', width: '9.5em' }}
+                    >
+                      <ImageLink
+                        ids={r.person.ids}
+                        text={r.person.name}
+                        item={r.person}
+                        type="person"
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <h1 className="text-3xl mt-8 text-gray-700">{t('no_people')}</h1>
+            ))}
         </>
       ) : (
         <>
