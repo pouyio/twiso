@@ -1,3 +1,10 @@
+## [2.8.12](https://github.com/pouyio/twiso/compare/v2.8.11...v2.8.12) (2023-07-03)
+
+
+### :art:
+
+* removed genre filters ([6c73191](https://github.com/pouyio/twiso/commit/6c73191ac8f317da4715bdf82f83ac61c9c53516))
+
 ## [2.8.11](https://github.com/pouyio/twiso/compare/v2.8.10...v2.8.11) (2023-04-01)
 
 
