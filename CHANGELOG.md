@@ -1,3 +1,10 @@
+## [2.8.14](https://github.com/pouyio/twiso/compare/v2.8.13...v2.8.14) (2023-09-01)
+
+
+### :bug:
+
+* fix infinite loop ([c849592](https://github.com/pouyio/twiso/commit/c8495929484f640881f8ae003909723f576a0738))
+
 ## [2.8.13](https://github.com/pouyio/twiso/compare/v2.8.12...v2.8.13) (2023-07-03)
 
 
