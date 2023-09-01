@@ -1,36 +1,33 @@
 import ImageLink from 'components/ImageLink';
 import PaginationContainer from 'components/Pagination/PaginationContainer';
 import { MovieWatchlist } from 'models';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { filterByGenres } from 'state/slices/movies';
 import { useAppSelector } from 'state/store';
 import { usePagination } from '../../hooks';
 
 export const MoviesWatchlist: React.FC = () => {
-  const [orderedMovies, setOrderedMovies] = useState<MovieWatchlist[]>([]);
-  const { getItemsByPage } = usePagination(orderedMovies);
   const [genres, setGenres] = useState<string[]>([]);
   const { watchlist } = useAppSelector(filterByGenres(genres));
 
-  useEffect(() => {
-    const nearFuture = new Date();
-    nearFuture.setDate(nearFuture.getDate() + 7);
-    const newItems = watchlist
-      .map((m) => m)
-      .sort((a, b) => (new Date(a.listed_at) < new Date(b.listed_at) ? -1 : 1))
-      .reduce((acc: MovieWatchlist[], m) => {
-        if (!m.movie.released) {
-          return [...acc, m];
-        }
-        const released = new Date(m.movie.released);
-        if (released < nearFuture) {
-          return [m, ...acc];
-        } else {
-          return [...acc, m];
-        }
-      }, []);
-    setOrderedMovies(newItems);
-  }, [watchlist]);
+  const nearFuture = new Date();
+  nearFuture.setDate(nearFuture.getDate() + 7);
+  const orderedMovies = watchlist
+    .map((m) => m)
+    .sort((a, b) => (new Date(a.listed_at) < new Date(b.listed_at) ? -1 : 1))
+    .reduce((acc: MovieWatchlist[], m) => {
+      if (!m.movie.released) {
+        return [...acc, m];
+      }
+      const released = new Date(m.movie.released);
+      if (released < nearFuture) {
+        return [m, ...acc];
+      } else {
+        return [...acc, m];
+      }
+    }, []);
+
+  const { getItemsByPage } = usePagination(orderedMovies);
 
   return (
     <PaginationContainer items={orderedMovies} onFilter={setGenres}>
