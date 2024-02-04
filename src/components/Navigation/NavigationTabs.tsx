@@ -2,9 +2,9 @@ import { motion } from 'framer-motion';
 import { useTranslate, useWindowSize } from '../../hooks';
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import Emoji from '../Emoji';
 import LongPress from '../Longpress';
 import { ROUTES } from 'utils/routes';
+import { Icon } from 'components/Icon';
 
 const Underline: React.FC<{ width: number }> = ({ width }) => {
   return (
@@ -44,7 +44,7 @@ export const NavigationTabs: React.FC<{
               to={`${ROUTES.movies}?mode=watchlist&page=1`}
               className="flex items-center"
             >
-              <Emoji emoji="🎬" />
+              <Icon name="movie" className="h-8" />
               <span className="ml-2 text-base hidden lg:inline">
                 {t('movies')}
               </span>
@@ -56,7 +56,7 @@ export const NavigationTabs: React.FC<{
               to={`${ROUTES.shows}?mode=watched&page=1`}
               className="flex items-center"
             >
-              <Emoji emoji="📺" />
+              <Icon name="tv" className="h-8" />
               <span className="ml-2 text-base hidden lg:inline">
                 {t('shows')}
               </span>
@@ -72,7 +72,7 @@ export const NavigationTabs: React.FC<{
       {logged ? (
         <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
           <NavLink to={ROUTES.calendar} className="flex items-center">
-            <Emoji emoji="📅" />
+            <Icon name="calendar" className="h-8" />
             <span className="ml-2 text-base hidden lg:inline">
               {t('calendar')}
             </span>
@@ -82,7 +82,7 @@ export const NavigationTabs: React.FC<{
       ) : null}
       <li className="py-1">
         <NavLink to={ROUTES.profile} className="flex items-center">
-          <Emoji emoji="👤" />
+          <Icon name="profile" className="h-8" />
           <span className="ml-2 text-base hidden lg:inline">
             {t('profile')}
           </span>

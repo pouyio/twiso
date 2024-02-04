@@ -2,7 +2,7 @@ import Genres from 'components/Genres';
 import { useTranslate } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { genres } from 'utils/getGenre';
-import Emoji from '../Emoji';
+import { Icon } from 'components/Icon';
 
 interface IPaginationProps {
   setFirst: () => void;
@@ -52,23 +52,23 @@ const Pagination: React.FC<IPaginationProps> = ({
           className="mr-3 disabled:opacity-50"
           onClick={setFirst}
         >
-          <Emoji emoji="⏮" />
+          <Icon name="double-arrow-left" className="h-8" />
         </button>
         <button
           disabled={page === 1}
           className="mr-3 disabled:opacity-50"
           onClick={setPrev}
         >
-          <Emoji emoji="⬅️" />
+          <Icon name="arrow-left" className="h-8" />
         </button>
-        <h1 className="font-light">
+        <h1 className="font-light flex items-center">
           {' '}
           {page} ... {last}{' '}
           {onFilter && (
-            <Emoji
-              className="cursor-pointer"
+            <Icon
+              className="cursor-pointer pl-1 h-8"
               onClick={() => setShowFilters((s) => !s)}
-              emoji="🗂️"
+              name="tags"
             />
           )}
         </h1>
@@ -77,14 +77,14 @@ const Pagination: React.FC<IPaginationProps> = ({
           className="ml-3  disabled:opacity-50"
           onClick={setNext}
         >
-          <Emoji emoji="➡️" />
+          <Icon name="arrow-right" className="h-8" />
         </button>
         <button
           disabled={page === last}
           className="ml-3 disabled:opacity-50"
           onClick={setLast}
         >
-          <Emoji emoji="⏭" />
+          <Icon name="double-arrow-right" className="h-8" />
         </button>
       </div>
       {showFilters && (

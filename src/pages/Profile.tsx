@@ -12,6 +12,7 @@ import { AuthService } from 'utils/AuthService';
 import { changeLanguage, Language } from 'state/slices/config';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import { useTranslate } from 'hooks';
+import { Icon } from 'components/Icon';
 
 const authService = AuthService.getInstance();
 
@@ -112,15 +113,15 @@ export default function Profile() {
         </ul>
         {isLogged ? (
           <>
-            <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
-              <Emoji emoji="🎬" /> {t('movies')}
+            <h1 className="text-2xl text-center text-gray-700 m-4 mt-8 flex justify-center items-center">
+              <Icon name="movie" className="h-6 pr-1" /> {t('movies')}
             </h1>
             <p className="text-center">
               {t('have_watched_f')}: {stats && stats.movies.watched} en{' '}
               {convertMinutes(stats && stats.movies.minutes)}
             </p>
-            <h1 className="text-2xl text-center text-gray-700 m-4 mt-8">
-              <Emoji emoji="📺" /> {t('episodes')}
+            <h1 className="text-2xl text-center text-gray-700 m-4 mt-8 flex justify-center items-center">
+              <Icon name="tv" className="h-6 pr-1" /> {t('episodes')}
             </h1>
             <p className="text-center">
               {t('have_watched')}: {stats && stats.episodes.watched} en{' '}
@@ -134,9 +135,9 @@ export default function Profile() {
           {isLogged ? (
             <button
               onClick={logout}
-              className="bg-gray-200 px-4 py-1 rounded-full"
+              className="bg-gray-200 px-4 py-1 pl-2 rounded-full flex items-center"
             >
-              <Emoji emoji="❌" /> Logout
+              <Icon name="logout" className="h-6 pr-1" /> Logout
             </button>
           ) : (
             <LoginButton small />

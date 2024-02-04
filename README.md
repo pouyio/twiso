@@ -12,3 +12,5 @@
 📽🍿 Yet another movie/series app 📽🍿
 
 Uses [trakt.tv API](https://trakt.tv)
+
+Uses [Free Solar Bold Duotone icons SVG](https://www.svgrepo.com/collection/solar-bold-duotone-icons/)

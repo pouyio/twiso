@@ -4,6 +4,7 @@ import { Episode, Season } from '../../models';
 import { EpisodesPlaceholder } from './EpisodesPlaceholder';
 import { useAppSelector } from 'state/store';
 import { useTranslate } from 'hooks';
+import { Icon } from 'components/Icon';
 
 interface ISeasonsProps {
   seasonProgress?: Season;
@@ -139,7 +140,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
                       className="px-5 text-right"
                       onClick={() => toggleEpisode(e)}
                     >
-                      <Emoji emoji="▶️" className="text-xl" />
+                      <Icon name="play" className="h-8" />
                     </button>
                   ))}
               </div>

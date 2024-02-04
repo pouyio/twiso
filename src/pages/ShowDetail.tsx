@@ -16,6 +16,7 @@ import { useIsWatch, useShare, useTranslate } from '../hooks';
 import { People as IPeople, Ratings, Show, ShowWatched } from '../models';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
 import { Helmet } from 'react-helmet';
+import { Icon } from 'components/Icon';
 
 enum status {
   'returning series' = 'en antena',
@@ -106,7 +107,7 @@ export default function ShowDetail() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Emoji emoji="▶️" className="text-4xl" title="Youtube trailer" />
+              <Icon name="trailer" className="h-12" title="Youtube trailer" />
             </a>
           )}
           <button
@@ -114,7 +115,7 @@ export default function ShowDetail() {
             style={{ left: '4em', bottom: '4em' }}
             onClick={onShare}
           >
-            <Emoji emoji="📤" className="text-4xl" title="Share" />
+            <Icon name="share" className="h-12" title="Share" />
           </button>
         </div>
         <article
@@ -141,9 +142,9 @@ export default function ShowDetail() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Emoji
-                    emoji="▶️"
-                    className="text-2xl"
+                  <Icon
+                    name="trailer"
+                    className="h-8"
                     title="Youtube trailer"
                   />
                 </a>
@@ -153,7 +154,7 @@ export default function ShowDetail() {
                 style={{ left: '10%', bottom: '5%' }}
                 onClick={onShare}
               >
-                <Emoji emoji="📤" className="text-2xl" title="share" />
+                <Icon name="share" className="h-8" title="share" />
               </button>
             </div>
 

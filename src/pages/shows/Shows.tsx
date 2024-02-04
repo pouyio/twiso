@@ -1,5 +1,4 @@
 import React from 'react';
-import Emoji from '../../components/Emoji';
 import ShowsWatchlist from './ShowsWatchlist';
 import ShowsWatched from './ShowsWatched';
 import Helmet from 'react-helmet';
@@ -8,6 +7,7 @@ import { useTranslate, useWindowSize } from '../../hooks';
 import { totalByType } from 'state/slices/shows';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'hooks';
+import { Icon } from 'components/Icon';
 
 export const Underline: React.FC<{ selected: boolean }> = ({ selected }) => {
   return (
@@ -43,19 +43,21 @@ export default function Shows() {
       >
         <div className="w-full">
           <button
-            className="py-2 w-full"
+            className="py-2 w-full flex justify-center"
             onClick={() => setSearchParams({ mode: 'watchlist' })}
           >
-            <Emoji emoji="⏱" /> {t('watchlists')} ({watchlist})
+            <Icon name="clock" className="px-2 h-6" /> {t('watchlists')} (
+            {watchlist})
           </button>
           <Underline selected={mode === 'watchlist'} />
         </div>
         <div className="w-full">
           <button
-            className="py-2 w-full"
+            className="py-2 w-full flex justify-center"
             onClick={() => setSearchParams({ mode: 'watched' })}
           >
-            <Emoji emoji="📚" /> {t('show_watcheds')} ({watched})
+            <Icon name="archive" className="px-2 h-6" /> {t('show_watcheds')} (
+            {watched})
           </button>
           <Underline selected={mode === 'watched'} />
         </div>

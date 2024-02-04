@@ -43,7 +43,6 @@ const en = {
   update: 'Update',
   popular_show: 'Popular shows',
   popular_movie: 'Popular movies',
-  votes: 'votes',
   add_watchlist: 'Add to watchlist',
   added_watchlist: 'Remove from watchlist',
   watched: 'Watched',
@@ -67,9 +66,9 @@ const en = {
   dark: 'Dark',
   light: 'Light',
   system: 'System',
-  direction: "Director",
-  cast: "Cast",
-  select_any: "Select some"
+  direction: 'Director',
+  cast: 'Cast',
+  select_any: 'Select some',
 };
 
 const es = {
@@ -114,7 +113,6 @@ const es = {
   update: 'Actualizar',
   popular_show: 'Series populares',
   popular_movie: 'Películas populares',
-  votes: 'votos',
   add_watchlist: 'Añadir a pendientes',
   added_watchlist: 'Eliminar de pendientes',
   watched: 'Vista',
@@ -138,9 +136,9 @@ const es = {
   dark: 'Oscuro',
   light: 'Claro',
   system: 'Sistema',
-  direction: "Dirección",
-  cast: "Reparto",
-  select_any: "Selecciona alguno"
+  direction: 'Dirección',
+  cast: 'Reparto',
+  select_any: 'Selecciona alguno',
 };
 
 const translations: Record<Language, Record<string, string>> = {

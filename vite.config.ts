@@ -4,9 +4,11 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 import { VitePWA } from 'vite-plugin-pwa';
 import { visualizer } from 'rollup-plugin-visualizer';
 import EnvironmentPlugin from 'vite-plugin-environment';
+import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
   plugins: [
+    svgr(),
     react(),
     viteTsconfigPaths(),
     VitePWA({

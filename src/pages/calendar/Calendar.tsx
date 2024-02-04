@@ -1,4 +1,3 @@
-import Emoji from 'components/Emoji';
 import addMonths from 'date-fns/addMonths';
 import format from 'date-fns/format';
 import getDay from 'date-fns/getDay';
@@ -25,6 +24,7 @@ import { AuthService } from 'utils/AuthService';
 import { useAppSelector } from 'state/store';
 import { useTranslate } from 'hooks';
 import { useSearchParams } from 'hooks';
+import { Icon } from 'components/Icon';
 
 const localizer = dateFnsLocalizer({
   format,
@@ -123,7 +123,7 @@ export default function Calendar() {
         <div className="flex flex-wrap justify-evenly items-center flex-wrap pb-2">
           <div className="flex justify-center text-2xl">
             <button className="mr-10" onClick={() => changeMonth(-1)}>
-              <Emoji emoji="⬅️" />
+              <Icon name="arrow-left" />
             </button>
             <h1 className="font-light capitalize ">
               {selectedDate.toLocaleDateString(language, {
@@ -132,7 +132,7 @@ export default function Calendar() {
               {getYear(selectedDate)}
             </h1>
             <button className="ml-10" onClick={() => changeMonth(1)}>
-              <Emoji emoji="➡️" />
+              <Icon name="arrow-right" />
             </button>
           </div>
           <div className="flex mt-2 lg:mt-0">

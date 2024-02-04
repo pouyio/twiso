@@ -1,6 +1,6 @@
 import { useTranslate } from 'hooks';
-import React, { useMemo, useState } from 'react';
-import Emoji from './Emoji';
+import React, { useMemo } from 'react';
+import { Icon } from './Icon';
 
 interface IRatingProps {
   rating: number;
@@ -8,7 +8,6 @@ interface IRatingProps {
 }
 
 const Rating: React.FC<IRatingProps> = ({ rating = 0, votes = 0 }) => {
-  const [showVotes, setShowVotes] = useState(true);
   const { t } = useTranslate();
 
   const totalVotes = useMemo(() => {
@@ -20,18 +19,9 @@ const Rating: React.FC<IRatingProps> = ({ rating = 0, votes = 0 }) => {
   }, [votes]);
 
   return (
-    <div onClick={() => setShowVotes((s) => !s)} className="cursor-pointer">
-      {showVotes ? (
-        <>
-          <Emoji emoji="👍🏼" />
-          {Math.floor((rating ?? 0) * 10)}%
-        </>
-      ) : (
-        <>
-          <Emoji emoji="🗳" />
-          {totalVotes} {t('votes')}
-        </>
-      )}
+    <div className="cursor-pointer flex">
+      <Icon name="like" className="h-5" />
+      {Math.floor((rating ?? 0) * 10)}% · {totalVotes}
     </div>
   );
 };
