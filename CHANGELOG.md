@@ -1,3 +1,10 @@
+## [2.8.15](https://github.com/pouyio/twiso/compare/v2.8.14...v2.8.15) (2024-02-04)
+
+
+### :art:
+
+* moved to a new icon library ([ae07a7c](https://github.com/pouyio/twiso/commit/ae07a7cf48f9fdb88bac03386745241ce8f7e1e2))
+
 ## [2.8.14](https://github.com/pouyio/twiso/compare/v2.8.13...v2.8.14) (2023-09-01)
 
 
