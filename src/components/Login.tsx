@@ -17,7 +17,13 @@ const Login: React.FC<ILoginProps> = ({ code }) => {
   useEffect(() => {
     loginApi(code).then(({ data }) => {
       authService.session = data;
-      history('/movies');
+      const redirectPath = localStorage.getItem('redirect_path');
+      if (redirectPath) {
+        localStorage.removeItem('redirect_path');
+        history(redirectPath);
+      } else {
+        history('/movies');
+      }
     });
   });
 
