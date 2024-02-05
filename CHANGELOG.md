@@ -1,3 +1,10 @@
+# [2.9.0](https://github.com/pouyio/twiso/compare/v2.8.15...v2.9.0) (2024-02-05)
+
+
+### :sparkles:
+
+* improve redirect on login ([0b37ee0](https://github.com/pouyio/twiso/commit/0b37ee01bb199158509e0d4eb0fe859d04798c4b))
+
 ## [2.8.15](https://github.com/pouyio/twiso/compare/v2.8.14...v2.8.15) (2024-02-04)
 
 
