@@ -29,10 +29,10 @@ import {
 } from '../models';
 import { config, IMG_URL, LOGIN_URL } from './apiConfig';
 import { authTraktClient, traktClient } from './axiosClients';
-import { Session } from './AuthService';
 import Bottleneck from 'bottleneck';
 import { getTranslation } from './getTranslations';
 import { Language } from 'state/slices/config';
+import { Session } from 'contexts/AuthContext';
 
 const limiter = new Bottleneck({
   reservoir: 1000,

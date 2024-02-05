@@ -1,22 +1,22 @@
-import React, { useEffect } from 'react';
+import { AuthContext } from 'contexts';
+import { useTranslate } from 'hooks';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginApi } from '../utils/api';
-import { AuthService } from 'utils/AuthService';
-import { useTranslate } from 'hooks';
 
 interface ILoginProps {
   code: string;
 }
 
-const authService = AuthService.getInstance();
-
 const Login: React.FC<ILoginProps> = ({ code }) => {
   const history = useNavigate();
   const { t } = useTranslate();
 
+  const { setSession } = useContext(AuthContext);
+
   useEffect(() => {
     loginApi(code).then(({ data }) => {
-      authService.session = data;
+      setSession(data);
       const redirectPath = localStorage.getItem('redirect_path');
       if (redirectPath) {
         localStorage.removeItem('redirect_path');

@@ -1,17 +1,15 @@
-import React from 'react';
-import { Show } from '../models';
-import { LoginButton } from './LoginButton';
-import { removeWatchlist, addWatchlist } from 'state/slices/shows/thunks';
+import { AuthContext } from 'contexts';
 import { useIsWatch, useTranslate } from 'hooks';
-import { AuthService } from 'utils/AuthService';
-import { useAppSelector, useAppDispatch } from 'state/store';
+import React, { useContext } from 'react';
+import { addWatchlist, removeWatchlist } from 'state/slices/shows/thunks';
+import { useAppDispatch, useAppSelector } from 'state/store';
+import { Show } from '../models';
 import Emoji from './Emoji';
+import { LoginButton } from './LoginButton';
 
 interface IShowWatchButtonProps {
   item: Show;
 }
-
-const authService = AuthService.getInstance();
 
 const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
   const dispatch = useAppDispatch();
@@ -19,11 +17,12 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
   const isWatchlistPending = useAppSelector((state) => {
     return state.shows.pending.watchlist.includes(item.ids.trakt);
   });
+  const { session } = useContext(AuthContext);
   const { t } = useTranslate();
 
   return (
     <div className="flex justify-around my-8">
-      {authService.isLoggedIn() ? (
+      {!!session ? (
         <>
           {isWatchlist(item.ids.trakt, 'show') ? (
             <button

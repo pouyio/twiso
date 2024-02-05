@@ -8,7 +8,7 @@ import startOfWeek from 'date-fns/startOfWeek';
 import addDays from 'date-fns/addDays';
 import getDaysInMonth from 'date-fns/getDaysInMonth';
 import startOfMonth from 'date-fns/startOfMonth';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import {
   Calendar as BigCalendar,
   dateFnsLocalizer,
@@ -20,11 +20,11 @@ import { Event } from './Event';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './calendar.scss';
 import { ShowCalendar, MovieCalendar } from 'models';
-import { AuthService } from 'utils/AuthService';
 import { useAppSelector } from 'state/store';
 import { useTranslate } from 'hooks';
 import { useSearchParams } from 'hooks';
 import { Icon } from 'components/Icon';
+import { AuthContext } from 'contexts';
 
 const localizer = dateFnsLocalizer({
   format,
@@ -59,10 +59,9 @@ const mapShow = (s: ShowCalendar) => ({
   resource: { ...s, type: 'show' },
 });
 
-const authService = AuthService.getInstance();
-
 export default function Calendar() {
-  const isLogged = authService.isLoggedIn();
+  const { session } = useContext(AuthContext);
+  const isLogged = !!session;
   const [events, setEvents] = useState<ICalendarEvent[]>([]);
   const [searchParams, setSearchParams] = useSearchParams({
     date: new Date().toISOString(),

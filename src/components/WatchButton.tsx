@@ -1,15 +1,15 @@
-import React from 'react';
-import { Movie } from '../models';
-import { useIsWatch, useTranslate } from '../hooks';
-import { LoginButton } from '../components/LoginButton';
+import { AuthContext } from 'contexts';
+import React, { useContext } from 'react';
 import {
   addWatched,
-  removeWatched,
   addWatchlist,
+  removeWatched,
   removeWatchlist,
 } from 'state/slices/movies/thunks';
-import { AuthService } from 'utils/AuthService';
 import { useAppDispatch, useAppSelector } from 'state/store';
+import { LoginButton } from '../components/LoginButton';
+import { useIsWatch, useTranslate } from '../hooks';
+import { Movie } from '../models';
 import Emoji from './Emoji';
 
 interface IWatchButtonProps {
@@ -20,7 +20,8 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
   const { isWatchlist, isWatched } = useIsWatch();
   const { t } = useTranslate();
 
-  const isLoggedIn = AuthService.getInstance().isLoggedIn();
+  const { session } = useContext(AuthContext);
+  const isLoggedIn = !!session;
   const dispatch = useAppDispatch();
   const isWatchlistPending = useAppSelector((state) => {
     return state.movies.pending.watchlist.includes(item.ids.trakt);

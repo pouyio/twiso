@@ -1,26 +1,23 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
-import React, { useContext, useEffect, useState } from 'react';
+import { Icon } from 'components/Icon';
+import { useTranslate } from 'hooks';
+import { useContext, useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import { Language, changeLanguage } from 'state/slices/config';
+import { useAppDispatch, useAppSelector } from 'state/store';
 import packageInfo from '../../package.json';
 import Emoji from '../components/Emoji';
-import { getStatsApi, getProfileApi } from '../utils/api';
-import { UserStats } from '../models';
-import { removeImgCaches, removeCaches } from '../utils/cache';
-import { Helmet } from 'react-helmet';
-import { ThemeContext, ThemeType } from '../contexts';
 import { LoginButton } from '../components/LoginButton';
-import { AuthService } from 'utils/AuthService';
-import { changeLanguage, Language } from 'state/slices/config';
-import { useAppDispatch, useAppSelector } from 'state/store';
-import { useTranslate } from 'hooks';
-import { Icon } from 'components/Icon';
-
-const authService = AuthService.getInstance();
+import { AuthContext, ThemeContext, ThemeType } from '../contexts';
+import { UserStats } from '../models';
+import { getProfileApi, getStatsApi } from '../utils/api';
+import { removeCaches, removeImgCaches } from '../utils/cache';
 
 export default function Profile() {
   const { theme, setTheme } = useContext(ThemeContext);
   const [stats, setStats] = useState<UserStats>();
   const [dev, setDev] = useState(false);
-  const isLogged = authService.isLoggedIn();
+  const { session } = useContext(AuthContext);
+  const isLogged = !!session;
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.config.language);
   const { t } = useTranslate();

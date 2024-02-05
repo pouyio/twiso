@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { AuthService } from './AuthService';
 import { BASE_URL, config, CONTENT_TYPE, TRAKT_API_VERSION } from './apiConfig';
 
 const axiosConfig: AxiosRequestConfig = {
@@ -17,9 +16,9 @@ const traktClient = axios.create(axiosConfig);
 
 authTraktClient.interceptors.request.use(
   (config) => {
-    const authService = AuthService.getInstance();
-    if (authService.session) {
-      config.headers.Authorization = `Bearer ${authService.session.access_token}`;
+    const session = JSON.parse(localStorage.getItem('session') || 'null');
+    if (session) {
+      config.headers.Authorization = `Bearer ${session.access_token}`;
     } else {
       throw new Error('Cant make request, no access token available');
     }

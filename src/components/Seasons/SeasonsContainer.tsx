@@ -1,29 +1,26 @@
-import React, { useState, useEffect, useContext } from 'react';
-import {
-  getSeasonsApi,
-  getSeasonEpisodesApi,
-  getProgressApi,
-} from '../../utils/api';
-import { ModalContext } from '../../contexts';
-import { Show, ShowProgress, Season, Episode, ShowWatched } from '../../models';
+import { useSearchParams } from 'hooks';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   addEpisodeWatched,
-  removeEpisodeWatched,
   addSeasonWatched,
+  removeEpisodeWatched,
   removeSeasonWatched,
 } from 'state/slices/shows/thunks';
-import SeasonSelector from './SeasonSelector';
-import Episodes from './Episodes';
-import { AuthService } from 'utils/AuthService';
 import { useAppDispatch, useAppSelector } from 'state/store';
-import { useSearchParams } from 'hooks';
+import { AuthContext, ModalContext } from '../../contexts';
+import { Episode, Season, Show, ShowProgress, ShowWatched } from '../../models';
+import {
+  getProgressApi,
+  getSeasonEpisodesApi,
+  getSeasonsApi,
+} from '../../utils/api';
+import Episodes from './Episodes';
+import SeasonSelector from './SeasonSelector';
 
 interface ISeasonsContainerProps {
   show: Show;
   showId: number;
 }
-
-const authService = AuthService.getInstance();
 
 const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   show,
@@ -37,7 +34,8 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const [unTrackedProgress, setUnTrackedProgress] = useState<ShowProgress>();
   const [unTrackedSeasons, setUnTrackedSeasons] = useState<Season[]>([]);
   const [episodes, setEpisodes] = useState<Episode[][]>([]);
-  const isLogged = authService.isLoggedIn();
+  const { session } = useContext(AuthContext);
+  const isLogged = !!session;
   const { toggle } = useContext(ModalContext);
   const dispatch = useAppDispatch();
   const watchedShow = useAppSelector(
