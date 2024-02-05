@@ -1,3 +1,10 @@
+## [2.9.1](https://github.com/pouyio/twiso/compare/v2.9.0...v2.9.1) (2024-02-05)
+
+
+### :bug:
+
+* moved auth to a context. Fixes login correctly ([e60f85a](https://github.com/pouyio/twiso/commit/e60f85aed68c25a95d57d0a7e4891362f6b030e4))
+
 # [2.9.0](https://github.com/pouyio/twiso/compare/v2.8.15...v2.9.0) (2024-02-05)
 
 
