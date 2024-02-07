@@ -1,3 +1,10 @@
+## [2.9.3](https://github.com/pouyio/twiso/compare/v2.9.2...v2.9.3) (2024-02-07)
+
+
+### :art:
+
+* change season selector ([622341e](https://github.com/pouyio/twiso/commit/622341eb7c9c84e7c6c779567af38affbcc43e88))
+
 ## [2.9.2](https://github.com/pouyio/twiso/compare/v2.9.1...v2.9.2) (2024-02-07)
 
 
