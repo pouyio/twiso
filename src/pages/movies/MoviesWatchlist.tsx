@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { filterByGenres } from 'state/slices/movies';
 import { useAppSelector } from 'state/store';
 import { usePagination } from '../../hooks';
+import { EmptyState } from 'components/EmptyState';
 
 export const MoviesWatchlist: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);
@@ -29,7 +30,7 @@ export const MoviesWatchlist: React.FC = () => {
 
   const { getItemsByPage } = usePagination(orderedMovies);
 
-  return (
+  return orderedMovies.length ? (
     <PaginationContainer items={orderedMovies} onFilter={setGenres}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
         {getItemsByPage().map((m, i) => (
@@ -49,5 +50,7 @@ export const MoviesWatchlist: React.FC = () => {
         ))}
       </ul>
     </PaginationContainer>
+  ) : (
+    <EmptyState />
   );
 };

@@ -5,6 +5,7 @@ import { useAppSelector } from 'state/store';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
+import { EmptyState } from 'components/EmptyState';
 
 export const MoviesWatched: React.FC = () => {
   const [orderedMovies, setOrderedMovies] = useState<MovieWatched[]>([]);
@@ -21,7 +22,7 @@ export const MoviesWatched: React.FC = () => {
     setOrderedMovies(newItems);
   }, [watched]);
 
-  return (
+  return orderedMovies.length ? (
     <PaginationContainer items={orderedMovies} onFilter={setGenres}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
         {getItemsByPage().map((m, i) => (
@@ -41,5 +42,7 @@ export const MoviesWatched: React.FC = () => {
         ))}
       </ul>
     </PaginationContainer>
+  ) : (
+    <EmptyState />
   );
 };

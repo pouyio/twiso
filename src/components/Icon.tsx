@@ -15,6 +15,7 @@ import Share from 'assets/share-svgrepo-com.svg?react';
 import Like from 'assets/like-svgrepo-com.svg?react';
 import Play from 'assets/play-circle-svgrepo-com.svg?react';
 import Logout from 'assets/logout-2-svgrepo-com.svg?react';
+import Ufo from 'assets/ufo-3-svgrepo-com.svg?react';
 import { ThemeContext } from 'contexts';
 import React, { HTMLProps, useContext } from 'react';
 
@@ -36,6 +37,7 @@ const iconsMap = {
   like: <Like />,
   play: <Play />,
   logout: <Logout />,
+  ufo: <Ufo />,
 } as const;
 
 interface IconProps extends HTMLProps<HTMLDivElement> {

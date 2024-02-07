@@ -5,6 +5,7 @@ import { useAppSelector } from 'state/store';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
+import { EmptyState } from 'components/EmptyState';
 
 const ShowsWatchlist: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);
@@ -28,7 +29,7 @@ const ShowsWatchlist: React.FC = () => {
     }, []);
   const { getItemsByPage } = usePagination(orderedShows);
 
-  return (
+  return orderedShows.length ? (
     <PaginationContainer items={orderedShows} onFilter={setGenres}>
       <ul className="flex flex-wrap p-2 items-stretch justify-center">
         {getItemsByPage().map((m) => (
@@ -48,6 +49,8 @@ const ShowsWatchlist: React.FC = () => {
         ))}
       </ul>
     </PaginationContainer>
+  ) : (
+    <EmptyState />
   );
 };
 
