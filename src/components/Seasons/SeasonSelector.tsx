@@ -1,6 +1,7 @@
-import { useTranslate } from 'hooks';
+import { useTranslate, useWindowSize } from 'hooks';
 import React, { useEffect, useRef } from 'react';
 import { Season, ShowProgress } from '../../models';
+import { motion } from 'framer-motion';
 
 interface ISeasonsProps {
   progress?: ShowProgress;
@@ -8,6 +9,22 @@ interface ISeasonsProps {
   selectedSeason?: Season;
   setSelectedSeason: (season?: number) => void;
 }
+
+const Underline: React.FC = () => {
+  const { width } = useWindowSize();
+  return (
+    <motion.div
+      layoutId="underline-season"
+      className="bg-gray-200 mt-2"
+      initial={false}
+      style={{
+        bottom:
+          width < 1024 ? `calc(env(safe-area-inset-bottom) + 4px)` : '4px',
+        height: '4px',
+      }}
+    />
+  );
+};
 
 const SELECTED_CLASS = 'bg-white text-gray-600';
 
@@ -48,7 +65,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
       return SELECTED_CLASS;
     }
     if (season.ids.trakt === selectedSeason.ids.trakt) {
-      return 'bg-gray-200';
+      return 'border-b-2';
     }
     return SELECTED_CLASS;
   };
@@ -70,7 +87,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
 
   return (
     <ul
-      className="flex overflow-x-auto my-5 -mx-3 relative"
+      className="flex overflow-x-auto my-4 -mx-3 relative border-b"
       style={{ WebkitOverflowScrolling: 'touch' }}
       ref={ref}
     >
@@ -84,16 +101,17 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
           }
           key={s.ids.trakt}
           className={
-            'whitespace-pre mx-1 rounded-full text-sm px-3 py-2 cursor-pointer border-gray-200 border ' +
-            selectedClass(s)
+            'whitespace-pre mx-1 text-sm px-3 pt-2 cursor-pointer border-gray-200 ' +
+            SELECTED_CLASS
           }
         >
           {s.number ? `${t('season')} ${s.number}` : t('specials')}
           {isSeasonWatched(s.number) ? (
-            <span className="ml-2 text-gray-600">✓</span>
+            <span className="ml-2 text-gray-600 pb-2">✓</span>
           ) : (
             ''
           )}
+          {s.ids.trakt === selectedSeason?.ids.trakt && <Underline />}
         </li>
       ))}
     </ul>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Li: React.FC = () => (
-  <li className="py-3 text-sm leading-tight border-b">
+  <li className="py-3 text-sm leading-tight">
     <div className="flex items-center">
       <span className="w-4 mr-1 bg-gray-200 rounded-full from-gray-300 bg-gradient-to-r animate-pulse h-4 mb-1"></span>
       <span className="mx-2 w-1"></span>
