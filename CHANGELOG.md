@@ -1,3 +1,10 @@
+## [2.9.2](https://github.com/pouyio/twiso/compare/v2.9.1...v2.9.2) (2024-02-07)
+
+
+### :art:
+
+* added empty states for movies and shows ([2442182](https://github.com/pouyio/twiso/commit/2442182198558266fb428e8935a985aef4ae6918))
+
 ## [2.9.1](https://github.com/pouyio/twiso/compare/v2.9.0...v2.9.1) (2024-02-05)
 
 
