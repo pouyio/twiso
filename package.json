@@ -1,6 +1,6 @@
 {
   "name": "twiso",
-  "version": "2.9.3",
+  "version": "2.9.4",
   "private": true,
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/assets/*.js'",

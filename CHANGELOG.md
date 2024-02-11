@@ -1,3 +1,15 @@
+## [2.9.4](https://github.com/pouyio/twiso/compare/v2.9.3...v2.9.4) (2024-02-11)
+
+
+### :art:
+
+* added no results when filtering ([fa823e9](https://github.com/pouyio/twiso/commit/fa823e99c3ebbba446181591e0666b3fc5225244))
+* improved filters bar ([927b95b](https://github.com/pouyio/twiso/commit/927b95bcd1964e57bd3130e53c674e079e17bc80))
+
+### :bug:
+
+* fixed font typo ([16c2f2b](https://github.com/pouyio/twiso/commit/16c2f2b683d5c612a50edaa8fe11159976b71b8d))
+
 ## [2.9.3](https://github.com/pouyio/twiso/compare/v2.9.2...v2.9.3) (2024-02-07)
 
 
