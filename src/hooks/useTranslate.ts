@@ -68,7 +68,6 @@ const en = {
   system: 'System',
   direction: 'Director',
   cast: 'Cast',
-  select_any: 'Select some',
 };
 
 const es = {
@@ -138,7 +137,6 @@ const es = {
   system: 'Sistema',
   direction: 'Dirección',
   cast: 'Reparto',
-  select_any: 'Selecciona alguno',
 };
 
 const translations: Record<Language, Record<string, string>> = {

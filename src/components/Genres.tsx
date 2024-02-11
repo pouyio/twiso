@@ -3,14 +3,19 @@ import Emoji from './Emoji';
 import getGenre from '../utils/getGenre';
 import { Empty } from './Empty';
 import { useTranslate } from 'hooks';
+import { genres as allGenres } from 'utils/getGenre';
 
 interface IGenresProps {
-  genres: string[];
+  genres?: string[];
   selected?: string[];
   onClick?: (key: string) => void;
 }
 
-const Genres: React.FC<IGenresProps> = ({ genres, onClick }) => {
+const Genres: React.FC<IGenresProps> = ({
+  genres = Object.keys(allGenres),
+  onClick,
+  selected,
+}) => {
   const { t } = useTranslate();
   return (
     <ul
@@ -26,7 +31,13 @@ const Genres: React.FC<IGenresProps> = ({ genres, onClick }) => {
             {...(onClick ? { onClick: () => onClick(g) } : {})}
             className={onClick ? 'cursor-pointer mb-1' : ''}
           >
-            <div className="bg-gray-100 font-light px-2 py-1 rounded-full mx-1 whitespace-pre font-family-text">
+            <div
+              className={`bg-gray-100 px-2 py-1 rounded-full mx-1 whitespace-pre font-family-text ${
+                selected?.some((s) => s === g)
+                  ? 'bg-green-400 font-normal'
+                  : 'font-light'
+              }`}
+            >
               <Emoji emoji={getGenre(g)} /> {t(g)}
             </div>
           </li>

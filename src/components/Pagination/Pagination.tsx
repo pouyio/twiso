@@ -74,7 +74,7 @@ const Pagination: React.FC<IPaginationProps> = ({
         </h1>
         <button
           disabled={page === last}
-          className="ml-3  disabled:opacity-50"
+          className="ml-3 disabled:opacity-50"
           onClick={setNext}
         >
           <Icon name="arrow-right" className="h-8" />
@@ -90,24 +90,7 @@ const Pagination: React.FC<IPaginationProps> = ({
       {showFilters && (
         <div className="sticky top-0">
           <div className="inline-flex bg-blue-100 py-2 px-4 w-full flex-col border-b-2">
-            <Genres
-              genres={Object.keys(genres).filter(
-                (g) => !selectedGenres.includes(g)
-              )}
-              onClick={toggleGenre}
-              selected={selectedGenres}
-            />
-          </div>
-          <div className="inline-flex bg-blue-100 py-2 px-4 w-full flex-col border-b-2">
-            {selectedGenres.length ? (
-              <Genres
-                genres={selectedGenres}
-                onClick={toggleGenre}
-                selected={selectedGenres}
-              />
-            ) : (
-              t('select_any')
-            )}
+            <Genres onClick={toggleGenre} selected={selectedGenres} />
           </div>
         </div>
       )}
