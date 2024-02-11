@@ -6,6 +6,7 @@ import { filterByGenres } from 'state/slices/movies';
 import { useAppSelector } from 'state/store';
 import { usePagination } from '../../hooks';
 import { EmptyState } from 'components/EmptyState';
+import { NoResults } from 'components/NoResults';
 
 export const MoviesWatchlist: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);
@@ -30,27 +31,31 @@ export const MoviesWatchlist: React.FC = () => {
 
   const { getItemsByPage } = usePagination(orderedMovies);
 
-  return orderedMovies.length ? (
-    <PaginationContainer items={orderedMovies} onFilter={setGenres}>
-      <ul className="flex flex-wrap p-2 items-stretch justify-center">
-        {getItemsByPage().map((m, i) => (
-          <li
-            key={`${m.movie.ids.trakt}_${i}`}
-            className="p-2"
-            style={{ flex: '1 0 50%', maxWidth: '10em' }}
-          >
-            <ImageLink
-              text={m.movie.title}
-              ids={m.movie.ids}
-              item={m.movie}
-              style={{ minHeight: '13.5em' }}
-              type="movie"
-            />
-          </li>
-        ))}
-      </ul>
-    </PaginationContainer>
-  ) : (
+  return !genres.length && !orderedMovies.length ? (
     <EmptyState />
+  ) : (
+    <PaginationContainer items={orderedMovies} onFilter={setGenres}>
+      {genres.length && !orderedMovies.length ? (
+        <NoResults />
+      ) : (
+        <ul className="flex flex-wrap p-2 items-stretch justify-center">
+          {getItemsByPage().map((m, i) => (
+            <li
+              key={`${m.movie.ids.trakt}_${i}`}
+              className="p-2"
+              style={{ flex: '1 0 50%', maxWidth: '15em' }}
+            >
+              <ImageLink
+                text={m.movie.title}
+                ids={m.movie.ids}
+                item={m.movie}
+                style={{}}
+                type="movie"
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+    </PaginationContainer>
   );
 };

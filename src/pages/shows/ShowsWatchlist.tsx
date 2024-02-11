@@ -6,6 +6,7 @@ import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks';
 import { EmptyState } from 'components/EmptyState';
+import { NoResults } from 'components/NoResults';
 
 const ShowsWatchlist: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);
@@ -29,28 +30,32 @@ const ShowsWatchlist: React.FC = () => {
     }, []);
   const { getItemsByPage } = usePagination(orderedShows);
 
-  return orderedShows.length ? (
-    <PaginationContainer items={orderedShows} onFilter={setGenres}>
-      <ul className="flex flex-wrap p-2 items-stretch justify-center">
-        {getItemsByPage().map((m) => (
-          <li
-            key={m.show.ids.trakt}
-            className="p-2"
-            style={{ flex: '1 0 50%', maxWidth: '10em' }}
-          >
-            <ImageLink
-              item={m.show}
-              ids={m.show.ids}
-              text={m.show.title}
-              style={{ minHeight: '13.5em' }}
-              type="show"
-            />
-          </li>
-        ))}
-      </ul>
-    </PaginationContainer>
-  ) : (
+  return !genres.length && !orderedShows.length ? (
     <EmptyState />
+  ) : (
+    <PaginationContainer items={orderedShows} onFilter={setGenres}>
+      {genres.length && !orderedShows.length ? (
+        <NoResults />
+      ) : (
+        <ul className="flex flex-wrap p-2 items-stretch justify-center">
+          {getItemsByPage().map((m) => (
+            <li
+              key={m.show.ids.trakt}
+              className="p-2"
+              style={{ flex: '1 0 50%', maxWidth: '10em' }}
+            >
+              <ImageLink
+                item={m.show}
+                ids={m.show.ids}
+                text={m.show.title}
+                style={{ minHeight: '13.5em' }}
+                type="show"
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+    </PaginationContainer>
   );
 };
 
