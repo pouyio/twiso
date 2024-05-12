@@ -1,3 +1,18 @@
+## [2.9.5](https://github.com/pouyio/twiso/compare/v2.9.4...v2.9.5) (2024-05-12)
+
+
+### :art:
+
+* updated progress bar ([9d15a24](https://github.com/pouyio/twiso/commit/9d15a249a5cbbf291629f87ccf7e8b2360c19c9d))
+
+### :bug:
+
+* logout automatically when refresh token fails ([af3ece8](https://github.com/pouyio/twiso/commit/af3ece8363e663c4502041654576b9fa23793241))
+
+### :rocket:
+
+* updated tailwind config ([ec147a5](https://github.com/pouyio/twiso/commit/ec147a5aa812e0873c26804a71d56c31aa79b046))
+
 ## [2.9.4](https://github.com/pouyio/twiso/compare/v2.9.3...v2.9.4) (2024-02-11)
 
 
