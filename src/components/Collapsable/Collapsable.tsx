@@ -44,9 +44,8 @@ const Collapsable: React.FC<React.PropsWithChildren<ICollapsableProps>> = ({
     <div className="flex flex-col">
       <motion.div
         ref={ref}
-        className={`leading-tight font-light overflow-hidden relative ${
-          isButtonShown && !opened ? 'collapsable' : ''
-        }`}
+        className={`leading-tight font-light overflow-hidden relative ${isButtonShown && !opened ? 'collapsable' : ''
+          }`}
         initial={{
           height: isButtonShown
             ? opened
