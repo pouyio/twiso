@@ -16,7 +16,7 @@ export default function Profile() {
   const { theme, setTheme } = useContext(ThemeContext);
   const [stats, setStats] = useState<UserStats>();
   const [dev, setDev] = useState(false);
-  const { session } = useContext(AuthContext);
+  const { session, logout } = useContext(AuthContext);
   const isLogged = !!session;
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.config.language);
@@ -30,11 +30,6 @@ export default function Profile() {
       );
     }
   }, [isLogged]);
-
-  const logout = () => {
-    localStorage.removeItem('session');
-    window.location.reload();
-  };
 
   const convertMinutes = (minutes: number = 0) => {
     const d = Math.floor(minutes / 1440);

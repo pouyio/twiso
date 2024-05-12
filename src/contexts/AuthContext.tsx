@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { refreshApi } from 'utils/api';
 
 export interface Session {
@@ -12,11 +12,13 @@ export interface Session {
 
 interface AuthContextProps {
   session: Session | null;
+  logout: () => void;
   setSession: (session: Session) => void;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
   session: null,
+  logout: () => null,
   setSession: () => null,
 });
 
@@ -27,6 +29,11 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     JSON.parse(localStorage.getItem('session') || 'null')
   );
 
+  const logout = () => {
+    localStorage.removeItem('session');
+    window.location.reload();
+  };
+
   useEffect(() => {
     const session = JSON.parse(localStorage.getItem('session') || 'null');
 
@@ -35,9 +42,14 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       if (
         new Date() > new Date((+session.created_at + session.expires_in) * 1000)
       ) {
-        refreshApi(session.refresh_token).then(({ data }) => {
-          setSession(data);
-        });
+        refreshApi(session.refresh_token)
+          .then(({ data }) => {
+            setSession(data);
+          })
+          .catch((e) => {
+            console.warn('Auth error, trying login out', e);
+            logout();
+          });
       }
     }
   }, []);
@@ -52,6 +64,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     <AuthContext.Provider
       value={{
         session,
+        logout,
         setSession: localSetSession,
       }}
     >
