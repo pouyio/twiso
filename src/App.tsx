@@ -74,7 +74,7 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
           <Emoji emoji="📺" /> P
         </li>
       </ul>
-      <nav className="w-full flex flex-col fixed bottom-0 z-20 justify-around text-2xl lg:top-0 lg:bottom-auto select-none">
+      <nav className="w-full flex flex-col lg:flex-col-reverse fixed bottom-0 z-20 justify-around text-2xl lg:top-0 lg:bottom-auto select-none">
         <ProgressBar />
         <NavigationTabs logged={isLoggedIn} />
       </nav>
