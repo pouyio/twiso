@@ -55,7 +55,6 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
     if (isLoggedIn) {
       firstLoad();
     }
-    // eslint-disable-next-line
   }, [isLoggedIn]);
 
   return (
