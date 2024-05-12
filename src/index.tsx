@@ -9,7 +9,6 @@ import { store } from 'state/store';
 import packageInfo from '../package.json';
 import './index.scss';
 import { Main } from './main';
-import './tailwind.css';
 
 initReactFastclick();
 
