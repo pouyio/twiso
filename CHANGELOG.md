@@ -1,3 +1,10 @@
+## [2.9.8](https://github.com/pouyio/twiso/compare/v2.9.7...v2.9.8) (2024-05-12)
+
+
+### :bug:
+
+* fix sentry deploy ([a96cba8](https://github.com/pouyio/twiso/commit/a96cba805f5a1bf4d883edd5f858f68b94af9a11))
+
 ## [2.9.7](https://github.com/pouyio/twiso/compare/v2.9.6...v2.9.7) (2024-05-12)
 
 
