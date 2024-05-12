@@ -4,6 +4,7 @@ on:
   release:
     types: [published]
 
+jobs:
   createSentryRelease:
     name: Add Sentry release
     needs: deploy
