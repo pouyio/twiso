@@ -1,3 +1,10 @@
+## [2.9.6](https://github.com/pouyio/twiso/compare/v2.9.5...v2.9.6) (2024-05-12)
+
+
+### :rocket:
+
+* force deploy ([0dde0cc](https://github.com/pouyio/twiso/commit/0dde0cc156f58f470f68e8348914f4bbf95b810c))
+
 ## [2.9.5](https://github.com/pouyio/twiso/compare/v2.9.4...v2.9.5) (2024-05-12)
 
 
