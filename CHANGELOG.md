@@ -1,3 +1,10 @@
+## [2.9.9](https://github.com/pouyio/twiso/compare/v2.9.8...v2.9.9) (2024-09-03)
+
+
+### :art:
+
+* sort to the end shows with only special episodes remaining from ([30407ee](https://github.com/pouyio/twiso/commit/30407ee7afc939d1ac5fe4d87bc8fb8105623e91))
+
 ## [2.9.8](https://github.com/pouyio/twiso/compare/v2.9.7...v2.9.8) (2024-05-12)
 
 
