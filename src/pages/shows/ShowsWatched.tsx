@@ -16,10 +16,16 @@ const ShowsWatched: React.FC = () => {
   useEffect(() => {
     setOrderedShows(
       watched.sort((a, b) => {
-        if (!a.progress?.next_episode) {
+        if (
+          !a.progress?.next_episode ||
+          a.progress?.next_episode?.season === 0
+        ) {
           return 1;
         }
-        if (!b.progress?.next_episode) {
+        if (
+          !b.progress?.next_episode ||
+          b.progress?.next_episode?.season === 0
+        ) {
           return -1;
         }
         const aDate = new Date(a.progress?.last_watched_at ?? '');
