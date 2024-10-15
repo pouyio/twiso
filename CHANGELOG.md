@@ -1,3 +1,29 @@
+## [2.9.11](https://github.com/pouyio/twiso/compare/v2.9.10...v2.9.11) (2024-10-15)
+
+
+### :arrow_up:
+
+* Bump ejs from 3.1.9 to 3.1.10 ([066c6b2](https://github.com/pouyio/twiso/commit/066c6b2d40382f5bb4f3e3bdc0c6288758f737d8))
+* Bump elliptic from 6.5.4 to 6.5.7 ([2f24393](https://github.com/pouyio/twiso/commit/2f24393b4e81a9c064c719e1a5b958debca134fc))
+* Bump follow-redirects from 1.15.3 to 1.15.7 ([d6fdb06](https://github.com/pouyio/twiso/commit/d6fdb0681338c68c662c16be59462d2a5458a821))
+* Bump tar from 6.1.11 to 6.2.1 ([b5f412b](https://github.com/pouyio/twiso/commit/b5f412b033c61be19a7f5fad34dc2544f7eae01f))
+* Bump vite from 5.1.1 to 5.1.8 ([a5ecddb](https://github.com/pouyio/twiso/commit/a5ecddbdbf2c10161b504eecadcf2e33b999627a))
+
+### :rocket:
+
+* updated deps ([8a62a2f](https://github.com/pouyio/twiso/commit/8a62a2f446bc844937292e357bbe4ee326d386bf))
+
+## [2.9.10](https://github.com/pouyio/twiso/compare/v2.9.9...v2.9.10) (2024-10-15)
+
+
+### :arrow_up:
+
+* Bump http-cache-semantics from 4.1.0 to 4.1.1 ([358d50a](https://github.com/pouyio/twiso/commit/358d50a31e0792876eb83f96438fa1d6929529a4))
+
+### :bug:
+
+* fix scroll to top ([b8335fd](https://github.com/pouyio/twiso/commit/b8335fd852e6c0f540dc5ec9c0ada68603fc55f4))
+
 ## [2.9.9](https://github.com/pouyio/twiso/compare/v2.9.8...v2.9.9) (2024-09-03)
 
 
