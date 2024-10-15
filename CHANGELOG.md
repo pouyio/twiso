@@ -1,3 +1,14 @@
+## [2.9.10](https://github.com/pouyio/twiso/compare/v2.9.9...v2.9.10) (2024-10-15)
+
+
+### :arrow_up:
+
+* Bump http-cache-semantics from 4.1.0 to 4.1.1 ([358d50a](https://github.com/pouyio/twiso/commit/358d50a31e0792876eb83f96438fa1d6929529a4))
+
+### :bug:
+
+* fix scroll to top ([b8335fd](https://github.com/pouyio/twiso/commit/b8335fd852e6c0f540dc5ec9c0ada68603fc55f4))
+
 ## [2.9.9](https://github.com/pouyio/twiso/compare/v2.9.8...v2.9.9) (2024-09-03)
 
 
