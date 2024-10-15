@@ -1,3 +1,14 @@
+## [2.9.12](https://github.com/pouyio/twiso/compare/v2.9.11...v2.9.12) (2024-10-15)
+
+
+### :arrow_up:
+
+* Bump axios from 1.5.1 to 1.7.4 ([b7292e0](https://github.com/pouyio/twiso/commit/b7292e08529f41681e9310d2cb1bd61af3befd9d))
+
+### :rocket:
+
+* updated deps ([8ab204d](https://github.com/pouyio/twiso/commit/8ab204de586fa293cb5f2a4fd46eb3ea45309c10))
+
 ## [2.9.11](https://github.com/pouyio/twiso/compare/v2.9.10...v2.9.11) (2024-10-15)
 
 
