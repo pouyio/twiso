@@ -39,10 +39,11 @@ export const NavigationTabs: React.FC<{
     >
       {logged ? (
         <>
-          <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
+          <li className="py-1">
             <NavLink
               to={`${ROUTES.movies}?mode=watchlist&page=1`}
               className="flex items-center"
+              onClick={() => window.scrollTo(0, 0)}
             >
               <Icon name="movie" className="h-8" />
               <span className="ml-2 text-base hidden lg:inline">
@@ -51,10 +52,11 @@ export const NavigationTabs: React.FC<{
             </NavLink>
             {pathname.startsWith(ROUTES.movies) && <Underline width={width} />}
           </li>
-          <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
+          <li className="py-1">
             <NavLink
               to={`${ROUTES.shows}?mode=watched&page=1`}
               className="flex items-center"
+              onClick={() => window.scrollTo(0, 0)}
             >
               <Icon name="tv" className="h-8" />
               <span className="ml-2 text-base hidden lg:inline">
@@ -65,14 +67,18 @@ export const NavigationTabs: React.FC<{
           </li>
         </>
       ) : null}
-      <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
+      <li className="py-1">
         <LongPress />
         {pathname.startsWith(ROUTES.search) && <Underline width={width} />}
       </li>
       {logged ? (
-        <li className="py-1" onClick={() => window.scrollTo(0, 0)}>
+        <li className="py-1">
           <NavLink to={ROUTES.calendar} className="flex items-center">
-            <Icon name="calendar" className="h-8" />
+            <Icon
+              name="calendar"
+              className="h-8"
+              onClick={() => window.scrollTo(0, 0)}
+            />
             <span className="ml-2 text-base hidden lg:inline">
               {t('calendar')}
             </span>
