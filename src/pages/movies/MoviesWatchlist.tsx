@@ -43,7 +43,7 @@ export const MoviesWatchlist: React.FC = () => {
             <li
               key={`${m.movie.ids.trakt}_${i}`}
               className="p-2"
-              style={{ flex: '1 0 50%', maxWidth: '15em' }}
+              style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >
               <ImageLink
                 text={m.movie.title}
