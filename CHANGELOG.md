@@ -1,3 +1,14 @@
+## [2.9.13](https://github.com/pouyio/twiso/compare/v2.9.12...v2.9.13) (2024-10-31)
+
+
+### :arrow_up:
+
+* Bump elliptic from 6.5.7 to 6.6.0 ([2cc391d](https://github.com/pouyio/twiso/commit/2cc391d0d75d095e53a717870965b781a9400709))
+
+### :art:
+
+* updated style ([7659037](https://github.com/pouyio/twiso/commit/765903723bca627d596f9c318b5fd29bb751b33b))
+
 ## [2.9.12](https://github.com/pouyio/twiso/compare/v2.9.11...v2.9.12) (2024-10-15)
 
 
