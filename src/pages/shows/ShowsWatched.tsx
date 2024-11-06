@@ -1,5 +1,4 @@
-import { ShowWatched } from 'models';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { filterByGenres } from 'state/slices/shows';
 import { useAppSelector } from 'state/store';
 import ImageLink from '../../components/ImageLink';
@@ -9,31 +8,20 @@ import { EmptyState } from 'components/EmptyState';
 import { NoResults } from 'components/NoResults';
 
 const ShowsWatched: React.FC = () => {
-  const [orderedShows, setOrderedShows] = useState<ShowWatched[]>([]);
   const [genres, setGenres] = useState<string[]>([]);
   const { watched } = useAppSelector(filterByGenres(genres));
 
-  useEffect(() => {
-    setOrderedShows(
-      watched.sort((a, b) => {
-        if (
-          !a.progress?.next_episode ||
-          a.progress?.next_episode?.season === 0
-        ) {
-          return 1;
-        }
-        if (
-          !b.progress?.next_episode ||
-          b.progress?.next_episode?.season === 0
-        ) {
-          return -1;
-        }
-        const aDate = new Date(a.progress?.last_watched_at ?? '');
-        const bDate = new Date(b.progress?.last_watched_at ?? '');
-        return aDate < bDate ? 1 : -1;
-      })
-    );
-  }, [watched]);
+  const orderedShows = watched.sort((a, b) => {
+    if (!a.progress?.next_episode || a.progress?.next_episode?.season === 0) {
+      return 1;
+    }
+    if (!b.progress?.next_episode || b.progress?.next_episode?.season === 0) {
+      return -1;
+    }
+    const aDate = new Date(a.progress?.last_watched_at ?? '');
+    const bDate = new Date(b.progress?.last_watched_at ?? '');
+    return aDate < bDate ? 1 : -1;
+  });
 
   const { getItemsByPage } = usePagination(orderedShows);
 

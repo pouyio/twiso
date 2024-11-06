@@ -1,5 +1,4 @@
-import { MovieWatched } from 'models';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { filterByGenres } from 'state/slices/movies';
 import { useAppSelector } from 'state/store';
 import ImageLink from '../../components/ImageLink';
@@ -9,19 +8,14 @@ import { EmptyState } from 'components/EmptyState';
 import { NoResults } from 'components/NoResults';
 
 export const MoviesWatched: React.FC = () => {
-  const [orderedMovies, setOrderedMovies] = useState<MovieWatched[]>([]);
-  const { getItemsByPage } = usePagination(orderedMovies);
   const [genres, setGenres] = useState<string[]>([]);
   const { watched } = useAppSelector(filterByGenres(genres));
 
-  useEffect(() => {
-    const newItems = watched
-      .map((m) => m)
-      .sort((a, b) =>
-        new Date(a.watched_at) < new Date(b.watched_at) ? 1 : -1
-      );
-    setOrderedMovies(newItems);
-  }, [watched]);
+  const orderedMovies = watched
+    .map((m) => m)
+    .sort((a, b) => (new Date(a.watched_at) < new Date(b.watched_at) ? 1 : -1));
+
+  const { getItemsByPage } = usePagination(orderedMovies);
 
   return !genres.length && !orderedMovies.length ? (
     <EmptyState />
