@@ -37,7 +37,7 @@ const ShowsWatchlist: React.FC = () => {
       {genres.length && !orderedShows.length ? (
         <NoResults />
       ) : (
-        <ul className="flex flex-wrap p-2 items-stretch justify-center">
+        <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
           {getItemsByPage().map((m) => (
             <li
               key={m.show.ids.trakt}

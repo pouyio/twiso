@@ -38,7 +38,7 @@ export const MoviesWatchlist: React.FC = () => {
       {genres.length && !orderedMovies.length ? (
         <NoResults />
       ) : (
-        <ul className="flex flex-wrap p-2 items-stretch justify-center">
+        <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
           {getItemsByPage().map((m, i) => (
             <li
               key={`${m.movie.ids.trakt}_${i}`}
