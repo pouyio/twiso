@@ -70,8 +70,9 @@ const Pagination: React.FC<IPaginationProps> = ({
           <Icon name="arrow-left" className="h-8" />
         </button>
         <h1 className="font-light flex items-center">
-          {' '}
-          {page} ... {last}{' '}
+          <span className={last ? '' : 'opacity-50'}>
+            {last ? page : 0} ... {last}
+          </span>
           {onFilter && (
             <Icon
               className="cursor-pointer pl-1 h-8"
