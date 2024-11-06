@@ -1,3 +1,10 @@
+## [2.9.15](https://github.com/pouyio/twiso/compare/v2.9.14...v2.9.15) (2024-11-06)
+
+
+### :art:
+
+* update styles ([9aa4981](https://github.com/pouyio/twiso/commit/9aa4981cd95125bb1564be64551a05649e0eee6b))
+
 ## [2.9.14](https://github.com/pouyio/twiso/compare/v2.9.13...v2.9.14) (2024-11-06)
 
 
