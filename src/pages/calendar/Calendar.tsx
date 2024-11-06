@@ -119,10 +119,10 @@ export default function Calendar() {
         <title>Calendar</title>
       </Helmet>
       <div className="lg:max-w-6xl m-auto" style={{ height: '85vh' }}>
-        <div className="flex flex-wrap justify-evenly items-center flex-wrap pb-2">
+        <div className="flex justify-evenly items-center flex-wrap pb-2">
           <div className="flex justify-center text-2xl">
             <button className="mr-10" onClick={() => changeMonth(-1)}>
-              <Icon name="arrow-left" />
+              <Icon name="arrow-left" className="h-8" />
             </button>
             <h1 className="font-light capitalize ">
               {selectedDate.toLocaleDateString(language, {
@@ -131,7 +131,7 @@ export default function Calendar() {
               {getYear(selectedDate)}
             </h1>
             <button className="ml-10" onClick={() => changeMonth(1)}>
-              <Icon name="arrow-right" />
+              <Icon name="arrow-right" className="h-8" />
             </button>
           </div>
           <div className="flex mt-2 lg:mt-0">
