@@ -1,8 +1,7 @@
 import Genres from 'components/Genres';
-import { useTranslate } from 'hooks';
-import React, { useEffect, useState } from 'react';
-import { genres } from 'utils/getGenre';
+import React, { useEffect } from 'react';
 import { Icon } from 'components/Icon';
+import { useSearchParams } from 'react-router-dom';
 
 interface IPaginationProps {
   setFirst: () => void;
@@ -23,26 +22,34 @@ const Pagination: React.FC<IPaginationProps> = ({
   page,
   last,
 }) => {
-  const [showFilters, setShowFilters] = useState(false);
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  const { t } = useTranslate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedGenres =
+    searchParams.get('genres')?.split(',').filter(Boolean) ?? [];
+  const showFilters = searchParams.has('genres');
+
   const toggleGenre = (genre: string) => {
-    setSelectedGenres((g) => {
-      const newGenres = g.includes(genre)
-        ? g.filter((g) => g !== genre)
-        : [...selectedGenres, genre];
-      if (onFilter) {
-        onFilter(newGenres);
-      }
-      return newGenres;
-    });
+    const newGenres = selectedGenres.includes(genre)
+      ? selectedGenres.filter((selectedGenres) => selectedGenres !== genre)
+      : [...selectedGenres, genre];
+    searchParams.set('genres', newGenres.join(','));
+    setSearchParams(searchParams);
   };
 
   useEffect(() => {
-    if (!showFilters) {
-      selectedGenres.forEach(toggleGenre);
+    if (onFilter && selectedGenres) {
+      onFilter(selectedGenres);
     }
-  }, [showFilters]);
+  }, [selectedGenres]);
+
+  const setToggleFilters = () => {
+    if (showFilters) {
+      searchParams.delete('genres');
+      setSearchParams(searchParams);
+    } else {
+      searchParams.set('genres', '');
+      setSearchParams(searchParams);
+    }
+  };
 
   return (
     <>
@@ -67,7 +74,7 @@ const Pagination: React.FC<IPaginationProps> = ({
           {onFilter && (
             <Icon
               className="cursor-pointer pl-1 h-8"
-              onClick={() => setShowFilters((s) => !s)}
+              onClick={() => setToggleFilters()}
               name="tags"
             />
           )}
