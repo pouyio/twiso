@@ -94,7 +94,7 @@ const Pagination: React.FC<IPaginationProps> = ({
           <Icon name="double-arrow-right" className="h-8" />
         </button>
       </div>
-      {showFilters && (
+      {showFilters && onFilter && (
         <div className="sticky top-0">
           <div className="inline-flex bg-blue-100 py-2 px-4 w-full flex-col border-b-2">
             <Genres onClick={toggleGenre} selected={selectedGenres} />
