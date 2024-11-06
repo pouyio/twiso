@@ -1,3 +1,20 @@
+## [2.9.14](https://github.com/pouyio/twiso/compare/v2.9.13...v2.9.14) (2024-11-06)
+
+
+### :art:
+
+* disable selection in list ([f724fba](https://github.com/pouyio/twiso/commit/f724fba9f1a4f592caf0bfa70625560175c1218d))
+* force deploy ([a8b1580](https://github.com/pouyio/twiso/commit/a8b1580b3d8e8b1ad1ae3bac9d85351fc0b46486))
+* improve genres style ([1051d3a](https://github.com/pouyio/twiso/commit/1051d3a40c1b30bc0d97356ae9bc32be92af7bd7))
+
+### :bug:
+
+* fix double genres search ([9360b40](https://github.com/pouyio/twiso/commit/9360b4025672d036f58cce8d461fc1c11ddd8dab))
+* fix infite loop ([23ac111](https://github.com/pouyio/twiso/commit/23ac1115bca7054aa6aebda011b867f77354a3f3))
+* fixed calendar ([d2ac850](https://github.com/pouyio/twiso/commit/d2ac8502cd0315d3a39caf7f686a35fb4ad4c2cb))
+* removed faulty types library for calendar ([495e832](https://github.com/pouyio/twiso/commit/495e8321c4ac90d4c403d3454e7e7da4ae16eeff))
+* store filters in search params to keep them while navigating ([1b00d6f](https://github.com/pouyio/twiso/commit/1b00d6f2635ab7e644d9fab2a75ae3ab7dddd9c7))
+
 ## [2.9.13](https://github.com/pouyio/twiso/compare/v2.9.12...v2.9.13) (2024-10-31)
 
 
