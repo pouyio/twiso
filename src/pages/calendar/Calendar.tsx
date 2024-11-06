@@ -78,6 +78,7 @@ export default function Calendar() {
     if (!isLogged) {
       return;
     }
+    setEvents([]);
 
     const { prevMonthDay, nextMonthDay, firstDate, daysInMonth } =
       getAllDates(selectedDate);
