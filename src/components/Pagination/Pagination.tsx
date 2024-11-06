@@ -37,9 +37,10 @@ const Pagination: React.FC<IPaginationProps> = ({
 
   useEffect(() => {
     if (onFilter && selectedGenres) {
+      setFirst();
       onFilter(selectedGenres);
     }
-  }, [selectedGenres]);
+  }, [searchParams.get('genres')]);
 
   const setToggleFilters = () => {
     if (showFilters) {
@@ -96,7 +97,7 @@ const Pagination: React.FC<IPaginationProps> = ({
       </div>
       {showFilters && onFilter && (
         <div className="sticky top-0">
-          <div className="inline-flex bg-blue-100 py-2 px-4 w-full flex-col border-b-2">
+          <div className="inline-flex bg-blue-100 px-4 w-full flex-col border-b-2">
             <Genres onClick={toggleGenre} selected={selectedGenres} />
           </div>
         </div>
