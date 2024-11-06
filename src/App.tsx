@@ -62,7 +62,7 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
       <NewVersion />
       <Alert />
       <ul
-        className="navbar flex w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block select-none"
+        className="navbar w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block select-none"
         style={{
           ...(windowWidth >= 1024
             ? { paddingTop: 'env(safe-area-inset-top)' }

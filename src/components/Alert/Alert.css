@@ -22,7 +22,7 @@
 }
 
 .inside {
-  top: 2.5em;
+  top: calc(env(safe-area-inset-top) + 1em);
 }
 .outside {
   top: -10em;

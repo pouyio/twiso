@@ -44,14 +44,11 @@ export default function Profile() {
   };
 
   return (
-    <div
-      className="p-4 lg:max-w-5xl lg:mx-auto"
-      style={{ paddingTop: 'env(safe-area-inset-top)' }}
-    >
+    <div style={{ paddingTop: 'env(safe-area-inset-top)' }}>
       <Helmet>
         <title>Profile</title>
       </Helmet>
-      <div className="lg:max-w-lg m-auto">
+      <div className="lg:max-w-lg m-auto p-4">
         <ul className="flex justify-between">
           <li className="py-1 relative">
             <select
