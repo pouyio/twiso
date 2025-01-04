@@ -112,7 +112,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
                       title: getTranslated('title', e),
                       overview: `${getFormattedDate(
                         e.first_aired,
-                        'long'
+                        'long',
                       )}\n${getTranslated('overview', e)}`,
                     })
                   }

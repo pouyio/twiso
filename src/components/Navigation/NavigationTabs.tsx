@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { useTranslate, useWindowSize } from '../../hooks';
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';

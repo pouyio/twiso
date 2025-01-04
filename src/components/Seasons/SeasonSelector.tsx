@@ -1,7 +1,7 @@
 import { useTranslate, useWindowSize } from 'hooks';
 import React, { useEffect, useRef } from 'react';
 import { Season, ShowProgress } from '../../models';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 interface ISeasonsProps {
   progress?: ShowProgress;

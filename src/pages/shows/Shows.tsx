@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 import { useAppSelector } from 'state/store';
 import { useTranslate, useWindowSize } from '../../hooks';
 import { totalByType } from 'state/slices/shows';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { useSearchParams } from 'hooks';
 import { Icon } from 'components/Icon';
 
