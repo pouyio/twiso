@@ -18,7 +18,7 @@ import { Helmet } from 'react-helmet';
 import { getCalendar } from 'utils/api';
 import { Event } from './Event';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import './calendar.scss';
+import './calendar.css';
 import { ShowCalendar, MovieCalendar } from 'models';
 import { useAppSelector } from 'state/store';
 import { useTranslate } from 'hooks';

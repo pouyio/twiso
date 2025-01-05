@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode } from 'react';
+import React, { createContext, useState, ReactNode, useEffect } from 'react';
 import Helmet from 'react-helmet';
 
 export type ThemeType = 'theme-light' | 'theme-dark';
@@ -14,9 +14,15 @@ interface IThemeProviderProps {
   children: ReactNode;
 }
 
-export const ThemeProvider: React.FC<React.PropsWithChildren<
-  IThemeProviderProps
->> = ({ children }) => {
+const styles = () => {
+  return {
+    style: (window.navigator as any).standalone ? { minHeight: '100vh' } : {},
+  };
+};
+
+export const ThemeProvider: React.FC<
+  React.PropsWithChildren<IThemeProviderProps>
+> = ({ children }) => {
   const [localTheme, setLocalTheme] = useState<ThemeType | undefined>(
     localStorage.getItem('theme') as ThemeType
   );
@@ -30,18 +36,20 @@ export const ThemeProvider: React.FC<React.PropsWithChildren<
     setLocalTheme(newTheme);
   };
 
-  const styles = () => {
-    return {
-      style: (window.navigator as any).standalone ? { minHeight: '100vh' } : {},
-    };
-  };
+  useEffect(() => {
+    const finalTheme =
+      localTheme ??
+      (window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'theme-dark'
+        : 'theme-light');
+
+    document.documentElement.classList.remove('theme-dark', 'theme-light');
+    document.documentElement.classList.add(finalTheme);
+  }, [localTheme]);
 
   return (
     <ThemeContext.Provider value={{ theme: localTheme, setTheme }}>
-      <div
-        className={`theme-wrapper text-black bg-white ${localTheme ?? ''}`}
-        {...styles()}
-      >
+      <div className="theme-wrapper text-black bg-white" {...styles()}>
         <Helmet>
           {localTheme && (
             <style type="text/css">{`

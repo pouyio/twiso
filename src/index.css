@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  background-color: var(--primary-light);
+}
+
 body,
 .theme-wrapper {
   transition: background-color 0.25s, color 0.25s;
@@ -12,7 +16,8 @@ body,
   font-family: Raleway, sans-serif;
 }
 
-@mixin theme-light {
+.theme-light {
+  color-scheme: light;
   --primary-light: white;
   --primary-light-50: rgba(255, 255, 255, 0.5);
   --primary-dark: black;
@@ -59,7 +64,8 @@ body,
   --purple-900: #44337a;
 }
 
-@mixin theme-dark {
+.theme-dark {
+  color-scheme: dark;
   --primary-dark: white;
   --primary-dark-50: rgba(255, 255, 255, 0.5);
   --primary-light: black;
@@ -104,30 +110,6 @@ body,
   --purple-300: #6b46c1;
   --purple-200: #553c9a;
   --purple-100: #44337a;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-  }
-  body {
-    background-color: black;
-    @include theme-dark();
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  body {
-    background-color: white;
-    @include theme-light();
-  }
-}
-
-.theme-dark {
-  @include theme-dark();
-}
-.theme-light {
-  @include theme-light();
 }
 
 img {
