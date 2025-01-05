@@ -1,18 +1,20 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { reducer as moviesReducer } from './slices/movies';
 import { reducer as showsReducer } from './slices/shows';
 import { reducer as configReducer } from './slices/config';
 import { reducer as rootReducer } from './slices/root';
 import { dbMiddleware } from './middleware';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+const reducer = combineReducers({
+  root: rootReducer,
+  config: configReducer,
+  movies: moviesReducer,
+  shows: showsReducer,
+});
 
 export const store = configureStore({
-  reducer: {
-    root: rootReducer,
-    config: configReducer,
-    movies: moviesReducer,
-    shows: showsReducer,
-  },
+  reducer: reducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
@@ -20,9 +22,8 @@ export const store = configureStore({
     }).concat(dbMiddleware),
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof reducer>;
 export type AppDispatch = typeof store.dispatch;
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppSelector = useSelector.withTypes<RootState>();

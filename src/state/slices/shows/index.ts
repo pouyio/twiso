@@ -246,6 +246,7 @@ export const {
   updateSeasons,
   updateProgress,
   remove,
+  updateTranslation,
 } = showsSlice.actions;
 
 // reducer
