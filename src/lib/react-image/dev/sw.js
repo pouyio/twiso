@@ -1,0 +1,2 @@
+var n=e=>new Promise(t=>setTimeout(t,e));self.addEventListener("install",()=>self.skipWaiting());self.addEventListener("activate",e=>{e.waitUntil(clients.claim())});async function i(e){let[t,s]=e.pathname.match(/\/delay\/(\d*).*/,"");await n(s);let a=new Request(e.pathname.replace(/\/delay\/\d*\//,""));return await fetch(a)}self.addEventListener("fetch",async e=>{let t=new URL(e.request.url);if(!e.request.url.startsWith(t.origin+"/delay/"))return console.log("not delaying",e.request.url),fetch(e.request);e.respondWith(i(t))});
+//# sourceMappingURL=sw.js.map

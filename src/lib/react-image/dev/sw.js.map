@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../dev/sw.js"],
+  "sourcesContent": ["const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))\n\nself.addEventListener('install', () => self.skipWaiting())\nself.addEventListener('activate', (e) => {\n  e.waitUntil(clients.claim())\n})\n\nasync function delayFetch(url) {\n  const [_, delay] = url.pathname.match(/\\/delay\\/(\\d*).*/, '')\n  await sleep(delay)\n  const request = new Request(url.pathname.replace(/\\/delay\\/\\d*\\//, ''))\n  return await fetch(request)\n}\n\nself.addEventListener('fetch', async (event) => {\n  const url = new URL(event.request.url)\n\n  if (!event.request.url.startsWith(url.origin + '/delay/')) {\n    console.log('not delaying', event.request.url)\n    return fetch(event.request)\n  }\n\n  event.respondWith(delayFetch(url))\n})\n"],
+  "mappings": "AAAA,IAAMA,EAASC,GAAO,IAAI,QAASC,GAAY,WAAWA,EAASD,CAAE,CAAC,EAEtE,KAAK,iBAAiB,UAAW,IAAM,KAAK,YAAY,CAAC,EACzD,KAAK,iBAAiB,WAAa,GAAM,CACvC,EAAE,UAAU,QAAQ,MAAM,CAAC,CAC7B,CAAC,EAED,eAAeE,EAAWC,EAAK,CAC7B,GAAM,CAACC,EAAGC,CAAK,EAAIF,EAAI,SAAS,MAAM,mBAAoB,EAAE,EAC5D,MAAMJ,EAAMM,CAAK,EACjB,IAAMC,EAAU,IAAI,QAAQH,EAAI,SAAS,QAAQ,iBAAkB,EAAE,CAAC,EACtE,OAAO,MAAM,MAAMG,CAAO,CAC5B,CAEA,KAAK,iBAAiB,QAAS,MAAOC,GAAU,CAC9C,IAAMJ,EAAM,IAAI,IAAII,EAAM,QAAQ,GAAG,EAErC,GAAI,CAACA,EAAM,QAAQ,IAAI,WAAWJ,EAAI,OAAS,SAAS,EACtD,eAAQ,IAAI,eAAgBI,EAAM,QAAQ,GAAG,EACtC,MAAMA,EAAM,OAAO,EAG5BA,EAAM,YAAYL,EAAWC,CAAG,CAAC,CACnC,CAAC",
+  "names": ["sleep", "ms", "resolve", "delayFetch", "url", "_", "delay", "request", "event"]
+}

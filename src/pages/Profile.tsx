@@ -165,6 +165,12 @@ export default function Profile() {
                 Remove images from cache
               </button>
             </p>
+            <a
+              className="text-center py-4 underline block"
+              href="https://github.com/mbrevda/react-image/pull/1006"
+            >
+              react-image Pull Request
+            </a>
           </>
         ) : null}
       </div>

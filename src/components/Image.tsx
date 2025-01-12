@@ -3,7 +3,7 @@ import { useInView } from 'react-hook-inview';
 import Emoji from './Emoji';
 import { Ids } from '../models';
 import { useIsWatch, useImage } from '../hooks';
-import { Img } from 'react-image';
+import { Img } from '../lib/react-image'; // temporary load local lib until remote is updated https://github.com/mbrevda/react-image/pull/1006
 
 interface IImageProps {
   ids: Ids;
