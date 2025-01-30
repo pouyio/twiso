@@ -1,6 +1,6 @@
 import { AuthContext } from 'contexts/AuthContext';
 import React, { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { loginApi } from '../utils/api';
 import { useTranslate } from '../hooks/useTranslate';
 

@@ -3,7 +3,7 @@ import { GlobalFilter } from 'components/GlobalFilter';
 import { NavigationTabs } from 'components/Navigation/NavigationTabs';
 import { NewVersion } from 'components/NewVersion';
 import React, { Suspense, lazy, useContext, useEffect } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router';
 import { loadImgConfig } from 'state/slices/config';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import { ROUTE, ROUTES } from 'utils/routes';

@@ -4,7 +4,7 @@ import ImageLink from '../components/ImageLink';
 import Collapsable from '../components/Collapsable/Collapsable';
 import { getPersonItemsApi, getPersonApi } from '../utils/api';
 import Emoji from '../components/Emoji';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { Person as IPerson } from '../models/Person';
 import { placeholders } from '../components/Related';
 import { Empty } from '../components/Empty';

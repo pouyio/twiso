@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import { ThemeProvider } from 'contexts/ThemeContext';
 import { AlertProvider } from 'contexts/AlertContext';
 import { ModalProvider } from 'contexts/ModalContext';

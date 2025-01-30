@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import { populateDetail } from 'state/slices/movies/thunks';
 import Collapsable from '../components/Collapsable/Collapsable';

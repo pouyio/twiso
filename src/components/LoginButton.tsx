@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 const redirect_url = import.meta.env.VITE_REDIRECT_URL;
 
 export const LoginButton: React.FC<{ small?: boolean }> = ({ small }) => {

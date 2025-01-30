@@ -22,7 +22,7 @@ import {
   ShowProgress,
   ShowWatched,
 } from '../../models/Show';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 interface ISeasonsContainerProps {
   show: Show;

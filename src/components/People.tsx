@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { People as IPeople } from '../models/People';
 import Collapsable from './Collapsable/Collapsable';
 import { Empty } from './Empty';

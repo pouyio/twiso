@@ -6,7 +6,7 @@ import { useAppSelector } from 'state/store';
 import { totalByType } from 'state/slices/movies';
 import { Underline } from '../shows/Shows';
 import { Icon } from 'components/Icon';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { useTranslate } from '../../hooks/useTranslate';
 

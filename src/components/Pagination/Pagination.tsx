@@ -1,7 +1,7 @@
 import Genres from 'components/Genres';
 import React, { useEffect } from 'react';
 import { Icon } from 'components/Icon';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 interface IPaginationProps {
   setFirst: () => void;

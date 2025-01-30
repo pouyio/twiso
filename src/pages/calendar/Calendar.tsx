@@ -24,7 +24,7 @@ import './calendar.css';
 import { useAppSelector } from 'state/store';
 import { Icon } from 'components/Icon';
 import { AuthContext } from 'contexts/AuthContext';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useTranslate } from '../../hooks/useTranslate';
 import { MovieCalendar, ShowCalendar } from '../../models/Api';
 
