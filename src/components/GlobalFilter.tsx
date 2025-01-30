@@ -46,7 +46,7 @@ export const GlobalFilter = () => {
     >
       <div className="w-full bg-blue-100 flex items-center border-b-2">
         <input
-          className="bg-blue-100 w-full px-2 py-2 outline-none grow text-gray-700 "
+          className="bg-blue-100 w-full px-2 py-2 outline-hidden grow text-gray-700 "
           placeholder="🔍 Escribe un título de tu colección"
           type="text"
           onChange={(e) => setSearchValue(e.target.value)}

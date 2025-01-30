@@ -193,9 +193,9 @@ export default function ShowDetail() {
                             (progress?.aired ?? 1)
                         )}% completado`
                       : `${progress?.completed}/${progress?.aired} episodios`}
-                    <div className="bg-green-100 rounded">
+                    <div className="bg-green-100 rounded-sm">
                       <div
-                        className="bg-green-400 h-1 rounded text-white text-xs"
+                        className="bg-green-400 h-1 rounded-sm text-white text-xs"
                         style={{
                           width: `${
                             ((progress?.completed ?? 0) * 100) /

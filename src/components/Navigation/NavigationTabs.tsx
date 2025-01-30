@@ -11,7 +11,7 @@ const Underline: React.FC<{ width: number }> = ({ width }) => {
   return (
     <motion.div
       layoutId="underline-section"
-      className="bg-gray-600 rounded"
+      className="bg-gray-600 rounded-sm"
       initial={false}
       style={{
         bottom:

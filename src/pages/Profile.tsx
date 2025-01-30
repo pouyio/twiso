@@ -53,7 +53,7 @@ export default function Profile() {
         <ul className="flex justify-between">
           <li className="py-1 relative">
             <select
-              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-none"
+              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
               onChange={(e) => {
                 const value =
                   e.target.value === '0'
@@ -79,7 +79,7 @@ export default function Profile() {
           </li>
           <li className="py-1 relative">
             <select
-              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-none"
+              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
               onChange={(e) => {
                 dispatch(
                   changeLanguage({ language: e.target.value as Language })
