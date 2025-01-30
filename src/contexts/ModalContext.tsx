@@ -35,9 +35,9 @@ export const ModalProvider = ({
   };
 
   return (
-    <ModalContext.Provider value={{ isShowing, toggle, title, text }}>
+    <ModalContext value={{ isShowing, toggle, title, text }}>
       {children}
       {modalRef && <Modal modalRef={modalRef} />}
-    </ModalContext.Provider>
+    </ModalContext>
   );
 };

@@ -1,12 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  AddedWatched,
-  AddedWatchlist,
-  Movie,
-  RemovedWatched,
-  RemovedWatchlist,
-  SearchMovie,
-} from 'models';
 import { RootState } from 'state/store';
 import {
   addWatchedApi,
@@ -17,6 +9,13 @@ import {
   removeWatchlistApi,
 } from 'utils/api';
 import { Language } from '../config';
+import { Movie, SearchMovie } from '../../../models/Movie';
+import {
+  AddedWatched,
+  AddedWatchlist,
+  RemovedWatched,
+  RemovedWatchlist,
+} from '../../../models/Api';
 
 const _getRemoteWithTranslations = async (id: number, language: Language) => {
   const { data } = await getApi<SearchMovie>(id, 'movie');
@@ -85,8 +84,20 @@ export const getMovie = createAsyncThunk<
   Movie,
   { id: number; type: 'watched' | 'watchlist' },
   { state: RootState }
->('movies/getMovie', ({ id }, { getState }) => {
-  return _getRemoteWithTranslations(id, getState().config.language);
+>('movies/getMovie', async ({ id }, { getState }) => {
+  const language = getState().config.language;
+
+  // assume movie has translation and make both queries together
+  const responses = await Promise.all([
+    getApi<SearchMovie>(id, 'movie'),
+    getTranslationsApi(id, 'movie', language),
+  ]);
+  const movie = responses[0].data[0].movie;
+  const { title = '', overview = '' } = responses[1];
+
+  movie.title = title || movie.title;
+  movie.overview = overview || movie.overview;
+  return movie;
 });
 
 export const populateDetail = createAsyncThunk<

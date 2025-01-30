@@ -3,7 +3,7 @@ import { filterByGenres } from 'state/slices/movies';
 import { useAppSelector } from 'state/store';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
-import { usePagination } from '../../hooks';
+import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from 'components/EmptyState';
 import { NoResults } from 'components/NoResults';
 

@@ -1,5 +1,4 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Season, Show, ShowProgress, ShowWatched, ShowWatchlist } from 'models';
 import { mergeDeepLeft } from 'ramda';
 import { RootState } from 'state/store';
 import {
@@ -12,6 +11,13 @@ import {
   removeWatchlist,
   updateFullShow,
 } from './thunks';
+import {
+  Season,
+  Show,
+  ShowProgress,
+  ShowWatched,
+  ShowWatchlist,
+} from '../../../models/Show';
 
 interface ShowsState {
   totalRequestsPending: number;

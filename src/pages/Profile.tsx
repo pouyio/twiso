@@ -1,5 +1,4 @@
 import { Icon } from 'components/Icon';
-import { useTranslate } from 'hooks';
 import { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Language, changeLanguage } from 'state/slices/config';
@@ -7,10 +6,12 @@ import { useAppDispatch, useAppSelector } from 'state/store';
 import packageInfo from '../../package.json';
 import Emoji from '../components/Emoji';
 import { LoginButton } from '../components/LoginButton';
-import { AuthContext, ThemeContext, ThemeType } from '../contexts';
-import { UserStats } from '../models';
+import { AuthContext } from '../contexts/AuthContext';
+import { ThemeContext, ThemeType } from '../contexts/ThemeContext';
 import { getProfileApi, getStatsApi } from '../utils/api';
 import { removeCaches, removeImgCaches } from '../utils/cache';
+import { UserStats } from '../models/Api';
+import { useTranslate } from '../hooks/useTranslate';
 
 export default function Profile() {
   const { theme, setTheme } = useContext(ThemeContext);

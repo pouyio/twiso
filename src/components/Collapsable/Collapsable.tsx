@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
-import { useTranslate } from 'hooks';
 import React, { useEffect, useRef, useState } from 'react';
 import './collapsable.css';
+import { useTranslate } from '../../hooks/useTranslate';
 
 interface ICollapsableProps {
   heightInRem: number;

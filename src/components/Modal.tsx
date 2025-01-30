@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeContext, ModalContext } from '../contexts';
+import { ThemeContext } from '../contexts/ThemeContext';
+import { ModalContext } from '../contexts/ModalContext';
 
 interface IModalProps {
   modalRef: HTMLDivElement;

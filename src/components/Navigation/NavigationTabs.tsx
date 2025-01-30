@@ -1,10 +1,11 @@
 import { motion } from 'motion/react';
-import { useTranslate, useWindowSize } from '../../hooks';
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import LongPress from '../Longpress';
 import { ROUTES } from 'utils/routes';
 import { Icon } from 'components/Icon';
+import { useWindowSize } from '../../hooks/useWindowSize';
+import { useTranslate } from '../../hooks/useTranslate';
 
 const Underline: React.FC<{ width: number }> = ({ width }) => {
   return (

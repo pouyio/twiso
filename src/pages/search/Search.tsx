@@ -4,9 +4,12 @@ import Helmet from 'react-helmet';
 import Emoji from '../../components/Emoji';
 import ImageLink from '../../components/ImageLink';
 import Popular from '../../components/Popular';
-import { useDebounce, useFilter, useSearch, useTranslate } from '../../hooks';
-import { SearchMovie, SearchPerson, SearchShow } from '../../models';
 import { searchApi } from '../../utils/api';
+import { useSearch } from '../../hooks/useSearch';
+import { useFilter } from '../../hooks/useFilter';
+import { useDebounce } from '../../hooks/useDebounce';
+import { useTranslate } from '../../hooks/useTranslate';
+import { SearchMovie, SearchPerson, SearchShow } from '../../models/Movie';
 
 export type RemoteFilterTypes = Array<'movie' | 'show' | 'person'>;
 type LocalFilterTypes = Array<'movie' | 'show'>;

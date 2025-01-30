@@ -1,8 +1,8 @@
 import React from 'react';
 import Emoji from '../Emoji';
-import { Season, Episode, ShowProgress } from '../../models';
 import { useAppSelector } from 'state/store';
-import { useTranslate } from 'hooks';
+import { Episode, Season, ShowProgress } from '../../models/Show';
+import { useTranslate } from '../../hooks/useTranslate';
 
 interface ISeasonsProps {
   progress?: ShowProgress;

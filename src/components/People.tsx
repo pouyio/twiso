@@ -1,9 +1,10 @@
-import { useTranslate, useWindowSize } from '../hooks';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { People as IPeople } from '../models';
+import { People as IPeople } from '../models/People';
 import Collapsable from './Collapsable/Collapsable';
 import { Empty } from './Empty';
+import { useWindowSize } from '../hooks/useWindowSize';
+import { useTranslate } from '../hooks/useTranslate';
 
 const placeholders = [
   <li

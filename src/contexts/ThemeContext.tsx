@@ -48,7 +48,7 @@ export const ThemeProvider: React.FC<
   }, [localTheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme: localTheme, setTheme }}>
+    <ThemeContext value={{ theme: localTheme, setTheme }}>
       <div className="theme-wrapper text-black bg-white" {...styles()}>
         <Helmet>
           {localTheme && (
@@ -63,6 +63,6 @@ export const ThemeProvider: React.FC<
         </Helmet>
         {children}
       </div>
-    </ThemeContext.Provider>
+    </ThemeContext>
   );
 };

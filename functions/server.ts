@@ -1,9 +1,9 @@
 import { Handler, HandlerEvent } from '@netlify/functions';
 import fs from 'fs';
-import { SearchMovie, SearchPerson, SearchShow } from 'models';
 import path from 'path';
 import { getApi, getImgsApi } from 'utils/api';
 import { findFirstValid } from 'utils/findFirstValidImage';
+import { SearchMovie, SearchPerson, SearchShow } from '../src/models/Movie';
 
 const TYPE_MAP = {
   movie: 'video.movie',

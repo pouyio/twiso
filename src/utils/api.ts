@@ -1,42 +1,42 @@
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
-import {
-  AddedWatched,
-  AddedWatchlist,
-  Episode,
-  ImageResponse,
-  ImgConfig,
-  ItemType,
-  Movie,
-  MovieCalendar,
-  MovieWatched,
-  MovieWatchlist,
-  People,
-  Person,
-  Popular,
-  Profile,
-  Ratings,
-  RemovedWatched,
-  RemovedWatchlist,
-  Season,
-  Show,
-  ShowCalendar,
-  ShowProgress,
-  ShowWatched,
-  ShowWatchlist,
-  Translation,
-  UserStats,
-} from '../models';
 import { config, IMG_URL, LOGIN_URL } from './apiConfig';
 import { authTraktClient, traktClient } from './axiosClients';
 import Bottleneck from 'bottleneck';
 import { getTranslation } from './getTranslations';
 import { Language } from 'state/slices/config';
 import { Session } from 'contexts/AuthContext';
+import { ImgConfig } from '../models/ImgConfig';
+import { ItemType } from '../models/ItemType';
+import { ImageResponse } from '../models/Image';
+import {
+  Episode,
+  Season,
+  Show,
+  ShowProgress,
+  ShowWatched,
+  ShowWatchlist,
+} from '../models/Show';
+import { Translation } from '../models/Translation';
+import { Movie, MovieWatched, MovieWatchlist } from '../models/Movie';
+import {
+  AddedWatched,
+  AddedWatchlist,
+  MovieCalendar,
+  Profile,
+  Ratings,
+  RemovedWatched,
+  RemovedWatchlist,
+  ShowCalendar,
+  UserStats,
+} from '../models/Api';
+import { People } from '../models/People';
+import { Person } from '../models/Person';
+import { Popular } from '../models/Popular';
 
 const limiter = new Bottleneck({
-  reservoir: 1000,
-  reservoirRefreshAmount: 1000,
+  reservoir: 800,
+  reservoirRefreshAmount: 800,
   reservoirRefreshInterval: 5 * 60 * 1000,
   minTime: 50,
   maxConcurrent: 100,
@@ -110,13 +110,17 @@ export const getProgressApi = (id: number) => {
   );
 };
 
-export const getTranslationsApi = limiter.wrap(
-  (id: number, type: ItemType, language: Language) => {
-    return traktClient
+export const getTranslationsApi = (
+  id: number,
+  type: ItemType,
+  language: Language
+) => {
+  return limiter.wrap(() =>
+    traktClient
       .get<Translation[]>(`/${type}s/${id}/translations/${language}`)
-      .then(({ data }) => getTranslation(data));
-  }
-);
+      .then(({ data }) => getTranslation(data))
+  )();
+};
 
 export const searchApi = <T>(
   query: string,

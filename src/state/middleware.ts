@@ -61,6 +61,8 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
     const oldMovie = state.movies[action.meta.arg.id];
     const newMovie = { ...oldMovie, movie: action.payload };
     db.table(MOVIES).put({ ...newMovie, localState: action.meta.arg.type });
+  } else if (isAnyOf(getMovie.rejected)(action)) {
+    console.error(action.error);
   } else if (isAnyOf(updateTranslationMovie)(action)) {
     db.table(MOVIES).update(action.payload.id, {
       title: action.payload.translation.title,

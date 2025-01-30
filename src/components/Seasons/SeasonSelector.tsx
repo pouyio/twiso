@@ -1,7 +1,8 @@
-import { useTranslate, useWindowSize } from 'hooks';
 import React, { useEffect, useRef } from 'react';
-import { Season, ShowProgress } from '../../models';
 import { motion } from 'motion/react';
+import { useWindowSize } from '../../hooks/useWindowSize';
+import { useTranslate } from '../../hooks/useTranslate';
+import { Season, ShowProgress } from '../../models/Show';
 
 interface ISeasonsProps {
   progress?: ShowProgress;
@@ -59,16 +60,6 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
       behavior: 'smooth',
     });
   }, [selectedSeason, ref]);
-
-  const selectedClass = (season: Season) => {
-    if (!selectedSeason) {
-      return SELECTED_CLASS;
-    }
-    if (season.ids.trakt === selectedSeason.ids.trakt) {
-      return 'border-b-2';
-    }
-    return SELECTED_CLASS;
-  };
 
   const isSeasonWatched = (seasonNumber: number) => {
     if (!progress) {

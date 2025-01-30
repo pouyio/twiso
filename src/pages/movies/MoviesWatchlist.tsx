@@ -1,12 +1,12 @@
 import ImageLink from 'components/ImageLink';
 import PaginationContainer from 'components/Pagination/PaginationContainer';
-import { MovieWatchlist } from 'models';
 import React, { useState } from 'react';
 import { filterByGenres } from 'state/slices/movies';
 import { useAppSelector } from 'state/store';
-import { usePagination } from '../../hooks';
+import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from 'components/EmptyState';
 import { NoResults } from 'components/NoResults';
+import { MovieWatchlist } from '../../models/Movie';
 
 export const MoviesWatchlist: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);

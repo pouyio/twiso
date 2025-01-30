@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getRelatedApi } from '../utils/api';
 import ImageLink from './ImageLink';
-import { Show, Movie } from '../models';
 import { Empty } from './Empty';
+import { Show } from '../models/Show';
+import { Movie } from '../models/Movie';
 
 interface IRelatedProps {
   itemId: number;

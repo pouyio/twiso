@@ -11,12 +11,16 @@ import Rating from '../components/Rating';
 import Related from '../components/Related';
 import SeasonsContainer from '../components/Seasons/SeasonsContainer';
 import ShowWatchButton from '../components/ShowWatchButton';
-import { AlertContext } from '../contexts';
-import { useIsWatch, useShare, useTranslate } from '../hooks';
-import { People as IPeople, Ratings, Show, ShowWatched } from '../models';
+import { AlertContext } from '../contexts/AlertContext';
+import { People as IPeople } from '../models/People';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
 import { Helmet } from 'react-helmet';
 import { Icon } from 'components/Icon';
+import { useShare } from '../hooks/useShare';
+import { useTranslate } from '../hooks/useTranslate';
+import { useIsWatch } from '../hooks/useIsWatch';
+import { Ratings } from '../models/Api';
+import { Show, ShowWatched } from '../models/Show';
 
 enum status {
   'returning series' = 'en antena',

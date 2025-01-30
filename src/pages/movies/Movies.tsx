@@ -1,13 +1,14 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { useSearchParams } from 'hooks';
 import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';
-import { useTranslate, useWindowSize } from '../../hooks';
 import { useAppSelector } from 'state/store';
 import { totalByType } from 'state/slices/movies';
 import { Underline } from '../shows/Shows';
 import { Icon } from 'components/Icon';
+import { useSearchParams } from 'react-router-dom';
+import { useWindowSize } from '../../hooks/useWindowSize';
+import { useTranslate } from '../../hooks/useTranslate';
 
 export default function Movies() {
   const [searchParams, setSearchParams] = useSearchParams({

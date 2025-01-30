@@ -3,10 +3,11 @@ import ShowsWatchlist from './ShowsWatchlist';
 import ShowsWatched from './ShowsWatched';
 import Helmet from 'react-helmet';
 import { useAppSelector } from 'state/store';
-import { useTranslate, useWindowSize } from '../../hooks';
+import { useTranslate } from '../../hooks/useTranslate';
+import { useWindowSize } from '../../hooks/useWindowSize';
+import { useSearchParams } from '../../hooks/useSearchParams';
 import { totalByType } from 'state/slices/shows';
 import { motion } from 'motion/react';
-import { useSearchParams } from 'hooks';
 import { Icon } from 'components/Icon';
 
 export const Underline: React.FC<{ selected: boolean }> = ({ selected }) => {

@@ -5,18 +5,15 @@ import Collapsable from '../components/Collapsable/Collapsable';
 import { getPersonItemsApi, getPersonApi } from '../utils/api';
 import Emoji from '../components/Emoji';
 import { useParams } from 'react-router-dom';
-import {
-  PersonShows,
-  PersonMovies,
-  Person as IPerson,
-  Movie,
-  Show,
-} from '../models';
+import { Person as IPerson } from '../models/Person';
 import { placeholders } from '../components/Related';
 import { Empty } from '../components/Empty';
 import { useAppSelector } from 'state/store';
-import { useTranslate } from 'hooks';
 import { Helmet } from 'react-helmet';
+import { Movie } from '../models/Movie';
+import { Show } from '../models/Show';
+import { useTranslate } from '../hooks/useTranslate';
+import { PersonMovies, PersonShows } from '../models/People';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();

@@ -1,11 +1,12 @@
-import { AuthContext } from 'contexts';
-import { useIsWatch, useTranslate } from 'hooks';
+import { AuthContext } from 'contexts/AuthContext';
 import React, { useContext } from 'react';
 import { addWatchlist, removeWatchlist } from 'state/slices/shows/thunks';
 import { useAppDispatch, useAppSelector } from 'state/store';
-import { Show } from '../models';
 import Emoji from './Emoji';
 import { LoginButton } from './LoginButton';
+import { Show } from '../models/Show';
+import { useIsWatch } from '../hooks/useIsWatch';
+import { useTranslate } from '../hooks/useTranslate';
 
 interface IShowWatchButtonProps {
   item: Show;

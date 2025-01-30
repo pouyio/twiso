@@ -1,16 +1,13 @@
-import { useFilter, useIsWatch } from 'hooks';
-import {
-  MovieWatched,
-  MovieWatchlist,
-  ShowWatched,
-  ShowWatchlist,
-} from 'models';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setGlobalSearch } from 'state/slices/root';
 import { getType } from 'utils/getType';
 import Emoji from './Emoji';
 import ImageLink from './ImageLink';
+import { useFilter } from '../hooks/useFilter';
+import { useIsWatch } from '../hooks/useIsWatch';
+import { MovieWatched, MovieWatchlist } from '../models/Movie';
+import { ShowWatched, ShowWatchlist } from '../models/Show';
 
 export const GlobalFilter = () => {
   const { filter } = useFilter();
