@@ -18,6 +18,7 @@ import {
   updateProgress,
   updateTranslation as updateTranslationShow,
   updateSeasons,
+  updateHidden,
 } from './slices/shows';
 import {
   addEpisodeWatched,
@@ -26,12 +27,14 @@ import {
   removeEpisodeWatched,
   removeSeasonWatched,
   removeWatchlist as removeWatchlistShow,
+  toggleHidden,
   updateFullShow,
 } from './slices/shows/thunks';
 import { changeLanguage } from './slices/config';
 
 const MOVIES = 'movies';
 const SHOWS = 'shows';
+const HIDDENSHOWS = 'shows-hidden';
 
 export const dbMiddleware: Middleware = (store) => (next) => (action) => {
   if (isAnyOf(addWatchedMovie.fulfilled)(action)) {
@@ -127,6 +130,16 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
     });
   } else if (isAnyOf(changeLanguage.fulfilled)(action)) {
     localStorage.setItem('language', action.meta.arg.language);
+  } else if (isAnyOf(updateHidden)(action)) {
+    db.table(HIDDENSHOWS)
+      .clear()
+      .then(() => db.table(HIDDENSHOWS).bulkPut(action.payload));
+  } else if (isAnyOf(toggleHidden.fulfilled)(action)) {
+    if (action.payload) {
+      db.table(HIDDENSHOWS).put({ trakt: action.meta.arg }, action.meta.arg);
+    } else {
+      db.table(HIDDENSHOWS).delete(action.meta.arg);
+    }
   }
 
   return next(action);

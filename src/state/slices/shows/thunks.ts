@@ -1,12 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from 'state/store';
 import {
+  addHideShow,
   addWatchedApi,
   addWatchlistApi,
   getApi,
   getProgressApi,
   getSeasonsApi,
   getTranslationsApi,
+  removeHideShow,
   removeWatchedApi,
   removeWatchlistApi,
 } from 'utils/api';
@@ -260,6 +262,28 @@ export const populateDetail = createAsyncThunk<
     }
 
     return _getRemoteWithTranslations(id, state.config.language);
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+});
+
+export const toggleHidden = createAsyncThunk<
+  boolean,
+  number,
+  { state: RootState }
+>('shows/toggleHidden', async (id, { getState }) => {
+  const state = getState();
+  const isHidden = state.shows.hidden[id];
+
+  try {
+    if (isHidden) {
+      const response = await removeHideShow(id);
+      return response.data.deleted.shows === 1 ? false : true;
+    }
+
+    const response = await addHideShow(id);
+    return response.data.added.shows === 1 ? true : false;
   } catch (e) {
     console.error(e);
     throw e;

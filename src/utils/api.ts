@@ -20,13 +20,16 @@ import {
 import { Translation } from '../models/Translation';
 import { Movie, MovieWatched, MovieWatchlist } from '../models/Movie';
 import {
+  AddedHidden,
   AddedWatched,
   AddedWatchlist,
+  HiddenShow,
   MovieCalendar,
   Profile,
   Ratings,
   RemovedWatched,
   RemovedWatchlist,
+  RemoveHidden,
   ShowCalendar,
   UserStats,
 } from '../models/Api';
@@ -225,5 +228,38 @@ export const getCalendar = <T extends MovieCalendar | ShowCalendar>(
 ) => {
   return authTraktClient.get<T[]>(
     `/calendars/my/${type}s/${firstDaxios}/${period}`
+  );
+};
+
+export const getHiddenShows = () => {
+  return authTraktClient.get<HiddenShow[]>(
+    `/users/hidden/progress_watched?type=show`
+  );
+};
+
+export const addHideShow = (id: number) => {
+  return authTraktClient.post<AddedHidden>(`/users/hidden/progress_watched`, {
+    shows: [
+      {
+        ids: {
+          trakt: id,
+        },
+      },
+    ],
+  });
+};
+
+export const removeHideShow = (id: number) => {
+  return authTraktClient.post<RemoveHidden>(
+    `/users/hidden/progress_watched/remove`,
+    {
+      shows: [
+        {
+          ids: {
+            trakt: id,
+          },
+        },
+      ],
+    }
   );
 };

@@ -24,7 +24,7 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
   size = 'small',
   ...props
 }) => {
-  const { isWatchlist, isWatched } = useIsWatch();
+  const { isWatchlist, isWatched, isHidden } = useIsWatch();
   const [ref, inView] = useInView({ unobserveOnEnter: true });
 
   const { imgUrl, imgPreview, message } = useImage(
@@ -36,6 +36,9 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
 
   const getBorderClass = () => {
     if (type === 'person') return '';
+    if (isHidden(ids.trakt)) {
+      return 'border-2 brightness-70 opacity-50';
+    }
     if (isWatched(ids.trakt, type)) {
       return 'border-2 border-green-400';
     }

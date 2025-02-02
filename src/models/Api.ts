@@ -35,6 +35,26 @@ export interface RemovedWatchlist {
   not_found: BaseNotFound;
 }
 
+export interface HiddenShow {
+  hidden_at: string;
+  type: 'show';
+  show: {
+    title: string;
+    year: number;
+    ids: Ids;
+  };
+}
+
+export interface AddedHidden {
+  added: ItemsCount;
+  not_found: BaseNotFound;
+}
+
+export interface RemoveHidden {
+  deleted: ItemsCount;
+  not_found: BaseNotFound;
+}
+
 interface Distribution {
   '1': number;
   '2': number;

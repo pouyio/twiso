@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { filterByGenres } from 'state/slices/shows';
+import { filterByGenres, getHidden } from 'state/slices/shows';
 import { useAppSelector } from 'state/store';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
@@ -10,12 +10,21 @@ import { NoResults } from 'components/NoResults';
 const ShowsWatched: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);
   const { watched } = useAppSelector(filterByGenres(genres));
+  const hidden = useAppSelector(getHidden);
 
   const orderedShows = watched.sort((a, b) => {
-    if (!a.progress?.next_episode || a.progress?.next_episode?.season === 0) {
+    if (
+      !a.progress?.next_episode ||
+      a.progress?.next_episode?.season === 0 ||
+      hidden[a.show.ids.trakt]
+    ) {
       return 1;
     }
-    if (!b.progress?.next_episode || b.progress?.next_episode?.season === 0) {
+    if (
+      !b.progress?.next_episode ||
+      b.progress?.next_episode?.season === 0 ||
+      hidden[b.show.ids.trakt]
+    ) {
       return -1;
     }
     const aDate = new Date(a.progress?.last_watched_at ?? '');

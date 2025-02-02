@@ -1,11 +1,13 @@
-import { getWatchedApi, getWatchlistApi } from 'utils/api';
+import { getHiddenShows, getWatchedApi, getWatchlistApi } from 'utils/api';
 import db from 'utils/db';
 import { set as setMovies, remove as removeMovies } from './slices/movies';
 import {
   set as setShows,
+  setHidden,
   addWatched as addWatchedShow,
   remove as removeShows,
   updateShow,
+  updateHidden,
 } from './slices/shows';
 import { store } from './store';
 import { getMovie } from './slices/movies/thunks';
@@ -14,6 +16,7 @@ import equal from 'fast-deep-equal';
 import { ShowWatched, ShowWatchlist } from '../models/Show';
 import { MovieWatched, MovieWatchlist } from '../models/Movie';
 import { differenceInHours } from 'date-fns';
+import { Ids } from '../models/Ids';
 
 const _mustUpdateByHours = (old: string, newer: string) => {
   // usually field updated_at from  getWatchedApi/getWatchedApi and getApi does not match exactly
@@ -173,7 +176,12 @@ const loadWatchedShows = async () => {
     .toArray();
   store.dispatch(setShows(showsWatched));
 
+  const showsHidden = await db.table<Ids>('shows-hidden').toArray();
+  store.dispatch(setHidden(showsHidden));
+
   const { data } = await getWatchedApi<ShowWatched>('show');
+  const { data: hidden } = await getHiddenShows();
+  store.dispatch(updateHidden(hidden.map((s) => s.show.ids)));
 
   const showsToDelete = showsWatched.filter(
     (s) => !data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt)
