@@ -22,15 +22,6 @@ import { useIsWatch } from '../hooks/useIsWatch';
 import { Ratings } from '../models/Api';
 import { Show, ShowWatched } from '../models/Show';
 
-// TODO translate
-enum status {
-  'returning series' = 'en antena',
-  'in production' = 'en producción',
-  planned = 'planeada',
-  canceled = 'cancelada',
-  ended = 'terminada',
-}
-
 export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
@@ -179,7 +170,7 @@ export default function ShowDetail() {
 
               <div className="flex mb-4 justify-between items-center text-gray-600">
                 <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-100 capitalize">
-                  {status[item.status]}
+                  {t(item.status)}
                 </h2>
                 <button onClick={onToggleHidden}>
                   <Icon

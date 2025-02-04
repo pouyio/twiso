@@ -68,6 +68,11 @@ const en = {
   system: 'System',
   direction: 'Director',
   cast: 'Cast',
+  'returning series': 'returning series',
+  'in production': 'in production',
+  planned: 'planned',
+  canceled: 'canceled',
+  ended: 'ended',
 };
 
 const es = {
@@ -137,6 +142,11 @@ const es = {
   system: 'Sistema',
   direction: 'Dirección',
   cast: 'Reparto',
+  'returning series': 'en antena',
+  'in production': 'en producción',
+  planned: 'planeada',
+  canceled: 'cancelada',
+  ended: 'terminada',
 };
 
 const translations: Record<Language, Record<string, string>> = {
