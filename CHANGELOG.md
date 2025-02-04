@@ -1,3 +1,16 @@
+# [2.10.0](https://github.com/pouyio/twiso/compare/v2.9.15...v2.10.0) (2025-02-04)
+
+
+### :bug:
+
+* added missing dep ([d3d62c7](https://github.com/pouyio/twiso/commit/d3d62c7836cd27b3df1277277d9a8d979e5d951d))
+* added missing translation ([840889f](https://github.com/pouyio/twiso/commit/840889f38b11914c57712b3a02d8a06451032b92))
+* load react-image locally until PR with react-19 support is merged ([9f4abba](https://github.com/pouyio/twiso/commit/9f4abbae88bd0a9d8919c9e0a40189717c93e85e))
+
+### :sparkles:
+
+* added ability to hide shows from list ([a1457f4](https://github.com/pouyio/twiso/commit/a1457f4ebc72d53f25e92950bc780a1989715b16))
+
 ## [2.9.15](https://github.com/pouyio/twiso/compare/v2.9.14...v2.9.15) (2024-11-06)
 
 
