@@ -1,4 +1,4 @@
-import { AuthContext } from 'contexts';
+import { AuthContext } from 'contexts/AuthContext';
 import React, { useContext } from 'react';
 import {
   addWatched,
@@ -8,9 +8,10 @@ import {
 } from 'state/slices/movies/thunks';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import { LoginButton } from '../components/LoginButton';
-import { useIsWatch, useTranslate } from '../hooks';
-import { Movie } from '../models';
 import Emoji from './Emoji';
+import { Movie } from '../models/Movie';
+import { useIsWatch } from '../hooks/useIsWatch';
+import { useTranslate } from '../hooks/useTranslate';
 
 interface IWatchButtonProps {
   item: Movie;

@@ -1,5 +1,4 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Season, Show, ShowProgress, ShowWatched, ShowWatchlist } from 'models';
 import { mergeDeepLeft } from 'ramda';
 import { RootState } from 'state/store';
 import {
@@ -10,8 +9,17 @@ import {
   removeEpisodeWatched,
   removeSeasonWatched,
   removeWatchlist,
+  toggleHidden,
   updateFullShow,
 } from './thunks';
+import {
+  Season,
+  Show,
+  ShowProgress,
+  ShowWatched,
+  ShowWatchlist,
+} from '../../../models/Show';
+import { Ids } from '../../../models/Ids';
 
 interface ShowsState {
   totalRequestsPending: number;
@@ -22,6 +30,7 @@ interface ShowsState {
   };
   detail?: Show;
   shows: Record<number, ShowWatched | ShowWatchlist>;
+  hidden: Record<number, boolean>;
 }
 
 const initialState: ShowsState = {
@@ -32,6 +41,7 @@ const initialState: ShowsState = {
     seasons: [],
   },
   shows: {},
+  hidden: {},
 };
 
 const showsSlice = createSlice({
@@ -41,6 +51,18 @@ const showsSlice = createSlice({
     set(state, { payload }: PayloadAction<Array<ShowWatchlist | ShowWatched>>) {
       payload.forEach((show) => {
         state.shows[show.show.ids.trakt] = show;
+      });
+    },
+    setHidden(state, { payload }: PayloadAction<Array<Ids>>) {
+      payload.forEach((ids) => {
+        state.hidden = {};
+        state.hidden[ids.trakt] = true;
+      });
+    },
+    updateHidden(state, { payload }: PayloadAction<Array<Ids>>) {
+      payload.forEach((ids) => {
+        state.hidden = {};
+        state.hidden[ids.trakt] = true;
       });
     },
     addWatched(state, { payload }: PayloadAction<ShowWatched>) {
@@ -234,6 +256,9 @@ const showsSlice = createSlice({
       })
       .addCase(populateDetail.rejected, (state) => {
         state.detail = undefined;
+      })
+      .addCase(toggleHidden.fulfilled, (state, { payload, meta }) => {
+        state.hidden[meta.arg] = payload;
       });
   },
 });
@@ -241,11 +266,14 @@ const showsSlice = createSlice({
 // actions
 export const {
   set,
+  setHidden,
+  updateHidden,
   addWatched,
   updateShow,
   updateSeasons,
   updateProgress,
   remove,
+  updateTranslation,
 } = showsSlice.actions;
 
 // reducer
@@ -287,3 +315,5 @@ export const filterByGenres = (genres: string[]) =>
 export const totalByType = createSelector(byType, ({ watchlist, watched }) => {
   return { watchlist: watchlist.length, watched: watched.length };
 });
+
+export const getHidden = (state: RootState) => state.shows.hidden;

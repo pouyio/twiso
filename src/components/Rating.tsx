@@ -1,4 +1,3 @@
-import { useTranslate } from 'hooks';
 import React, { useMemo } from 'react';
 import { Icon } from './Icon';
 
@@ -8,8 +7,6 @@ interface IRatingProps {
 }
 
 const Rating: React.FC<IRatingProps> = ({ rating = 0, votes = 0 }) => {
-  const { t } = useTranslate();
-
   const totalVotes = useMemo(() => {
     if (votes < 999) {
       return votes;
@@ -19,7 +16,7 @@ const Rating: React.FC<IRatingProps> = ({ rating = 0, votes = 0 }) => {
   }, [votes]);
 
   return (
-    <div className="cursor-pointer flex">
+    <div className="flex">
       <Icon name="like" className="h-5" />
       {Math.floor((rating ?? 0) * 10)}% · {totalVotes}
     </div>

@@ -1,16 +1,17 @@
-import { motion } from 'framer-motion';
-import { useTranslate, useWindowSize } from '../../hooks';
+import { motion } from 'motion/react';
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router';
 import LongPress from '../Longpress';
 import { ROUTES } from 'utils/routes';
 import { Icon } from 'components/Icon';
+import { useWindowSize } from '../../hooks/useWindowSize';
+import { useTranslate } from '../../hooks/useTranslate';
 
 const Underline: React.FC<{ width: number }> = ({ width }) => {
   return (
     <motion.div
       layoutId="underline-section"
-      className="bg-gray-600 rounded"
+      className="bg-gray-600 rounded-sm"
       initial={false}
       style={{
         bottom:

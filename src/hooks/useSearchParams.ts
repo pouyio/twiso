@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import {
   URLSearchParamsInit,
   useSearchParams as useReactSearchParams,
-} from 'react-router-dom';
+} from 'react-router';
 import { URLSearchParams } from 'url';
 
 export const useSearchParams = (

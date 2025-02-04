@@ -1,4 +1,4 @@
-import { BaseImage } from '../models';
+import { BaseImage } from '../models/Image';
 
 export const findFirstValid = (images: BaseImage[], language: string) => {
   const p = images.find((p) => p.iso_639_1 === language);

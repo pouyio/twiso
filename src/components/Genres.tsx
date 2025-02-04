@@ -2,8 +2,8 @@ import React from 'react';
 import Emoji from './Emoji';
 import getGenre from '../utils/getGenre';
 import { Empty } from './Empty';
-import { useTranslate } from 'hooks';
 import { genres as allGenres } from 'utils/getGenre';
+import { useTranslate } from '../hooks/useTranslate';
 
 interface IGenresProps {
   genres?: string[];

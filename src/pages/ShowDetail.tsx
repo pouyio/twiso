@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router';
 import { useAppDispatch, useAppSelector } from 'state/store';
-import { populateDetail } from 'state/slices/shows/thunks';
+import { populateDetail, toggleHidden } from 'state/slices/shows/thunks';
 import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
@@ -11,20 +11,16 @@ import Rating from '../components/Rating';
 import Related from '../components/Related';
 import SeasonsContainer from '../components/Seasons/SeasonsContainer';
 import ShowWatchButton from '../components/ShowWatchButton';
-import { AlertContext } from '../contexts';
-import { useIsWatch, useShare, useTranslate } from '../hooks';
-import { People as IPeople, Ratings, Show, ShowWatched } from '../models';
+import { AlertContext } from '../contexts/AlertContext';
+import { People as IPeople } from '../models/People';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
 import { Helmet } from 'react-helmet';
 import { Icon } from 'components/Icon';
-
-enum status {
-  'returning series' = 'en antena',
-  'in production' = 'en producción',
-  planned = 'planeada',
-  canceled = 'cancelada',
-  ended = 'terminada',
-}
+import { useShare } from '../hooks/useShare';
+import { useTranslate } from '../hooks/useTranslate';
+import { useIsWatch } from '../hooks/useIsWatch';
+import { Ratings } from '../models/Api';
+import { Show, ShowWatched } from '../models/Show';
 
 export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -42,7 +38,7 @@ export default function ShowDetail() {
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
 
-  const { isWatchlist, isWatched } = useIsWatch();
+  const { isWatchlist, isWatched, isHidden } = useIsWatch();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -65,6 +61,9 @@ export default function ShowDetail() {
     if (!item) {
       return;
     }
+    if (isHidden(+id!)) {
+      return 'bg-green-800';
+    }
     if (isWatched(+id!, 'show')) {
       return 'bg-green-400';
     }
@@ -80,6 +79,12 @@ export default function ShowDetail() {
         showAlert(t('link_copied', item!.title));
       }
     });
+  };
+
+  const onToggleHidden = () => {
+    if (item) {
+      dispatch(toggleHidden(item.ids.trakt));
+    }
   };
 
   return item ? (
@@ -165,8 +170,15 @@ export default function ShowDetail() {
 
               <div className="flex mb-4 justify-between items-center text-gray-600">
                 <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-100 capitalize">
-                  {status[item.status]}
+                  {t(item.status)}
                 </h2>
+                <button onClick={onToggleHidden}>
+                  <Icon
+                    className="h-10"
+                    name={isHidden(item.ids.trakt) ? 'no-hidden' : 'hidden'}
+                    title="Toggle visibility"
+                  />
+                </button>
                 <h2>{item.runtime || '?'} mins</h2>
               </div>
               <div className="flex mb-4 justify-between items-center text-gray-600">
@@ -189,9 +201,9 @@ export default function ShowDetail() {
                             (progress?.aired ?? 1)
                         )}% completado`
                       : `${progress?.completed}/${progress?.aired} episodios`}
-                    <div className="bg-green-100 rounded">
+                    <div className="bg-green-100 rounded-sm">
                       <div
-                        className="bg-green-400 h-1 rounded text-white text-xs"
+                        className="bg-green-400 h-1 rounded-sm text-white text-xs"
                         style={{
                           width: `${
                             ((progress?.completed ?? 0) * 100) /

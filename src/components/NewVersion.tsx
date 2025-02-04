@@ -1,7 +1,7 @@
-import { useTranslate } from 'hooks';
 import React from 'react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 import Emoji from './Emoji';
+import { useTranslate } from '../hooks/useTranslate';
 
 export const NewVersion: React.FC = () => {
   const { t } = useTranslate();

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import { populateDetail } from 'state/slices/movies/thunks';
 import Collapsable from '../components/Collapsable/Collapsable';
@@ -10,12 +10,16 @@ import People from '../components/People';
 import Rating from '../components/Rating';
 import Related from '../components/Related';
 import WatchButton from '../components/WatchButton';
-import { AlertContext } from '../contexts';
-import { useIsWatch, useShare, useTranslate } from '../hooks';
-import { Movie, People as IPeople, Ratings } from '../models';
+import { AlertContext } from '../contexts/AlertContext';
+import { People as IPeople } from '../models/People';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
 import { Helmet } from 'react-helmet';
 import { Icon } from 'components/Icon';
+import { Ratings } from '../models/Api';
+import { Movie } from '../models/Movie';
+import { useShare } from '../hooks/useShare';
+import { useTranslate } from '../hooks/useTranslate';
+import { useIsWatch } from '../hooks/useIsWatch';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();

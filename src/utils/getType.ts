@@ -1,9 +1,5 @@
-import {
-  MovieWatched,
-  MovieWatchlist,
-  ShowWatched,
-  ShowWatchlist,
-} from 'models';
+import { MovieWatched, MovieWatchlist } from '../models/Movie';
+import { ShowWatched, ShowWatchlist } from '../models/Show';
 
 export const getType = (
   element: MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist

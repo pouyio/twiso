@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion';
-import { useTranslate } from 'hooks';
+import { motion } from 'motion/react';
 import React, { useEffect, useRef, useState } from 'react';
 import './collapsable.css';
+import { useTranslate } from '../../hooks/useTranslate';
 
 interface ICollapsableProps {
   heightInRem: number;
@@ -44,8 +44,9 @@ const Collapsable: React.FC<React.PropsWithChildren<ICollapsableProps>> = ({
     <div className="flex flex-col">
       <motion.div
         ref={ref}
-        className={`leading-tight font-light overflow-hidden relative ${isButtonShown && !opened ? 'collapsable' : ''
-          }`}
+        className={`leading-tight font-light overflow-hidden relative ${
+          isButtonShown && !opened ? 'collapsable' : ''
+        }`}
         initial={{
           height: isButtonShown
             ? opened

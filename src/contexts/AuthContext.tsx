@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { refreshApi } from 'utils/api';
 
 export interface Session {
@@ -61,7 +61,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   };
 
   return (
-    <AuthContext.Provider
+    <AuthContext
       value={{
         session,
         logout,
@@ -69,6 +69,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </AuthContext>
   );
 };

@@ -1,6 +1,6 @@
-import { useTranslate } from 'hooks';
 import React from 'react';
 import Emoji from './Emoji';
+import { useTranslate } from '../hooks/useTranslate';
 
 export const Empty: React.FC = () => {
   const { t } = useTranslate();

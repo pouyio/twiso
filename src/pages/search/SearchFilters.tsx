@@ -1,7 +1,7 @@
-import { AuthContext } from 'contexts';
-import { useTranslate } from 'hooks';
+import { AuthContext } from 'contexts/AuthContext';
 import React, { useContext, useEffect, useState } from 'react';
 import { RemoteFilterTypes } from './Search';
+import { useTranslate } from '../../hooks/useTranslate';
 
 export interface IFilters {
   remote: boolean;

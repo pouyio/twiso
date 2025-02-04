@@ -1,9 +1,10 @@
 import React from 'react';
 import { useInView } from 'react-hook-inview';
 import Emoji from './Emoji';
-import { Ids } from '../models';
-import { useIsWatch, useImage } from '../hooks';
-import { Img } from 'react-image';
+import { useImage } from '../hooks/useImage';
+import { useIsWatch } from '../hooks/useIsWatch';
+import { Img } from '../lib/react-image'; // temporary load local lib until remote is updated https://github.com/mbrevda/react-image/pull/1006
+import { Ids } from '../models/Ids';
 
 interface IImageProps {
   ids: Ids;
@@ -23,7 +24,7 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
   size = 'small',
   ...props
 }) => {
-  const { isWatchlist, isWatched } = useIsWatch();
+  const { isWatchlist, isWatched, isHidden } = useIsWatch();
   const [ref, inView] = useInView({ unobserveOnEnter: true });
 
   const { imgUrl, imgPreview, message } = useImage(
@@ -35,6 +36,9 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
 
   const getBorderClass = () => {
     if (type === 'person') return '';
+    if (isHidden(ids.trakt)) {
+      return 'border-2 brightness-70 opacity-50';
+    }
     if (isWatched(ids.trakt, type)) {
       return 'border-2 border-green-400';
     }

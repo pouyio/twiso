@@ -1,4 +1,3 @@
-import { useSearchParams } from 'hooks';
 import React, { useContext, useEffect, useState } from 'react';
 import {
   addEpisodeWatched,
@@ -7,8 +6,8 @@ import {
   removeSeasonWatched,
 } from 'state/slices/shows/thunks';
 import { useAppDispatch, useAppSelector } from 'state/store';
-import { AuthContext, ModalContext } from '../../contexts';
-import { Episode, Season, Show, ShowProgress, ShowWatched } from '../../models';
+import { AuthContext } from '../../contexts/AuthContext';
+import { ModalContext } from '../../contexts/ModalContext';
 import {
   getProgressApi,
   getSeasonEpisodesApi,
@@ -16,6 +15,14 @@ import {
 } from '../../utils/api';
 import Episodes from './Episodes';
 import SeasonSelector from './SeasonSelector';
+import {
+  Episode,
+  Season,
+  Show,
+  ShowProgress,
+  ShowWatched,
+} from '../../models/Show';
+import { useSearchParams } from 'react-router';
 
 interface ISeasonsContainerProps {
   show: Show;

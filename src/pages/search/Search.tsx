@@ -4,9 +4,12 @@ import Helmet from 'react-helmet';
 import Emoji from '../../components/Emoji';
 import ImageLink from '../../components/ImageLink';
 import Popular from '../../components/Popular';
-import { useDebounce, useFilter, useSearch, useTranslate } from '../../hooks';
-import { SearchMovie, SearchPerson, SearchShow } from '../../models';
 import { searchApi } from '../../utils/api';
+import { useSearch } from '../../hooks/useSearch';
+import { useFilter } from '../../hooks/useFilter';
+import { useDebounce } from '../../hooks/useDebounce';
+import { useTranslate } from '../../hooks/useTranslate';
+import { SearchMovie, SearchPerson, SearchShow } from '../../models/Movie';
 
 export type RemoteFilterTypes = Array<'movie' | 'show' | 'person'>;
 type LocalFilterTypes = Array<'movie' | 'show'>;
@@ -81,9 +84,9 @@ export default function Search() {
       <Helmet>
         <title>Search</title>
       </Helmet>
-      <div className="w-full bg-gray-300 rounded flex items-center my-2 m-auto lg:max-w-lg">
+      <div className="w-full bg-gray-300 rounded-sm flex items-center my-2 m-auto lg:max-w-lg">
         <input
-          className="bg-gray-300 rounded text-black px-2 py-1 outline-none grow"
+          className="bg-gray-300 rounded-sm text-black px-2 py-1 outline-hidden grow"
           type="text"
           placeholder={t('search_placeholder')}
           autoFocus={true}

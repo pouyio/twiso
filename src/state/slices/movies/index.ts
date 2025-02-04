@@ -1,5 +1,4 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MovieWatchlist, MovieWatched, Movie } from 'models';
 import {
   addWatched,
   addWatchlist as addWatchlistThunk,
@@ -9,6 +8,7 @@ import {
   removeWatchlist as removeWatchlistThunk,
 } from 'state/slices/movies/thunks';
 import { RootState } from 'state/store';
+import { Movie, MovieWatched, MovieWatchlist } from '../../../models/Movie';
 
 interface MoviesState {
   totalRequestsPending: number;
@@ -55,10 +55,10 @@ const moviesSlice = createSlice({
         id: number;
       }>
     ) {
-      const storedShow = state.movies[payload.id];
-      if (storedShow) {
-        storedShow.movie.title = payload.translation.title;
-        storedShow.movie.overview = payload.translation.overview;
+      const storedMovie = state.movies[payload.id];
+      if (storedMovie) {
+        storedMovie.movie.title = payload.translation.title;
+        storedMovie.movie.overview = payload.translation.overview;
       }
     },
   },

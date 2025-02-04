@@ -1,5 +1,5 @@
-import { useSearchParams } from 'hooks';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router';
 export const PAGE_SIZE = 40;
 
 export const usePagination = <T,>(items: T[]) => {
@@ -21,13 +21,15 @@ export const usePagination = <T,>(items: T[]) => {
       return;
     }
 
-    setSearchParams({ page: `${currentPage + direction}` });
+    searchParams.set('page', `${currentPage + direction}`);
+    setSearchParams(searchParams);
     window.scrollTo(0, 0);
   };
 
   const setSafePage = (page: 'first' | 'last') => {
     const localPage = page === 'first' ? 1 : lastPage;
-    setSearchParams({ page: `${localPage}` });
+    searchParams.set('page', `${localPage}`);
+    setSearchParams(searchParams);
   };
 
   const getItemsByPage = () => {

@@ -1,13 +1,15 @@
-import addMonths from 'date-fns/addMonths';
-import format from 'date-fns/format';
-import getDay from 'date-fns/getDay';
-import getYear from 'date-fns/getYear';
-import es from 'date-fns/locale/es';
-import parse from 'date-fns/parse';
-import startOfWeek from 'date-fns/startOfWeek';
-import addDays from 'date-fns/addDays';
-import getDaysInMonth from 'date-fns/getDaysInMonth';
-import startOfMonth from 'date-fns/startOfMonth';
+import {
+  addDays,
+  addMonths,
+  format,
+  getDay,
+  getDaysInMonth,
+  getYear,
+  parse,
+  startOfMonth,
+  startOfWeek,
+} from 'date-fns';
+import { es } from 'date-fns/locale/es';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import {
   Calendar as BigCalendar,
@@ -18,13 +20,13 @@ import { Helmet } from 'react-helmet';
 import { getCalendar } from 'utils/api';
 import { Event } from './Event';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import './calendar.scss';
-import { ShowCalendar, MovieCalendar } from 'models';
+import './calendar.css';
 import { useAppSelector } from 'state/store';
-import { useTranslate } from 'hooks';
-import { useSearchParams } from 'hooks';
 import { Icon } from 'components/Icon';
-import { AuthContext } from 'contexts';
+import { AuthContext } from 'contexts/AuthContext';
+import { useSearchParams } from 'react-router';
+import { useTranslate } from '../../hooks/useTranslate';
+import { MovieCalendar, ShowCalendar } from '../../models/Api';
 
 const localizer = dateFnsLocalizer({
   format,

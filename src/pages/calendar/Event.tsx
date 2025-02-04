@@ -1,6 +1,6 @@
 import React from 'react';
 import { Event as ICalendarEvent, EventProps } from 'react-big-calendar';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { useAppSelector } from 'state/store';
 
 export const Event: React.FC<EventProps<ICalendarEvent>> = ({

@@ -1,52 +1,29 @@
-import {
-  MovieWatched,
-  MovieWatchlist,
-  ShowWatched,
-  ShowWatchlist,
-} from 'models';
-import { getWatchedApi, getWatchlistApi } from 'utils/api';
+import { getHiddenShows, getWatchedApi, getWatchlistApi } from 'utils/api';
 import db from 'utils/db';
 import { set as setMovies, remove as removeMovies } from './slices/movies';
 import {
   set as setShows,
+  setHidden,
   addWatched as addWatchedShow,
   remove as removeShows,
   updateShow,
+  updateHidden,
 } from './slices/shows';
 import { store } from './store';
 import { getMovie } from './slices/movies/thunks';
 import { updateFullShow } from 'state/slices/shows/thunks';
 import equal from 'fast-deep-equal';
-// import diff from 'json-diff';
+import { ShowWatched, ShowWatchlist } from '../models/Show';
+import { MovieWatched, MovieWatchlist } from '../models/Movie';
+import { differenceInHours } from 'date-fns';
+import { Ids } from '../models/Ids';
 
-// const _mustUpdateMovie = (old: any, newer?: any) => {
-//   if(old.movie.updated_at !== newer.movie.updated_at){
-//     return true;
-//   }
-//   const oldMovie = JSON.parse(JSON.stringify(old));
-//   const newerMovie = JSON.parse(JSON.stringify(newer));
-//   const { votes: v1, localState, rank: r1, ...stripOld } = oldMovie as any;
-//   const { votes: v2, rank: r2, ...stripNew } = newerMovie as any;
-//   delete stripOld.movie.votes;
-//   delete stripOld.movie.rating;
-//   delete stripOld.movie.title;
-//   delete stripOld.movie.overview;
-//   delete stripOld.movie.comment_count;
-//   delete stripOld.movie.updated_at;
-//   delete stripNew.movie.votes;
-//   delete stripNew.movie.rating;
-//   delete stripNew.movie.title;
-//   delete stripNew.movie.overview;
-//   delete stripNew.movie.comment_count;
-//   delete stripNew.movie.updated_at;
-
-//   if (!equal(stripOld, stripNew)) {
-//     console.log(old.movie.title);
-//     console.log(diff.diffString(stripOld, stripNew));
-//     return true;
-//   }
-//   return false;
-// };
+const _mustUpdateByHours = (old: string, newer: string) => {
+  // usually field updated_at from  getWatchedApi/getWatchedApi and getApi does not match exactly
+  // so let them be up to 1 hour different
+  const diff = differenceInHours(newer, old);
+  return diff > 1;
+};
 
 const _mustUpdateShowWatched = (
   oldShow: ShowWatched,
@@ -58,10 +35,7 @@ const _mustUpdateShowWatched = (
   if (!oldShow.progress) {
     return true;
   }
-  if (oldShow.last_updated_at !== newerShow?.last_updated_at) {
-    return true;
-  }
-  if (oldShow.last_watched_at !== newerShow?.last_watched_at) {
+  if (_mustUpdateByHours(oldShow.last_updated_at, newerShow!.last_updated_at)) {
     return true;
   }
   if (oldShow.plays !== newerShow?.plays) {
@@ -84,12 +58,10 @@ const loadMovies = async (type: 'watched' | 'watchlist') => {
 
   store.dispatch(setMovies(dbMovies));
 
-  const {
-    data,
-  }: { data: Array<MovieWatchlist | MovieWatched> } = await (type ===
-  'watchlist'
-    ? getWatchlistApi<MovieWatchlist>('movie')
-    : getWatchedApi<MovieWatched>('movie'));
+  const { data }: { data: Array<MovieWatchlist | MovieWatched> } =
+    await (type === 'watchlist'
+      ? getWatchlistApi<MovieWatchlist>('movie')
+      : getWatchedApi<MovieWatched>('movie'));
 
   const moviesToDelete = dbMovies.filter(
     (d) => !data.some((m) => m.movie.ids.trakt === d.movie.ids.trakt)
@@ -111,8 +83,12 @@ const loadMovies = async (type: 'watched' | 'watchlist') => {
 
             let shouldUpdate = false;
 
-            // if (_mustUpdateMovie(m, newerMovie)) {
-            if (m.movie.updated_at !== newerMovie?.movie.updated_at) {
+            if (
+              _mustUpdateByHours(
+                m.movie.updated_at,
+                newerMovie!.movie.updated_at
+              )
+            ) {
               shouldUpdate = true;
             }
 
@@ -132,13 +108,8 @@ const loadMovies = async (type: 'watched' | 'watchlist') => {
 
   const outdatedMovies = [...moviesToAdd, ...moviesToUpdate];
 
-  outdatedMovies.forEach(async (outdated) => {
-    try {
-      store.dispatch(getMovie({ id: outdated.movie.ids.trakt, type }));
-    } catch (error) {
-      console.error(error);
-    } finally {
-    }
+  outdatedMovies.forEach((outdated) => {
+    store.dispatch(getMovie({ id: outdated.movie.ids.trakt, type }));
   });
 };
 
@@ -164,7 +135,10 @@ const loadWatchlistShows = async () => {
 
       let shouldUpdate = false;
 
-      if (!s.fullSeasons || s.show.updated_at !== newerShow?.show.updated_at) {
+      if (
+        !s.fullSeasons ||
+        _mustUpdateByHours(s.show.updated_at, newerShow!.show.updated_at)
+      ) {
         shouldUpdate = true;
       }
 
@@ -202,7 +176,12 @@ const loadWatchedShows = async () => {
     .toArray();
   store.dispatch(setShows(showsWatched));
 
+  const showsHidden = await db.table<Ids>('shows-hidden').toArray();
+  store.dispatch(setHidden(showsHidden));
+
   const { data } = await getWatchedApi<ShowWatched>('show');
+  const { data: hidden } = await getHiddenShows();
+  store.dispatch(updateHidden(hidden.map((s) => s.show.ids)));
 
   const showsToDelete = showsWatched.filter(
     (s) => !data.some((sd) => sd.show.ids.trakt === s.show.ids.trakt)

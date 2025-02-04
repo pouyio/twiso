@@ -1,10 +1,10 @@
 import React from 'react';
 import LongPressable from 'react-longpressable';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { setGlobalSearch } from 'state/slices/root';
-import { useTranslate } from 'hooks';
 import { Icon } from './Icon';
+import { useTranslate } from '../hooks/useTranslate';
 
 const LongPress: React.FC = () => {
   const navigate = useNavigate();

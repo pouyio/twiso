@@ -22,8 +22,13 @@ export const useIsWatch = () => {
     }
   };
 
+  const isHidden = (id: number) => {
+    return shows.hidden[id];
+  };
+
   return {
     isWatched,
     isWatchlist,
+    isHidden,
   };
 };

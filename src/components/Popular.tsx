@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import ImageLink from './ImageLink';
 import { getPopularApi } from '../utils/api';
 import Emoji from './Emoji';
-import { Popular as IPopular } from '../models';
-import { useTranslate } from 'hooks';
+import { Popular as IPopular } from '../models/Popular';
+import { useTranslate } from '../hooks/useTranslate';
 
 interface IPopularProps {
   type: 'movie' | 'show';

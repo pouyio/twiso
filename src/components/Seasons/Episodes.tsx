@@ -1,10 +1,10 @@
 import React from 'react';
 import Emoji from '../Emoji';
-import { Episode, Season } from '../../models';
 import { EpisodesPlaceholder } from './EpisodesPlaceholder';
 import { useAppSelector } from 'state/store';
-import { useTranslate } from 'hooks';
 import { Icon } from 'components/Icon';
+import { useTranslate } from '../../hooks/useTranslate';
+import { Episode, Season } from '../../models/Show';
 
 interface ISeasonsProps {
   seasonProgress?: Season;

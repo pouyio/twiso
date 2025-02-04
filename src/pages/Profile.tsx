@@ -1,5 +1,4 @@
 import { Icon } from 'components/Icon';
-import { useTranslate } from 'hooks';
 import { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Language, changeLanguage } from 'state/slices/config';
@@ -7,10 +6,12 @@ import { useAppDispatch, useAppSelector } from 'state/store';
 import packageInfo from '../../package.json';
 import Emoji from '../components/Emoji';
 import { LoginButton } from '../components/LoginButton';
-import { AuthContext, ThemeContext, ThemeType } from '../contexts';
-import { UserStats } from '../models';
+import { AuthContext } from '../contexts/AuthContext';
+import { ThemeContext, ThemeType } from '../contexts/ThemeContext';
 import { getProfileApi, getStatsApi } from '../utils/api';
 import { removeCaches, removeImgCaches } from '../utils/cache';
+import { UserStats } from '../models/Api';
+import { useTranslate } from '../hooks/useTranslate';
 
 export default function Profile() {
   const { theme, setTheme } = useContext(ThemeContext);
@@ -52,7 +53,7 @@ export default function Profile() {
         <ul className="flex justify-between">
           <li className="py-1 relative">
             <select
-              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-none"
+              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
               onChange={(e) => {
                 const value =
                   e.target.value === '0'
@@ -78,7 +79,7 @@ export default function Profile() {
           </li>
           <li className="py-1 relative">
             <select
-              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-none"
+              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
               onChange={(e) => {
                 dispatch(
                   changeLanguage({ language: e.target.value as Language })
@@ -121,6 +122,9 @@ export default function Profile() {
 
         <div className="flex justify-between pt-10 text-sm font-mono">
           <h1 className="inline">Version: {packageInfo.version}</h1>
+          <a href="https://status.trakt.tv/" className="underline">
+            API status
+          </a>
           {isLogged ? (
             <button
               onClick={logout}
@@ -162,6 +166,12 @@ export default function Profile() {
                 Remove images from cache
               </button>
             </p>
+            <a
+              className="text-center py-4 underline block"
+              href="https://github.com/mbrevda/react-image/pull/1006"
+            >
+              react-image Pull Request
+            </a>
           </>
         ) : null}
       </div>

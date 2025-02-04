@@ -1,11 +1,9 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import {
-  ThemeProvider,
-  AlertProvider,
-  ModalProvider,
-  AuthProvider,
-} from 'contexts';
+import { BrowserRouter } from 'react-router';
+import { ThemeProvider } from 'contexts/ThemeContext';
+import { AlertProvider } from 'contexts/AlertContext';
+import { ModalProvider } from 'contexts/ModalContext';
+import { AuthProvider } from '../contexts/AuthContext';
 
 interface IProvidersProp {
   modalRef: HTMLDivElement;
