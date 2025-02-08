@@ -172,13 +172,15 @@ export default function ShowDetail() {
                 <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-100 capitalize">
                   {t(item.status)}
                 </h2>
-                <button onClick={onToggleHidden}>
-                  <Icon
-                    className="h-10"
-                    name={isHidden(item.ids.trakt) ? 'no-hidden' : 'hidden'}
-                    title="Toggle visibility"
-                  />
-                </button>
+                {isWatched(+id!, 'show') && (
+                  <button onClick={onToggleHidden}>
+                    <Icon
+                      className="h-10"
+                      name={isHidden(item.ids.trakt) ? 'no-hidden' : 'hidden'}
+                      title="Toggle visibility"
+                    />
+                  </button>
+                )}
                 <h2>{item.runtime || '?'} mins</h2>
               </div>
               <div className="flex mb-4 justify-between items-center text-gray-600">
