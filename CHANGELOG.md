@@ -1,3 +1,10 @@
+## [2.10.1](https://github.com/pouyio/twiso/compare/v2.10.0...v2.10.1) (2025-02-08)
+
+
+### :bug:
+
+* show hide show button if it's not watched ([ff321b8](https://github.com/pouyio/twiso/commit/ff321b8c9c8d866c6568489fac3b25d878e4f274))
+
 # [2.10.0](https://github.com/pouyio/twiso/compare/v2.9.15...v2.10.0) (2025-02-04)
 
 
