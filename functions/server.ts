@@ -6,7 +6,7 @@ import {
   CONTENT_TYPE,
   IMG_URL,
   TRAKT_API_VERSION,
-} from '../src/utils/apiConfig';
+} from '../src/utils/apiConsts';
 import { EventContext } from '@cloudflare/workers-types';
 import { ImageResponse } from 'models/Image';
 import { ItemType } from 'models/ItemType';
