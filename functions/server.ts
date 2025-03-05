@@ -1,13 +1,20 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { getImgsApi } from '../src/utils/api';
 import { findFirstValid } from '../src/utils/findFirstValidImage';
 import { SearchMovie, SearchPerson, SearchShow } from '../src/models/Movie';
 import {
   BASE_URL,
   CONTENT_TYPE,
+  IMG_URL,
   TRAKT_API_VERSION,
 } from '../src/utils/apiConfig';
 import { EventContext } from '@cloudflare/workers-types';
+import { ImageResponse } from 'models/Image';
+import { ItemType } from 'models/ItemType';
+
+type ENVs = {
+  VITE_TRAKT_API_KEY: string;
+  VITE_TMDB_API_KEY: string;
+};
 
 const TYPE_MAP = {
   movie: 'video.movie',
@@ -24,14 +31,24 @@ const axiosConfig = (traktApiKey: string): AxiosRequestConfig => ({
   },
 });
 
+export const getImgsApi = (id: number, type: ItemType, tmdbApiKey: string) => {
+  let newType: string = type;
+  if (type === 'show') {
+    newType = 'tv';
+  }
+  return axios.get<ImageResponse>(
+    `${IMG_URL}/${newType}/${id}/images?api_key=${tmdbApiKey}`
+  );
+};
+
 const traktClient = (apiKey: string) => axios.create(axiosConfig(apiKey));
 
 const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   type: 'movie' | 'show' | 'person',
   id: number,
-  apiKey: string
+  env: ENVs
 ) => {
-  const searchResponses = await traktClient(apiKey).get<T[]>(
+  const searchResponses = await traktClient(env.VITE_TRAKT_API_KEY).get<T[]>(
     `/search/trakt/${id}?type=${type}&extended=full`
   );
   let imgUrl = 'https://via.placeholder.com/185x330';
@@ -42,7 +59,11 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   }
 
   const item = searchResponses.data[0][type];
-  const imgResponse = await getImgsApi(item.ids.tmdb, type);
+  const imgResponse = await getImgsApi(
+    item.ids.tmdb,
+    type,
+    env.VITE_TMDB_API_KEY
+  );
   const poster = findFirstValid(
     (imgResponse.data.posters || imgResponse.data.profiles)!,
     'es'
@@ -55,9 +76,7 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   return { item, imgUrl };
 };
 
-export const onRequest = async (
-  context: EventContext<{ VITE_TRAKT_API_KEY: string }, any, any>
-) => {
+export const onRequest = async (context: EventContext<ENVs, any, any>) => {
   const { request, env } = context;
   const url = new URL(request.url);
   const parts = url.pathname.split('/').filter(Boolean); // Remove empty parts
@@ -73,11 +92,7 @@ export const onRequest = async (
     return new Response('Invalid ID', { status: 400 });
   }
 
-  const { item, imgUrl } = await fetchData<SearchMovie>(
-    type,
-    id,
-    env.VITE_TRAKT_API_KEY
-  );
+  const { item, imgUrl } = await fetchData<SearchMovie>(type, id, env);
 
   // Load your index.html file (Cloudflare Workers does not support fs.readFileSync)
   const indexHtml = await fetch(new Request(`${url.origin}/index.html`));
