@@ -1,15 +1,15 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { findFirstValid } from './src/utils/findFirstValidImage';
-import { SearchMovie, SearchPerson, SearchShow } from './src/models/Movie';
+import { findFirstValid } from '../src/utils/findFirstValidImage';
+import { SearchMovie, SearchPerson, SearchShow } from '../src/models/Movie';
 import {
   BASE_URL,
   CONTENT_TYPE,
   IMG_URL,
   TRAKT_API_VERSION,
-} from './src/utils/apiConsts';
+} from '../src/utils/apiConsts';
 import { EventContext } from '@cloudflare/workers-types';
-import { ImageResponse } from './src/models/Image';
-import { ItemType } from './src/models/ItemType';
+import { ImageResponse } from '../src/models/Image';
+import { ItemType } from '../src/models/ItemType';
 
 type ENVs = {
   VITE_TRAKT_API_KEY: string;
