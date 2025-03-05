@@ -77,6 +77,7 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
 };
 
 export const onRequest = async (context: EventContext<ENVs, any, any>) => {
+  console.log(context.params);
   const { request, env } = context;
   const url = new URL(request.url);
   const parts = url.pathname.split('/').filter(Boolean); // Remove empty parts
