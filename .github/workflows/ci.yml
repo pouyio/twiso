@@ -16,10 +16,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 22
-      - name: Setup bun
-        uses: oven-sh/setup-bun@v2
-      - run: bun install
+      - run: npm install
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.TWISO_DEPLOY_TOKEN }}
-        run: bunx semantic-release
+        run: npx semantic-release
