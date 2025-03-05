@@ -31,7 +31,7 @@
     "scroll-behavior-polyfill": "^2.0.13"
   },
   "devDependencies": {
-    "@netlify/functions": "2.8.2",
+    "@cloudflare/workers-types": "^4.20250303.0",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "@sentry/browser": "7.119.2",
