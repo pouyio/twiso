@@ -24,17 +24,16 @@ const axiosConfig = (traktApiKey: string): AxiosRequestConfig => ({
   },
 });
 
-const traktClient = (traktApiKey: string) =>
-  axios.create(axiosConfig(traktApiKey));
+const traktClient = (apiKey: string) => axios.create(axiosConfig(apiKey));
 
 const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   type: 'movie' | 'show' | 'person',
   id: number,
-  context: EventContext<{ VITE_TRAKT_API_KEY: string }, any, any>
+  apiKey: string
 ) => {
-  const searchResponses = await traktClient(context.env.VITE_TRAKT_API_KEY).get<
-    T[]
-  >(`/search/trakt/${id}?type=${type}&extended=full`);
+  const searchResponses = await traktClient(apiKey).get<T[]>(
+    `/search/trakt/${id}?type=${type}&extended=full`
+  );
   let imgUrl = 'https://via.placeholder.com/185x330';
 
   if (!searchResponses.data[0]) {
@@ -74,12 +73,14 @@ export const onRequest = async (
     return new Response('Invalid ID', { status: 400 });
   }
 
-  const { item, imgUrl } = await fetchData<SearchMovie>(type, id, context);
+  const { item, imgUrl } = await fetchData<SearchMovie>(
+    type,
+    id,
+    env.VITE_TRAKT_API_KEY
+  );
 
   // Load your index.html file (Cloudflare Workers does not support fs.readFileSync)
-  const indexHtml = await env.ASSETS.fetch(
-    new Request(`${url.origin}/index.html`)
-  );
+  const indexHtml = await fetch(new Request(`${url.origin}/index.html`));
   let data = await indexHtml.text();
 
   // Replace meta tags
