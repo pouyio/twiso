@@ -1,4 +1,5 @@
 {
   "version": 1,
-  "include": ["/movie/*", "/show/*", "/person/*"]
+  "include": ["/movie/*", "/show/*", "/person/*"],
+  "exclude": []
 }
