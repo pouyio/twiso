@@ -1,6 +1,13 @@
-import { getApi, getImgsApi } from 'utils/api';
-import { findFirstValid } from 'utils/findFirstValidImage';
+import axios, { AxiosRequestConfig } from 'axios';
+import { getImgsApi } from '../src/utils/api';
+import { findFirstValid } from '../src/utils/findFirstValidImage';
 import { SearchMovie, SearchPerson, SearchShow } from '../src/models/Movie';
+import {
+  BASE_URL,
+  CONTENT_TYPE,
+  TRAKT_API_VERSION,
+} from '../src/utils/apiConfig';
+import { EventContext } from '@cloudflare/workers-types';
 
 const TYPE_MAP = {
   movie: 'video.movie',
@@ -8,11 +15,26 @@ const TYPE_MAP = {
   person: 'video.profile',
 };
 
+const axiosConfig = (traktApiKey: string): AxiosRequestConfig => ({
+  baseURL: BASE_URL,
+  headers: {
+    'content-type': CONTENT_TYPE,
+    'trakt-api-key': traktApiKey,
+    'trakt-api-version': TRAKT_API_VERSION,
+  },
+});
+
+const traktClient = (traktApiKey: string) =>
+  axios.create(axiosConfig(traktApiKey));
+
 const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   type: 'movie' | 'show' | 'person',
-  id: number
+  id: number,
+  context: EventContext<{ VITE_TRAKT_API_KEY: string }, any, any>
 ) => {
-  const searchResponses = await getApi<T>(id, type);
+  const searchResponses = await traktClient(context.env.VITE_TRAKT_API_KEY).get<
+    T[]
+  >(`/search/trakt/${id}?type=${type}&extended=full`);
   let imgUrl = 'https://via.placeholder.com/185x330';
 
   if (!searchResponses.data[0]) {
@@ -34,7 +56,9 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   return { item, imgUrl };
 };
 
-export const onRequest = async (context) => {
+export const onRequest = async (
+  context: EventContext<{ VITE_TRAKT_API_KEY: string }, any, any>
+) => {
   const { request, env } = context;
   const url = new URL(request.url);
   const parts = url.pathname.split('/').filter(Boolean); // Remove empty parts
@@ -50,7 +74,7 @@ export const onRequest = async (context) => {
     return new Response('Invalid ID', { status: 400 });
   }
 
-  const { item, imgUrl } = await fetchData<SearchMovie>(type, id);
+  const { item, imgUrl } = await fetchData<SearchMovie>(type, id, context);
 
   // Load your index.html file (Cloudflare Workers does not support fs.readFileSync)
   const indexHtml = await env.ASSETS.fetch(
