@@ -1,3 +1,10 @@
+## [2.10.2](https://github.com/pouyio/twiso/compare/v2.10.1...v2.10.2) (2025-03-06)
+
+
+### :art:
+
+* updated translations ([68d765e](https://github.com/pouyio/twiso/commit/68d765e2234f922cae50cc91d863fd5c3ec2f257))
+
 ## [2.10.1](https://github.com/pouyio/twiso/compare/v2.10.0...v2.10.1) (2025-02-08)
 
 
