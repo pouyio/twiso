@@ -73,6 +73,10 @@ const en = {
   planned: 'planned',
   canceled: 'canceled',
   ended: 'ended',
+  'login-perks': 'To save it on you personal list!',
+  overview: 'Overview',
+  related: 'Related',
+  genres: 'Genres',
 };
 
 const es = {
@@ -147,6 +151,10 @@ const es = {
   planned: 'planeada',
   canceled: 'cancelada',
   ended: 'terminada',
+  'login-perks': 'Para guardarla en tu lista personal!',
+  overview: 'Sinopsis',
+  related: 'Relacionados',
+  genres: 'Géneros',
 };
 
 const translations: Record<Language, Record<string, string>> = {
