@@ -77,6 +77,8 @@ const en = {
   overview: 'Overview',
   related: 'Related',
   genres: 'Genres',
+  'empty-login-perk': 'Start following a show or add a movie to your watchlist',
+  'call-to-action': 'Go for it!',
 };
 
 const es = {
@@ -155,6 +157,9 @@ const es = {
   overview: 'Sinopsis',
   related: 'Relacionados',
   genres: 'Géneros',
+  'empty-login-perk':
+    'Empieza a seguir una serie o añade tu una película a tu lista',
+  'call-to-action': 'Vamos!',
 };
 
 const translations: Record<Language, Record<string, string>> = {
