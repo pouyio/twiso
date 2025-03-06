@@ -1,3 +1,10 @@
+## [2.10.3](https://github.com/pouyio/twiso/compare/v2.10.2...v2.10.3) (2025-03-06)
+
+
+### :art:
+
+* add missing translations ([cdb5a7d](https://github.com/pouyio/twiso/commit/cdb5a7d5dd59181ba450d36d06cbe7a6d8a83a41))
+
 ## [2.10.2](https://github.com/pouyio/twiso/compare/v2.10.1...v2.10.2) (2025-03-06)
 
 
