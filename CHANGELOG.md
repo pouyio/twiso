@@ -1,3 +1,10 @@
+## [2.10.4](https://github.com/pouyio/twiso/compare/v2.10.3...v2.10.4) (2025-03-07)
+
+
+### :art:
+
+* update LoginButton ([c7ea491](https://github.com/pouyio/twiso/commit/c7ea491a170e592bd9457ede61c07a63e26d00de))
+
 ## [2.10.3](https://github.com/pouyio/twiso/compare/v2.10.2...v2.10.3) (2025-03-06)
 
 
