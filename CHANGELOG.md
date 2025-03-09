@@ -1,3 +1,10 @@
+## [2.10.5](https://github.com/pouyio/twiso/compare/v2.10.4...v2.10.5) (2025-03-09)
+
+
+### :art:
+
+* bring back long press for search ([f0e665c](https://github.com/pouyio/twiso/commit/f0e665c10161dbeb096e6948d9b57663fa311b70))
+
 ## [2.10.4](https://github.com/pouyio/twiso/compare/v2.10.3...v2.10.4) (2025-03-07)
 
 
