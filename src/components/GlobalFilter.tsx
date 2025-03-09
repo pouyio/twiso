@@ -46,6 +46,7 @@ export const GlobalFilter = () => {
     >
       <div className="w-full bg-blue-100 flex items-center border-b-2">
         <input
+          autoFocus={true}
           className="bg-blue-100 w-full px-2 py-2 outline-hidden grow text-gray-700 "
           placeholder="🔍 Escribe un título de tu colección"
           type="text"
