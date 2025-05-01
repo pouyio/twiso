@@ -1,33 +1,45 @@
 import ImageLink from 'components/ImageLink';
 import PaginationContainer from 'components/Pagination/PaginationContainer';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { filterByGenres } from 'state/slices/movies';
 import { useAppSelector } from 'state/store';
 import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from 'components/EmptyState';
 import { NoResults } from 'components/NoResults';
 import { MovieWatchlist } from '../../models/Movie';
+import db from '../../utils/db';
 
 export const MoviesWatchlist: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);
-  const { watchlist } = useAppSelector(filterByGenres(genres));
+  // const { watchlist } = useAppSelector(filterByGenres(genres));
+  const [orderedMovies, setOrderedMovies] = useState<MovieWatchlist[]>([]);
+  useEffect(() => {
+    db.table('movies-s')
+      .where('status')
+      .equals('plantowatch')
+      .reverse()
+      .offset(0)
+      .limit(40)
+      .sortBy('added_to_watchlist_at')
+      .then((movies) => setOrderedMovies(movies));
+  }, []);
 
   const nearFuture = new Date();
   nearFuture.setDate(nearFuture.getDate() + 7);
-  const orderedMovies = watchlist
-    .map((m) => m)
-    .sort((a, b) => (new Date(a.listed_at) < new Date(b.listed_at) ? -1 : 1))
-    .reduce((acc: MovieWatchlist[], m) => {
-      if (!m.movie.released) {
-        return [...acc, m];
-      }
-      const released = new Date(m.movie.released);
-      if (released < nearFuture) {
-        return [m, ...acc];
-      } else {
-        return [...acc, m];
-      }
-    }, []);
+  // const orderedMovies = watchlist
+  //   .map((m) => m)
+  //   .sort((a, b) => (new Date(a.listed_at) < new Date(b.listed_at) ? -1 : 1))
+  //   .reduce((acc: MovieWatchlist[], m) => {
+  //     if (!m.movie.released) {
+  //       return [...acc, m];
+  //     }
+  //     const released = new Date(m.movie.released);
+  //     if (released < nearFuture) {
+  //       return [m, ...acc];
+  //     } else {
+  //       return [...acc, m];
+  //     }
+  //   }, []);
 
   const { getItemsByPage } = usePagination(orderedMovies);
 

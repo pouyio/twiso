@@ -128,7 +128,7 @@ export default function Profile() {
           {isLogged ? (
             <button
               onClick={logout}
-              className="bg-gray-200 px-4 py-1 pl-2 rounded-full flex items-center"
+              className="bg-gray-200 px-4 py-1 pl-2 rounded-full flex items-center cursor-pointer"
             >
               <Icon name="logout" className="h-6 pr-1" /> Logout
             </button>

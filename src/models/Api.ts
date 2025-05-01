@@ -136,3 +136,38 @@ export interface ShowCalendar {
     ids: Ids;
   };
 }
+
+export type Activities = {
+  all: string | null;
+  settings: {
+    all: string | null;
+  };
+  tv_shows: {
+    all: string | null;
+    rated_at: string | null;
+    plantowatch: string | null;
+    watching: string | null;
+    completed: string | null;
+    hold: string | null;
+    dropped: string | null;
+    removed_from_list: string | null;
+  };
+  anime: {
+    all: string | null;
+    rated_at: string | null;
+    plantowatch: string | null;
+    watching: string | null;
+    completed: string | null;
+    hold: null;
+    dropped: string | null;
+    removed_from_list: string | null;
+  };
+  movies: {
+    all: string | null;
+    rated_at: string | null;
+    plantowatch: string | null;
+    completed: string | null;
+    dropped: string | null;
+    removed_from_list: string | null;
+  };
+};

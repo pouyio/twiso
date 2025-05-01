@@ -1,7 +1,8 @@
+import { mockData } from './MOCK_DATA';
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
 import { config, IMG_URL, LOGIN_URL } from './apiConfig';
-import { authTraktClient, traktClient } from './axiosClients';
+import { authSimklClient, authTraktClient, traktClient } from './axiosClients';
 import Bottleneck from 'bottleneck';
 import { getTranslation } from './getTranslations';
 import { Language } from 'state/slices/config';
@@ -20,6 +21,7 @@ import {
 import { Translation } from '../models/Translation';
 import { Movie, MovieWatched, MovieWatchlist } from '../models/Movie';
 import {
+  Activities,
   AddedHidden,
   AddedWatched,
   AddedWatchlist,
@@ -53,7 +55,8 @@ const limitClient = rateLimit(axios.create(), {
 export const loginApi = (code: string) => {
   return axios.post<Session>(LOGIN_URL, {
     code,
-    client_id: config.traktApiKey,
+    client_id: config.simklClientId,
+    client_secret: config.simklClientSecret,
     redirect_uri: config.redirectUrl,
     grant_type: 'authorization_code',
   });
@@ -261,5 +264,29 @@ export const removeHideShow = (id: number) => {
         },
       ],
     }
+  );
+};
+
+export const syncActivities = () => {
+  return authSimklClient.post<Activities>(`/sync/activities`);
+};
+
+export const getAllItems = () => {
+  return { data: mockData };
+  // return authSimklClient.get<Activities>(
+  //   `/sync/all-items?extended=full_anime_seasons&episode_watched_at=yes`
+  // );
+};
+
+export const getItems = (
+  type: 'shows' | 'movies' | 'anime',
+  status: 'watching' | 'plantowatch' | 'hold',
+  dateFrom: string
+) => {
+  const params = new URLSearchParams({
+    ...(dateFrom ? { date_from: dateFrom } : {}),
+  });
+  return authSimklClient.get<Activities>(
+    `/sync/all-items/${type}/${status}?${params}`
   );
 };

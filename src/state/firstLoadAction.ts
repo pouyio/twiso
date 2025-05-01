@@ -1,4 +1,10 @@
-import { getHiddenShows, getWatchedApi, getWatchlistApi } from 'utils/api';
+import {
+  getAllItems,
+  getHiddenShows,
+  getWatchedApi,
+  getWatchlistApi,
+  syncActivities,
+} from 'utils/api';
 import db from 'utils/db';
 import { set as setMovies, remove as removeMovies } from './slices/movies';
 import {
@@ -232,8 +238,17 @@ const loadWatchedShows = async () => {
 };
 
 export const firstLoad = async () => {
-  loadMovies('watchlist');
-  loadMovies('watched');
-  loadWatchlistShows();
-  loadWatchedShows();
+  try {
+    const oldActivities = JSON.parse(
+      localStorage.getItem('activities') ?? '{}'
+    );
+    const { data: newActivities } = await syncActivities();
+    const { data: allItems } = await getAllItems();
+    db.table('movies-s').bulkPut(allItems.movies);
+    db.table('shows-s').bulkPut(allItems.shows);
+    db.table('animes-s').bulkPut(allItems.anime);
+  } catch (e) {
+    console.error('Error on firstLoad');
+    console.error(e);
+  }
 };
