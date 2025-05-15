@@ -12,9 +12,11 @@ db.version(2).stores({
   'shows-hidden': 'trakt',
 });
 db.version(3).stores({
-  'movies-s': 'movie.ids.simkl,movie.ids.traktslug,status',
-  'shows-s': 'show.ids.simkl,show.ids.traktslug,status',
-  'animes-s': 'show.ids.simkl,show.ids.traktslug,status',
+  movies: 'movie.ids.imdb',
+  shows: 'show.ids.imdb',
+  'movies-s': 'movie.ids.imdb,movie.ids.traktslug,status',
+  'shows-s': 'show.ids.imdb,show.ids.traktslug,status',
+  'animes-s': 'show.ids.imdb,show.ids.traktslug,status',
 });
 
 export default db;

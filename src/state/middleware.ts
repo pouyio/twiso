@@ -60,10 +60,8 @@ export const dbMiddleware: Middleware = (store) => (next) => (action) => {
   } else if (isAnyOf(removeMovie)(action)) {
     db.table(MOVIES).bulkDelete(action.payload.map((m) => m.movie.ids.trakt));
   } else if (isAnyOf(getMovie.fulfilled)(action)) {
-    const state = store.getState().movies;
-    const oldMovie = state.movies[action.meta.arg.id];
-    const newMovie = { ...oldMovie, movie: action.payload };
-    db.table(MOVIES).put({ ...newMovie, localState: action.meta.arg.type });
+    const newMovie = { movie: action.payload };
+    db.table(MOVIES).put(newMovie);
   } else if (isAnyOf(getMovie.rejected)(action)) {
     console.error(action.error);
   } else if (isAnyOf(updateTranslationMovie)(action)) {

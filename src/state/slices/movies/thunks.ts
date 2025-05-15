@@ -17,8 +17,8 @@ import {
   RemovedWatchlist,
 } from '../../../models/Api';
 
-const _getRemoteWithTranslations = async (id: number, language: Language) => {
-  const { data } = await getApi<SearchMovie>(id, 'movie');
+const _getRemoteWithTranslations = async (id: string, language: Language) => {
+  const { data } = await getApi<SearchMovie>(id);
   const movie = data[0].movie;
   if (language !== 'en' && movie.available_translations.includes(language)) {
     const { title, overview } = await getTranslationsApi(id, 'movie', language);
@@ -82,14 +82,14 @@ export const removeWatchlist = createAsyncThunk<
 
 export const getMovie = createAsyncThunk<
   Movie,
-  { id: number; type: 'watched' | 'watchlist' },
+  { id: string },
   { state: RootState }
 >('movies/getMovie', async ({ id }, { getState }) => {
   const language = getState().config.language;
 
   // assume movie has translation and make both queries together
   const responses = await Promise.all([
-    getApi<SearchMovie>(id, 'movie'),
+    getApi<SearchMovie>(id),
     getTranslationsApi(id, 'movie', language),
   ]);
   const movie = responses[0].data[0].movie;
@@ -102,11 +102,12 @@ export const getMovie = createAsyncThunk<
 
 export const populateDetail = createAsyncThunk<
   Movie,
-  { id: number; movie?: Movie },
+  { id: string; movie?: Movie },
   { state: RootState }
 >('movies/populateDetail', async ({ id, movie }, { getState }) => {
   const state = getState();
-  const updatedMovie: Movie = JSON.parse(JSON.stringify(movie));
+  const updatedMovie: Partial<Movie> =
+    structuredClone<Movie | undefined>(movie) || {};
   try {
     const foundMovie = state.movies.movies[id];
     // found in local state

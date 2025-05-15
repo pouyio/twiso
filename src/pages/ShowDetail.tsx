@@ -248,7 +248,7 @@ export default function ShowDetail() {
 
           <div className="my-4">
             <p className="font-medium font-family-text">{t('related')}:</p>
-            <Related itemId={item.ids.trakt} type="show" />
+            <Related itemId={item.imdb} type="show" />
           </div>
         </article>
       </div>

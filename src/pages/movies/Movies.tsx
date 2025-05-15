@@ -2,13 +2,13 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';
-import { useAppSelector } from 'state/store';
-import { totalByType } from 'state/slices/movies';
 import { Underline } from '../shows/Shows';
 import { Icon } from 'components/Icon';
 import { useSearchParams } from 'react-router';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { useTranslate } from '../../hooks/useTranslate';
+import db from 'utils/db';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 export default function Movies() {
   const [searchParams, setSearchParams] = useSearchParams({
@@ -17,7 +17,13 @@ export default function Movies() {
   const { width } = useWindowSize();
   const mode = searchParams.get('mode');
 
-  const { watched, watchlist } = useAppSelector(totalByType);
+  const watchlist = useLiveQuery(() =>
+    db.table('movies-s').where({ status: 'plantowatch' }).count()
+  );
+  const watched = useLiveQuery(() =>
+    db.table('movies-s').where({ status: 'completed' }).count()
+  );
+
   const { t } = useTranslate();
 
   return (

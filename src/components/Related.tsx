@@ -6,7 +6,7 @@ import { Show } from '../models/Show';
 import { Movie } from '../models/Movie';
 
 interface IRelatedProps {
-  itemId: number;
+  itemId: string;
   type: 'movie' | 'show';
 }
 

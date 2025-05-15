@@ -2,7 +2,12 @@ import { mockData } from './MOCK_DATA';
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
 import { config, IMG_URL, LOGIN_URL } from './apiConfig';
-import { authSimklClient, authTraktClient, traktClient } from './axiosClients';
+import {
+  authSimklClient,
+  authTraktClient,
+  traktClient,
+  traktClientOld,
+} from './axiosClients';
 import Bottleneck from 'bottleneck';
 import { getTranslation } from './getTranslations';
 import { Language } from 'state/slices/config';
@@ -19,7 +24,13 @@ import {
   ShowWatchlist,
 } from '../models/Show';
 import { Translation } from '../models/Translation';
-import { Movie, MovieWatched, MovieWatchlist } from '../models/Movie';
+import {
+  Movie,
+  MovieWatched,
+  MovieWatchlist,
+  SearchMovie,
+  SearchShow,
+} from '../models/Movie';
 import {
   Activities,
   AddedHidden,
@@ -87,9 +98,10 @@ export const getImgsApi = (id: number, type: ItemType) => {
   );
 };
 
-export const getApi = <T>(id: number, type: ItemType) =>
+export const getApi = <T extends SearchMovie | SearchShow>(id: string) =>
   limiter.wrap(() =>
-    traktClient.get<T[]>(`/search/trakt/${id}?type=${type}&extended=full`)
+    // traktClient.get<T[]>(`/search/trakt/${id}?type=${type}&extended=full`)
+    traktClientOld.get<T[]>(`/search/imdb/${id}?extended=full`)
   )();
 
 export const getSeasonsApi = (id: number, language: Language) => {
@@ -117,12 +129,12 @@ export const getProgressApi = (id: number) => {
 };
 
 export const getTranslationsApi = (
-  id: number,
+  id: string,
   type: ItemType,
   language: Language
 ) => {
   return limiter.wrap(() =>
-    traktClient
+    traktClientOld
       .get<Translation[]>(`/${type}s/${id}/translations/${language}`)
       .then(({ data }) => getTranslation(data))
   )();
@@ -187,8 +199,8 @@ export const removeWatchlistApi = (item: Show | Movie, type: ItemType) => {
   });
 };
 
-export const getPeopleApi = (id: number, type: ItemType) => {
-  return traktClient.get<People>(`/${type}s/${id}/people`);
+export const getPeopleApi = (id: string, type: ItemType) => {
+  return traktClientOld.get<People>(`/${type}s/${id}/people`);
 };
 
 export const getPersonApi = (id: number) => {
@@ -206,8 +218,8 @@ export const getPopularApi = (type: ItemType, limit: number = 40) => {
   );
 };
 
-export const getRelatedApi = <T>(id: number, type: ItemType) => {
-  return traktClient.get<T[]>(
+export const getRelatedApi = <T>(id: string, type: ItemType) => {
+  return traktClientOld.get<T[]>(
     `/${type}s/${id}/related?extended=full&page=1&limit=12`
   );
 };
@@ -220,8 +232,8 @@ export const getProfileApi = () => {
   return authTraktClient.get<Profile>(`/users/me`);
 };
 
-export const getRatingsApi = (id: number, type: ItemType) => {
-  return traktClient.get<Ratings>(`/${type}s/${id}/ratings`);
+export const getRatingsApi = (id: string, type: ItemType) => {
+  return traktClientOld.get<Ratings>(`/${type}s/${id}/ratings`);
 };
 
 export const getCalendar = <T extends MovieCalendar | ShowCalendar>(

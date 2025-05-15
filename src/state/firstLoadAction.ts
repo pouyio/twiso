@@ -115,7 +115,7 @@ const loadMovies = async (type: 'watched' | 'watchlist') => {
   const outdatedMovies = [...moviesToAdd, ...moviesToUpdate];
 
   outdatedMovies.forEach((outdated) => {
-    store.dispatch(getMovie({ id: outdated.movie.ids.trakt, type }));
+    store.dispatch(getMovie({ id: outdated.movie.ids.trakt }));
   });
 };
 
@@ -245,8 +245,21 @@ export const firstLoad = async () => {
     const { data: newActivities } = await syncActivities();
     const { data: allItems } = await getAllItems();
     db.table('movies-s').bulkPut(allItems.movies);
+
+    const savedMovies = await db.table('movies').toArray();
+    const savedMoviesIds = savedMovies.map((m) => m.movie.ids.imdb);
+
+    store.dispatch(setMovies(allItems.movies));
+
+    allItems.movies
+      // .filter((m) => m.status === 'plantowatch')
+      // .filter((m) => m.status === 'completed')
+      .filter((m) => !savedMoviesIds.includes(m.movie.ids.imdb))
+      .forEach((item) => {
+        store.dispatch(getMovie({ id: item.movie.ids.imdb }));
+      });
     db.table('shows-s').bulkPut(allItems.shows);
-    db.table('animes-s').bulkPut(allItems.anime);
+    // db.table('animes-s').bulkPut(allItems.anime);
   } catch (e) {
     console.error('Error on firstLoad');
     console.error(e);

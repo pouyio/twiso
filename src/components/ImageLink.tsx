@@ -7,7 +7,7 @@ import { Person } from '../models/Person';
 import { Ids } from '../models/Ids';
 
 interface IImageLinkProps {
-  item: Show | Movie | Person;
+  // item: Show | Movie | Person;
   ids: Ids;
   text: string;
   style?: React.CSSProperties;
@@ -16,7 +16,7 @@ interface IImageLinkProps {
 }
 
 const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
-  item,
+  // item,
   ids,
   text,
   style,
@@ -27,9 +27,9 @@ const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
   return (
     <Link
       to={{
-        pathname: `/${type}/${ids.trakt}`,
+        pathname: `/${type}/${ids.imdb}`,
       }}
-      state={item}
+      // state={item}
       onClick={onClick}
     >
       <Image ids={ids} text={text} style={style} type={type} />

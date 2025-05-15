@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import { populateDetail } from 'state/slices/movies/thunks';
 import Collapsable from '../components/Collapsable/Collapsable';
@@ -16,54 +16,65 @@ import { getPeopleApi, getRatingsApi } from '../utils/api';
 import { Helmet } from 'react-helmet';
 import { Icon } from 'components/Icon';
 import { Ratings } from '../models/Api';
-import { Movie } from '../models/Movie';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
 import { useIsWatch } from '../hooks/useIsWatch';
+import db from '../utils/db';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { Movie } from 'models/Movie';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const language = useAppSelector((state) => state.config.language);
-  const { state } = useLocation() as { state: Movie };
   const { id } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
-  const item = useAppSelector((s) => s.movies.detail);
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
-
   const { isWatchlist, isWatched } = useIsWatch();
+  const i = useAppSelector((state) => state.movies.detail);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    dispatch(populateDetail({ id: +id!, movie: state }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state, id]);
+  const liveItem = useLiveQuery<Movie>(
+    () =>
+      db
+        .table('movies')
+        .get(id ?? '')
+        .then(({ movie }) => {
+          if (!movie) {
+            dispatch(populateDetail({ id: id ?? '' }));
+          } else {
+            dispatch(populateDetail({ id: id ?? '', movie }));
+          }
+          return movie;
+        }),
+    [id]
+  );
+  const item = liveItem ?? i;
 
   useEffect(() => {
     setPeople(undefined);
     setRatings(undefined);
-    getPeopleApi(+id!, 'movie').then(({ data }) => {
+    getPeopleApi(id ?? '', 'movie').then(({ data }) => {
       setPeople(data);
     });
-    getRatingsApi(+id!, 'movie').then(({ data }) => {
+    getRatingsApi(id ?? '', 'movie').then(({ data }) => {
       setRatings(data);
     });
   }, [id]);
 
-  const getBgClassName = () => {
+  const bgClassName = useMemo(() => {
     if (!item) {
       return;
     }
-    if (isWatched(+id!, 'movie')) {
+    if (isWatched(id ?? '', 'movie')) {
       return 'bg-green-400';
     }
-    if (isWatchlist(+id!, 'movie')) {
+    if (isWatchlist(id ?? '', 'movie')) {
       return 'bg-blue-400';
     }
     return 'bg-gray-300';
-  };
+  }, [item, id]);
 
   const onShare = () => {
     share(item!.title).then((action) => {
@@ -74,7 +85,7 @@ export default function MovieDetail() {
   };
 
   return item ? (
-    <div className={getBgClassName()}>
+    <div className={bgClassName}>
       <Helmet>
         <title>{item.title}</title>
       </Helmet>
@@ -190,7 +201,7 @@ export default function MovieDetail() {
 
           <div className="my-4">
             <p className="font-medium font-family-text">{t('related')}:</p>
-            <Related itemId={item.ids.trakt} type="movie" />
+            <Related itemId={item.ids.imdb} type="movie" />
           </div>
         </article>
       </div>

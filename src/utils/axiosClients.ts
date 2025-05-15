@@ -1,5 +1,11 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { BASE_URL, config, CONTENT_TYPE } from './apiConfig';
+import {
+  BASE_TRAKT_URL,
+  BASE_URL,
+  config,
+  CONTENT_TYPE,
+  TRAKT_API_VERSION,
+} from './apiConfig';
 
 const axiosConfig: AxiosRequestConfig = {
   baseURL: BASE_URL,
@@ -13,6 +19,14 @@ const axiosConfig: AxiosRequestConfig = {
 const authTraktClient = axios.create(axiosConfig);
 const authSimklClient = axios.create(axiosConfig);
 const traktClient = axios.create(axiosConfig);
+const traktClientOld = axios.create({
+  baseURL: BASE_TRAKT_URL,
+  headers: {
+    'content-type': CONTENT_TYPE,
+    'trakt-api-key': config.traktApiKey,
+    'trakt-api-version': TRAKT_API_VERSION,
+  },
+});
 
 authSimklClient.interceptors.request.use(
   (config) => {
@@ -28,4 +42,4 @@ authSimklClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-export { traktClient, authSimklClient, authTraktClient };
+export { traktClient, authSimklClient, authTraktClient, traktClientOld };

@@ -30,12 +30,9 @@ const moviesSlice = createSlice({
   name: 'movies',
   initialState: initialState,
   reducers: {
-    set(
-      state,
-      { payload }: PayloadAction<Array<MovieWatched | MovieWatchlist>>
-    ) {
+    set(state, { payload }: PayloadAction<Array<any>>) {
       payload.forEach((movie) => {
-        state.movies[movie.movie.ids.trakt] = movie;
+        state.movies[movie.movie.ids.imdb] = movie;
       });
     },
     remove(
@@ -69,7 +66,7 @@ const moviesSlice = createSlice({
       })
       .addCase(addWatched.fulfilled, (state, { payload, meta }) => {
         if (payload?.added.movies) {
-          state.movies[meta.arg.movie.ids.trakt] = {
+          state.movies[meta.arg.movie.ids.imdb] = {
             movie: meta.arg.movie,
             watched_at: new Date().toISOString(),
             localState: 'watched',
@@ -143,8 +140,8 @@ const moviesSlice = createSlice({
         state.totalRequestsPending = state.totalRequestsPending - 1;
       })
       .addCase(getMovie.fulfilled, (state, { payload }) => {
-        state.movies[payload.ids.trakt] = {
-          ...state.movies[payload.ids.trakt],
+        state.movies[payload.ids.imdb] = {
+          ...state.movies[payload.ids.imdb],
           movie: payload,
         };
         state.totalRequestsPending = state.totalRequestsPending - 1;

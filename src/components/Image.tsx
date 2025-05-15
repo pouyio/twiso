@@ -39,10 +39,10 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
     if (isHidden(ids.trakt)) {
       return 'border-2 brightness-70 opacity-50';
     }
-    if (isWatched(ids.trakt, type)) {
+    if (isWatched(ids.imdb, type)) {
       return 'border-2 border-green-400';
     }
-    if (isWatchlist(ids.trakt, type)) {
+    if (isWatchlist(ids.imdb, type)) {
       return 'border-2 border-blue-400';
     }
     return '';
