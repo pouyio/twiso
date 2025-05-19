@@ -15,7 +15,6 @@ const axiosConfig: AxiosRequestConfig = {
   },
 };
 
-// TODO remove trakt
 const authTraktClient = axios.create(axiosConfig);
 const authSimklClient = axios.create(axiosConfig);
 const traktClient = axios.create(axiosConfig);

@@ -9,6 +9,8 @@ import { useSearchParams } from '../../hooks/useSearchParams';
 import { totalByType } from 'state/slices/shows';
 import { motion } from 'motion/react';
 import { Icon } from 'components/Icon';
+import db, { USER_SHOWS_TABLE } from 'utils/db';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 export const Underline: React.FC<{ selected: boolean }> = ({ selected }) => {
   return (
@@ -28,8 +30,18 @@ export default function Shows() {
   const mode = searchParams.get('mode');
   const { width } = useWindowSize();
 
-  const { watched, watchlist } = useAppSelector(totalByType);
   const { t } = useTranslate();
+
+  const watchlist = useLiveQuery(() =>
+    db.table(USER_SHOWS_TABLE).where('status').equals('plantowatch').count()
+  );
+  const watched = useLiveQuery(() =>
+    db
+      .table(USER_SHOWS_TABLE)
+      .where('status')
+      .anyOf(['completed', 'watching'])
+      .count()
+  );
 
   return (
     <>

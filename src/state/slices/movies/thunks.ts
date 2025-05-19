@@ -8,7 +8,6 @@ import {
   removeWatchedApi,
   removeWatchlistApi,
 } from 'utils/api';
-import { Language } from '../config';
 import { Movie, SearchMovie } from '../../../models/Movie';
 import {
   AddedWatched,
@@ -16,30 +15,31 @@ import {
   RemovedWatched,
   RemovedWatchlist,
 } from '../../../models/Api';
+import { Translation } from 'models/Translation';
 
-const _getRemoteWithTranslations = async (id: string, language: Language) => {
-  const { data } = await getApi<SearchMovie>(id);
-  const movie = data[0].movie;
-  if (language !== 'en' && movie.available_translations.includes(language)) {
-    const { title, overview } = await getTranslationsApi(id, 'movie', language);
-    movie.title = title || movie.title;
-    movie.overview = overview || movie.overview;
-  }
-  return movie;
+const _getRemoteWithTranslations = async (
+  id: string
+): Promise<Movie & { translation?: Translation }> => {
+  const results = await Promise.all([
+    getApi<SearchMovie>(id),
+    getTranslationsApi(id, 'movie', 'es'),
+  ]);
+  const movie = results[0].data[0].movie;
+  return { ...movie, translation: results[1] };
 };
 
-export const addWatched = createAsyncThunk<
-  AddedWatched & { watched_at: string },
-  { movie: Movie }
->('movies/addWatched', async ({ movie }) => {
-  try {
-    const { data } = await addWatchedApi(movie, 'movie');
-    return { ...data, watched_at: new Date().toISOString() };
-  } catch (e) {
-    console.error(e);
-    throw e;
+export const addWatched = createAsyncThunk<AddedWatched, { movie: Movie }>(
+  'movies/addWatched',
+  async ({ movie }) => {
+    try {
+      const { data } = await addWatchedApi(movie, 'movie');
+      return data;
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   }
-});
+);
 
 export const removeWatched = createAsyncThunk<RemovedWatched, { movie: Movie }>(
   'movies/removeWatched',
@@ -54,18 +54,18 @@ export const removeWatched = createAsyncThunk<RemovedWatched, { movie: Movie }>(
   }
 );
 
-export const addWatchlist = createAsyncThunk<
-  AddedWatchlist & { listed_at: string },
-  { movie: Movie }
->('movies/addWatchlist', async ({ movie }) => {
-  try {
-    const { data } = await addWatchlistApi(movie, 'movie');
-    return { ...data, listed_at: new Date().toISOString() };
-  } catch (e) {
-    console.error(e);
-    throw e;
+export const addWatchlist = createAsyncThunk<AddedWatchlist, { movie: Movie }>(
+  'movies/addWatchlist',
+  async ({ movie }) => {
+    try {
+      const { data } = await addWatchlistApi(movie, 'movie');
+      return data;
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   }
-});
+);
 
 export const removeWatchlist = createAsyncThunk<
   RemovedWatchlist,
@@ -98,6 +98,14 @@ export const getMovie = createAsyncThunk<
   movie.title = title || movie.title;
   movie.overview = overview || movie.overview;
   return movie;
+});
+
+export const fillDetail = createAsyncThunk<
+  Movie,
+  { id: string },
+  { state: RootState }
+>('movies/fillDetail', async ({ id }) => {
+  return _getRemoteWithTranslations(id);
 });
 
 export const populateDetail = createAsyncThunk<
@@ -137,5 +145,5 @@ export const populateDetail = createAsyncThunk<
     throw e;
   }
 
-  return _getRemoteWithTranslations(id, state.config.language);
+  return _getRemoteWithTranslations(id);
 });

@@ -6,18 +6,17 @@ import Emoji from './Emoji';
 import ImageLink from './ImageLink';
 import { useFilter } from '../hooks/useFilter';
 import { useIsWatch } from '../hooks/useIsWatch';
-import { MovieWatched, MovieWatchlist } from '../models/Movie';
-import { ShowWatched, ShowWatchlist } from '../models/Show';
+import { Movie } from '../models/Movie';
+import { Show } from '../models/Show';
+import { useAppSelector } from 'state/store';
 
 export const GlobalFilter = () => {
   const { filter } = useFilter();
-  const [results, setResults] =
-    useState<
-      Array<MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist>
-    >();
+  const [results, setResults] = useState<Array<Movie | Show>>();
   const [searchValue, setSearchValue] = useState<string>();
   const { isWatched, isWatchlist } = useIsWatch();
   const dispatch = useDispatch();
+  const language = useAppSelector((state) => state.config.language);
 
   useEffect(() => {
     if (searchValue) {
@@ -26,14 +25,11 @@ export const GlobalFilter = () => {
     }
   }, [searchValue]);
 
-  const getBgClass = (
-    item: MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist,
-    type: 'movie' | 'show'
-  ) => {
-    if (isWatched(item[type]?.ids.trakt, type)) {
+  const getBgClass = (item: Movie | Show, type: 'movie' | 'show') => {
+    if (isWatched(item.ids.imdb ?? '', type)) {
       return 'bg-green-400';
     }
-    if (isWatchlist(item[type]?.ids.trakt, type)) {
+    if (isWatchlist(item.ids.imdb ?? '', type)) {
       return 'bg-blue-400';
     }
     return '';
@@ -60,26 +56,28 @@ export const GlobalFilter = () => {
         {results &&
           results.map((item, i) => {
             const type = getType(item);
+            const title =
+              language === 'es'
+                ? item['translation']?.title || item.title
+                : item.title;
+
             return (
               <li
-                key={`${item[type]?.ids?.trakt}_${i}`}
+                key={item?.ids?.imdb}
                 className="p-2"
                 style={{ flex: '1 0 50%', maxWidth: '10em' }}
                 tabIndex={i + 1}
               >
                 <div className={`rounded-lg ${getBgClass(item, type)}`}>
                   <ImageLink
-                    text={item[type]?.title}
-                    ids={item[type]?.ids}
-                    item={item[type]}
+                    text={title}
+                    ids={item?.ids}
                     style={{ minHeight: '13.5em' }}
                     type={type}
                     onClick={() => dispatch(setGlobalSearch(false))}
                   >
-                    {item[type].title && (
-                      <p className="text-sm text-center py-1">
-                        {item[type].title}
-                      </p>
+                    {title && (
+                      <p className="text-sm text-center py-1">{title}</p>
                     )}
                   </ImageLink>
                 </div>

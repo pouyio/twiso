@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router';
 import { useAppDispatch, useAppSelector } from 'state/store';
-import { populateDetail, toggleHidden } from 'state/slices/shows/thunks';
+import { fillDetail, toggleHidden } from 'state/slices/shows/thunks';
 import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
@@ -18,60 +18,71 @@ import { Helmet } from 'react-helmet';
 import { Icon } from 'components/Icon';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
-import { useIsWatch } from '../hooks/useIsWatch';
-import { Ratings } from '../models/Api';
-import { Show, ShowWatched } from '../models/Show';
+import { Ratings, StatusShow } from '../models/Api';
+import { Show } from '../models/Show';
+import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from 'utils/db';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const [showProgressPercentage, setShowProgressPercentage] = useState(false);
-  const { state } = useLocation() as { state: Show };
-  const { id } = useParams<{ id: string }>();
+  const language = useAppSelector((state) => state.config.language);
+  const { id = '' } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
-  const item = useAppSelector((state) => state.shows.detail);
-  const progress = useAppSelector(
-    (state) =>
-      (state.shows.shows[item?.ids.trakt ?? 0] as ShowWatched)?.progress
-  );
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
 
-  const { isWatchlist, isWatched, isHidden } = useIsWatch();
+  const liveItem = useLiveQuery(
+    () =>
+      db
+        .table<Show>(DETAIL_SHOWS_TABLE)
+        .get(id)
+        .then((show) => {
+          if (!show) {
+            dispatch(fillDetail({ id }));
+          }
+          return show!;
+        }),
+    [id]
+  );
+
+  const liveStatus = useLiveQuery(
+    () => db.table<StatusShow>(USER_SHOWS_TABLE).get(id),
+    [id]
+  );
+
+  const item = liveItem;
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(populateDetail({ id: +id!, show: state }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state, id]);
+  }, [id]);
 
   useEffect(() => {
     setPeople(undefined);
     setRatings(undefined);
-    getPeopleApi(+id!, 'show').then(({ data }) => {
+    getPeopleApi(id, 'show').then(({ data }) => {
       setPeople(data);
     });
-    getRatingsApi(+id!, 'show').then(({ data }) => {
+    getRatingsApi(id, 'show').then(({ data }) => {
       setRatings(data);
     });
   }, [id]);
 
-  const getBgClassName = () => {
-    if (!item) {
-      return;
-    }
-    if (isHidden(+id!)) {
+  const bgClassName = useMemo(() => {
+    if (liveStatus?.status === 'dropped') {
       return 'bg-green-800';
     }
-    if (isWatched(+id!, 'show')) {
+    if (['completed', 'watching'].includes(liveStatus?.status ?? '')) {
       return 'bg-green-400';
     }
-    if (isWatchlist(+id!, 'show')) {
+    if (liveStatus?.status === 'plantowatch') {
       return 'bg-blue-400';
     }
     return 'bg-gray-300';
-  };
+  }, [liveStatus]);
 
   const onShare = () => {
     share(item!.title).then((action) => {
@@ -87,10 +98,28 @@ export default function ShowDetail() {
     }
   };
 
-  return item ? (
-    <div className={getBgClassName()}>
+  if (!item) {
+    return (
+      <div
+        className="flex justify-center text-6xl items-center"
+        style={{ marginTop: 'env(safe-area-inset-top)' }}
+      >
+        <Emoji emoji="⏳" rotating={true} />
+      </div>
+    );
+  }
+
+  const title =
+    language === 'es' ? item['translation']?.title || item.title : item.title;
+  const overview =
+    language === 'es'
+      ? item['translation']?.overview || item.overview
+      : item.overview;
+
+  return (
+    <div className={bgClassName}>
       <Helmet>
-        <title>{item.title}</title>
+        <title>{title}</title>
       </Helmet>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
@@ -100,7 +129,7 @@ export default function ShowDetail() {
           <Image
             ids={item.ids}
             style={{ marginTop: 'env(safe-area-inset-top)' }}
-            text={item.title}
+            text={title}
             type="show"
             size="big"
           />
@@ -133,12 +162,7 @@ export default function ShowDetail() {
               className="hidden lg:block relative pr-4"
               style={{ minWidth: '10em', maxWidth: '10em' }}
             >
-              <Image
-                ids={item.ids}
-                text={item.title}
-                type="show"
-                size="small"
-              />
+              <Image ids={item.ids} text={title} type="show" size="small" />
               {item.trailer && (
                 <a
                   className="absolute"
@@ -165,18 +189,24 @@ export default function ShowDetail() {
 
             <div className="w-full max-w-3xl">
               <h1 className="text-4xl leading-none text-center mb-4">
-                {item.title}
+                {title}
               </h1>
 
               <div className="flex mb-4 justify-between items-center text-gray-600">
                 <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-100 capitalize">
                   {t(item.status)}
                 </h2>
-                {isWatched(+id!, 'show') && (
+                {['completed', 'dropped', 'watching'].includes(
+                  liveStatus?.status ?? ''
+                ) && (
                   <button onClick={onToggleHidden}>
                     <Icon
                       className="h-10"
-                      name={isHidden(item.ids.trakt) ? 'no-hidden' : 'hidden'}
+                      name={
+                        liveStatus?.status === 'dropped'
+                          ? 'no-hidden'
+                          : 'hidden'
+                      }
                       title="Toggle visibility"
                     />
                   </button>
@@ -190,7 +220,9 @@ export default function ShowDetail() {
                     votes={ratings?.votes ?? 0}
                   />
                 </h2>
-                {isWatched(+id!, 'show') && (
+                {['completed', 'dropped', 'watching'].includes(
+                  liveStatus?.status ?? ''
+                ) && (
                   <h2
                     className="text-sm cursor-pointer text-center"
                     style={{ minWidth: '8rem' }}
@@ -199,17 +231,19 @@ export default function ShowDetail() {
                     <Emoji emoji="✓" />{' '}
                     {showProgressPercentage
                       ? `${Math.round(
-                          ((progress?.completed ?? 0) * 100) /
-                            (progress?.aired ?? 1)
-                        )}% completado`
-                      : `${progress?.completed}/${progress?.aired} episodios`}
+                          ((liveStatus?.watched_episodes_count ?? 0) * 100) /
+                            (liveStatus?.total_episodes_count ?? 1)
+                        )}% ${t('completed')}`
+                      : `${liveStatus?.watched_episodes_count}/${
+                          liveStatus?.total_episodes_count
+                        } ${t('episodes_small')}`}
                     <div className="bg-green-100 rounded-sm">
                       <div
                         className="bg-green-400 h-1 rounded-sm text-white text-xs"
                         style={{
                           width: `${
-                            ((progress?.completed ?? 0) * 100) /
-                            (progress?.aired ?? 1)
+                            ((liveStatus?.watched_episodes_count ?? 0) * 100) /
+                            (liveStatus?.total_episodes_count ?? 1)
                           }%`,
                         }}
                       ></div>
@@ -219,13 +253,15 @@ export default function ShowDetail() {
                 <h2>{item.network}</h2>
               </div>
 
-              {!isWatched(+id!, 'show') && (
+              {!['completed', 'dropped', 'watching'].includes(
+                liveStatus?.status ?? ''
+              ) && (
                 <div className="my-4">
                   <ShowWatchButton item={item} />
                 </div>
               )}
               <div className="my-4">
-                <SeasonsContainer show={item} showId={+id!} />
+                <SeasonsContainer show={item} status={liveStatus} showId={id} />
               </div>
             </div>
           </div>
@@ -233,7 +269,7 @@ export default function ShowDetail() {
           <div className="my-4">
             <p className="font-medium font-family-text">{t('overview')}:</p>
             <Collapsable heightInRem={7}>
-              {item.overview || 'Sin descripción'}
+              {overview || 'Sin descripción'}
             </Collapsable>
           </div>
 
@@ -248,17 +284,10 @@ export default function ShowDetail() {
 
           <div className="my-4">
             <p className="font-medium font-family-text">{t('related')}:</p>
-            <Related itemId={item.imdb} type="show" />
+            <Related itemIds={item.ids} type="show" />
           </div>
         </article>
       </div>
-    </div>
-  ) : (
-    <div
-      className="flex justify-center text-6xl items-center"
-      style={{ marginTop: 'env(safe-area-inset-top)' }}
-    >
-      <Emoji emoji="⏳" rotating={true} />
     </div>
   );
 }

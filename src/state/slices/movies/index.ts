@@ -2,6 +2,7 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   addWatched,
   addWatchlist as addWatchlistThunk,
+  fillDetail,
   getMovie,
   populateDetail,
   removeWatched,

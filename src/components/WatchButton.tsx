@@ -40,7 +40,7 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
               className={`bg-green-400 py-3 pl-12 rounded-full text-white font-bold ${
                 isWatchedPending ? 'pr-6' : 'pr-12'
               }`}
-              onClick={async () => dispatch(removeWatched({ movie: item }))}
+              onClick={() => dispatch(removeWatched({ movie: item }))}
             >
               ✓ {t('watched')}{' '}
               {isWatchedPending && (

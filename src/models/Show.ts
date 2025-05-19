@@ -1,4 +1,5 @@
 import { Ids } from './Ids';
+import { Translation } from './Translation';
 
 interface BaseShow {
   listed_at: string;
@@ -24,7 +25,21 @@ export interface ShowWatchlist extends BaseShow {
   last_watched_at?: string;
 }
 
+export type SeasonEpisode = {
+  ids: Ids;
+  season: number;
+  number: number;
+  title: string;
+  translations: Translation[];
+};
+export type ShowSeason = {
+  ids: Ids;
+  number: number;
+  episodes: SeasonEpisode[];
+};
+
 export interface Show {
+  all_seasons: ShowSeason[];
   aired_episodes: number;
   airs: {
     day: string;

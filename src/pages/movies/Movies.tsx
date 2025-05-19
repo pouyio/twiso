@@ -7,7 +7,7 @@ import { Icon } from 'components/Icon';
 import { useSearchParams } from 'react-router';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { useTranslate } from '../../hooks/useTranslate';
-import db from 'utils/db';
+import db, { USER_MOVIES_TABLE } from 'utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 
 export default function Movies() {
@@ -18,10 +18,10 @@ export default function Movies() {
   const mode = searchParams.get('mode');
 
   const watchlist = useLiveQuery(() =>
-    db.table('movies-s').where({ status: 'plantowatch' }).count()
+    db.table(USER_MOVIES_TABLE).where({ status: 'plantowatch' }).count()
   );
   const watched = useLiveQuery(() =>
-    db.table('movies-s').where({ status: 'completed' }).count()
+    db.table(USER_MOVIES_TABLE).where({ status: 'completed' }).count()
   );
 
   const { t } = useTranslate();

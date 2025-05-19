@@ -5,14 +5,14 @@ import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from 'components/EmptyState';
 import { NoResults } from 'components/NoResults';
 import { useLiveQuery } from 'dexie-react-hooks';
-import db from 'utils/db';
+import db, { USER_MOVIES_TABLE } from 'utils/db';
 
 export const MoviesWatched: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);
   const orderedMovies = useLiveQuery(
     () => {
       return db
-        .table('movies-s')
+        .table(USER_MOVIES_TABLE)
         .where('status')
         .equals('completed')
         .reverse()
@@ -43,6 +43,7 @@ export const MoviesWatched: React.FC = () => {
                 text={m.movie.title}
                 style={{ minHeight: '13.5em' }}
                 type="movie"
+                forceState="completed"
               />
             </li>
           ))}

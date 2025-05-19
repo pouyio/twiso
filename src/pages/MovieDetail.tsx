@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
+import { fillDetail, populateDetail } from 'state/slices/movies/thunks';
 import { useAppDispatch, useAppSelector } from 'state/store';
-import { populateDetail } from 'state/slices/movies/thunks';
 import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
@@ -15,11 +15,11 @@ import { People as IPeople } from '../models/People';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
 import { Helmet } from 'react-helmet';
 import { Icon } from 'components/Icon';
-import { Ratings } from '../models/Api';
+import { Ratings, StatusMovie } from '../models/Api';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
 import { useIsWatch } from '../hooks/useIsWatch';
-import db from '../utils/db';
+import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Movie } from 'models/Movie';
 
@@ -27,30 +27,33 @@ export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const language = useAppSelector((state) => state.config.language);
-  const { id } = useParams<{ id: string }>();
+  const { id = '' } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
   const { isWatchlist, isWatched } = useIsWatch();
-  const i = useAppSelector((state) => state.movies.detail);
 
-  const liveItem = useLiveQuery<Movie>(
+  const liveItem = useLiveQuery(
     () =>
       db
-        .table('movies')
-        .get(id ?? '')
-        .then(({ movie }) => {
+        .table<Movie>(DETAIL_MOVIES_TABLE)
+        .get(id)
+        .then((movie) => {
           if (!movie) {
-            dispatch(populateDetail({ id: id ?? '' }));
-          } else {
-            dispatch(populateDetail({ id: id ?? '', movie }));
+            dispatch(fillDetail({ id }));
           }
-          return movie;
+          return movie!;
         }),
     [id]
   );
-  const item = liveItem ?? i;
+
+  const liveStatus = useLiveQuery(
+    () => db.table<StatusMovie>(USER_MOVIES_TABLE).get(id),
+    [id]
+  );
+
+  const item = liveItem;
 
   useEffect(() => {
     setPeople(undefined);
@@ -64,30 +67,45 @@ export default function MovieDetail() {
   }, [id]);
 
   const bgClassName = useMemo(() => {
-    if (!item) {
-      return;
-    }
-    if (isWatched(id ?? '', 'movie')) {
+    if (liveStatus?.status === 'completed') {
       return 'bg-green-400';
     }
-    if (isWatchlist(id ?? '', 'movie')) {
+    if (liveStatus?.status === 'plantowatch') {
       return 'bg-blue-400';
     }
     return 'bg-gray-300';
-  }, [item, id]);
+  }, [liveStatus]);
+
+  if (!item) {
+    return (
+      <div
+        className="flex justify-center text-6xl items-center"
+        style={{ marginTop: 'env(safe-area-inset-top)' }}
+      >
+        <Emoji emoji="⏳" rotating={true} />
+      </div>
+    );
+  }
+
+  const title =
+    language === 'es' ? item['translation']?.title || item.title : item.title;
+  const overview =
+    language === 'es'
+      ? item['translation']?.overview || item.overview
+      : item.overview;
 
   const onShare = () => {
-    share(item!.title).then((action) => {
+    share(title).then((action) => {
       if (action === 'copied') {
-        showAlert(t('link_copied', item!.title));
+        showAlert(t('link_copied', title));
       }
     });
   };
 
-  return item ? (
+  return (
     <div className={bgClassName}>
       <Helmet>
-        <title>{item.title}</title>
+        <title>{title}</title>
       </Helmet>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
@@ -97,7 +115,7 @@ export default function MovieDetail() {
           <Image
             ids={item.ids}
             style={{ marginTop: 'env(safe-area-inset-top)' }}
-            text={item.title}
+            text={title}
             type="movie"
             size="big"
           />
@@ -130,12 +148,7 @@ export default function MovieDetail() {
               className="hidden lg:block relative pr-4"
               style={{ minWidth: '10em', maxWidth: '10em' }}
             >
-              <Image
-                ids={item.ids}
-                text={item.title}
-                type="movie"
-                size="small"
-              />
+              <Image ids={item.ids} text={title} type="movie" size="small" />
               {item.trailer && (
                 <a
                   className="absolute"
@@ -161,9 +174,7 @@ export default function MovieDetail() {
             </div>
 
             <div className="w-full">
-              <h1 className="text-4xl leading-none text-center">
-                {item.title}
-              </h1>
+              <h1 className="text-4xl leading-none text-center">{title}</h1>
               <h1 className="text-xl text-center mb-4 text-gray-300">
                 {new Date(item.released).toLocaleDateString(language, {
                   year: 'numeric',
@@ -185,9 +196,7 @@ export default function MovieDetail() {
           </div>
           <div className="my-4">
             <p className="font-medium font-family-text">{t('overview')}:</p>
-            <Collapsable heightInRem={7}>
-              {item.overview || 'Sin descripción'}
-            </Collapsable>
+            <Collapsable heightInRem={7}>{overview}</Collapsable>
           </div>
 
           <div className="my-4">
@@ -201,17 +210,10 @@ export default function MovieDetail() {
 
           <div className="my-4">
             <p className="font-medium font-family-text">{t('related')}:</p>
-            <Related itemId={item.ids.imdb} type="movie" />
+            <Related itemIds={item.ids} type="movie" />
           </div>
         </article>
       </div>
-    </div>
-  ) : (
-    <div
-      className="flex justify-center text-6xl items-center"
-      style={{ marginTop: 'env(safe-area-inset-top)' }}
-    >
-      <Emoji emoji="⏳" rotating={true} />
     </div>
   );
 }

@@ -9,8 +9,6 @@ import {
   traktClientOld,
 } from './axiosClients';
 import Bottleneck from 'bottleneck';
-import { getTranslation } from './getTranslations';
-import { Language } from 'state/slices/config';
 import { Session } from 'contexts/AuthContext';
 import { ImgConfig } from '../models/ImgConfig';
 import { ItemType } from '../models/ItemType';
@@ -18,12 +16,14 @@ import { ImageResponse } from '../models/Image';
 import {
   Episode,
   Season,
+  SeasonEpisode,
   Show,
   ShowProgress,
+  ShowSeason,
   ShowWatched,
   ShowWatchlist,
 } from '../models/Show';
-import { Translation } from '../models/Translation';
+import { Language, Translation } from '../models/Translation';
 import {
   Movie,
   MovieWatched,
@@ -44,11 +44,14 @@ import {
   RemovedWatchlist,
   RemoveHidden,
   ShowCalendar,
+  StatusMovie,
+  StatusShow,
   UserStats,
 } from '../models/Api';
 import { People } from '../models/People';
 import { Person } from '../models/Person';
 import { Popular } from '../models/Popular';
+import { Ids } from 'models/Ids';
 
 const limiter = new Bottleneck({
   reservoir: 800,
@@ -100,29 +103,32 @@ export const getImgsApi = (id: number, type: ItemType) => {
 
 export const getApi = <T extends SearchMovie | SearchShow>(id: string) =>
   limiter.wrap(() =>
-    // traktClient.get<T[]>(`/search/trakt/${id}?type=${type}&extended=full`)
     traktClientOld.get<T[]>(`/search/imdb/${id}?extended=full`)
   )();
 
-export const getSeasonsApi = (id: number, language: Language) => {
+export const getSeasonsApi = (id: string, language: Language) => {
   return limiter.wrap(() =>
-    traktClient.get<Season[]>(`/shows/${id}/seasons?translations=${language}`)
+    traktClientOld
+      .get<Season[]>(
+        `/shows/${id}/seasons?extended=episodes&translations=${language}`
+      )
+      .then(({ data }) => data)
   )();
 };
 
 export const getSeasonEpisodesApi = (
-  id: number,
+  id: string,
   season: number,
   language: Language
 ) => {
   return limiter.wrap(() =>
-    traktClient.get<Episode[]>(
+    traktClientOld.get<Episode[]>(
       `/shows/${id}/seasons/${season}?extended=full&translations=${language}`
     )
   )();
 };
 
-export const getProgressApi = (id: number) => {
+export const getProgressApi = (id: string) => {
   return authTraktClient.get<ShowProgress>(
     `/shows/${id}/progress/watched?specials=true&count_specials=false`
   );
@@ -136,7 +142,9 @@ export const getTranslationsApi = (
   return limiter.wrap(() =>
     traktClientOld
       .get<Translation[]>(`/${type}s/${id}/translations/${language}`)
-      .then(({ data }) => getTranslation(data))
+      .then(({ data }) =>
+        data.find((t) => t.language === 'es' && t.country === 'es')
+      )
   )();
 };
 
@@ -145,7 +153,7 @@ export const searchApi = <T>(
   type: string,
   limit: number = 40
 ) => {
-  return traktClient.get<T[]>(
+  return traktClientOld.get<T[]>(
     `/search/${type}?query=${query}&extended=full&page=1&limit=${limit}`
   );
 };
@@ -161,21 +169,63 @@ export const getWatchedApi = <T extends MovieWatched | ShowWatched>(
   return authTraktClient.get<T[]>(url);
 };
 
-export const addWatchedApi = (
-  item: Episode | Season | Movie,
+export const addWatchedApis = (
+  item: Array<SeasonEpisode | Season | Movie>,
   type: ItemType
 ) => {
-  return authTraktClient.post<AddedWatched>(`/sync/history`, {
-    [`${type}s`]: [item],
+  return authSimklClient.post<AddedWatched>(`/sync/history`, {
+    [`${type}s`]: item,
+  });
+};
+export const addWatchedApi = (
+  item: SeasonEpisode | Season | Movie,
+  type: ItemType
+) => {
+  return authSimklClient.post<AddedWatched>(`/sync/history`, {
+    [`${type}s`]: [{ ...item, status: 'completed' }],
+  });
+};
+
+export const removeWatchedEpisodesApi = (
+  showIds: Ids,
+  season: number,
+  ...episodes: number[]
+) => {
+  return authSimklClient.post<RemovedWatched>(`/sync/history/remove`, {
+    shows: [
+      {
+        ids: showIds,
+        seasons: [
+          { number: season, episodes: episodes.map((e) => ({ number: e })) },
+        ],
+      },
+    ],
+  });
+};
+
+export const removeWatchedSeasonsApi = (showIds: Ids, season: number) => {
+  return authSimklClient.post<RemovedWatched>(`/sync/history/remove`, {
+    shows: [
+      {
+        ids: showIds,
+        seasons: [{ number: season }],
+      },
+    ],
   });
 };
 
 export const removeWatchedApi = (
-  item: Episode | Season | Movie,
+  item: SeasonEpisode | ShowSeason | Movie,
   type: ItemType
 ) => {
-  return authTraktClient.post<RemovedWatched>(`/sync/history/remove`, {
+  return authSimklClient.post<RemovedWatched>(`/sync/history/remove`, {
     [`${type}s`]: [item],
+  });
+};
+
+export const removeWatchedShowsApis = (payload: any[]) => {
+  return authSimklClient.post<RemovedWatched>(`/sync/history/remove`, {
+    shows: payload,
   });
 };
 
@@ -188,13 +238,13 @@ export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
 };
 
 export const addWatchlistApi = (item: Show | Movie, type: ItemType) => {
-  return authTraktClient.post<AddedWatchlist>(`/sync/watchlist`, {
-    [`${type}s`]: [item],
+  return authSimklClient.post<AddedWatchlist>(`/sync/add-to-list`, {
+    [`${type}s`]: [{ ...item, to: 'plantowatch' }],
   });
 };
 
 export const removeWatchlistApi = (item: Show | Movie, type: ItemType) => {
-  return authTraktClient.post<RemovedWatchlist>(`/sync/watchlist/remove`, {
+  return authSimklClient.post<RemovedWatchlist>(`/sync/history/remove`, {
     [`${type}s`]: [item],
   });
 };
@@ -204,32 +254,34 @@ export const getPeopleApi = (id: string, type: ItemType) => {
 };
 
 export const getPersonApi = (id: number) => {
-  return traktClient.get<Person>(`/people/${id}?extended=full`);
+  return traktClientOld.get<Person>(`/people/${id}?extended=full`);
 };
 
 export const getPersonItemsApi = <T>(person: string, type: ItemType) => {
-  return traktClient.get<T>(`/people/${person}/${type}s?extended=full`);
+  return traktClientOld.get<T>(`/people/${person}/${type}s?extended=full`);
 };
 
 export const getPopularApi = (type: ItemType, limit: number = 40) => {
   const year = new Date().getFullYear();
-  return traktClient.get<Popular[]>(
+  return traktClientOld.get<Popular[]>(
     `/${type}s/watched/weekly?extended=full&page=1&limit=${limit}&years=${year}`
   );
 };
 
-export const getRelatedApi = <T>(id: string, type: ItemType) => {
-  return traktClientOld.get<T[]>(
-    `/${type}s/${id}/related?extended=full&page=1&limit=12`
-  );
+export const getRelatedApi = async <T>(type: ItemType, id?: string) => {
+  return id
+    ? traktClientOld.get<T[]>(
+        `/${type}s/${id}/related?extended=full&page=1&limit=12`
+      )
+    : { data: [] };
 };
 
-export const getStatsApi = () => {
-  return authTraktClient.get<UserStats>(`/users/me/stats`);
+export const getStatsApi = (id: number) => {
+  return authSimklClient.post<UserStats>(`/users/${id}/stats`);
 };
 
 export const getProfileApi = () => {
-  return authTraktClient.get<Profile>(`/users/me`);
+  return authSimklClient.post<Profile>(`/users/settings`);
 };
 
 export const getRatingsApi = (id: string, type: ItemType) => {
@@ -283,11 +335,34 @@ export const syncActivities = () => {
   return authSimklClient.post<Activities>(`/sync/activities`);
 };
 
-export const getAllItems = () => {
-  return { data: mockData };
-  // return authSimklClient.get<Activities>(
-  //   `/sync/all-items?extended=full_anime_seasons&episode_watched_at=yes`
-  // );
+export const getAllMoviesIds = async () => {
+  return authSimklClient
+    .get<{ movies: StatusMovie[] } | null>(
+      `/sync/all-items?type=movies&extended=ids_only`
+    )
+    .then(({ data }) => data?.movies.map((m) => m.movie.ids.imdb) ?? []);
+};
+export const getAllShowsIds = async () => {
+  return authSimklClient
+    .get<{ shows: StatusShow[] } | null>(
+      `/sync/all-items?type=shows&extended=ids_only`
+    )
+    .then(({ data }) => data?.shows.map((s) => s.show.ids.imdb) ?? []);
+};
+export const getAllMovies = (dateFrom?: string | null) => {
+  // return { data: mockData };
+  return authSimklClient.get<{ movies: StatusMovie[] } | null>(
+    `/sync/all-items/movies/?${
+      dateFrom ? `date_from=${encodeURIComponent(dateFrom)}` : ''
+    }`
+  );
+};
+export const getAllShows = (dateFrom?: string | null) => {
+  return authSimklClient.get<{ shows: StatusShow[] } | null>(
+    `/sync/all-items/shows/?extended=full&${
+      dateFrom ? `date_from=${encodeURIComponent(dateFrom)}` : ''
+    }`
+  );
 };
 
 export const getItems = (

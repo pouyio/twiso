@@ -1,11 +1,21 @@
 import {
-  getAllItems,
+  getAllMovies,
+  getAllMoviesIds,
+  getAllShows,
+  getAllShowsIds,
   getHiddenShows,
   getWatchedApi,
   getWatchlistApi,
+  removeWatchedApi,
+  removeWatchedShowsApis,
   syncActivities,
 } from 'utils/api';
-import db from 'utils/db';
+import db, {
+  DETAIL_MOVIES_TABLE,
+  DETAIL_SHOWS_TABLE,
+  USER_MOVIES_TABLE,
+  USER_SHOWS_TABLE,
+} from 'utils/db';
 import { set as setMovies, remove as removeMovies } from './slices/movies';
 import {
   set as setShows,
@@ -16,13 +26,15 @@ import {
   updateHidden,
 } from './slices/shows';
 import { store } from './store';
-import { getMovie } from './slices/movies/thunks';
+import { fillDetail, getMovie } from './slices/movies/thunks';
+import { fillDetail as fillDetailShow } from './slices/shows/thunks';
 import { updateFullShow } from 'state/slices/shows/thunks';
 import equal from 'fast-deep-equal';
 import { ShowWatched, ShowWatchlist } from '../models/Show';
 import { MovieWatched, MovieWatchlist } from '../models/Movie';
 import { differenceInHours } from 'date-fns';
 import { Ids } from '../models/Ids';
+import { Activities, StatusMovie } from 'models/Api';
 
 const _mustUpdateByHours = (old: string, newer: string) => {
   // usually field updated_at from  getWatchedApi/getWatchedApi and getApi does not match exactly
@@ -237,29 +249,134 @@ const loadWatchedShows = async () => {
   });
 };
 
+const syncRemoteMovies = async (
+  oldActivities: Activities | null,
+  newActivities: Activities
+) => {
+  if (
+    oldActivities?.movies?.removed_from_list !==
+    newActivities.movies.removed_from_list
+  ) {
+    const allMoviesIds = await getAllMoviesIds();
+    const userMovies = await db.table(USER_MOVIES_TABLE).toArray();
+    const moviesToDelete = userMovies.filter(
+      (um) => !allMoviesIds.includes(um.movie.ids.imdb)
+    );
+    await db
+      .table(USER_MOVIES_TABLE)
+      .bulkDelete(moviesToDelete.map((m) => m.movie.ids.imdb));
+  }
+
+  if (
+    oldActivities?.movies?.completed !== newActivities.movies.completed ||
+    oldActivities?.movies?.plantowatch !== newActivities.movies.plantowatch
+  ) {
+    const { data: allMovies } = await getAllMovies(oldActivities?.movies?.all);
+
+    const moviesToUpsert =
+      allMovies?.movies.filter((m) =>
+        ['completed', 'plantowatch'].includes(m.status)
+      ) ?? [];
+
+    await db.table(USER_MOVIES_TABLE).bulkPut(moviesToUpsert);
+  }
+};
+
+const syncRemoteShows = async (
+  oldActivities: Activities | null,
+  newActivities: Activities
+) => {
+  if (
+    oldActivities?.tv_shows?.removed_from_list !==
+    newActivities.tv_shows.removed_from_list
+  ) {
+    const allShowsIds = await getAllShowsIds();
+
+    const userShows = await db.table(USER_SHOWS_TABLE).toArray();
+
+    const showsToDelete = userShows.filter(
+      (us) => !allShowsIds.includes(us.show.ids.imdb)
+    );
+    await db
+      .table(USER_SHOWS_TABLE)
+      .bulkDelete(showsToDelete.map((s) => s.show.ids.imdb));
+  }
+
+  if (
+    oldActivities?.tv_shows?.completed !== newActivities.tv_shows.completed ||
+    oldActivities?.tv_shows?.watching !== newActivities.tv_shows.watching ||
+    oldActivities?.tv_shows?.dropped !== newActivities.tv_shows.dropped ||
+    oldActivities?.tv_shows?.plantowatch !== newActivities.tv_shows.plantowatch
+  ) {
+    const { data: allShows } = await getAllShows(oldActivities?.tv_shows?.all);
+
+    const showsToUpsert =
+      allShows?.shows.filter((m) =>
+        ['completed', 'dropped', 'plantowatch', 'watching'].includes(m.status)
+      ) ?? [];
+
+    await db.table(USER_SHOWS_TABLE).bulkPut(showsToUpsert);
+  }
+
+  // const userShowsUpdated = await db.table(USER_SHOWS_TABLE).toArray();
+  // const idsToDeleteRemote = userShowsUpdated
+  //   .filter((s) => s.last_watched === null && s.status === 'watching')
+  //   .map((s) => s.show);
+  // if (idsToDeleteRemote.length) {
+  // removeWatchedShowsApis(idsToDeleteRemote);
+  // }
+};
+
 export const firstLoad = async () => {
   try {
-    const oldActivities = JSON.parse(
+    const oldActivities: Activities | null = JSON.parse(
       localStorage.getItem('activities') ?? '{}'
     );
     const { data: newActivities } = await syncActivities();
-    const { data: allItems } = await getAllItems();
-    db.table('movies-s').bulkPut(allItems.movies);
 
-    const savedMovies = await db.table('movies').toArray();
-    const savedMoviesIds = savedMovies.map((m) => m.movie.ids.imdb);
+    await syncRemoteMovies(oldActivities, newActivities);
 
-    store.dispatch(setMovies(allItems.movies));
+    const localUserMovieWatchlistIds = await db
+      .table<any, string>(USER_MOVIES_TABLE)
+      .where({ status: 'plantowatch' })
+      .primaryKeys();
+    const localUserMovieWatchedIds = await db
+      .table<any, string>(USER_MOVIES_TABLE)
+      .where({ status: 'completed' })
+      .primaryKeys();
+    const localDetailMovieIds = await db
+      .table<any, string>(DETAIL_MOVIES_TABLE)
+      .toCollection()
+      .primaryKeys();
 
-    allItems.movies
-      // .filter((m) => m.status === 'plantowatch')
-      // .filter((m) => m.status === 'completed')
-      .filter((m) => !savedMoviesIds.includes(m.movie.ids.imdb))
-      .forEach((item) => {
-        store.dispatch(getMovie({ id: item.movie.ids.imdb }));
-      });
-    db.table('shows-s').bulkPut(allItems.shows);
-    // db.table('animes-s').bulkPut(allItems.anime);
+    const movieIdsToFill = [
+      ...localUserMovieWatchlistIds,
+      ...localUserMovieWatchedIds,
+    ].filter((id) => !localDetailMovieIds.includes(id));
+
+    movieIdsToFill.forEach((id) => {
+      store.dispatch(fillDetail({ id }));
+    });
+
+    await syncRemoteShows(oldActivities, newActivities);
+    const localUserShowIds = await db
+      .table<any, string>(USER_SHOWS_TABLE)
+      .toCollection()
+      .primaryKeys();
+    const localDetailShowIds = await db
+      .table<any, string>(DETAIL_SHOWS_TABLE)
+      .toCollection()
+      .primaryKeys();
+
+    const showIdsToFill = localUserShowIds.filter(
+      (id) => !localDetailShowIds.includes(id)
+    );
+
+    showIdsToFill.forEach((id) => {
+      store.dispatch(fillDetailShow({ id }));
+    });
+
+    localStorage.setItem('activities', JSON.stringify(newActivities));
   } catch (e) {
     console.error('Error on firstLoad');
     console.error(e);

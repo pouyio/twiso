@@ -5,7 +5,7 @@ import { updateTranslation } from './movies';
 import { ImgConfig } from '../../models/ImgConfig';
 import { MovieWatched, MovieWatchlist } from '../../models/Movie';
 import { ShowWatched, ShowWatchlist } from '../../models/Show';
-export type Language = 'en' | 'es';
+import { Language } from 'models/Translation';
 
 interface ConfigState {
   img?: ImgConfig;
@@ -13,7 +13,7 @@ interface ConfigState {
 }
 
 const initialState: ConfigState = {
-  language: (localStorage.getItem('language') || 'en') as Language,
+  language: (localStorage.getItem('language') || 'es') as Language,
 };
 
 const hasLanguage =

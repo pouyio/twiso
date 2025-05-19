@@ -6,7 +6,8 @@
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/assets/*.js'",
     "start": "vite",
-    "build": "NODE_ENV=production tsc && vite build"
+    "build": "NODE_ENV=production tsc && vite build",
+    "tsc": "tsc"
   },
   "dependencies": {
     "@reduxjs/toolkit": "2.5.0",

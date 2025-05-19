@@ -300,20 +300,6 @@ export const byType = createSelector(showsSelector, (shows) => {
   );
 });
 
-export const filterByGenres = (genres: string[]) =>
-  createSelector(byType, (shows) => {
-    return {
-      watchlist: shows.watchlist.filter((i) =>
-        genres.every((g) => i.show.genres.includes(g))
-      ),
-      watched: shows.watched.filter((i) =>
-        genres.every((g) => i.show.genres.includes(g))
-      ),
-    };
-  });
-
 export const totalByType = createSelector(byType, ({ watchlist, watched }) => {
   return { watchlist: watchlist.length, watched: watched.length };
 });
-
-export const getHidden = (state: RootState) => state.shows.hidden;

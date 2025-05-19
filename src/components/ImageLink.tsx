@@ -1,26 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Image from './Image';
-import { Show } from '../models/Show';
-import { Movie } from '../models/Movie';
-import { Person } from '../models/Person';
 import { Ids } from '../models/Ids';
 
 interface IImageLinkProps {
-  // item: Show | Movie | Person;
   ids: Ids;
   text: string;
   style?: React.CSSProperties;
   type: 'movie' | 'show' | 'person';
   onClick?: React.MouseEventHandler<HTMLAnchorElement> | undefined;
+  forceState?: 'completed' | 'plantowatch' | 'watching';
 }
 
 const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
-  // item,
   ids,
   text,
   style,
   type,
+  forceState,
   children = '',
   onClick = () => {},
 }) => {
@@ -29,10 +26,15 @@ const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
       to={{
         pathname: `/${type}/${ids.imdb}`,
       }}
-      // state={item}
       onClick={onClick}
     >
-      <Image ids={ids} text={text} style={style} type={type} />
+      <Image
+        ids={ids}
+        text={text}
+        style={style}
+        type={type}
+        forceState={forceState}
+      />
       {children}
     </Link>
   );

@@ -72,21 +72,21 @@ export const NavigationTabs: React.FC<{
         <LongPress />
         {pathname.startsWith(ROUTES.search) && <Underline width={width} />}
       </li>
-      {logged ? (
-        <li className="py-1">
-          <NavLink to={ROUTES.calendar} className="flex items-center">
-            <Icon
-              name="calendar"
-              className="h-8"
-              onClick={() => window.scrollTo(0, 0)}
-            />
-            <span className="ml-2 text-base hidden lg:inline">
-              {t('calendar')}
-            </span>
-          </NavLink>
-          {pathname.startsWith(ROUTES.calendar) && <Underline width={width} />}
-        </li>
-      ) : null}
+      {/* {logged ? ( */}
+      {/*   <li className="py-1"> */}
+      {/*     <NavLink to={ROUTES.calendar} className="flex items-center"> */}
+      {/*       <Icon */}
+      {/*         name="calendar" */}
+      {/*         className="h-8" */}
+      {/*         onClick={() => window.scrollTo(0, 0)} */}
+      {/*       /> */}
+      {/*       <span className="ml-2 text-base hidden lg:inline"> */}
+      {/*         {t('calendar')} */}
+      {/*       </span> */}
+      {/*     </NavLink> */}
+      {/*     {pathname.startsWith(ROUTES.calendar) && <Underline width={width} />} */}
+      {/*   </li> */}
+      {/* ) : null} */}
       <li className="py-1">
         <NavLink to={ROUTES.profile} className="flex items-center">
           <Icon name="profile" className="h-8" />

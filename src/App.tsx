@@ -14,6 +14,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { firstLoad } from './state/firstLoadAction';
 import { AuthContext } from './contexts/AuthContext';
 import { useWindowSize } from './hooks/useWindowSize';
+import { useLiveQuery } from 'dexie-react-hooks';
+import db, { USER_SHOWS_TABLE } from 'utils/db';
+import { removeWatchedShowsApis } from 'utils/api';
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const Profile = lazy(() => import('./pages/Profile'));
 const MovieDetail = lazy(() => import('./pages/MovieDetail'));
@@ -49,6 +52,17 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { session } = useContext(AuthContext);
   const isLoggedIn = !!session;
   const dispatch = useAppDispatch();
+  const orphanShows = useLiveQuery(
+    () =>
+      db
+        .table(USER_SHOWS_TABLE)
+        .where('status')
+        .equals('watching')
+        .filter((s) => !s.last_watched)
+        .toArray(),
+    [],
+    []
+  );
 
   useEffect(() => {
     dispatch(loadImgConfig());
@@ -56,6 +70,14 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
       firstLoad();
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (orphanShows.length && isLoggedIn) {
+      removeWatchedShowsApis(orphanShows.map((s) => s.show)).then(() => {
+        firstLoad();
+      });
+    }
+  }, [orphanShows, isLoggedIn]);
 
   return (
     <>

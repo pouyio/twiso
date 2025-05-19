@@ -2,21 +2,18 @@ import Dexie from 'dexie';
 
 const db = new Dexie('twisoDB');
 
-db.version(1).stores({
-  movies: 'movie.ids.trakt,localState',
-  shows: 'show.ids.trakt,localState',
-});
-db.version(2).stores({
-  movies: 'movie.ids.trakt,localState',
-  shows: 'show.ids.trakt,localState',
-  'shows-hidden': 'trakt',
-});
+export const USER_MOVIES_TABLE = 'user-movies';
+export const USER_SHOWS_TABLE = 'user-shows';
+export const USER_ANIMES_TABLE = 'user-animes';
+export const DETAIL_MOVIES_TABLE = 'detail-movies';
+export const DETAIL_SHOWS_TABLE = 'detail-shows';
+
 db.version(3).stores({
-  movies: 'movie.ids.imdb',
-  shows: 'show.ids.imdb',
-  'movies-s': 'movie.ids.imdb,movie.ids.traktslug,status',
-  'shows-s': 'show.ids.imdb,show.ids.traktslug,status',
-  'animes-s': 'show.ids.imdb,show.ids.traktslug,status',
+  [DETAIL_MOVIES_TABLE]: 'ids.imdb,genres',
+  [DETAIL_SHOWS_TABLE]: 'ids.imdb,genres',
+  [USER_MOVIES_TABLE]: 'movie.ids.imdb,status',
+  [USER_SHOWS_TABLE]: 'show.ids.imdb,status',
+  [USER_ANIMES_TABLE]: 'show.ids.imdb,status',
 });
 
 export default db;

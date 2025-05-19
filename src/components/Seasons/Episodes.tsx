@@ -4,15 +4,17 @@ import { EpisodesPlaceholder } from './EpisodesPlaceholder';
 import { useAppSelector } from 'state/store';
 import { Icon } from 'components/Icon';
 import { useTranslate } from '../../hooks/useTranslate';
-import { Episode, Season } from '../../models/Show';
+import { Episode, SeasonEpisode } from '../../models/Show';
+import { StatusSeason } from 'models/Api';
 
 interface ISeasonsProps {
-  seasonProgress?: Season;
+  seasonProgress?: StatusSeason;
   addEpisodeWatched: (episode: Episode) => void;
   removeEpisodeWatched: (episode: Episode) => void;
   addSeasonWatched: () => void;
   removeSeasonWatched: () => void;
-  episodes?: Episode[];
+  episodes?: SeasonEpisode[];
+  episodesDates?: Episode[];
   showModal: (data: { title: string; overview: string }) => void;
   onlyView: boolean;
   seasonId?: number;
@@ -25,6 +27,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
   addSeasonWatched,
   removeSeasonWatched,
   episodes = [],
+  episodesDates = [],
   showModal,
   onlyView,
   seasonId = 0,
@@ -38,19 +41,17 @@ const Episodes: React.FC<ISeasonsProps> = ({
     if (!seasonProgress) {
       return false;
     }
-    return (
-      seasonProgress.episodes.find((e) => e.number === episodeNumber) || {}
-    ).completed;
+    return seasonProgress.episodes.find((e) => e.number === episodeNumber);
   };
 
   const isSeasonWatched = () => {
     if (!seasonProgress) {
       return false;
     }
-    return seasonProgress.completed === seasonProgress.episodes.length;
+    return seasonProgress.episodes.length === seasonProgress.episodes.length;
   };
 
-  const toggleEpisode = (episode: Episode) => {
+  const toggleEpisode = (episode: SeasonEpisode) => {
     if (isEpisodeWatched(episode.number)) {
       removeEpisodeWatched(episode);
     } else {
@@ -58,19 +59,22 @@ const Episodes: React.FC<ISeasonsProps> = ({
     }
   };
 
-  const getTranslated = (string: 'title' | 'overview', episode: Episode) => {
+  const getTranslated = (
+    string: 'title' | 'overview',
+    episode: SeasonEpisode
+  ) => {
     if (episode.translations.length) {
       return episode.translations[0][string] ?? '';
     }
     return string === 'title' ? episode.title : '';
   };
 
-  const isEpisodeAvailable = (episode: Episode) => {
-    if (!seasonProgress) {
+  const isEpisodeAvailable = (number: number) => {
+    const foundEpisode = episodesDates.find((e) => e.number === number);
+    if (!foundEpisode) {
       return false;
     }
-
-    return seasonProgress.episodes.some((e) => e.number === episode.number);
+    return new Date(foundEpisode.first_aired) < new Date();
   };
 
   const getFormattedDate = (date: string, size: 'long' | 'short') => {
@@ -95,7 +99,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
                 <span className="text-gray-600 text-xs font-bold mr-1">
                   {e.number}
                 </span>
-                {isEpisodeAvailable(e) ? (
+                {isEpisodeAvailable(e.number) ? (
                   <>
                     {isEpisodeWatched(e.number) ? (
                       <span className="text-gray-600 mr-2 ml-1">✓</span>
@@ -111,7 +115,8 @@ const Episodes: React.FC<ISeasonsProps> = ({
                     showModal({
                       title: getTranslated('title', e),
                       overview: `${getFormattedDate(
-                        e.first_aired,
+                        episodesDates.find((ed) => ed.number === e.number)
+                          ?.first_aired ?? '',
                         'long'
                       )}\n${getTranslated('overview', e)}`,
                     })
@@ -122,10 +127,14 @@ const Episodes: React.FC<ISeasonsProps> = ({
                 >
                   <span>{getTranslated('title', e)}</span>
                   <span className="text-xs">
-                    {getFormattedDate(e.first_aired, 'short')}
+                    {getFormattedDate(
+                      episodesDates.find((ed) => ed.number === e.number)
+                        ?.first_aired ?? '',
+                      'short'
+                    )}
                   </span>
                 </div>
-                {isEpisodeAvailable(e) &&
+                {isEpisodeAvailable(e.number) &&
                   (watched.includes(e.ids.trakt) ? (
                     <Emoji
                       emoji="⏳"

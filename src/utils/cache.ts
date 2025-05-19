@@ -1,4 +1,9 @@
-import db from './db';
+import db, {
+  DETAIL_MOVIES_TABLE,
+  DETAIL_SHOWS_TABLE,
+  USER_MOVIES_TABLE,
+  USER_SHOWS_TABLE,
+} from './db';
 
 export const saveToCache = (
   id: number,
@@ -30,7 +35,11 @@ export const removeImgCaches = () => {
   });
 };
 
-export const removeCaches = () => {
-  db.table('movies').clear();
-  db.table('shows').clear();
+export const removeUserCaches = () => {
+  db.table(USER_MOVIES_TABLE).clear();
+  db.table(USER_SHOWS_TABLE).clear();
+};
+export const removeDetailsCaches = () => {
+  db.table(DETAIL_MOVIES_TABLE).clear();
+  db.table(DETAIL_SHOWS_TABLE).clear();
 };

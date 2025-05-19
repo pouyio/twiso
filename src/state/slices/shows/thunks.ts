@@ -12,7 +12,6 @@ import {
   removeWatchedApi,
   removeWatchlistApi,
 } from 'utils/api';
-import { Language } from '../config';
 import { SearchShow } from '../../../models/Movie';
 import { AddedWatchlist, RemovedWatchlist } from '../../../models/Api';
 import {
@@ -23,30 +22,31 @@ import {
   ShowWatched,
   ShowWatchlist,
 } from '../../../models/Show';
+import { Language, Translation } from 'models/Translation';
 
-const _getRemoteWithTranslations = async (id: number, language: Language) => {
-  const { data } = await getApi<SearchShow>(id, 'show');
-  const show = data[0].show;
-  if (language !== 'en' && show.available_translations.includes(language)) {
-    const { title, overview } = await getTranslationsApi(id, 'show', language);
-    show.title = title || show.title;
-    show.overview = overview || show.overview;
-  }
-  return show;
+const _getRemoteWithTranslations = async (
+  id: string
+): Promise<Show & { translation?: Translation }> => {
+  const results = await Promise.all([
+    getApi<SearchShow>(id),
+    getTranslationsApi(id, 'show', 'es'),
+  ]);
+  const show = results[0].data[0].show;
+  return { ...show, translation: results[1] };
 };
 
-export const addWatchlist = createAsyncThunk<
-  AddedWatchlist & { listed_at: string },
-  { show: Show }
->('shows/addWatchlist', async ({ show }) => {
-  try {
-    const { data } = await addWatchlistApi(show, 'show');
-    return { ...data, listed_at: new Date().toISOString() };
-  } catch (e) {
-    console.error(e);
-    throw e;
+export const addWatchlist = createAsyncThunk<AddedWatchlist, { show: Show }>(
+  'shows/addWatchlist',
+  async ({ show }) => {
+    try {
+      const { data } = await addWatchlistApi(show, 'show');
+      return data;
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   }
-});
+);
 
 export const removeWatchlist = createAsyncThunk<
   RemovedWatchlist,
@@ -195,9 +195,7 @@ export const updateFullShow = createAsyncThunk<
   },
   { state: RootState }
 >('shows/updateFullShow', async ({ outdated }, { getState }) => {
-  const showCopy: ShowWatched | ShowWatchlist = JSON.parse(
-    JSON.stringify(outdated)
-  );
+  const showCopy: ShowWatched | ShowWatchlist = structuredClone(outdated);
   try {
     const language = getState().config.language;
     const translationAvailable =
@@ -225,6 +223,47 @@ export const updateFullShow = createAsyncThunk<
       showCopy.show.overview = translations.overview || showCopy.show.overview;
     }
     return showCopy;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+});
+
+export const fillDetail = createAsyncThunk<
+  Show,
+  {
+    id: string;
+  },
+  { state: RootState }
+>('shows/fillDetail', async ({ id }, { getState }) => {
+  try {
+    const language = getState().config.language;
+    // const translationAvailable =
+    //   language !== 'en' &&
+    //   showCopy.show.available_translations.includes(language);
+
+    const [detail, seasons] = await Promise.all([
+      _getRemoteWithTranslations(id),
+      getSeasonsApi(id, 'es'),
+      // getProgressApi(id),
+      // translationAvailable
+      //   ? getTranslationsApi(
+      //       `${showCopy.show.ids.trakt}`,
+      //       'show',
+      //       getState().config.language
+      //     )
+      //   : null,
+    ]);
+
+    // showCopy.fullSeasons = seasons.data;
+    // showCopy.progress = progress.data;
+    // showCopy.last_watched_at = progress?.data.last_watched_at;
+    //
+    // if (translationAvailable && translations) {
+    //   showCopy.show.title = translations.title || showCopy.show.title;
+    //   showCopy.show.overview = translations.overview || showCopy.show.overview;
+    // }
+    return { ...detail, all_seasons: seasons };
   } catch (e) {
     console.error(e);
     throw e;

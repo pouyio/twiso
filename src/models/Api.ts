@@ -1,5 +1,5 @@
 import { Ids } from './Ids';
-import { SmallEpisode } from './Show';
+import { ShowSeason, SmallEpisode } from './Show';
 
 interface BaseNotFound {
   movies?: Ids[];
@@ -69,40 +69,91 @@ interface Distribution {
 }
 
 export interface UserStats {
+  total_mins: number;
   movies: {
-    plays: number;
-    watched: number;
-    minutes: number;
-    collected: number;
-    ratings: number;
-    comments: number;
+    total_mins: number;
+    plantowatch: {
+      mins: number;
+      count: number;
+    };
+    dropped: {
+      mins: number;
+      count: number;
+    };
+    completed: {
+      mins: number;
+      count: number;
+    };
   };
-  shows: {
-    watched: number;
-    collected: number;
-    ratings: number;
-    comments: number;
+  tv: {
+    total_mins: number;
+    watching: {
+      watched_episodes_count: number;
+      count: number;
+      left_to_watch_episodes: number;
+      left_to_watch_mins: number;
+      total_episodes_count: number;
+    };
+    hold: {
+      watched_episodes_count: number;
+      count: number;
+      left_to_watch_episodes: number;
+      left_to_watch_mins: number;
+      total_episodes_count: number;
+    };
+    plantowatch: {
+      watched_episodes_count: number;
+      count: number;
+      left_to_watch_episodes: number;
+      left_to_watch_mins: number;
+      total_episodes_count: number;
+    };
+    dropped: {
+      watched_episodes_count: number;
+      count: number;
+    };
+    completed: {
+      watched_episodes_count: number;
+      count: number;
+    };
   };
-  seasons: {
-    ratings: number;
-    comments: number;
+  anime: {
+    total_mins: number;
+    watching: {
+      watched_episodes_count: number;
+      count: number;
+      left_to_watch_episodes: number;
+      left_to_watch_mins: number;
+      total_episodes_count: number;
+    };
+    hold: {
+      watched_episodes_count: number;
+      count: number;
+      left_to_watch_episodes: number;
+      left_to_watch_mins: number;
+      total_episodes_count: number;
+    };
+    plantowatch: {
+      watched_episodes_count: number;
+      count: number;
+      left_to_watch_episodes: number;
+      left_to_watch_mins: number;
+      total_episodes_count: number;
+    };
+    dropped: {
+      watched_episodes_count: number;
+      count: number;
+    };
+    completed: {
+      watched_episodes_count: number;
+      count: number;
+    };
   };
-  episodes: {
-    plays: number;
-    watched: number;
-    minutes: number;
-    collected: number;
-    ratings: number;
-    comments: number;
-  };
-  network: {
-    friends: number;
-    followers: number;
-    following: number;
-  };
-  ratings: {
-    total: number;
-    distribution: Distribution;
+  watched_last_week: {
+    total_mins: number;
+    movies_mins: number;
+    tv_mins: number;
+    anime_mins: number;
   };
 }
 
@@ -113,13 +164,22 @@ export interface Ratings {
 }
 
 export interface Profile {
-  username: string;
-  private: boolean;
-  name: string;
-  vip: boolean;
-  vip_ep: boolean;
-  ids: {
-    slug: string;
+  user: {
+    name: string;
+    joined_at: string;
+    gender: string;
+    avatar: string;
+    bio: string;
+    loc: string;
+    age: string;
+  };
+  account: {
+    id: number;
+    timezone: string;
+    type: string;
+  };
+  connections: {
+    facebook: boolean;
   };
 }
 
@@ -169,5 +229,62 @@ export type Activities = {
     completed: string | null;
     dropped: string | null;
     removed_from_list: string | null;
+  };
+};
+
+export type SimklStatus =
+  | 'plantowatch'
+  | 'hold'
+  | 'completed'
+  | 'removed_from_list'
+  | 'dropped'
+  | 'watching';
+
+export type StatusMovie = {
+  added_to_watchlist_at: string | null;
+  last_watched_at: string | null;
+  movie: { ids: Ids; title: string; poster: string; year: number };
+  not_aired_episodes_count: number;
+  status: SimklStatus;
+  total_episodes_count: number;
+  user_rated_at: string | null;
+  user_rating: string | null;
+  watched_episodes_count: string;
+};
+
+export type StatusSeason = ShowSeason & { episodes: Array<{ number: number }> };
+
+export type StatusShow = {
+  added_to_watchlist_at: string | null;
+  last_watched_at: string | null;
+  user_rated_at: string | null;
+  user_rating: string | null;
+  status: SimklStatus;
+  watched_episodes_count: number;
+  total_episodes_count: number;
+  not_aired_episodes_count: number;
+  last_watched: string; // 'S01E01'
+  next_to_watch: string; // 'S01E01'
+  seasons?: StatusSeason[]; // if completed this is undefined
+  show: {
+    title: string;
+    poster: string;
+    year: number;
+    ids: Ids;
+    // {
+    //   simkl: number;
+    //   slug: string;
+    //   instagram: string;
+    //   fb: string;
+    //   tw: string;
+    //   tmdb: string;
+    //   imdb: string;
+    //   zap2it: string;
+    //   tvdbslug: string;
+    //   offen: string;
+    //   jwslug: string;
+    //   trakttvslug: string;
+    //   tvdb: string;
+    // };
   };
 };

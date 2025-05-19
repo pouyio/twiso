@@ -45,7 +45,6 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
             style={{ height: '13.5em', width: '9.5em' }}
           >
             <ImageLink
-              item={(r.show || r.movie)!}
               ids={(r.show || r.movie)!.ids}
               text={(r.show || r.movie)!.title}
               style={{ minHeight: '10em' }}

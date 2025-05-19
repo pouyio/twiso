@@ -9,29 +9,40 @@ import { useAppDispatch, useAppSelector } from 'state/store';
 import { AuthContext } from '../../contexts/AuthContext';
 import { ModalContext } from '../../contexts/ModalContext';
 import {
+  addWatchedApi,
+  addWatchedApis,
   getProgressApi,
   getSeasonEpisodesApi,
   getSeasonsApi,
+  removeWatchedApi,
+  removeWatchedEpisodesApi,
+  removeWatchedSeasonsApi,
 } from '../../utils/api';
 import Episodes from './Episodes';
 import SeasonSelector from './SeasonSelector';
 import {
   Episode,
   Season,
+  SeasonEpisode,
   Show,
   ShowProgress,
+  ShowSeason,
   ShowWatched,
 } from '../../models/Show';
 import { useSearchParams } from 'react-router';
+import { StatusShow } from 'models/Api';
+import { firstLoad } from 'state/firstLoadAction';
 
 interface ISeasonsContainerProps {
   show: Show;
-  showId: number;
+  status?: StatusShow;
+  showId: string;
 }
 
 const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   show,
   showId,
+  status,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -40,7 +51,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     : +searchParams.get('season')!;
   const [unTrackedProgress, setUnTrackedProgress] = useState<ShowProgress>();
   const [unTrackedSeasons, setUnTrackedSeasons] = useState<Season[]>([]);
-  const [episodes, setEpisodes] = useState<Episode[][]>([]);
+  const [episodesDates, setEpisodesDates] = useState<Episode[][]>([]);
   const { session } = useContext(AuthContext);
   const isLogged = !!session;
   const { toggle } = useContext(ModalContext);
@@ -50,27 +61,27 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   ) as ShowWatched;
   const language = useAppSelector((state) => state.config.language);
 
-  useEffect(() => {
-    if (watchedShow) {
-      return;
-    }
-    getSeasonsApi(showId, language).then(({ data }) =>
-      setUnTrackedSeasons(data)
-    );
-    if (isLogged) {
-      getProgressApi(showId).then(({ data }) => setUnTrackedProgress(data));
-    }
-  }, [isLogged, showId, watchedShow, language]);
+  // useEffect(() => {
+  //   if (watchedShow) {
+  //     return;
+  //   }
+  //   getSeasonsApi(showId, language).then(({ data }) =>
+  //     setUnTrackedSeasons(data)
+  //   );
+  //   if (isLogged) {
+  //     getProgressApi(showId).then(({ data }) => setUnTrackedProgress(data));
+  //   }
+  // }, [isLogged, showId, watchedShow, language]);
 
   useEffect(() => {
     if (selectedSeason === undefined) {
       return;
     }
-    if (selectedSeason !== undefined && episodes[selectedSeason]) {
+    if (selectedSeason !== undefined && episodesDates[selectedSeason]) {
       return;
     }
     getSeasonEpisodesApi(showId, selectedSeason, language).then(({ data }) => {
-      setEpisodes((e) => {
+      setEpisodesDates((e) => {
         e[selectedSeason] = data;
         return [...e];
       });
@@ -105,55 +116,75 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     selectedSeason,
   ]);
 
-  const addEpisode = (episode: Episode) => {
-    const generatedShow =
-      watchedShow ||
-      ({
-        show,
-        progress: unTrackedSeasons,
-        fullSeasons: unTrackedSeasons,
-      } as unknown as ShowWatched);
-    dispatch(addEpisodeWatched({ show: generatedShow, episode }));
+  const addEpisode = async (episode: SeasonEpisode) => {
+    const { data } = await addWatchedApi(episode, 'episode');
+    firstLoad();
+    // const generatedShow =
+    //   watchedShow ||
+    //   ({
+    //     show,
+    //     progress: unTrackedSeasons,
+    //     fullSeasons: unTrackedSeasons,
+    //   } as unknown as ShowWatched);
+    // dispatch(addEpisodeWatched({ show: generatedShow, episode }));
   };
 
-  const removeEpisode = (episode: Episode) => {
-    dispatch(
-      removeEpisodeWatched({
-        show: watchedShow!,
-        episode,
-      })
+  const removeEpisode = async (episode: SeasonEpisode) => {
+    const { data } = await removeWatchedEpisodesApi(
+      show.ids,
+      episode.season,
+      episode.number
     );
+    firstLoad();
+    // dispatch(
+    //   removeEpisodeWatched({
+    //     show: watchedShow!,
+    //     episode,
+    //   })
+    // );
   };
 
-  const addSeason = () => {
-    if (watchedShow) {
-      dispatch(
-        addSeasonWatched({
-          show: watchedShow,
-          season: getFullSeason(selectedSeason)!,
-        })
-      );
-    } else {
-      dispatch(
-        addSeasonWatched({
-          show: {
-            show,
-            progress: unTrackedProgress,
-            fullSeasons: unTrackedSeasons,
-          } as unknown as ShowWatched,
-          season: getFullSeason(selectedSeason)!,
-        })
-      );
+  const addSeason = async () => {
+    const fullSeason = getFullSeason(selectedSeason);
+    if (!fullSeason) {
+      return;
     }
+    const { data } = await addWatchedApis(fullSeason.episodes, 'episode');
+    firstLoad();
+    // if (watchedShow) {
+    //   dispatch(
+    //     addSeasonWatched({
+    //       show: watchedShow,
+    //       season: getFullSeason(selectedSeason)!,
+    //     })
+    //   );
+    // } else {
+    //   dispatch(
+    //     addSeasonWatched({
+    //       show: {
+    //         show,
+    //         progress: unTrackedProgress,
+    //         fullSeasons: unTrackedSeasons,
+    //       } as unknown as ShowWatched,
+    //       season: getFullSeason(selectedSeason)!,
+    //     })
+    //   );
+    // }
   };
 
-  const removeSeason = () => {
-    dispatch(
-      removeSeasonWatched({
-        show: watchedShow!,
-        season: getFullSeason(selectedSeason)!,
-      })
-    );
+  const removeSeason = async () => {
+    if (!selectedSeason) {
+      return;
+    }
+    const { data } = await removeWatchedSeasonsApi(show.ids, selectedSeason);
+    firstLoad();
+
+    // dispatch(
+    //   removeSeasonWatched({
+    //     show: watchedShow!,
+    //     season: getFullSeason(selectedSeason)!,
+    //   })
+    // );
   };
 
   const showModal = ({
@@ -167,36 +198,37 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   };
 
   const getFullSeason = (season?: number) => {
-    return (watchedShow?.fullSeasons ?? unTrackedSeasons)?.find(
-      (s) => s.number === season
-    );
+    return show?.all_seasons?.find((s) => s.number === season);
   };
 
   return (
     <>
       <SeasonSelector
-        seasons={watchedShow?.fullSeasons ?? unTrackedSeasons}
-        progress={watchedShow?.progress ?? unTrackedProgress}
+        seasons={show.all_seasons}
+        progress={status}
         selectedSeason={getFullSeason(selectedSeason)}
         setSelectedSeason={(s) =>
-          setSearchParams({ season: `${s}` }, { replace: true })
+          setSearchParams(s !== undefined ? { season: `${s}` } : {}, {
+            replace: true,
+          })
         }
       />
       {selectedSeason !== undefined && (
         <Episodes
           seasonId={
-            (watchedShow?.fullSeasons ?? unTrackedSeasons).find(
-              (s) => s.number === selectedSeason
-            )?.ids.trakt
+            show.all_seasons.find((s) => s.number === selectedSeason)?.ids.trakt
           }
-          seasonProgress={(
-            watchedShow?.progress ?? unTrackedProgress
-          )?.seasons.find((s) => s.number === selectedSeason)}
+          seasonProgress={status?.seasons?.find(
+            (s) => s.number === selectedSeason
+          )}
           addEpisodeWatched={addEpisode}
           removeEpisodeWatched={removeEpisode}
           addSeasonWatched={addSeason}
           removeSeasonWatched={removeSeason}
-          episodes={episodes[selectedSeason]}
+          episodes={
+            show.all_seasons.find((s) => s.number === selectedSeason)?.episodes
+          }
+          episodesDates={episodesDates[selectedSeason]}
           showModal={showModal}
           onlyView={!isLogged}
         />

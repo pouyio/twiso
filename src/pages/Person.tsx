@@ -154,7 +154,6 @@ const Person: React.FC = () => {
                       <ImageLink
                         ids={r.movie.ids}
                         text={r.movie.title}
-                        item={r.movie}
                         type="movie"
                         style={{ minHeight: '13.5em' }}
                       >
@@ -192,7 +191,6 @@ const Person: React.FC = () => {
                       <ImageLink
                         ids={r.movie.ids}
                         text={r.movie.title}
-                        item={r.movie}
                         type="movie"
                         style={{ minHeight: '13.5em' }}
                       >
@@ -230,7 +228,6 @@ const Person: React.FC = () => {
                       <ImageLink
                         ids={r.show.ids}
                         text={r.show.title}
-                        item={r.show}
                         type="show"
                         style={{ minHeight: '13.5em' }}
                       >

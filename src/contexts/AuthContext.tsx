@@ -31,6 +31,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
   const logout = () => {
     localStorage.removeItem('session');
+    localStorage.removeItem('activities');
     window.location.reload();
   };
 
