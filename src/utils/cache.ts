@@ -35,6 +35,9 @@ export const removeImgCaches = () => {
   });
 };
 
+export const removeUserActivities = () => {
+  localStorage.removeItem('activities');
+};
 export const removeUserCaches = () => {
   db.table(USER_MOVIES_TABLE).clear();
   db.table(USER_SHOWS_TABLE).clear();

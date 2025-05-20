@@ -44,6 +44,7 @@ import {
   RemovedWatchlist,
   RemoveHidden,
   ShowCalendar,
+  StatusAnime,
   StatusMovie,
   StatusShow,
   UserStats,
@@ -338,16 +339,23 @@ export const syncActivities = () => {
 export const getAllMoviesIds = async () => {
   return authSimklClient
     .get<{ movies: StatusMovie[] } | null>(
-      `/sync/all-items?type=movies&extended=ids_only`
+      `/sync/all-items/movies?extended=ids_only`
     )
     .then(({ data }) => data?.movies.map((m) => m.movie.ids.imdb) ?? []);
 };
 export const getAllShowsIds = async () => {
   return authSimklClient
     .get<{ shows: StatusShow[] } | null>(
-      `/sync/all-items?type=shows&extended=ids_only`
+      `/sync/all-items/shows?extended=ids_only`
     )
     .then(({ data }) => data?.shows.map((s) => s.show.ids.imdb) ?? []);
+};
+export const getAllAnimeIds = async () => {
+  return authSimklClient
+    .get<{ anime: StatusAnime[] } | null>(
+      `/sync/all-items/anime?extended=ids_only`
+    )
+    .then(({ data }) => data?.anime.map((s) => s.show.ids.imdb) ?? []);
 };
 export const getAllMovies = (dateFrom?: string | null) => {
   // return { data: mockData };
@@ -357,10 +365,17 @@ export const getAllMovies = (dateFrom?: string | null) => {
     }`
   );
 };
+export const getAllAnimes = (dateFrom?: string | null) => {
+  return authSimklClient.get<{ anime: StatusAnime[] } | null>(
+    `/sync/all-items/anime/?extended=full${
+      dateFrom ? `&date_from=${encodeURIComponent(dateFrom)}` : ''
+    }`
+  );
+};
 export const getAllShows = (dateFrom?: string | null) => {
   return authSimklClient.get<{ shows: StatusShow[] } | null>(
-    `/sync/all-items/shows/?extended=full&${
-      dateFrom ? `date_from=${encodeURIComponent(dateFrom)}` : ''
+    `/sync/all-items/shows/?extended=full${
+      dateFrom ? `&date_from=${encodeURIComponent(dateFrom)}` : ''
     }`
   );
 };

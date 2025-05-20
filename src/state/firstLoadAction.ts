@@ -1,4 +1,6 @@
 import {
+  getAllAnimeIds,
+  getAllAnimes,
   getAllMovies,
   getAllMoviesIds,
   getAllShows,
@@ -317,14 +319,67 @@ const syncRemoteShows = async (
 
     await db.table(USER_SHOWS_TABLE).bulkPut(showsToUpsert);
   }
+};
 
-  // const userShowsUpdated = await db.table(USER_SHOWS_TABLE).toArray();
-  // const idsToDeleteRemote = userShowsUpdated
-  //   .filter((s) => s.last_watched === null && s.status === 'watching')
-  //   .map((s) => s.show);
-  // if (idsToDeleteRemote.length) {
-  // removeWatchedShowsApis(idsToDeleteRemote);
-  // }
+const syncRemoteAnimes = async (
+  oldActivities: Activities | null,
+  newActivities: Activities
+) => {
+  if (
+    oldActivities?.anime?.removed_from_list !==
+    newActivities.anime.removed_from_list
+  ) {
+    const allAnimeIds = await getAllAnimeIds();
+
+    const userAnimeShows = await db
+      .table(USER_SHOWS_TABLE)
+      .where('anime_type')
+      .anyOf(['tv', 'special', 'ona', 'ova'])
+      .toArray();
+    const userAnimeMovies = await db
+      .table(USER_MOVIES_TABLE)
+      .where('anime_type')
+      .equals('movie')
+      .toArray();
+
+    const userAnimes = [...userAnimeShows, ...userAnimeMovies];
+
+    const animesToDelete = userAnimes.filter(
+      (us) => !allAnimeIds.includes(us.show.ids.imdb)
+    );
+
+    await db
+      .table(USER_SHOWS_TABLE)
+      .bulkDelete(animesToDelete.map((s) => s.show.ids.imdb));
+    await db
+      .table(USER_MOVIES_TABLE)
+      .bulkDelete(animesToDelete.map((s) => s.show.ids.imdb));
+  }
+
+  if (
+    oldActivities?.anime?.completed !== newActivities.anime.completed ||
+    oldActivities?.anime?.watching !== newActivities.anime.watching ||
+    oldActivities?.anime?.dropped !== newActivities.anime.dropped ||
+    oldActivities?.anime?.plantowatch !== newActivities.anime.plantowatch
+  ) {
+    const { data: allAnimes } = await getAllAnimes(oldActivities?.anime?.all);
+
+    const animesToUpsert =
+      allAnimes?.anime.filter((m) =>
+        ['completed', 'dropped', 'plantowatch', 'watching'].includes(m.status)
+      ) ?? [];
+    const animeShowsToUpsert = animesToUpsert.filter((a) =>
+      ['tv', 'special', 'ona', 'ova'].includes(a.anime_type)
+    );
+    const animeMoviesToUpsert = animesToUpsert.filter((a) =>
+      ['movie'].includes(a.anime_type)
+    );
+
+    await db.table(USER_SHOWS_TABLE).bulkPut(animeShowsToUpsert);
+    await db
+      .table(USER_MOVIES_TABLE)
+      .bulkPut(animeMoviesToUpsert.map((a) => ({ ...a, movie: a.show })));
+  }
 };
 
 export const firstLoad = async () => {
@@ -334,6 +389,7 @@ export const firstLoad = async () => {
     );
     const { data: newActivities } = await syncActivities();
 
+    await syncRemoteAnimes(oldActivities, newActivities);
     await syncRemoteMovies(oldActivities, newActivities);
 
     const localUserMovieWatchlistIds = await db

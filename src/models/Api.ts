@@ -240,10 +240,35 @@ export type SimklStatus =
   | 'dropped'
   | 'watching';
 
+export type StatusAnime = {
+  anime_type: 'tv' | 'special' | 'ova' | 'movie' | 'music video' | 'ona';
+  show: {
+    ids: Ids;
+    title: string;
+    poster: string;
+    year: number;
+  };
+  last_watched: string | null;
+  next_to_watch: string | null;
+  added_to_watchlist_at: string | null;
+  last_watched_at: string | null;
+  not_aired_episodes_count: number;
+  status: SimklStatus;
+  total_episodes_count: number;
+  user_rated_at: string | null;
+  user_rating: string | null;
+  watched_episodes_count: string;
+};
+
 export type StatusMovie = {
   added_to_watchlist_at: string | null;
   last_watched_at: string | null;
-  movie: { ids: Ids; title: string; poster: string; year: number };
+  movie: {
+    ids: Ids;
+    title: string;
+    poster: string;
+    year: number;
+  };
   not_aired_episodes_count: number;
   status: SimklStatus;
   total_episodes_count: number;
@@ -271,20 +296,5 @@ export type StatusShow = {
     poster: string;
     year: number;
     ids: Ids;
-    // {
-    //   simkl: number;
-    //   slug: string;
-    //   instagram: string;
-    //   fb: string;
-    //   tw: string;
-    //   tmdb: string;
-    //   imdb: string;
-    //   zap2it: string;
-    //   tvdbslug: string;
-    //   offen: string;
-    //   jwslug: string;
-    //   trakttvslug: string;
-    //   tvdb: string;
-    // };
   };
 };

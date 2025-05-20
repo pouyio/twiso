@@ -12,6 +12,7 @@ import { getProfileApi, getStatsApi } from '../utils/api';
 import {
   removeDetailsCaches,
   removeImgCaches,
+  removeUserActivities,
   removeUserCaches,
 } from '../utils/cache';
 import { UserStats } from '../models/Api';
@@ -165,6 +166,15 @@ export default function Profile() {
               >
                 <Emoji emoji="🌎" />
                 Force Reload
+              </button>
+            </p>
+            <p className="text-center py-4">
+              <button
+                onClick={removeUserActivities}
+                className="bg-gray-200 px-2 py-1 rounded-full"
+              >
+                <Emoji emoji="⚠️" />
+                Remove USER activities only
               </button>
             </p>
             <p className="text-center py-4">

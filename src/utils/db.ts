@@ -4,16 +4,14 @@ const db = new Dexie('twisoDB');
 
 export const USER_MOVIES_TABLE = 'user-movies';
 export const USER_SHOWS_TABLE = 'user-shows';
-export const USER_ANIMES_TABLE = 'user-animes';
 export const DETAIL_MOVIES_TABLE = 'detail-movies';
 export const DETAIL_SHOWS_TABLE = 'detail-shows';
 
 db.version(3).stores({
   [DETAIL_MOVIES_TABLE]: 'ids.imdb,genres',
   [DETAIL_SHOWS_TABLE]: 'ids.imdb,genres',
-  [USER_MOVIES_TABLE]: 'movie.ids.imdb,status',
-  [USER_SHOWS_TABLE]: 'show.ids.imdb,status',
-  [USER_ANIMES_TABLE]: 'show.ids.imdb,status',
+  [USER_MOVIES_TABLE]: 'movie.ids.imdb,status,anime_type',
+  [USER_SHOWS_TABLE]: 'show.ids.imdb,status,anime_type',
 });
 
 export default db;
