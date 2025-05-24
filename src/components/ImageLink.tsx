@@ -9,7 +9,8 @@ interface IImageLinkProps {
   style?: React.CSSProperties;
   type: 'movie' | 'show' | 'person';
   onClick?: React.MouseEventHandler<HTMLAnchorElement> | undefined;
-  forceState?: 'completed' | 'plantowatch' | 'watching';
+  forceState?: 'watched' | 'watchlist';
+  hidden?: boolean;
 }
 
 const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
@@ -18,6 +19,7 @@ const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
   style,
   type,
   forceState,
+  hidden,
   children = '',
   onClick = () => {},
 }) => {
@@ -34,6 +36,7 @@ const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
         style={style}
         type={type}
         forceState={forceState}
+        hidden={hidden}
       />
       {children}
     </Link>

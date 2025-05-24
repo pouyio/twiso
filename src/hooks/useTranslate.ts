@@ -83,6 +83,8 @@ const en = {
   genres: 'Genres',
   'empty-login-perk': 'Start following a show or add a movie to your watchlist',
   'call-to-action': 'Go for it!',
+  'days-aprox': '{} days, {} hours, {} minutes aprox',
+  'hours-aprox': '{} hours, {} minutes aprox',
 };
 
 const es = {
@@ -168,6 +170,8 @@ const es = {
   'empty-login-perk':
     'Empieza a seguir una serie o añade tu una película a tu lista',
   'call-to-action': 'Vamos!',
+  'days-aprox': '{} días, {} horas, {} minutos aprox',
+  'hours-aprox': '{} horas, {} minutos aprox',
 };
 
 const translations: Record<Language, Record<string, string>> = {
@@ -178,9 +182,14 @@ const translations: Record<Language, Record<string, string>> = {
 export const useTranslate = () => {
   const language = useAppSelector((state) => state.config.language);
 
-  const t = (text: string, interpolation: string = '') => {
-    const translation = translations[language][text] ?? text;
-    return translation.replace('{}', interpolation);
+  const t = (text: string, ...interpolations: (string | number)[]) => {
+    let translation = translations[language][text] ?? text;
+    let index = 0;
+    while (translation.includes('{}')) {
+      translation = translation.replace('{}', `${interpolations.at(index)}`);
+      index++;
+    }
+    return translation;
   };
 
   return { t };

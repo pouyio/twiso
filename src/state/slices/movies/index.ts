@@ -13,7 +13,7 @@ import { Movie, MovieWatched, MovieWatchlist } from '../../../models/Movie';
 
 interface MoviesState {
   totalRequestsPending: number;
-  pending: { watched: number[]; watchlist: number[] };
+  pending: { watched: string[]; watchlist: string[] };
   detail?: Movie;
   movies: Record<number, MovieWatched | MovieWatchlist>;
 }
@@ -63,75 +63,68 @@ const moviesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(addWatched.pending, (state, { meta }) => {
-        state.pending.watched.push(meta.arg.movie.ids.trakt);
+        state.pending.watched.push(meta.arg.movie.ids.imdb);
       })
       .addCase(addWatched.fulfilled, (state, { payload, meta }) => {
-        if (payload?.added.movies) {
-          state.movies[meta.arg.movie.ids.imdb] = {
-            movie: meta.arg.movie,
-            watched_at: new Date().toISOString(),
-            localState: 'watched',
-          };
-        }
+        // if (payload?.added.movies) {
+        //   state.movies[meta.arg.movie.ids.imdb] = {
+        //     movie: meta.arg.movie,
+        //     watched_at: new Date().toISOString(),
+        //     localState: 'watched',
+        //   };
+        // }
         state.pending.watched = state.pending.watched.filter(
-          (p) => p !== meta.arg.movie.ids.trakt
+          (p) => p !== meta.arg.movie.ids.imdb
         );
       })
       .addCase(addWatched.rejected, (state, { meta }) => {
         state.pending.watched = state.pending.watched.filter(
-          (p) => p !== meta.arg.movie.ids.trakt
+          (p) => p !== meta.arg.movie.ids.imdb
         );
       })
       .addCase(removeWatched.pending, (state, { meta }) => {
-        state.pending.watched.push(meta.arg.movie.ids.trakt);
+        state.pending.watched.push(meta.arg.movie.ids.imdb);
       })
       .addCase(removeWatched.fulfilled, (state, { payload, meta }) => {
         if (payload?.deleted.movies) {
-          delete state.movies[meta.arg.movie.ids.trakt];
+          delete state.movies[meta.arg.movie.ids.imdb];
         }
         state.pending.watched = state.pending.watched.filter(
-          (p) => p !== meta.arg.movie.ids.trakt
+          (p) => p !== meta.arg.movie.ids.imdb
         );
       })
       .addCase(removeWatched.rejected, (state, { meta }) => {
         state.pending.watched = state.pending.watched.filter(
-          (p) => p !== meta.arg.movie.ids.trakt
+          (p) => p !== meta.arg.movie.ids.imdb
         );
       })
       .addCase(addWatchlistThunk.pending, (state, { meta }) => {
-        state.pending.watchlist.push(meta.arg.movie.ids.trakt);
+        state.pending.watchlist.push(meta.arg.movie.ids.imdb);
       })
-      .addCase(addWatchlistThunk.fulfilled, (state, { payload, meta }) => {
-        if (payload?.added.movies) {
-          state.movies[meta.arg.movie.ids.trakt] = {
-            movie: meta.arg.movie,
-            listed_at: new Date().toISOString(),
-            localState: 'watchlist',
-          };
-          state.pending.watchlist = state.pending.watchlist.filter(
-            (p) => p !== meta.arg.movie.ids.trakt
-          );
-        }
+      .addCase(addWatchlistThunk.fulfilled, (state, { meta }) => {
+        state.pending.watchlist = state.pending.watchlist.filter(
+          (p) => p !== meta.arg.movie.ids.imdb
+        );
       })
       .addCase(addWatchlistThunk.rejected, (state, { meta }) => {
         state.pending.watchlist = state.pending.watchlist.filter(
-          (p) => p !== meta.arg.movie.ids.trakt
+          (p) => p !== meta.arg.movie.ids.imdb
         );
       })
       .addCase(removeWatchlistThunk.pending, (state, { meta }) => {
-        state.pending.watchlist.push(meta.arg.movie.ids.trakt);
+        state.pending.watchlist.push(meta.arg.movie.ids.imdb);
       })
       .addCase(removeWatchlistThunk.fulfilled, (state, { payload, meta }) => {
         if (payload?.deleted.movies) {
-          delete state.movies[meta.arg.movie.ids.trakt];
+          delete state.movies[meta.arg.movie.ids.imdb];
         }
         state.pending.watchlist = state.pending.watchlist.filter(
-          (p) => p !== meta.arg.movie.ids.trakt
+          (p) => p !== meta.arg.movie.ids.imdb
         );
       })
       .addCase(removeWatchlistThunk.rejected, (state, { meta }) => {
         state.pending.watchlist = state.pending.watchlist.filter(
-          (p) => p !== meta.arg.movie.ids.trakt
+          (p) => p !== meta.arg.movie.ids.imdb
         );
       })
       .addCase(getMovie.pending, (state) => {

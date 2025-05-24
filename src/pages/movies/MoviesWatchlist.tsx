@@ -15,10 +15,10 @@ export const MoviesWatchlist: React.FC = () => {
       db
         .table(USER_MOVIES_TABLE)
         .where('status')
-        .equals('plantowatch')
+        .equals('watchlist')
         .reverse()
-        .sortBy('added_to_watchlist_at')
-        .then<string[]>((items) => items.map((i) => i.movie.ids.imdb)),
+        .sortBy('created_at')
+        .then<string[]>((items) => items.map((i) => i.movie_imdb)),
     [],
     [] as string[]
   );
@@ -59,7 +59,7 @@ export const MoviesWatchlist: React.FC = () => {
                 text={m.title}
                 ids={m.ids}
                 type="movie"
-                forceState="plantowatch"
+                forceState="watchlist"
               />
             </li>
           ))}

@@ -2,7 +2,6 @@ import React, { useContext, useMemo } from 'react';
 import { useInView } from 'react-hook-inview';
 import Emoji from './Emoji';
 import { useImage } from '../hooks/useImage';
-import { useIsWatch } from '../hooks/useIsWatch';
 import { Img } from '../lib/react-image'; // temporary load local lib until remote is updated https://github.com/mbrevda/react-image/pull/1006
 import { Ids } from '../models/Ids';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -16,7 +15,8 @@ interface IImageProps {
   className?: string;
   style?: React.CSSProperties;
   size?: 'small' | 'big';
-  forceState?: 'completed' | 'plantowatch' | 'watching';
+  forceState?: 'watched' | 'watchlist';
+  hidden?: boolean;
 }
 
 const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
@@ -27,10 +27,10 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
   style = {},
   size = 'small',
   forceState,
+  hidden = false,
   ...props
 }) => {
   const { session } = useContext(AuthContext);
-  const { isHidden } = useIsWatch();
   const [ref, inView] = useInView({ unobserveOnEnter: true });
 
   const { imgUrl, imgPreview, message } = useImage(
@@ -53,13 +53,13 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
   const borderClass = useMemo(() => {
     if (!session) return '';
     if (type === 'person') return '';
-    if (isHidden(ids.imdb ?? '')) {
+    if (hidden) {
       return 'border-2 brightness-70 opacity-50';
     }
-    if (['completed', 'watching'].includes(status)) {
+    if (status === 'watched') {
       return 'border-2 border-green-400';
     }
-    if (status === 'plantowatch') {
+    if (status === 'watchlist') {
       return 'border-2 border-blue-400';
     }
     return '';

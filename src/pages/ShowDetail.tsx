@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import { useAppDispatch, useAppSelector } from 'state/store';
-import { fillDetail, toggleHidden } from 'state/slices/shows/thunks';
+import { fillDetail, setHiddenShow } from 'state/slices/shows/thunks';
 import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
@@ -72,13 +72,13 @@ export default function ShowDetail() {
   }, [id]);
 
   const bgClassName = useMemo(() => {
-    if (liveStatus?.status === 'dropped') {
+    if (liveStatus?.hidden) {
       return 'bg-green-800';
     }
-    if (['completed', 'watching'].includes(liveStatus?.status ?? '')) {
+    if (liveStatus?.status === 'watched') {
       return 'bg-green-400';
     }
-    if (liveStatus?.status === 'plantowatch') {
+    if (liveStatus?.status === 'watchlist') {
       return 'bg-blue-400';
     }
     return 'bg-gray-300';
@@ -93,8 +93,13 @@ export default function ShowDetail() {
   };
 
   const onToggleHidden = () => {
-    if (item) {
-      dispatch(toggleHidden(item.ids.trakt));
+    if (liveStatus) {
+      dispatch(
+        setHiddenShow({
+          showId: liveStatus.show_imdb,
+          hidden: !liveStatus.hidden,
+        })
+      );
     }
   };
 
@@ -115,6 +120,14 @@ export default function ShowDetail() {
     language === 'es'
       ? item['translation']?.overview || item.overview
       : item.overview;
+
+  const totalEpisodes =
+    item.all_seasons.reduce((acc, season) => {
+      if (season.number > 0) {
+        acc += season.episodes.length;
+      }
+      return acc;
+    }, 0) ?? 1;
 
   return (
     <div className={bgClassName}>
@@ -196,17 +209,11 @@ export default function ShowDetail() {
                 <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-100 capitalize">
                   {t(item.status)}
                 </h2>
-                {['completed', 'dropped', 'watching'].includes(
-                  liveStatus?.status ?? ''
-                ) && (
+                {liveStatus?.status === 'watched' && (
                   <button onClick={onToggleHidden}>
                     <Icon
                       className="h-10"
-                      name={
-                        liveStatus?.status === 'dropped'
-                          ? 'no-hidden'
-                          : 'hidden'
-                      }
+                      name={liveStatus?.hidden ? 'no-hidden' : 'hidden'}
                       title="Toggle visibility"
                     />
                   </button>
@@ -220,9 +227,7 @@ export default function ShowDetail() {
                     votes={ratings?.votes ?? 0}
                   />
                 </h2>
-                {['completed', 'dropped', 'watching'].includes(
-                  liveStatus?.status ?? ''
-                ) && (
+                {['watched', 'hidden'].includes(liveStatus?.status ?? '') && (
                   <h2
                     className="text-sm cursor-pointer text-center"
                     style={{ minWidth: '8rem' }}
@@ -231,19 +236,19 @@ export default function ShowDetail() {
                     <Emoji emoji="✓" />{' '}
                     {showProgressPercentage
                       ? `${Math.round(
-                          ((liveStatus?.watched_episodes_count ?? 0) * 100) /
-                            (liveStatus?.total_episodes_count ?? 1)
+                          ((liveStatus?.episodes.length ?? 0) * 100) /
+                            totalEpisodes
                         )}% ${t('completed')}`
-                      : `${liveStatus?.watched_episodes_count}/${
-                          liveStatus?.total_episodes_count
-                        } ${t('episodes_small')}`}
+                      : `${liveStatus?.episodes.length}/${totalEpisodes} ${t(
+                          'episodes_small'
+                        )}`}
                     <div className="bg-green-100 rounded-sm">
                       <div
                         className="bg-green-400 h-1 rounded-sm text-white text-xs"
                         style={{
                           width: `${
-                            ((liveStatus?.watched_episodes_count ?? 0) * 100) /
-                            (liveStatus?.total_episodes_count ?? 1)
+                            ((liveStatus?.episodes.length ?? 0) * 100) /
+                            totalEpisodes
                           }%`,
                         }}
                       ></div>
@@ -253,9 +258,7 @@ export default function ShowDetail() {
                 <h2>{item.network}</h2>
               </div>
 
-              {!['completed', 'dropped', 'watching'].includes(
-                liveStatus?.status ?? ''
-              ) && (
+              {!['watched', 'hidden'].includes(liveStatus?.status ?? '') && (
                 <div className="my-4">
                   <ShowWatchButton item={item} />
                 </div>

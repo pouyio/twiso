@@ -16,7 +16,7 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
   const dispatch = useAppDispatch();
   const { isWatchlist } = useIsWatch();
   const isWatchlistPending = useAppSelector((state) => {
-    return state.shows.pending.watchlist.includes(item.ids.trakt);
+    return state.shows.pending.watchlist.includes(item.ids.imdb);
   });
   const { session } = useContext(AuthContext);
   const { t } = useTranslate();

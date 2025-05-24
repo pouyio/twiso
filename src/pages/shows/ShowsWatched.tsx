@@ -12,17 +12,16 @@ import { Show } from 'models/Show';
 const ShowsWatched: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);
 
-  const orderedUserShowsIds = useLiveQuery(
+  const orderedUserShows = useLiveQuery(
     () =>
       db
         .table<StatusShow>(USER_SHOWS_TABLE)
         .where('status')
-        .anyOf(['dropped', 'completed', 'watching'])
+        .equals('watched')
         .reverse()
-        .sortBy('added_to_watchlist_at')
-        .then<string[]>((items) => items.map((i) => i.show.ids.imdb as string)),
+        .sortBy('created_at'),
     [],
-    [] as string[]
+    [] as StatusShow[]
   );
 
   const fullShows = useLiveQuery(
@@ -30,18 +29,24 @@ const ShowsWatched: React.FC = () => {
       db
         .table<Show>(DETAIL_SHOWS_TABLE)
         .where('ids.imdb')
-        .anyOf(orderedUserShowsIds)
+        .anyOf(
+          orderedUserShows.filter((s) => !s.hidden).map((us) => us.show_imdb)
+        )
         .and((show) => genres.every((g) => show.genres.includes(g)))
         .toArray(),
-    [genres, orderedUserShowsIds],
+    [genres, orderedUserShows],
     []
   );
 
-  const orderedShows: Show[] = orderedUserShowsIds
-    .map((m) => fullShows.find((fm) => fm.ids.imdb === m))
+  const orderedShows: Show[] = orderedUserShows
+    .map((m) => fullShows.find((fm) => fm.ids.imdb === m.show_imdb))
     .filter(Boolean) as Show[];
 
   const { getItemsByPage } = usePagination(orderedShows);
+
+  const isHidden = (id: string) => {
+    return orderedUserShows.find((ous) => ous.show_imdb === id)?.hidden;
+  };
 
   return !genres.length && !orderedShows.length ? (
     <EmptyState />
@@ -62,7 +67,8 @@ const ShowsWatched: React.FC = () => {
                 text={m.title}
                 style={{ minHeight: '13.5em' }}
                 type="show"
-                forceState="watching"
+                forceState="watched"
+                hidden={isHidden(m.ids.imdb)}
               />
             </li>
           ))}

@@ -67,10 +67,10 @@ export default function MovieDetail() {
   }, [id]);
 
   const bgClassName = useMemo(() => {
-    if (liveStatus?.status === 'completed') {
+    if (liveStatus?.status === 'watched') {
       return 'bg-green-400';
     }
-    if (liveStatus?.status === 'plantowatch') {
+    if (liveStatus?.status === 'watchlist') {
       return 'bg-blue-400';
     }
     return 'bg-gray-300';

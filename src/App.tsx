@@ -2,13 +2,18 @@ import { Alert } from 'components/Alert/Alert';
 import { GlobalFilter } from 'components/GlobalFilter';
 import { NavigationTabs } from 'components/Navigation/NavigationTabs';
 import { NewVersion } from 'components/NewVersion';
-import React, { Suspense, lazy, useContext, useEffect } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router';
+import React, { Suspense, lazy, useContext, useEffect, useState } from 'react';
+import {
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+  useSearchParams,
+} from 'react-router';
 import { loadImgConfig } from 'state/slices/config';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import { ROUTE, ROUTES } from 'utils/routes';
 import Emoji from './components/Emoji';
-import Login from './components/Login';
 import { ProgressBar } from './components/ProgressBar/ProgressBar';
 import ProtectedRoute from './components/ProtectedRoute';
 import { firstLoad } from './state/firstLoadAction';
@@ -17,6 +22,8 @@ import { useWindowSize } from './hooks/useWindowSize';
 import { useLiveQuery } from 'dexie-react-hooks';
 import db, { USER_SHOWS_TABLE } from 'utils/db';
 import { removeWatchedShowsApis } from 'utils/api';
+import { supabase } from 'utils/supabase';
+import { AuthOtpResponse } from '@supabase/supabase-js';
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const Profile = lazy(() => import('./pages/Profile'));
 const MovieDetail = lazy(() => import('./pages/MovieDetail'));
@@ -26,22 +33,83 @@ const Shows = lazy(() => import('./pages/shows/Shows'));
 const Search = lazy(() => import('./pages/search/Search'));
 const Calendar = lazy(() => import('./pages/calendar/Calendar'));
 
-const ParamsComponent: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
+const SessionRedirect: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { session } = useContext(AuthContext);
 
-  return !!session ? (
-    <Navigate to="/movies" />
-  ) : (
-    <div className="text-center pt-20">
-      {params.get('code') ? (
-        <Login code={params.get('code') || ''} />
+  return !!session ? <Navigate to="/movies" /> : <Navigate to="/login" />;
+};
+
+const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
+  const { session } = useContext(AuthContext);
+  const [response, setResponse] = useState<AuthOtpResponse>();
+  const onSend = async (formData: FormData) => {
+    const email = formData.get('email') as string;
+    supabase.auth
+      .signInWithOtp({
+        email,
+      })
+      .then((data) => setResponse(data));
+  };
+
+  if (session) {
+    return <Navigate to="/movies" />;
+  }
+
+  return (
+    <form className="p-10" action={onSend}>
+      <label htmlFor="email">Email</label>
+      {response ? (
+        <p>
+          {response.error
+            ? response.error.message
+            : 'Code sent to your email, click in the link to log in!'}
+        </p>
       ) : (
-        <Navigate to="/search" />
+        <>
+          <input
+            name="email"
+            type="email"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          />
+
+          <button
+            type="submit"
+            className="disabled:opacity-50 bg-gray-400 disabled:cursor-not-allowed cursor-pointer rounded-sm text-center px-8 py-2"
+          >
+            Log in with a Magic link ✨
+          </button>
+        </>
       )}
-    </div>
+    </form>
   );
+};
+
+const MagicLink: React.FC<React.PropsWithChildren<unknown>> = () => {
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const token_hash = params.get('token_hash');
+
+  useEffect(() => {
+    if (token_hash) {
+      supabase.auth
+        .verifyOtp({
+          token_hash,
+          type: 'email',
+        })
+        .then(({ error }) => {
+          if (error) {
+            console.error(error);
+            navigate('/profile');
+          } else {
+            navigate('/movies');
+          }
+        });
+    } else {
+      navigate('/profile');
+    }
+  }, [token_hash]);
+
+  return <div className="text-center pt-20">Loading session...</div>;
 };
 
 const App: React.FC<React.PropsWithChildren<unknown>> = () => {
@@ -52,17 +120,6 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { session } = useContext(AuthContext);
   const isLoggedIn = !!session;
   const dispatch = useAppDispatch();
-  const orphanShows = useLiveQuery(
-    () =>
-      db
-        .table(USER_SHOWS_TABLE)
-        .where('status')
-        .equals('watching')
-        .filter((s) => !s.last_watched)
-        .toArray(),
-    [],
-    []
-  );
 
   useEffect(() => {
     dispatch(loadImgConfig());
@@ -70,14 +127,6 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
       firstLoad();
     }
   }, [isLoggedIn]);
-
-  useEffect(() => {
-    if (orphanShows.length && isLoggedIn) {
-      removeWatchedShowsApis(orphanShows.map((s) => s.show)).then(() => {
-        firstLoad();
-      });
-    }
-  }, [orphanShows, isLoggedIn]);
 
   return (
     <>
@@ -112,7 +161,9 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
           }
         >
           <Routes>
-            <Route path="/" element={<ParamsComponent />} />
+            <Route path="/" element={<SessionRedirect />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/auth/confirm" element={<MagicLink />} />
             <Route
               path={ROUTES.movies}
               element={

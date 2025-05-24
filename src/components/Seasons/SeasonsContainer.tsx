@@ -11,6 +11,7 @@ import { ModalContext } from '../../contexts/ModalContext';
 import {
   addWatchedApi,
   addWatchedApis,
+  addWatchedEpisodesApi,
   getProgressApi,
   getSeasonEpisodesApi,
   getSeasonsApi,
@@ -117,39 +118,26 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   ]);
 
   const addEpisode = async (episode: SeasonEpisode) => {
-    const { data } = await addWatchedApi(episode, 'episode');
-    firstLoad();
-    // const generatedShow =
-    //   watchedShow ||
-    //   ({
-    //     show,
-    //     progress: unTrackedSeasons,
-    //     fullSeasons: unTrackedSeasons,
-    //   } as unknown as ShowWatched);
-    // dispatch(addEpisodeWatched({ show: generatedShow, episode }));
+    dispatch(addEpisodeWatched({ showIds: show.ids, episodes: [episode] }));
   };
 
   const removeEpisode = async (episode: SeasonEpisode) => {
-    const { data } = await removeWatchedEpisodesApi(
-      show.ids,
-      episode.season,
-      episode.number
+    dispatch(
+      removeEpisodeWatched({
+        showIds: show.ids,
+        episodes: [episode.ids],
+      })
     );
-    firstLoad();
-    // dispatch(
-    //   removeEpisodeWatched({
-    //     show: watchedShow!,
-    //     episode,
-    //   })
-    // );
   };
 
   const addSeason = async () => {
-    const fullSeason = getFullSeason(selectedSeason);
-    if (!fullSeason) {
+    if (!selectedSeason) {
       return;
     }
-    const { data } = await addWatchedApis(fullSeason.episodes, 'episode');
+    const episodesToWawtch = episodesDates[selectedSeason].filter(
+      (e) => new Date(e.first_aired) < new Date()
+    );
+    const { data } = await addWatchedEpisodesApi(show.ids, episodesToWawtch);
     firstLoad();
     // if (watchedShow) {
     //   dispatch(
@@ -176,7 +164,13 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     if (!selectedSeason) {
       return;
     }
-    const { data } = await removeWatchedSeasonsApi(show.ids, selectedSeason);
+    const episodesToWawtch = episodesDates[selectedSeason].filter(
+      (e) => new Date(e.first_aired) < new Date()
+    );
+    const { data } = await removeWatchedEpisodesApi(
+      show.ids,
+      episodesToWawtch.map((e) => e.ids)
+    );
     firstLoad();
 
     // dispatch(
@@ -218,9 +212,11 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
           seasonId={
             show.all_seasons.find((s) => s.number === selectedSeason)?.ids.trakt
           }
-          seasonProgress={status?.seasons?.find(
-            (s) => s.number === selectedSeason
-          )}
+          episodesProgress={
+            status?.episodes?.filter(
+              (e) => e.season_number === selectedSeason
+            ) ?? []
+          }
           addEpisodeWatched={addEpisode}
           removeEpisodeWatched={removeEpisode}
           addSeasonWatched={addSeason}

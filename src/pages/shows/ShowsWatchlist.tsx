@@ -17,10 +17,10 @@ const ShowsWatchlist: React.FC = () => {
       db
         .table<StatusShow>(USER_SHOWS_TABLE)
         .where('status')
-        .equals('plantowatch')
+        .equals('watchlist')
         .reverse()
         .sortBy('added_to_watchlist_at')
-        .then<string[]>((items) => items.map((i) => i.show.ids.imdb as string)),
+        .then<string[]>((items) => items.map((i) => i.show_imdb)),
     [],
     [] as string[]
   );
@@ -62,7 +62,7 @@ const ShowsWatchlist: React.FC = () => {
                 text={s.title}
                 style={{ minHeight: '13.5em' }}
                 type="show"
-                forceState="plantowatch"
+                forceState="watchlist"
               />
             </li>
           ))}

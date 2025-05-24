@@ -8,7 +8,7 @@ import Emoji from '../components/Emoji';
 import { LoginButton } from '../components/LoginButton';
 import { AuthContext } from '../contexts/AuthContext';
 import { ThemeContext, ThemeType } from '../contexts/ThemeContext';
-import { getProfileApi, getStatsApi } from '../utils/api';
+import { getStatsApi } from '../utils/api';
 import {
   removeDetailsCaches,
   removeImgCaches,
@@ -18,6 +18,10 @@ import {
 import { UserStats } from '../models/Api';
 import { AVAIABLE_LANGUAGES, Language } from '../models/Translation';
 import { useTranslate } from '../hooks/useTranslate';
+import { supabase } from 'utils/supabase';
+
+const AVG_MOVIE_DURATION = 109;
+const AVG_EPISODE_DURATION = 33;
 
 export default function Profile() {
   const { theme, setTheme } = useContext(ThemeContext);
@@ -31,9 +35,11 @@ export default function Profile() {
 
   useEffect(() => {
     if (isLogged) {
-      getProfileApi().then(({ data }) => {
-        setDev([7612887, 7488869].includes(data.account.id));
-        getStatsApi(data.account.id).then(({ data }) => setStats(data));
+      supabase.auth.getUser().then(({ data }) => {
+        getStatsApi().then(({ data }) => setStats(data));
+        setDev(
+          ['7904e28b-a8bf-49af-9bc3-6efca4bda7ab'].includes(data.user?.id ?? '')
+        );
       });
     }
   }, [isLogged]);
@@ -44,9 +50,9 @@ export default function Profile() {
     const m = Math.round(minutes % 60);
 
     if (d > 0) {
-      return d + ' días, ' + h + ' horas, ' + m + ' minutos';
+      return t('days-aprox', d, h, m);
     } else {
-      return h + ' horas, ' + m + ' minutos';
+      return t('hours-aprox', h, m);
     }
   };
 
@@ -118,23 +124,15 @@ export default function Profile() {
               <Icon name="movie" className="h-6 pr-1" /> {t('movies')}
             </h1>
             <p className="text-center">
-              {t('have_watched_f')}: {stats?.movies.completed.count} en{' '}
-              {convertMinutes(stats?.movies.completed.mins)}
+              {t('have_watched_f')}: {stats?.movies} en{' '}
+              {convertMinutes(stats && stats.movies * AVG_MOVIE_DURATION)}
             </p>
             <h1 className="text-2xl text-center text-gray-700 m-4 mt-8 flex justify-center items-center">
               <Icon name="tv" className="h-6 pr-1" /> {t('episodes')}
             </h1>
             <p className="text-center">
-              {t('have_watched')}:{' '}
-              {stats &&
-                stats.tv.watching.watched_episodes_count +
-                  stats.tv.completed.watched_episodes_count +
-                  stats.anime.watching.watched_episodes_count +
-                  stats.anime.completed.watched_episodes_count}{' '}
-              en{' '}
-              {convertMinutes(
-                stats && stats.tv.total_mins + stats.anime.total_mins
-              )}{' '}
+              {t('have_watched')}: {stats?.episodes} en{' '}
+              {convertMinutes(stats && stats.episodes * AVG_EPISODE_DURATION)}{' '}
             </p>{' '}
           </>
         ) : null}

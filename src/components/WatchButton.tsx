@@ -25,10 +25,10 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
   const isLoggedIn = !!session;
   const dispatch = useAppDispatch();
   const isWatchlistPending = useAppSelector((state) => {
-    return state.movies.pending.watchlist.includes(item.ids.trakt);
+    return state.movies.pending.watchlist.includes(item.ids.imdb);
   });
   const isWatchedPending = useAppSelector((state) => {
-    return state.movies.pending.watched.includes(item.ids.trakt);
+    return state.movies.pending.watched.includes(item.ids.imdb);
   });
 
   return (

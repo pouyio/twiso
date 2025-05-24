@@ -1,4 +1,3 @@
-import { mockData } from './MOCK_DATA';
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
 import { config, IMG_URL, LOGIN_URL } from './apiConfig';
@@ -36,6 +35,7 @@ import {
   AddedHidden,
   AddedWatched,
   AddedWatchlist,
+  EpisodeProgress,
   HiddenShow,
   MovieCalendar,
   Profile,
@@ -53,6 +53,7 @@ import { People } from '../models/People';
 import { Person } from '../models/Person';
 import { Popular } from '../models/Popular';
 import { Ids } from 'models/Ids';
+import { supabase } from './supabase';
 
 const limiter = new Bottleneck({
   reservoir: 800,
@@ -178,29 +179,37 @@ export const addWatchedApis = (
     [`${type}s`]: item,
   });
 };
-export const addWatchedApi = (
-  item: SeasonEpisode | Season | Movie,
-  type: ItemType
-) => {
-  return authSimklClient.post<AddedWatched>(`/sync/history`, {
-    [`${type}s`]: [{ ...item, status: 'completed' }],
+export const addWatchedApi = (id: string, type: ItemType) => {
+  return supabase.functions.invoke(`api/${type}s/${id}`, {
+    method: 'POST',
+    body: {
+      status: 'watched',
+    },
   });
 };
 
-export const removeWatchedEpisodesApi = (
+export const addWatchedEpisodesApi = (
   showIds: Ids,
-  season: number,
-  ...episodes: number[]
+  episodes: SeasonEpisode[]
 ) => {
-  return authSimklClient.post<RemovedWatched>(`/sync/history/remove`, {
-    shows: [
-      {
-        ids: showIds,
-        seasons: [
-          { number: season, episodes: episodes.map((e) => ({ number: e })) },
-        ],
-      },
-    ],
+  return supabase.functions.invoke(`api/shows/${showIds.imdb}/episodes`, {
+    method: 'POST',
+    body: {
+      episodes: episodes.map((e) => ({
+        episodeId: e.ids.imdb,
+        season: e.season,
+        episode: e.number,
+      })),
+    },
+  });
+};
+
+export const removeWatchedEpisodesApi = (showIds: Ids, episodeIds: Ids[]) => {
+  return supabase.functions.invoke(`api/shows/${showIds.imdb}/episodes`, {
+    method: 'DELETE',
+    body: {
+      episodes: episodeIds.map((e) => e.imdb),
+    },
   });
 };
 
@@ -215,12 +224,9 @@ export const removeWatchedSeasonsApi = (showIds: Ids, season: number) => {
   });
 };
 
-export const removeWatchedApi = (
-  item: SeasonEpisode | ShowSeason | Movie,
-  type: ItemType
-) => {
-  return authSimklClient.post<RemovedWatched>(`/sync/history/remove`, {
-    [`${type}s`]: [item],
+export const removeWatchedApi = (id: string, type: ItemType) => {
+  return supabase.functions.invoke(`api/${type}s/${id}`, {
+    method: 'DELETE',
   });
 };
 
@@ -238,15 +244,18 @@ export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
   );
 };
 
-export const addWatchlistApi = (item: Show | Movie, type: ItemType) => {
-  return authSimklClient.post<AddedWatchlist>(`/sync/add-to-list`, {
-    [`${type}s`]: [{ ...item, to: 'plantowatch' }],
+export const addWatchlistApi = (id: string, type: 'movie' | 'show') => {
+  return supabase.functions.invoke(`api/${type}s/${id}`, {
+    method: 'POST',
+    body: {
+      status: 'watchlist',
+    },
   });
 };
 
-export const removeWatchlistApi = (item: Show | Movie, type: ItemType) => {
-  return authSimklClient.post<RemovedWatchlist>(`/sync/history/remove`, {
-    [`${type}s`]: [item],
+export const removeWatchlistApi = (id: string, type: ItemType) => {
+  return supabase.functions.invoke(`api/${type}s/${id}`, {
+    method: 'DELETE',
   });
 };
 
@@ -277,12 +286,10 @@ export const getRelatedApi = async <T>(type: ItemType, id?: string) => {
     : { data: [] };
 };
 
-export const getStatsApi = (id: number) => {
-  return authSimklClient.post<UserStats>(`/users/${id}/stats`);
-};
-
-export const getProfileApi = () => {
-  return authSimklClient.post<Profile>(`/users/settings`);
+export const getStatsApi = () => {
+  return supabase.functions.invoke('api/profile', {
+    method: 'GET',
+  });
 };
 
 export const getRatingsApi = (id: string, type: ItemType) => {
@@ -305,51 +312,37 @@ export const getHiddenShows = () => {
   );
 };
 
-export const addHideShow = (id: number) => {
-  return authTraktClient.post<AddedHidden>(`/users/hidden/progress_watched`, {
-    shows: [
-      {
-        ids: {
-          trakt: id,
-        },
-      },
-    ],
+export const setHideShow = (showId: string, hidden: boolean) => {
+  return supabase.functions.invoke(`api/shows/${showId}/hide`, {
+    method: 'PUT',
+    body: {
+      hidden,
+    },
   });
 };
 
-export const removeHideShow = (id: number) => {
-  return authTraktClient.post<RemoveHidden>(
-    `/users/hidden/progress_watched/remove`,
-    {
-      shows: [
-        {
-          ids: {
-            trakt: id,
-          },
-        },
-      ],
-    }
-  );
-};
-
 export const syncActivities = () => {
-  return authSimklClient.post<Activities>(`/sync/activities`);
+  return supabase.functions.invoke(`api/activities`, {
+    method: 'GET',
+  });
 };
 
 export const getAllMoviesIds = async () => {
-  return authSimklClient
-    .get<{ movies: StatusMovie[] } | null>(
-      `/sync/all-items/movies?extended=ids_only`
-    )
-    .then(({ data }) => data?.movies.map((m) => m.movie.ids.imdb) ?? []);
+  return supabase.functions
+    .invoke(`api/movies`, {
+      method: 'GET',
+    })
+    .then(({ data }) => data.map((m) => m.movie_imdb));
 };
+
 export const getAllShowsIds = async () => {
-  return authSimklClient
-    .get<{ shows: StatusShow[] } | null>(
-      `/sync/all-items/shows?extended=ids_only`
-    )
-    .then(({ data }) => data?.shows.map((s) => s.show.ids.imdb) ?? []);
+  return supabase.functions
+    .invoke(`api/shows`, {
+      method: 'GET',
+    })
+    .then(({ data }) => data.map((m) => m.show_imdb));
 };
+
 export const getAllAnimeIds = async () => {
   return authSimklClient
     .get<{ anime: StatusAnime[] } | null>(
@@ -358,11 +351,11 @@ export const getAllAnimeIds = async () => {
     .then(({ data }) => data?.anime.map((s) => s.show.ids.imdb) ?? []);
 };
 export const getAllMovies = (dateFrom?: string | null) => {
-  // return { data: mockData };
-  return authSimklClient.get<{ movies: StatusMovie[] } | null>(
-    `/sync/all-items/movies/?${
-      dateFrom ? `date_from=${encodeURIComponent(dateFrom)}` : ''
-    }`
+  return supabase.functions.invoke(
+    `api/movies?${dateFrom ? `date_from=${encodeURIComponent(dateFrom)}` : ''}`,
+    {
+      method: 'GET',
+    }
   );
 };
 export const getAllAnimes = (dateFrom?: string | null) => {
@@ -373,10 +366,13 @@ export const getAllAnimes = (dateFrom?: string | null) => {
   );
 };
 export const getAllShows = (dateFrom?: string | null) => {
-  return authSimklClient.get<{ shows: StatusShow[] } | null>(
-    `/sync/all-items/shows/?extended=full${
-      dateFrom ? `&date_from=${encodeURIComponent(dateFrom)}` : ''
-    }`
+  return supabase.functions.invoke(
+    `api/shows/complete?${
+      dateFrom ? `date_from=${encodeURIComponent(dateFrom)}` : ''
+    }`,
+    {
+      method: 'GET',
+    }
   );
 };
 

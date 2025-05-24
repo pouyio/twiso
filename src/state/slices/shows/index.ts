@@ -3,13 +3,10 @@ import { mergeDeepLeft } from 'ramda';
 import { RootState } from 'state/store';
 import {
   addEpisodeWatched,
-  addSeasonWatched,
   addWatchlist,
   populateDetail,
   removeEpisodeWatched,
-  removeSeasonWatched,
   removeWatchlist,
-  toggleHidden,
   updateFullShow,
 } from './thunks';
 import {
@@ -24,8 +21,8 @@ import { Ids } from '../../../models/Ids';
 interface ShowsState {
   totalRequestsPending: number;
   pending: {
-    watchlist: number[];
-    watched: number[];
+    watchlist: string[];
+    watched: string[];
     seasons: number[];
   };
   detail?: Show;
@@ -122,39 +119,32 @@ const showsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(addWatchlist.pending, (state, { meta }) => {
-        state.pending.watchlist.push(meta.arg.show.ids.trakt);
+        state.pending.watchlist.push(meta.arg.show.ids.imdb);
       })
-      .addCase(addWatchlist.fulfilled, (state, { payload, meta }) => {
-        if (payload?.added.shows) {
-          state.shows[meta.arg.show.ids.trakt] = {
-            show: meta.arg.show,
-            listed_at: new Date().toISOString(),
-            localState: 'watchlist',
-          };
-        }
+      .addCase(addWatchlist.fulfilled, (state, { meta }) => {
         state.pending.watchlist = state.pending.watchlist.filter(
-          (p) => p !== meta.arg.show.ids.trakt
+          (p) => p !== meta.arg.show.ids.imdb
         );
       })
       .addCase(addWatchlist.rejected, (state, { meta }) => {
         state.pending.watchlist = state.pending.watchlist.filter(
-          (p) => p !== meta.arg.show.ids.trakt
+          (p) => p !== meta.arg.show.ids.imdb
         );
       })
       .addCase(removeWatchlist.pending, (state, { meta }) => {
-        state.pending.watchlist.push(meta.arg.show.ids.trakt);
+        state.pending.watchlist.push(meta.arg.show.ids.imdb);
       })
       .addCase(removeWatchlist.fulfilled, (state, { payload, meta }) => {
         if (payload?.deleted.shows) {
           delete state.shows[meta.arg.show.ids.trakt];
         }
         state.pending.watchlist = state.pending.watchlist.filter(
-          (p) => p !== meta.arg.show.ids.trakt
+          (p) => p !== meta.arg.show.ids.imdb
         );
       })
       .addCase(removeWatchlist.rejected, (state, { meta }) => {
         state.pending.watchlist = state.pending.watchlist.filter(
-          (p) => p !== meta.arg.show.ids.trakt
+          (p) => p !== meta.arg.show.ids.imdb
         );
       })
       .addCase(updateFullShow.pending, (state) => {
@@ -171,81 +161,33 @@ const showsSlice = createSlice({
         state.totalRequestsPending = state.totalRequestsPending - 1;
       })
       .addCase(addEpisodeWatched.pending, (state, { meta }) => {
-        state.pending.watched.push(meta.arg.episode.ids.trakt);
+        state.pending.watched.push(...meta.arg.episodes.map((e) => e.ids.imdb));
       })
-      .addCase(addEpisodeWatched.fulfilled, (state, { meta, payload }) => {
-        state.shows[meta.arg.show.show.ids.trakt] = payload;
+      .addCase(addEpisodeWatched.fulfilled, (state, { meta }) => {
+        const addedEpisodes = meta.arg.episodes.map((e) => e.ids.imdb);
         state.pending.watched = state.pending.watched.filter(
-          (p) => p !== meta.arg.episode.ids.trakt
+          (p) => !addedEpisodes.includes(p)
         );
       })
       .addCase(addEpisodeWatched.rejected, (state, { meta }) => {
+        const addedEpisodes = meta.arg.episodes.map((e) => e.ids.imdb);
         state.pending.watched = state.pending.watched.filter(
-          (p) => p !== meta.arg.episode.ids.trakt
-        );
-      })
-      .addCase(addSeasonWatched.pending, (state, { meta }) => {
-        state.pending.seasons.push(meta.arg.season.ids.trakt);
-      })
-      .addCase(addSeasonWatched.fulfilled, (state, { meta, payload }) => {
-        state.shows[meta.arg.show.show.ids.trakt] = payload;
-        state.pending.seasons = state.pending.seasons.filter(
-          (p) => p !== meta.arg.season.ids.trakt
-        );
-      })
-      .addCase(addSeasonWatched.rejected, (state, { meta }) => {
-        state.pending.seasons = state.pending.seasons.filter(
-          (p) => p !== meta.arg.season.ids.trakt
+          (p) => !addedEpisodes.includes(p)
         );
       })
       .addCase(removeEpisodeWatched.pending, (state, { meta }) => {
-        state.pending.watched.push(meta.arg.episode.ids.trakt);
+        state.pending.watched.push(...meta.arg.episodes.map((e) => e.imdb));
       })
-      .addCase(removeEpisodeWatched.fulfilled, (state, { meta, payload }) => {
+      .addCase(removeEpisodeWatched.fulfilled, (state, { meta }) => {
+        const removedEpisodes = meta.arg.episodes.map((e) => e.imdb);
         state.pending.watched = state.pending.watched.filter(
-          (p) => p !== meta.arg.episode.ids.trakt
+          (p) => !removedEpisodes.includes(p)
         );
-        const oldShow = state.shows[
-          meta.arg.show.show.ids.trakt
-        ] as ShowWatched;
-        if (payload) {
-          state.shows[meta.arg.show.show.ids.trakt] = {
-            ...oldShow,
-            progress: payload,
-            last_watched_at: payload.last_watched_at,
-          };
-        } else {
-          delete state[meta.arg.show.show.ids.trakt];
-        }
       })
       .addCase(removeEpisodeWatched.rejected, (state, { meta }) => {
+        const removedEpisodes = meta.arg.episodes.map((e) => e.imdb);
         state.pending.watched = state.pending.watched.filter(
-          (p) => p !== meta.arg.episode.ids.trakt
-        );
-      })
-      .addCase(removeSeasonWatched.pending, (state, { meta }) => {
-        state.pending.seasons.push(meta.arg.season.ids.trakt);
-      })
-      .addCase(removeSeasonWatched.fulfilled, (state, { meta, payload }) => {
-        state.pending.seasons = state.pending.seasons.filter(
-          (p) => p !== meta.arg.season.ids.trakt
-        );
-        const oldShow = state.shows[
-          meta.arg.show.show.ids.trakt
-        ] as ShowWatched;
-        if (payload) {
-          state.shows[meta.arg.show.show.ids.trakt] = {
-            ...oldShow,
-            progress: payload,
-            last_watched_at: payload.last_watched_at,
-          };
-        } else {
-          delete state[meta.arg.show.show.ids.trakt];
-        }
-      })
-      .addCase(removeSeasonWatched.rejected, (state, { meta }) => {
-        state.pending.seasons = state.pending.seasons.filter(
-          (p) => p !== meta.arg.season.ids.trakt
+          (p) => !removedEpisodes.includes(p)
         );
       })
       .addCase(populateDetail.pending, (state) => {
@@ -256,9 +198,6 @@ const showsSlice = createSlice({
       })
       .addCase(populateDetail.rejected, (state) => {
         state.detail = undefined;
-      })
-      .addCase(toggleHidden.fulfilled, (state, { payload, meta }) => {
-        state.hidden[meta.arg] = payload;
       });
   },
 });

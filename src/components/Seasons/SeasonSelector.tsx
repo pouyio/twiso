@@ -66,19 +66,16 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
     if (!progress) {
       return false;
     }
-    const foundSeasonProgress = progress.seasons?.find(
-      (s) => s.number === seasonNumber
-    );
-    if (!foundSeasonProgress) {
+    const foundSeasonProgress =
+      progress.episodes?.filter((e) => e.season_number === seasonNumber) ?? [];
+    if (!foundSeasonProgress.length) {
       return false;
     }
     const foundSeasonDetail = seasons.find((s) => s.number === seasonNumber);
     if (!foundSeasonDetail) {
       return false;
     }
-    return (
-      foundSeasonProgress.episodes.length == foundSeasonDetail.episodes.length
-    );
+    return foundSeasonProgress.length === foundSeasonDetail.episodes.length;
   };
 
   return (

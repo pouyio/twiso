@@ -32,7 +32,10 @@ export const addWatched = createAsyncThunk<AddedWatched, { movie: Movie }>(
   'movies/addWatched',
   async ({ movie }) => {
     try {
-      const { data } = await addWatchedApi(movie, 'movie');
+      if (!movie.ids.imdb) {
+        throw Error('no imdb id available');
+      }
+      const { data } = await addWatchedApi(movie.ids.imdb, 'movie');
       return data;
     } catch (e) {
       console.error(e);
@@ -45,7 +48,10 @@ export const removeWatched = createAsyncThunk<RemovedWatched, { movie: Movie }>(
   'movies/removeWatched',
   async ({ movie }) => {
     try {
-      const { data } = await removeWatchedApi(movie, 'movie');
+      if (!movie.ids.imdb) {
+        throw Error('no imdb id available');
+      }
+      const { data } = await removeWatchedApi(movie.ids.imdb, 'movie');
       return data;
     } catch (e) {
       console.error(e);
@@ -58,7 +64,10 @@ export const addWatchlist = createAsyncThunk<AddedWatchlist, { movie: Movie }>(
   'movies/addWatchlist',
   async ({ movie }) => {
     try {
-      const { data } = await addWatchlistApi(movie, 'movie');
+      if (!movie.ids.imdb) {
+        throw Error('no imdb id available');
+      }
+      const { data } = await addWatchlistApi(movie.ids.imdb, 'movie');
       return data;
     } catch (e) {
       console.error(e);
@@ -72,7 +81,10 @@ export const removeWatchlist = createAsyncThunk<
   { movie: Movie }
 >('movies/removeWatchlist', async ({ movie }) => {
   try {
-    const { data } = await removeWatchlistApi(movie, 'movie');
+    if (!movie.ids.imdb) {
+      throw Error('no imdb id available');
+    }
+    const { data } = await removeWatchlistApi(movie.ids.imdb, 'movie');
     return data;
   } catch (e) {
     console.error(e);

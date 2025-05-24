@@ -5,12 +5,12 @@ import { useAppSelector } from 'state/store';
 import { Icon } from 'components/Icon';
 import { useTranslate } from '../../hooks/useTranslate';
 import { Episode, SeasonEpisode } from '../../models/Show';
-import { StatusSeason } from 'models/Api';
+import { EpisodeProgress } from 'models/Api';
 
 interface ISeasonsProps {
-  seasonProgress?: StatusSeason;
-  addEpisodeWatched: (episode: Episode) => void;
-  removeEpisodeWatched: (episode: Episode) => void;
+  episodesProgress: EpisodeProgress[];
+  addEpisodeWatched: (episode: SeasonEpisode) => void;
+  removeEpisodeWatched: (episode: SeasonEpisode) => void;
   addSeasonWatched: () => void;
   removeSeasonWatched: () => void;
   episodes?: SeasonEpisode[];
@@ -21,7 +21,7 @@ interface ISeasonsProps {
 }
 
 const Episodes: React.FC<ISeasonsProps> = ({
-  seasonProgress,
+  episodesProgress,
   addEpisodeWatched,
   removeEpisodeWatched,
   addSeasonWatched,
@@ -38,17 +38,20 @@ const Episodes: React.FC<ISeasonsProps> = ({
   const { t } = useTranslate();
 
   const isEpisodeWatched = (episodeNumber: number) => {
-    if (!seasonProgress) {
+    if (!episodesProgress.length) {
       return false;
     }
-    return seasonProgress.episodes.find((e) => e.number === episodeNumber);
+    return episodesProgress.find((e) => e.episode_number === episodeNumber);
   };
 
   const isSeasonWatched = () => {
-    if (!seasonProgress) {
+    if (!episodesProgress) {
       return false;
     }
-    return seasonProgress.episodes.length === seasonProgress.episodes.length;
+    const episodesAvailable = episodesDates.filter(
+      (e) => new Date(e.first_aired) < new Date()
+    );
+    return episodesProgress.length === episodesAvailable.length;
   };
 
   const toggleEpisode = (episode: SeasonEpisode) => {
@@ -74,7 +77,10 @@ const Episodes: React.FC<ISeasonsProps> = ({
     if (!foundEpisode) {
       return false;
     }
-    return new Date(foundEpisode.first_aired) < new Date();
+    return (
+      foundEpisode.first_aired &&
+      new Date(foundEpisode.first_aired) < new Date()
+    );
   };
 
   const getFormattedDate = (date: string, size: 'long' | 'short') => {
@@ -94,7 +100,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
           <EpisodesPlaceholder />
         ) : (
           episodes.map((e) => (
-            <li className="py-3 text-sm leading-tight" key={e.ids.trakt}>
+            <li className="py-3 text-sm leading-tight" key={e.ids.imdb}>
               <div className="flex items-center">
                 <span className="text-gray-600 text-xs font-bold mr-1">
                   {e.number}
@@ -135,7 +141,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
                   </span>
                 </div>
                 {isEpisodeAvailable(e.number) &&
-                  (watched.includes(e.ids.trakt) ? (
+                  (watched.includes(e.ids.imdb) ? (
                     <Emoji
                       emoji="⏳"
                       rotating={true}

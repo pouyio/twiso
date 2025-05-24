@@ -1,6 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { StatusMovie, StatusShow } from 'models/Api';
-import { useAppSelector } from 'state/store';
 import db, { USER_MOVIES_TABLE, USER_SHOWS_TABLE } from 'utils/db';
 
 export const useIsWatch = () => {
@@ -9,7 +8,7 @@ export const useIsWatch = () => {
       () =>
         db
           .table<StatusMovie, string>(USER_MOVIES_TABLE)
-          .where({ status: 'completed' })
+          .where({ status: 'watched' })
           .primaryKeys(),
       [],
       []
@@ -19,39 +18,27 @@ export const useIsWatch = () => {
     useLiveQuery(() =>
       db
         .table<StatusMovie, string>(USER_MOVIES_TABLE)
-        .where({ status: 'plantowatch' })
+        .where({ status: 'watchlist' })
         .primaryKeys()
     ) ?? [];
 
-  const watchedShowIds =
+  const watchedShows =
     useLiveQuery(
       () =>
         db
           .table<StatusShow, string>(USER_SHOWS_TABLE)
-          .where('status')
-          .anyOf(['completed', 'dropped', 'watching'])
+          .where({ status: 'watched' })
           .primaryKeys(),
       [],
       []
     ) ?? [];
-
-  const hiddenShowIds =
-    useLiveQuery(
-      () =>
-        db
-          .table<StatusShow, string>(USER_SHOWS_TABLE)
-          .where('status')
-          .equals('dropped')
-          .primaryKeys(),
-      [],
-      []
-    ) ?? [];
+  const watchedShowIds = watchedShows.map((s) => s.show_imdb);
 
   const watchlistShowIds =
     useLiveQuery(() =>
       db
         .table<StatusMovie, string>(USER_SHOWS_TABLE)
-        .where({ status: 'plantowatch' })
+        .where({ status: 'watchlist' })
         .primaryKeys()
     ) ?? [];
 
@@ -73,13 +60,8 @@ export const useIsWatch = () => {
     }
   };
 
-  const isHidden = (id: string) => {
-    return hiddenShowIds.some((show) => show === id);
-  };
-
   return {
     isWatched,
     isWatchlist,
-    isHidden,
   };
 };

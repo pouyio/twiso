@@ -1,28 +1,32 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from 'state/store';
 import {
-  addHideShow,
   addWatchedApi,
+  addWatchedEpisodesApi,
   addWatchlistApi,
   getApi,
   getProgressApi,
   getSeasonsApi,
   getTranslationsApi,
-  removeHideShow,
   removeWatchedApi,
+  removeWatchedEpisodesApi,
   removeWatchlistApi,
+  setHideShow,
 } from 'utils/api';
 import { SearchShow } from '../../../models/Movie';
 import { AddedWatchlist, RemovedWatchlist } from '../../../models/Api';
 import {
   Episode,
   Season,
+  SeasonEpisode,
   Show,
   ShowProgress,
   ShowWatched,
   ShowWatchlist,
 } from '../../../models/Show';
 import { Language, Translation } from 'models/Translation';
+import { Ids } from 'models/Ids';
+import { firstLoad } from 'state/firstLoadAction';
 
 const _getRemoteWithTranslations = async (
   id: string
@@ -38,8 +42,11 @@ const _getRemoteWithTranslations = async (
 export const addWatchlist = createAsyncThunk<AddedWatchlist, { show: Show }>(
   'shows/addWatchlist',
   async ({ show }) => {
+    if (!show.ids.imdb) {
+      throw Error('no imdb id available');
+    }
     try {
-      const { data } = await addWatchlistApi(show, 'show');
+      const { data } = await addWatchlistApi(show.ids.imdb, 'show');
       return data;
     } catch (e) {
       console.error(e);
@@ -52,8 +59,11 @@ export const removeWatchlist = createAsyncThunk<
   RemovedWatchlist,
   { show: Show }
 >('shows/removeWatchlist', async ({ show }) => {
+  if (!show.ids.imdb) {
+    throw Error('no imdb id available');
+  }
   try {
-    const { data } = await removeWatchlistApi(show, 'show');
+    const { data } = await removeWatchlistApi(show.ids.imdb, 'show');
     return data;
   } catch (e) {
     console.error(e);
@@ -62,130 +72,38 @@ export const removeWatchlist = createAsyncThunk<
 });
 
 export const addEpisodeWatched = createAsyncThunk<
-  ShowWatched,
+  any,
   {
-    show: ShowWatched;
-    episode: Episode;
+    showIds: Ids;
+    episodes: SeasonEpisode[];
   },
   { state: RootState }
->('shows/addEpisodeWatched', async ({ show, episode }, { getState }) => {
+>('shows/addEpisodeWatched', async ({ showIds, episodes }) => {
   try {
-    const { data } = await addWatchedApi(episode, 'episode');
-    if (data.added.episodes) {
-      const { data: progress } = await getProgressApi(show.show.ids.trakt);
-      const state = getState();
-      const updatedShow: ShowWatched = JSON.parse(JSON.stringify(show));
-      if (state.shows.shows[show.show.ids.trakt]) {
-        if (
-          state.config.language !== 'en' &&
-          show.show.available_translations.includes(state.config.language)
-        ) {
-          const { title, overview } = await getTranslationsApi(
-            show.show.ids.trakt,
-            'show',
-            state.config.language
-          );
-          updatedShow.show.title = title || show.show.title;
-          updatedShow.show.overview = overview || show.show.overview;
-        }
-      }
-      return {
-        ...(state.shows.shows[show.show.ids.trakt] || updatedShow),
-        last_watched_at: progress.last_watched_at,
-        progress,
-      } as ShowWatched;
-    }
+    const { data } = await addWatchedEpisodesApi(showIds, episodes);
+    firstLoad();
+    return data;
   } catch (e) {
     console.error(e);
     throw e;
   }
-  throw Error('shows/addEpisodeWatched failed');
 });
 
 export const removeEpisodeWatched = createAsyncThunk<
-  ShowProgress | false,
+  any,
   {
-    show: ShowWatched;
-    episode: Episode;
+    showIds: Ids;
+    episodes: Ids[];
   }
->('shows/removeEpisodeWatched', async ({ show, episode }) => {
+>('shows/removeEpisodeWatched', async ({ showIds, episodes }) => {
   try {
-    const { data } = await removeWatchedApi(episode, 'episode');
-    if (data.deleted.episodes) {
-      const { data: progress } = await getProgressApi(show.show.ids.trakt);
-      if (!progress.last_episode) {
-        return false;
-      } else {
-        return progress;
-      }
-    }
+    const { data } = await removeWatchedEpisodesApi(showIds, episodes);
+    firstLoad();
+    return data;
   } catch (e) {
     console.error(e);
     throw e;
   }
-  throw Error('shows/addEpisodeWatched failed');
-});
-
-export const addSeasonWatched = createAsyncThunk<
-  ShowWatched,
-  {
-    season: Season;
-    show: ShowWatched;
-  },
-  { state: RootState }
->('shows/addSeasonWatched', async ({ season, show }, { getState }) => {
-  try {
-    const { data } = await addWatchedApi(season, 'season');
-    if (data.added.episodes) {
-      const { data: progress } = await getProgressApi(show.show.ids.trakt);
-      const state = getState();
-      const updatedShow: ShowWatched = JSON.parse(JSON.stringify(show));
-      if (!state.shows.shows[show.show.ids.trakt]) {
-        if (
-          state.config.language !== 'en' &&
-          show.show.available_translations.includes(state.config.language)
-        ) {
-          const { title, overview } = await getTranslationsApi(
-            show.show.ids.trakt,
-            'show',
-            state.config.language
-          );
-          updatedShow.show.title = title || show.show.title;
-          updatedShow.show.overview = overview || show.show.overview;
-        }
-      }
-      return {
-        ...(state.shows.shows[show.show.ids.trakt] || updatedShow),
-        last_watched_at: progress.last_watched_at,
-        progress,
-      } as ShowWatched;
-    }
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
-  throw Error('shows/addSeasonWatched failed');
-});
-
-export const removeSeasonWatched = createAsyncThunk<
-  ShowProgress | false,
-  { season: Season; show: ShowWatched }
->('shows/removeSeasonWatched', async ({ season, show }) => {
-  try {
-    const { data } = await removeWatchedApi(season, 'season');
-    if (data.deleted.episodes) {
-      const { data: progress } = await getProgressApi(show.show.ids.trakt);
-      if (!progress.last_episode) {
-        return false;
-      } else {
-        return progress;
-      }
-    }
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
-  throw Error('shows/removeSeasonWatched failed');
 });
 
 export const updateFullShow = createAsyncThunk<
@@ -223,6 +141,20 @@ export const updateFullShow = createAsyncThunk<
       showCopy.show.overview = translations.overview || showCopy.show.overview;
     }
     return showCopy;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+});
+export const setHiddenShow = createAsyncThunk<
+  any,
+  { showId: string; hidden: boolean },
+  { state: RootState }
+>('shows/setHidden', async ({ showId, hidden }) => {
+  try {
+    const response = await setHideShow(showId, hidden);
+    firstLoad();
+    return response;
   } catch (e) {
     console.error(e);
     throw e;
@@ -301,28 +233,6 @@ export const populateDetail = createAsyncThunk<
     }
 
     return _getRemoteWithTranslations(id, state.config.language);
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
-});
-
-export const toggleHidden = createAsyncThunk<
-  boolean,
-  number,
-  { state: RootState }
->('shows/toggleHidden', async (id, { getState }) => {
-  const state = getState();
-  const isHidden = state.shows.hidden[id];
-
-  try {
-    if (isHidden) {
-      const response = await removeHideShow(id);
-      return response.data.deleted.shows === 1 ? false : true;
-    }
-
-    const response = await addHideShow(id);
-    return response.data.added.shows === 1 ? true : false;
   } catch (e) {
     console.error(e);
     throw e;

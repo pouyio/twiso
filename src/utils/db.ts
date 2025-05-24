@@ -10,8 +10,8 @@ export const DETAIL_SHOWS_TABLE = 'detail-shows';
 db.version(3).stores({
   [DETAIL_MOVIES_TABLE]: 'ids.imdb,genres',
   [DETAIL_SHOWS_TABLE]: 'ids.imdb,genres',
-  [USER_MOVIES_TABLE]: 'movie.ids.imdb,status,anime_type',
-  [USER_SHOWS_TABLE]: 'show.ids.imdb,status,anime_type',
+  [USER_MOVIES_TABLE]: 'movie_imdb,status,created_at',
+  [USER_SHOWS_TABLE]: 'show_imdb,status,created_at',
 });
 
 export default db;
