@@ -4,7 +4,6 @@ import { config, IMG_URL, LOGIN_URL } from './apiConfig';
 import {
   authSimklClient,
   authTraktClient,
-  traktClient,
   traktClientOld,
 } from './axiosClients';
 import Bottleneck from 'bottleneck';
@@ -16,9 +15,7 @@ import {
   Episode,
   Season,
   SeasonEpisode,
-  Show,
   ShowProgress,
-  ShowSeason,
   ShowWatched,
   ShowWatchlist,
 } from '../models/Show';
@@ -32,22 +29,11 @@ import {
 } from '../models/Movie';
 import {
   Activities,
-  AddedHidden,
   AddedWatched,
-  AddedWatchlist,
-  EpisodeProgress,
   HiddenShow,
-  MovieCalendar,
-  Profile,
   Ratings,
   RemovedWatched,
-  RemovedWatchlist,
-  RemoveHidden,
-  ShowCalendar,
   StatusAnime,
-  StatusMovie,
-  StatusShow,
-  UserStats,
 } from '../models/Api';
 import { People } from '../models/People';
 import { Person } from '../models/Person';
@@ -294,16 +280,6 @@ export const getStatsApi = () => {
 
 export const getRatingsApi = (id: string, type: ItemType) => {
   return traktClientOld.get<Ratings>(`/${type}s/${id}/ratings`);
-};
-
-export const getCalendar = <T extends MovieCalendar | ShowCalendar>(
-  type: ItemType,
-  firstDaxios: string,
-  period: number
-) => {
-  return authTraktClient.get<T[]>(
-    `/calendars/my/${type}s/${firstDaxios}/${period}`
-  );
 };
 
 export const getHiddenShows = () => {
