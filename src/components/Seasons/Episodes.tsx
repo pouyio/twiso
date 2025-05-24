@@ -33,7 +33,6 @@ const Episodes: React.FC<ISeasonsProps> = ({
   seasonId = 0,
 }) => {
   const watched = useAppSelector((state) => state.shows.pending.watched);
-  const pendings = useAppSelector((state) => state.shows.pending.seasons);
   const language = useAppSelector((state) => state.config.language);
   const { t } = useTranslate();
 
@@ -167,28 +166,26 @@ const Episodes: React.FC<ISeasonsProps> = ({
               className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
               onClick={() => removeSeasonWatched()}
             >
-              {t('mark_not_watched')}{' '}
-              {pendings.includes(seasonId) && (
-                <Emoji
-                  emoji="⏳"
-                  rotating={true}
-                  className="inline-flex ml-2"
-                />
-              )}
+              {t('mark_not_watched')} {/* {pendings.includes(seasonId) && ( */}
+              {/*   <Emoji */}
+              {/*     emoji="⏳" */}
+              {/*     rotating={true} */}
+              {/*     className="inline-flex ml-2" */}
+              {/*   /> */}
+              {/* )} */}
             </button>
           ) : (
             <button
               className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
               onClick={() => addSeasonWatched()}
             >
-              {t('mark_watched')}{' '}
-              {pendings.includes(seasonId) && (
-                <Emoji
-                  emoji="⏳"
-                  rotating={true}
-                  className="inline-flex ml-2"
-                />
-              )}
+              {t('mark_watched')} {/* {pendings.includes(seasonId) && ( */}
+              {/*   <Emoji */}
+              {/*     emoji="⏳" */}
+              {/*     rotating={true} */}
+              {/*     className="inline-flex ml-2" */}
+              {/*   /> */}
+              {/* )} */}
             </button>
           )}
         </div>

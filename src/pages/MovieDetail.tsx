@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
-import { fillDetail, populateDetail } from 'state/slices/movies/thunks';
+import { fillDetail } from 'state/slices/movies/thunks';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';

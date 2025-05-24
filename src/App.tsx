@@ -19,9 +19,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { firstLoad } from './state/firstLoadAction';
 import { AuthContext } from './contexts/AuthContext';
 import { useWindowSize } from './hooks/useWindowSize';
-import { useLiveQuery } from 'dexie-react-hooks';
-import db, { USER_SHOWS_TABLE } from 'utils/db';
-import { removeWatchedShowsApis } from 'utils/api';
 import { supabase } from 'utils/supabase';
 import { AuthOtpResponse } from '@supabase/supabase-js';
 const Movies = lazy(() => import('./pages/movies/Movies'));
@@ -31,7 +28,6 @@ const ShowDetail = lazy(() => import('./pages/ShowDetail'));
 const Person = lazy(() => import('./pages/Person'));
 const Shows = lazy(() => import('./pages/shows/Shows'));
 const Search = lazy(() => import('./pages/search/Search'));
-const Calendar = lazy(() => import('./pages/calendar/Calendar'));
 
 const SessionRedirect: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { session } = useContext(AuthContext);
@@ -177,14 +173,6 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
               element={
                 <ProtectedRoute>
                   <Shows />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path={ROUTES.calendar}
-              element={
-                <ProtectedRoute>
-                  <Calendar />
                 </ProtectedRoute>
               }
             />

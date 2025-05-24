@@ -12,6 +12,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "2.5.0",
     "@sentry/react": "8.42.0",
+    "@supabase/auth-ui-react": "^0.4.7",
+    "@supabase/auth-ui-shared": "^0.1.8",
     "axios": "1.7.4",
     "axios-rate-limit": "1.4.0",
     "bottleneck": "^2.19.5",
@@ -24,7 +26,6 @@
     "query-string": "^6.13.1",
     "ramda": "0.30.1",
     "react": "19.0.0",
-    "react-big-calendar": "1.18.0",
     "react-dom": "19.0.0",
     "react-helmet": "^6.1.0",
     "react-hook-inview": "4.5.1",
