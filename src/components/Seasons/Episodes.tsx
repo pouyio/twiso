@@ -99,7 +99,10 @@ const Episodes: React.FC<ISeasonsProps> = ({
           <EpisodesPlaceholder />
         ) : (
           episodes.map((e) => (
-            <li className="py-3 text-sm leading-tight" key={e.ids.imdb}>
+            <li
+              className="py-3 text-sm leading-tight"
+              key={e.ids.imdb || e.number}
+            >
               <div className="flex items-center">
                 <span className="text-gray-600 text-xs font-bold mr-1">
                   {e.number}
