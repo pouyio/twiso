@@ -1,7 +1,6 @@
 import React from 'react';
 import ShowsWatchlist from './ShowsWatchlist';
 import ShowsWatched from './ShowsWatched';
-import Helmet from 'react-helmet';
 import { useTranslate } from '../../hooks/useTranslate';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { useSearchParams } from '../../hooks/useSearchParams';
@@ -39,9 +38,7 @@ export default function Shows() {
 
   return (
     <>
-      <Helmet>
-        <title>Shows</title>
-      </Helmet>
+      <title>Shows</title>
       <div
         className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto"
         style={{

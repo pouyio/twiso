@@ -1,6 +1,5 @@
 import { SearchFilters, IFilters } from '../../pages/search/SearchFilters';
 import React, { useEffect, useState, useCallback } from 'react';
-import Helmet from 'react-helmet';
 import Emoji from '../../components/Emoji';
 import ImageLink from '../../components/ImageLink';
 import Popular from '../../components/Popular';
@@ -81,9 +80,7 @@ export default function Search() {
 
   return (
     <div className="m-4" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-      <Helmet>
-        <title>Search</title>
-      </Helmet>
+      <title>Search</title>
       <div className="w-full bg-gray-300 rounded-sm flex items-center my-2 m-auto lg:max-w-lg">
         <input
           className="bg-gray-300 rounded-sm text-black px-2 py-1 outline-hidden grow"

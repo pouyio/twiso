@@ -9,7 +9,6 @@ import { Person as IPerson } from '../models/Person';
 import { placeholders } from '../components/Related';
 import { Empty } from '../components/Empty';
 import { useAppSelector } from 'state/store';
-import { Helmet } from 'react-helmet';
 import { Movie } from '../models/Movie';
 import { Show } from '../models/Show';
 import { useTranslate } from '../hooks/useTranslate';
@@ -63,9 +62,7 @@ const Person: React.FC = () => {
 
   return localState ? (
     <div className="bg-gray-300">
-      <Helmet>
-        <title>{localState.name}</title>
-      </Helmet>
+      <title>{localState.name}</title>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
           className="p-10 pt-5 sticky top-0 z-0 lg:hidden"

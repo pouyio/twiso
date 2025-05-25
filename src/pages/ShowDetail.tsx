@@ -14,7 +14,6 @@ import ShowWatchButton from '../components/ShowWatchButton';
 import { AlertContext } from '../contexts/AlertContext';
 import { People as IPeople } from '../models/People';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
-import { Helmet } from 'react-helmet';
 import { Icon } from 'components/Icon';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
@@ -131,9 +130,7 @@ export default function ShowDetail() {
 
   return (
     <div className={bgClassName}>
-      <Helmet>
-        <title>{title}</title>
-      </Helmet>
+      <title>{title}</title>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
           className="p-10 pt-5 sticky top-0 z-0 lg:hidden"

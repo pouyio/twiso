@@ -1,6 +1,5 @@
 import { Icon } from 'components/Icon';
 import { useContext, useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
 import { changeLanguage } from 'state/slices/config';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import packageInfo from '../../package.json';
@@ -58,9 +57,7 @@ export default function Profile() {
 
   return (
     <div style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-      <Helmet>
-        <title>Profile</title>
-      </Helmet>
+      <title>Profile</title>
       <div className="lg:max-w-lg m-auto p-4">
         <ul className="flex justify-between">
           <li className="py-1 relative">

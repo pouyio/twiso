@@ -1,5 +1,4 @@
 import React from 'react';
-import Helmet from 'react-helmet';
 import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';
 import { Underline } from '../shows/Shows';
@@ -28,9 +27,7 @@ export default function Movies() {
 
   return (
     <>
-      <Helmet>
-        <title>Movies</title>
-      </Helmet>
+      <title>Movies</title>
       <div
         className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto"
         style={{

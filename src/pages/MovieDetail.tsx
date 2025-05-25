@@ -13,7 +13,6 @@ import WatchButton from '../components/WatchButton';
 import { AlertContext } from '../contexts/AlertContext';
 import { People as IPeople } from '../models/People';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
-import { Helmet } from 'react-helmet';
 import { Icon } from 'components/Icon';
 import { Ratings, StatusMovie } from '../models/Api';
 import { useShare } from '../hooks/useShare';
@@ -104,9 +103,7 @@ export default function MovieDetail() {
 
   return (
     <div className={bgClassName}>
-      <Helmet>
-        <title>{title}</title>
-      </Helmet>
+      <title>{title}</title>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
           className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
