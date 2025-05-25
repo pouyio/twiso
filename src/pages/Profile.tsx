@@ -20,8 +20,8 @@ import { AVAIABLE_LANGUAGES, Language } from '../models/Translation';
 import { useTranslate } from '../hooks/useTranslate';
 import { supabase } from 'utils/supabase';
 
-const AVG_MOVIE_DURATION = 109;
-const AVG_EPISODE_DURATION = 33;
+const AVG_MOVIE_DURATION = 110;
+const AVG_EPISODE_DURATION = 35;
 
 export default function Profile() {
   const { theme, setTheme } = useContext(ThemeContext);
@@ -137,7 +137,7 @@ export default function Profile() {
           </>
         ) : null}
 
-        <div className="flex justify-between pt-10 text-sm font-mono">
+        <div className="flex justify-between pt-10 text-sm font-mono items-center">
           <h1 className="inline">Version: {packageInfo.version}</h1>
           <a href="https://status.trakt.tv/" className="underline">
             API status
@@ -156,7 +156,7 @@ export default function Profile() {
 
         {dev ? (
           <>
-            <h1 className="text-center text-2xl">Dev tools</h1>
+            <h1 className="text-center text-2xl py-4">Dev tools</h1>
             <p className="text-center py-4">
               <button
                 onClick={() => window.location.reload()}
