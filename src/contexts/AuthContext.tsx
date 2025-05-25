@@ -16,7 +16,11 @@ export const AuthContext = createContext<AuthContextProps>({
 export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }) => {
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<Session | null>(
+    JSON.parse(
+      localStorage.getItem('sb-kutugdjcynyydirbboiu-auth-token') || 'null'
+    )
+  );
 
   const logout = async () => {
     localStorage.removeItem('activities');
