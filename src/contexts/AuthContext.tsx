@@ -6,13 +6,11 @@ export type { Session };
 interface AuthContextProps {
   session: Session | null;
   logout: () => void;
-  setSession: (session: Session) => void;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
   session: null,
   logout: () => null,
-  setSession: () => null,
 });
 
 export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
@@ -23,7 +21,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const logout = async () => {
     localStorage.removeItem('activities');
     await supabase.auth.signOut({ scope: 'local' });
-    // window.location.reload();
   };
 
   useEffect(() => {
@@ -38,17 +35,11 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     return () => subscription.unsubscribe();
   }, []);
 
-  const localSetSession = (session: Session | null) => {
-    // TODO remove
-    console.log('not neede anymore');
-  };
-
   return (
     <AuthContext
       value={{
         session,
         logout,
-        setSession: localSetSession,
       }}
     >
       {children}
