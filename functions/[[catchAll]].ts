@@ -73,7 +73,13 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
     imgUrl = `https://image.tmdb.org/t/p/w185${poster.file_path}`;
   }
 
-  return { item, imgUrl };
+  return {
+    item: {
+      title: item?.title ?? item?.name ?? 'No title',
+      overview: item?.overview ?? item?.biography ?? 'No overview',
+    },
+    imgUrl,
+  };
 };
 
 export const onRequest = async (context: EventContext<ENVs, any, any>) => {

@@ -155,7 +155,7 @@ export const getPeopleApi = (id: string, type: ItemType) => {
   return traktClient.get<People>(`/${type}s/${id}/people`);
 };
 
-export const getPersonApi = (id: number) => {
+export const getPersonApi = (id: string) => {
   return traktClient.get<Person>(`/people/${id}?extended=full`);
 };
 

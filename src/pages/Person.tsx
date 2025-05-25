@@ -30,7 +30,7 @@ const Person: React.FC = () => {
   useEffect(() => {
     setShowResults(undefined);
     setMovieResults(undefined);
-    getPersonApi(+id!).then(({ data }) => setLocalState(data));
+    getPersonApi(id!).then(({ data }) => setLocalState(data));
     getPersonItemsApi<PersonShows>(id!, 'show').then(({ data }) => {
       setShowResults(
         data.cast
@@ -143,7 +143,7 @@ const Person: React.FC = () => {
               movieResults.length ? (
                 movieResults.map((r, i) => (
                   <li
-                    key={`${r.movie.ids.trakt}-movie-${i}`}
+                    key={`${r.movie.ids.imdb}-movie-${i}`}
                     className="p-2 h-full"
                     style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >
@@ -180,7 +180,7 @@ const Person: React.FC = () => {
               movieDirectorResults.length ? (
                 movieDirectorResults.map((r, i) => (
                   <li
-                    key={`${r.movie.ids.trakt}-movie-${i}`}
+                    key={`${r.movie.ids.imdb}-movie-${i}`}
                     className="p-2 h-full"
                     style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >
@@ -217,7 +217,7 @@ const Person: React.FC = () => {
               showResults.length ? (
                 showResults.map((r, i) => (
                   <li
-                    key={`${r.show.ids.trakt}-show-${i}`}
+                    key={`${r.show.ids.imdb}-show-${i}`}
                     className="p-2 h-full"
                     style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >

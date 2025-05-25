@@ -83,7 +83,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
                     <li key={i} className="my-1">
                       <Link
                         to={{
-                          pathname: `/person/${crew.person.ids.trakt}`,
+                          pathname: `/person/${crew.person.ids.imdb}`,
                         }}
                       >
                         <div className="bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre">
@@ -119,7 +119,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
                   <li key={i} className="my-1">
                     <Link
                       to={{
-                        pathname: `/person/${character.person.ids.trakt}`,
+                        pathname: `/person/${character.person.ids.imdb}`,
                       }}
                     >
                       <div className="bg-gray-200 font-light px-3 py-1 rounded-full mx-1 whitespace-pre flex flex-col text-center">
