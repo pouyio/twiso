@@ -2,14 +2,8 @@ import { Alert } from 'components/Alert/Alert';
 import { GlobalFilter } from 'components/GlobalFilter';
 import { NavigationTabs } from 'components/Navigation/NavigationTabs';
 import { NewVersion } from 'components/NewVersion';
-import React, { Suspense, lazy, useContext, useEffect, useState } from 'react';
-import {
-  Navigate,
-  Route,
-  Routes,
-  useNavigate,
-  useSearchParams,
-} from 'react-router';
+import React, { Suspense, lazy, useContext, useEffect } from 'react';
+import { Navigate, Route, Routes } from 'react-router';
 import { loadImgConfig } from 'state/slices/config';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import { ROUTE, ROUTES } from 'utils/routes';
@@ -19,8 +13,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { firstLoad } from './state/firstLoadAction';
 import { AuthContext } from './contexts/AuthContext';
 import { useWindowSize } from './hooks/useWindowSize';
-import { supabase } from 'utils/supabase';
-import { AuthOtpResponse } from '@supabase/supabase-js';
+import { VerifyMagicLink } from 'pages/VerifyMagicLink';
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const Profile = lazy(() => import('./pages/Profile'));
 const MovieDetail = lazy(() => import('./pages/MovieDetail'));
@@ -32,80 +25,7 @@ const Search = lazy(() => import('./pages/search/Search'));
 const SessionRedirect: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { session } = useContext(AuthContext);
 
-  return !!session ? <Navigate to="/movies" /> : <Navigate to="/login" />;
-};
-
-const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const { session } = useContext(AuthContext);
-  const [response, setResponse] = useState<AuthOtpResponse>();
-  const onSend = async (formData: FormData) => {
-    const email = formData.get('email') as string;
-    supabase.auth
-      .signInWithOtp({
-        email,
-      })
-      .then((data) => setResponse(data));
-  };
-
-  if (session) {
-    return <Navigate to="/movies" />;
-  }
-
-  return (
-    <form className="p-10" action={onSend}>
-      <label htmlFor="email">Email</label>
-      {response ? (
-        <p>
-          {response.error
-            ? response.error.message
-            : 'Code sent to your email, click in the link to log in!'}
-        </p>
-      ) : (
-        <>
-          <input
-            name="email"
-            type="email"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-          />
-
-          <button
-            type="submit"
-            className="disabled:opacity-50 bg-gray-400 disabled:cursor-not-allowed cursor-pointer rounded-sm text-center px-8 py-2"
-          >
-            Log in with a Magic link ✨
-          </button>
-        </>
-      )}
-    </form>
-  );
-};
-
-const MagicLink: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const navigate = useNavigate();
-  const [params] = useSearchParams();
-  const token_hash = params.get('token_hash');
-
-  useEffect(() => {
-    if (token_hash) {
-      supabase.auth
-        .verifyOtp({
-          token_hash,
-          type: 'email',
-        })
-        .then(({ error }) => {
-          if (error) {
-            console.error(error);
-            navigate('/profile');
-          } else {
-            navigate('/movies');
-          }
-        });
-    } else {
-      navigate('/profile');
-    }
-  }, [token_hash]);
-
-  return <div className="text-center pt-20">Loading session...</div>;
+  return !!session ? <Navigate to="/movies" /> : <Navigate to="/search" />;
 };
 
 const App: React.FC<React.PropsWithChildren<unknown>> = () => {
@@ -158,8 +78,7 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
         >
           <Routes>
             <Route path="/" element={<SessionRedirect />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/auth/confirm" element={<MagicLink />} />
+            <Route path="/auth/confirm" element={<VerifyMagicLink />} />
             <Route
               path={ROUTES.movies}
               element={

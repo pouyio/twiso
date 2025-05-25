@@ -85,6 +85,8 @@ const en = {
   'call-to-action': 'Go for it!',
   'days-aprox': '{} days, {} hours, {} minutes aprox',
   'hours-aprox': '{} hours, {} minutes aprox',
+  'loading-session': 'Loading user session...',
+  'login-magic-link': 'Log in with a magic link ✨',
 };
 
 const es = {
@@ -172,6 +174,8 @@ const es = {
   'call-to-action': 'Vamos!',
   'days-aprox': '{} días, {} horas, {} minutos aprox',
   'hours-aprox': '{} horas, {} minutos aprox',
+  'loading-session': 'Cargando sesión de usuario...',
+  'login-magic-link': 'Inicia sesión con un enlace mágico ✨',
 };
 
 const translations: Record<Language, Record<string, string>> = {
