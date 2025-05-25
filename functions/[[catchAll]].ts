@@ -45,7 +45,7 @@ const traktClient = (apiKey: string) => axios.create(axiosConfig(apiKey));
 
 const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   type: 'movie' | 'show' | 'person',
-  id: number,
+  id: string,
   env: ENVs
 ) => {
   const searchResponses = await traktClient(env.VITE_TRAKT_API_KEY).get<T[]>(
@@ -86,10 +86,10 @@ export const onRequest = async (context: EventContext<ENVs, any, any>) => {
   }
 
   const type = parts[0] as 'movie' | 'person' | 'show';
-  const id = parseInt(parts[1]);
+  const id = parts[1];
 
-  if (isNaN(id)) {
-    return new Response('Invalid ID', { status: 400 });
+  if (!id) {
+    return new Response('No ID', { status: 400 });
   }
 
   const { item, imgUrl } = await fetchData<SearchMovie>(type, id, env);
