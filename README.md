@@ -1,4 +1,4 @@
-# [Twiso](https://twiso.netlify.app)
+# [Twiso](https://twiso.pages.dev)
 
 ## Track your movies & series
 
