@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { findFirstValid } from '../src/utils/findFirstValidImage';
 import { SearchMovie, SearchPerson, SearchShow } from '../src/models/Movie';
 import {
-  BASE_URL,
+  BASE_TRAKT_URL,
   CONTENT_TYPE,
   IMG_URL,
   TRAKT_API_VERSION,
@@ -23,7 +23,7 @@ const TYPE_MAP = {
 };
 
 const axiosConfig = (traktApiKey: string): AxiosRequestConfig => ({
-  baseURL: BASE_URL,
+  baseURL: BASE_TRAKT_URL,
   headers: {
     'content-type': CONTENT_TYPE,
     'trakt-api-key': traktApiKey,
