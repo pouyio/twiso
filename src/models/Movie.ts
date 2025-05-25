@@ -24,20 +24,6 @@ export type SearchPerson = SearchItem & {
   person: Person;
 };
 
-export interface MovieWatchlist extends BaseMovie {
-  id?: number;
-  listed_at: string;
-  rank?: number;
-  localState: 'watchlist';
-}
-
-export interface MovieWatched extends BaseMovie {
-  action?: string;
-  id?: number;
-  watched_at: string;
-  localState: 'watched';
-}
-
 export interface Movie {
   available_translations: string[];
   certification: string;

@@ -1,5 +1,4 @@
 import { Ids } from './Ids';
-import { ShowSeason, SmallEpisode } from './Show';
 
 interface BaseNotFound {
   movies?: Ids[];
@@ -35,26 +34,6 @@ export interface RemovedWatchlist {
   not_found: BaseNotFound;
 }
 
-export interface HiddenShow {
-  hidden_at: string;
-  type: 'show';
-  show: {
-    title: string;
-    year: number;
-    ids: Ids;
-  };
-}
-
-export interface AddedHidden {
-  added: ItemsCount;
-  not_found: BaseNotFound;
-}
-
-export interface RemoveHidden {
-  deleted: ItemsCount;
-  not_found: BaseNotFound;
-}
-
 interface Distribution {
   '1': number;
   '2': number;
@@ -79,40 +58,6 @@ export interface Ratings {
   distribution: Distribution;
 }
 
-export interface Profile {
-  user: {
-    name: string;
-    joined_at: string;
-    gender: string;
-    avatar: string;
-    bio: string;
-    loc: string;
-    age: string;
-  };
-  account: {
-    id: number;
-    timezone: string;
-    type: string;
-  };
-  connections: {
-    facebook: boolean;
-  };
-}
-
-export interface MovieCalendar {
-  movie: { title: string; year: number; ids: Ids };
-  released: string;
-}
-export interface ShowCalendar {
-  first_aired: string;
-  episode: SmallEpisode;
-  show: {
-    title: string;
-    year: number;
-    ids: Ids;
-  };
-}
-
 export type Activities = {
   shows: {
     rest: string | null;
@@ -126,33 +71,11 @@ export type Activities = {
 
 export type SimklStatus = 'watched' | 'watchlist' | 'hidden';
 
-export type StatusAnime = {
-  anime_type: 'tv' | 'special' | 'ova' | 'movie' | 'music video' | 'ona';
-  show: {
-    ids: Ids;
-    title: string;
-    poster: string;
-    year: number;
-  };
-  last_watched: string | null;
-  next_to_watch: string | null;
-  added_to_watchlist_at: string | null;
-  last_watched_at: string | null;
-  not_aired_episodes_count: number;
-  status: SimklStatus;
-  total_episodes_count: number;
-  user_rated_at: string | null;
-  user_rating: string | null;
-  watched_episodes_count: string;
-};
-
 export type StatusMovie = {
   created_at: string | null;
   movie_imdb: string;
   status: SimklStatus;
 };
-
-export type StatusSeason = ShowSeason & { episodes: Array<{ number: number }> };
 
 export type EpisodeProgress = {
   created_at: string;
