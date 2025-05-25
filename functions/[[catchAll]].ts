@@ -49,9 +49,9 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   env: ENVs
 ) => {
   const searchResponses = await traktClient(env.VITE_TRAKT_API_KEY).get<T[]>(
-    `/search/trakt/${id}?type=${type}&extended=full`
+    `/search/imdb/${id}?type=${type}&extended=full`
   );
-  let imgUrl = 'https://via.placeholder.com/185x330';
+  let imgUrl = 'https://placehold.co/185x330';
 
   if (!searchResponses.data[0]) {
     console.log(`Data with id:${id} not found`);
