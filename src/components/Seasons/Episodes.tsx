@@ -17,7 +17,6 @@ interface ISeasonsProps {
   episodesDates?: Episode[];
   showModal: (data: { title: string; overview: string }) => void;
   onlyView: boolean;
-  seasonId?: number;
 }
 
 const Episodes: React.FC<ISeasonsProps> = ({
@@ -30,7 +29,6 @@ const Episodes: React.FC<ISeasonsProps> = ({
   episodesDates = [],
   showModal,
   onlyView,
-  seasonId = 0,
 }) => {
   const watched = useAppSelector((state) => state.shows.pending.watched);
   const language = useAppSelector((state) => state.config.language);

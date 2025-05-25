@@ -57,22 +57,6 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     // eslint-disable-next-line
   }, [selectedSeason, showId, language]);
 
-  useEffect(() => {
-    if (selectedSeason !== undefined) {
-      return;
-    }
-    // setSearchParams(
-    //   {
-    //     season:
-    //       '' +
-    //       watchedShowFullSeasonsRef.find(
-    //         (s) => s.number === watchedShowNextEpisodeRef.season
-    //       )?.number,
-    //   },
-    //   { replace: true }
-    // );
-  }, [setSearchParams, selectedSeason]);
-
   const addEpisode = async (episode: SeasonEpisode) => {
     dispatch(addEpisodeWatched({ showIds: show.ids, episodes: [episode] }));
   };
@@ -139,9 +123,6 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       />
       {selectedSeason !== undefined && (
         <Episodes
-          seasonId={
-            show.all_seasons.find((s) => s.number === selectedSeason)?.ids.trakt
-          }
           episodesProgress={
             status?.episodes?.filter(
               (e) => e.season_number === selectedSeason
