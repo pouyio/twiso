@@ -17,7 +17,6 @@ import { Icon } from 'components/Icon';
 import { Ratings, StatusMovie } from '../models/Api';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
-import { useIsWatch } from '../hooks/useIsWatch';
 import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Movie } from 'models/Movie';
@@ -31,7 +30,6 @@ export default function MovieDetail() {
   const { share } = useShare();
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
-  const { isWatchlist, isWatched } = useIsWatch();
 
   const liveItem = useLiveQuery(
     () =>
