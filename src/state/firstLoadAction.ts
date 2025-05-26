@@ -1,8 +1,7 @@
 import {
   getAllMovies,
-  getAllMoviesIds,
+  getAllShowsComplete,
   getAllShows,
-  getAllShowsIds,
   syncActivities,
 } from 'utils/api';
 import db, {
@@ -18,13 +17,15 @@ import { Activities } from 'models/Api';
 
 const syncRemoteMovies = async (
   oldActivities: Activities | null,
-  newActivities: Activities
+  newActivities: Activities | null
 ) => {
-  if (oldActivities?.movies?.removed !== newActivities.movies.removed) {
-    const allMoviesIds = await getAllMoviesIds();
+  if (oldActivities?.movies?.removed !== newActivities?.movies.removed) {
+    const allMoviesIds = await getAllMovies().then(({ data }) =>
+      data?.map((m) => m.movie_imdb)
+    );
     const userMovies = await db.table(USER_MOVIES_TABLE).toArray();
     const moviesToDelete = userMovies.filter(
-      (um) => !allMoviesIds.includes(um.movie_imdb)
+      (um) => !allMoviesIds?.includes(um.movie_imdb)
     );
     await db
       .table(USER_MOVIES_TABLE)
@@ -33,32 +34,40 @@ const syncRemoteMovies = async (
 
   if (
     !oldActivities?.movies?.rest ||
-    oldActivities.movies.rest !== newActivities.movies.rest
+    oldActivities.movies.rest !== newActivities?.movies.rest
   ) {
     const { data: allMovies } = await getAllMovies(oldActivities?.movies?.rest);
-    await db.table(USER_MOVIES_TABLE).bulkPut(allMovies);
+    if (allMovies) {
+      await db.table(USER_MOVIES_TABLE).bulkPut(allMovies);
+    }
   }
 };
 
 const syncRemoteShows = async (
   oldActivities: Activities | null,
-  newActivities: Activities
+  newActivities: Activities | null
 ) => {
-  if (oldActivities?.shows?.removed !== newActivities.shows.removed) {
-    const allShowsIds = await getAllShowsIds();
+  if (oldActivities?.shows?.removed !== newActivities?.shows.removed) {
+    const allShowsIds = await getAllShows().then(({ data }) =>
+      data?.map((s) => s.show_imdb)
+    );
     const userShows = await db.table(USER_SHOWS_TABLE).toArray();
 
     const showsToDelete = userShows.filter(
-      (us) => !allShowsIds.includes(us.show_imdb)
+      (us) => !allShowsIds?.includes(us.show_imdb)
     );
     await db
       .table(USER_SHOWS_TABLE)
       .bulkDelete(showsToDelete.map((s) => s.show_imdb));
   }
 
-  if (oldActivities?.shows?.rest !== newActivities.shows.rest) {
-    const { data: allShows } = await getAllShows(oldActivities?.shows?.rest);
-    await db.table(USER_SHOWS_TABLE).bulkPut(allShows);
+  if (oldActivities?.shows?.rest !== newActivities?.shows.rest) {
+    const { data: allShows } = await getAllShowsComplete(
+      oldActivities?.shows?.rest
+    );
+    if (allShows) {
+      await db.table(USER_SHOWS_TABLE).bulkPut(allShows);
+    }
   }
 };
 

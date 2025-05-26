@@ -14,12 +14,11 @@ import { AlertContext } from '../contexts/AlertContext';
 import { People as IPeople } from '../models/People';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
 import { Icon } from 'components/Icon';
-import { Ratings, StatusMovie } from '../models/Api';
+import { Ratings } from '../models/Api';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
 import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Movie } from 'models/Movie';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -33,22 +32,17 @@ export default function MovieDetail() {
 
   const liveItem = useLiveQuery(
     () =>
-      db
-        .table<Movie>(DETAIL_MOVIES_TABLE)
-        .get(id)
-        .then((movie) => {
-          if (!movie) {
-            dispatch(fillDetail({ id }));
-          }
-          return movie!;
-        }),
+      // @ts-expect-error limitations on Dexie EntityTable
+      db[DETAIL_MOVIES_TABLE].get(id).then((movie) => {
+        if (!movie) {
+          dispatch(fillDetail({ id }));
+        }
+        return movie!;
+      }),
     [id]
   );
 
-  const liveStatus = useLiveQuery(
-    () => db.table<StatusMovie>(USER_MOVIES_TABLE).get(id),
-    [id]
-  );
+  const liveStatus = useLiveQuery(() => db[USER_MOVIES_TABLE].get(id), [id]);
 
   const item = liveItem;
 
@@ -171,11 +165,19 @@ export default function MovieDetail() {
             <div className="w-full">
               <h1 className="text-4xl leading-none text-center">{title}</h1>
               <h1 className="text-xl text-center mb-4 text-gray-300">
-                {new Date(item.released).toLocaleDateString(language, {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
+                {item.released
+                  ? new Date(item.released).toLocaleDateString(language, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })
+                  : item.status}
+                <button
+                  className="mx-5 cursor-pointer"
+                  onClick={() => dispatch(fillDetail({ id }))}
+                >
+                  🔄
+                </button>
               </h1>
               <div className="flex mb-4 justify-between items-center text-gray-600">
                 <h2>

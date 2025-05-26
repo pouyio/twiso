@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from 'state/store';
 import {
   addWatchedEpisodesApi,
-  addWatchlistApi,
+  addWatchlistShowApi,
   getApi,
   getSeasonsApi,
   getTranslationsApi,
@@ -11,11 +11,11 @@ import {
   setHideShow,
 } from 'utils/api';
 import { SearchShow } from '../../../models/Movie';
-import { AddedWatchlist, RemovedWatchlist } from '../../../models/Api';
-import { SeasonEpisode, Show } from '../../../models/Show';
+import { Season, SeasonEpisode, Show } from '../../../models/Show';
 import { Translation } from 'models/Translation';
 import { Ids } from 'models/Ids';
 import { firstLoad } from 'state/firstLoadAction';
+import { ShowStatusComplete } from 'models/Api';
 
 const _getRemoteWithTranslations = async (
   id: string
@@ -28,14 +28,33 @@ const _getRemoteWithTranslations = async (
   return { ...show, translation: results[1] };
 };
 
-export const addWatchlist = createAsyncThunk<AddedWatchlist, { show: Show }>(
-  'shows/addWatchlist',
+export const addWatchlist = createAsyncThunk<
+  ShowStatusComplete | null,
+  { show: Show }
+>('shows/addWatchlist', async ({ show }) => {
+  if (!show.ids.imdb) {
+    throw Error('no imdb id available');
+  }
+  try {
+    const { data } = await addWatchlistShowApi(show.ids.imdb);
+    if (data) {
+      return { ...data, episodes: [] };
+    }
+    return data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+});
+
+export const removeWatchlist = createAsyncThunk<null, { show: Show }>(
+  'shows/removeWatchlist',
   async ({ show }) => {
     if (!show.ids.imdb) {
       throw Error('no imdb id available');
     }
     try {
-      const { data } = await addWatchlistApi(show.ids.imdb, 'show');
+      const { data } = await removeWatchlistApi(show.ids.imdb, 'show');
       return data;
     } catch (e) {
       console.error(e);
@@ -43,22 +62,6 @@ export const addWatchlist = createAsyncThunk<AddedWatchlist, { show: Show }>(
     }
   }
 );
-
-export const removeWatchlist = createAsyncThunk<
-  RemovedWatchlist,
-  { show: Show }
->('shows/removeWatchlist', async ({ show }) => {
-  if (!show.ids.imdb) {
-    throw Error('no imdb id available');
-  }
-  try {
-    const { data } = await removeWatchlistApi(show.ids.imdb, 'show');
-    return data;
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
-});
 
 export const addEpisodeWatched = createAsyncThunk<
   any,
@@ -79,7 +82,7 @@ export const addEpisodeWatched = createAsyncThunk<
 });
 
 export const removeEpisodeWatched = createAsyncThunk<
-  any,
+  null,
   {
     showIds: Ids;
     episodes: Ids[];
@@ -111,7 +114,10 @@ export const setHiddenShow = createAsyncThunk<
 });
 
 export const fillDetail = createAsyncThunk<
-  Show,
+  Show & {
+    all_seasons: Season[];
+    translation?: Translation;
+  },
   {
     id: string;
   },

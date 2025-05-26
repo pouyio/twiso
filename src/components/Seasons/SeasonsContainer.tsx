@@ -15,12 +15,12 @@ import Episodes from './Episodes';
 import SeasonSelector from './SeasonSelector';
 import { Episode, SeasonEpisode, Show } from '../../models/Show';
 import { useSearchParams } from 'react-router';
-import { StatusShow } from 'models/Api';
+import { ShowStatusComplete } from 'models/Api';
 import { firstLoad } from 'state/firstLoadAction';
 
 interface ISeasonsContainerProps {
   show: Show;
-  status?: StatusShow;
+  status?: ShowStatusComplete;
   showId: string;
 }
 

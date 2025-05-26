@@ -17,10 +17,10 @@ export default function Movies() {
   const mode = searchParams.get('mode');
 
   const watchlist = useLiveQuery(() =>
-    db.table(USER_MOVIES_TABLE).where({ status: 'watchlist' }).count()
+    db[USER_MOVIES_TABLE].where({ status: 'watchlist' }).count()
   );
   const watched = useLiveQuery(() =>
-    db.table(USER_MOVIES_TABLE).where({ status: 'watched' }).count()
+    db[USER_MOVIES_TABLE].where({ status: 'watched' }).count()
   );
 
   const { t } = useTranslate();

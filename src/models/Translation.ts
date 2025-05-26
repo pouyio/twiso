@@ -2,6 +2,7 @@ export interface Translation {
   title?: string;
   overview?: string;
   language: string;
+  tagline?: string;
   country?: string;
 }
 

@@ -9,7 +9,15 @@ import { ImageResponse } from '../models/Image';
 import { Episode, Season, SeasonEpisode } from '../models/Show';
 import { Language, Translation } from '../models/Translation';
 import { SearchMovie, SearchShow } from '../models/Movie';
-import { Ratings } from '../models/Api';
+import {
+  Activity,
+  EpisodeStatus,
+  MovieStatus,
+  Ratings,
+  ShowStatus,
+  ShowStatusComplete,
+  UserStats,
+} from '../models/Api';
 import { People } from '../models/People';
 import { Person } from '../models/Person';
 import { Popular } from '../models/Popular';
@@ -96,8 +104,8 @@ export const searchApi = <T>(
   );
 };
 
-export const addWatchedApi = (id: string, type: ItemType) => {
-  return supabase.functions.invoke(`api/${type}s/${id}`, {
+export const addWatchedMovieApi = (id: string, type: ItemType) => {
+  return supabase.functions.invoke<MovieStatus>(`api/${type}s/${id}`, {
     method: 'POST',
     body: {
       status: 'watched',
@@ -109,20 +117,23 @@ export const addWatchedEpisodesApi = (
   showIds: Ids,
   episodes: SeasonEpisode[]
 ) => {
-  return supabase.functions.invoke(`api/shows/${showIds.imdb}/episodes`, {
-    method: 'POST',
-    body: {
-      episodes: episodes.map((e) => ({
-        episodeId: e.ids.imdb,
-        season: e.season,
-        episode: e.number,
-      })),
-    },
-  });
+  return supabase.functions.invoke<EpisodeStatus[]>(
+    `api/shows/${showIds.imdb}/episodes`,
+    {
+      method: 'POST',
+      body: {
+        episodes: episodes.map((e) => ({
+          episodeId: e.ids.imdb,
+          season: e.season,
+          episode: e.number,
+        })),
+      },
+    }
+  );
 };
 
 export const removeWatchedEpisodesApi = (showIds: Ids, episodeIds: Ids[]) => {
-  return supabase.functions.invoke(`api/shows/${showIds.imdb}/episodes`, {
+  return supabase.functions.invoke<null>(`api/shows/${showIds.imdb}/episodes`, {
     method: 'DELETE',
     body: {
       episodes: episodeIds.map((e) => e.imdb),
@@ -131,13 +142,22 @@ export const removeWatchedEpisodesApi = (showIds: Ids, episodeIds: Ids[]) => {
 };
 
 export const removeWatchedApi = (id: string, type: ItemType) => {
-  return supabase.functions.invoke(`api/${type}s/${id}`, {
+  return supabase.functions.invoke<null>(`api/${type}s/${id}`, {
     method: 'DELETE',
   });
 };
 
-export const addWatchlistApi = (id: string, type: 'movie' | 'show') => {
-  return supabase.functions.invoke(`api/${type}s/${id}`, {
+export const addWatchlistShowApi = (id: string) => {
+  return supabase.functions.invoke<ShowStatus>(`api/shows/${id}`, {
+    method: 'POST',
+    body: {
+      status: 'watchlist',
+    },
+  });
+};
+
+export const addWatchlistMovieApi = (id: string) => {
+  return supabase.functions.invoke<MovieStatus>(`api/movies/${id}`, {
     method: 'POST',
     body: {
       status: 'watchlist',
@@ -146,7 +166,7 @@ export const addWatchlistApi = (id: string, type: 'movie' | 'show') => {
 };
 
 export const removeWatchlistApi = (id: string, type: ItemType) => {
-  return supabase.functions.invoke(`api/${type}s/${id}`, {
+  return supabase.functions.invoke<null>(`api/${type}s/${id}`, {
     method: 'DELETE',
   });
 };
@@ -179,7 +199,7 @@ export const getRelatedApi = async <T>(type: ItemType, id?: string) => {
 };
 
 export const getStatsApi = () => {
-  return supabase.functions.invoke('api/profile', {
+  return supabase.functions.invoke<UserStats>('api/profile', {
     method: 'GET',
   });
 };
@@ -189,7 +209,7 @@ export const getRatingsApi = (id: string, type: ItemType) => {
 };
 
 export const setHideShow = (showId: string, hidden: boolean) => {
-  return supabase.functions.invoke(`api/shows/${showId}/hide`, {
+  return supabase.functions.invoke<null>(`api/shows/${showId}/hide`, {
     method: 'PUT',
     body: {
       hidden,
@@ -198,29 +218,19 @@ export const setHideShow = (showId: string, hidden: boolean) => {
 };
 
 export const syncActivities = () => {
-  return supabase.functions.invoke(`api/activities`, {
+  return supabase.functions.invoke<Activity>(`api/activities`, {
     method: 'GET',
   });
 };
 
-export const getAllMoviesIds = async () => {
-  return supabase.functions
-    .invoke(`api/movies`, {
-      method: 'GET',
-    })
-    .then(({ data }) => data.map((m) => m.movie_imdb));
-};
-
-export const getAllShowsIds = async () => {
-  return supabase.functions
-    .invoke(`api/shows`, {
-      method: 'GET',
-    })
-    .then(({ data }) => data.map((m) => m.show_imdb));
+export const getAllShows = async () => {
+  return supabase.functions.invoke<ShowStatus[]>(`api/shows`, {
+    method: 'GET',
+  });
 };
 
 export const getAllMovies = (dateFrom?: string | null) => {
-  return supabase.functions.invoke(
+  return supabase.functions.invoke<MovieStatus[]>(
     `api/movies?${dateFrom ? `date_from=${encodeURIComponent(dateFrom)}` : ''}`,
     {
       method: 'GET',
@@ -228,8 +238,8 @@ export const getAllMovies = (dateFrom?: string | null) => {
   );
 };
 
-export const getAllShows = (dateFrom?: string | null) => {
-  return supabase.functions.invoke(
+export const getAllShowsComplete = (dateFrom?: string | null) => {
+  return supabase.functions.invoke<ShowStatusComplete[]>(
     `api/shows/complete?${
       dateFrom ? `date_from=${encodeURIComponent(dateFrom)}` : ''
     }`,

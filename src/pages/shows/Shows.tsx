@@ -30,10 +30,10 @@ export default function Shows() {
   const { t } = useTranslate();
 
   const watchlist = useLiveQuery(() =>
-    db.table(USER_SHOWS_TABLE).where('status').equals('watchlist').count()
+    db[USER_SHOWS_TABLE].where('status').equals('watchlist').count()
   );
   const watched = useLiveQuery(() =>
-    db.table(USER_SHOWS_TABLE).where('status').equals('watched').count()
+    db[USER_SHOWS_TABLE].where('status').equals('watched').count()
   );
 
   return (

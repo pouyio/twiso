@@ -1,7 +1,7 @@
 import { AuthContext } from 'contexts/AuthContext';
 import React, { useContext } from 'react';
 import {
-  addWatched,
+  addWatchedMovie,
   addWatchlist,
   removeWatched,
   removeWatchlist,
@@ -52,7 +52,7 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
               className={`bg-gray-200 py-3 pl-12 rounded-full text-gray-700 font-light ${
                 isWatchedPending ? 'pr-6' : 'pr-12'
               }`}
-              onClick={() => dispatch(addWatched({ movie: item }))}
+              onClick={() => dispatch(addWatchedMovie({ movie: item }))}
             >
               {t('watched')}{' '}
               {isWatchedPending && (

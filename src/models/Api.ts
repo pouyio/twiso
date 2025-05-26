@@ -14,20 +14,11 @@ interface ItemsCount {
   seasons?: number;
 }
 
-export interface AddedWatched {
-  added: ItemsCount;
-  not_found: BaseNotFound;
-}
-export interface RemovedWatched {
-  deleted: ItemsCount;
-  not_found: BaseNotFound & { ids: number[] };
-}
-
-export interface AddedWatchlist {
-  added: ItemsCount;
-  existing: ItemsCount;
-  not_found: BaseNotFound;
-}
+export type AddedWatched = {
+  movie_imdb: string;
+  status: 'watchlist' | 'watched';
+  created_at: string;
+} | null;
 
 export interface RemovedWatchlist {
   deleted: ItemsCount;
@@ -69,26 +60,40 @@ export type Activities = {
   };
 };
 
-export type SimklStatus = 'watched' | 'watchlist' | 'hidden';
+type Status = 'watched' | 'watchlist';
 
-export type StatusMovie = {
-  created_at: string | null;
+export type MovieStatus = {
   movie_imdb: string;
-  status: SimklStatus;
+  status: Status;
+  created_at: string;
 };
 
-export type EpisodeProgress = {
-  created_at: string;
-  episode_imdb: string;
-  episode_number: number;
-  season_number: number;
+export type ShowStatus = {
   show_imdb: string;
-};
-
-export type StatusShow = {
+  status: Status;
   created_at: string;
-  status: SimklStatus;
-  show_imdb: string;
   hidden: boolean;
-  episodes: EpisodeProgress[];
+};
+
+export type ShowStatusComplete = ShowStatus & {
+  episodes: EpisodeStatus[];
+};
+
+export type EpisodeStatus = {
+  episode_imdb: string;
+  show_imdb: string;
+  created_at: string;
+  season_number: number;
+  episode_number: number;
+};
+
+export type Activity = {
+  movies: {
+    removed: string | null;
+    rest: string | null;
+  };
+  shows: {
+    removed: string | null;
+    rest: string | null;
+  };
 };

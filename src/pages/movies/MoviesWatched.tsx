@@ -5,30 +5,29 @@ import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from 'components/EmptyState';
 import { NoResults } from 'components/NoResults';
 import { useLiveQuery } from 'dexie-react-hooks';
-import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from 'utils/db';
+import db, {
+  DBMovieDetail,
+  DETAIL_MOVIES_TABLE,
+  USER_MOVIES_TABLE,
+} from 'utils/db';
 import { Movie } from 'models/Movie';
 
 export const MoviesWatched: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);
   const orderedUserMoviesIds = useLiveQuery(
-    () => {
-      return db
-        .table(USER_MOVIES_TABLE)
-        .where('status')
+    () =>
+      db[USER_MOVIES_TABLE].where('status')
         .equals('watched')
         .reverse()
         .sortBy('created_at')
-        .then<string[]>((items) => items.map((i) => i.movie_imdb));
-    },
+        .then((items) => items.map((i) => i.movie_imdb)),
     [],
     []
   );
 
   const fullMovies = useLiveQuery(
     () =>
-      db
-        .table<Movie>(DETAIL_MOVIES_TABLE)
-        .where('ids.imdb')
+      db[DETAIL_MOVIES_TABLE].where('ids.imdb')
         .anyOf(orderedUserMoviesIds)
         .and((movie) => genres.every((g) => movie.genres.includes(g)))
         .toArray(),
@@ -38,7 +37,7 @@ export const MoviesWatched: React.FC = () => {
 
   const orderedMovies: Movie[] = orderedUserMoviesIds
     .map((m) => fullMovies.find((fm) => fm.ids.imdb === m))
-    .filter(Boolean) as Movie[];
+    .filter(Boolean) as DBMovieDetail[];
 
   const { getItemsByPage } = usePagination(orderedMovies);
 

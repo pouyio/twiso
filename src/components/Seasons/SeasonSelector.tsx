@@ -3,10 +3,10 @@ import { motion } from 'motion/react';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { useTranslate } from '../../hooks/useTranslate';
 import { ShowSeason } from '../../models/Show';
-import { StatusShow } from 'models/Api';
+import { ShowStatusComplete } from 'models/Api';
 
 interface ISeasonsProps {
-  progress?: StatusShow;
+  progress?: ShowStatusComplete;
   seasons: ShowSeason[];
   selectedSeason?: ShowSeason;
   setSelectedSeason: (season?: number) => void;

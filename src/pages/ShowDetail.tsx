@@ -17,8 +17,7 @@ import { getPeopleApi, getRatingsApi } from '../utils/api';
 import { Icon } from 'components/Icon';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
-import { Ratings, StatusShow } from '../models/Api';
-import { Show } from '../models/Show';
+import { Ratings } from '../models/Api';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from 'utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 
@@ -35,22 +34,17 @@ export default function ShowDetail() {
 
   const liveItem = useLiveQuery(
     () =>
-      db
-        .table<Show>(DETAIL_SHOWS_TABLE)
-        .get(id)
-        .then((show) => {
-          if (!show) {
-            dispatch(fillDetail({ id }));
-          }
-          return show!;
-        }),
+      // @ts-expect-error limitations on Dexie EntityTable
+      db[DETAIL_SHOWS_TABLE].get(id).then((show) => {
+        if (!show) {
+          dispatch(fillDetail({ id }));
+        }
+        return show!;
+      }),
     [id]
   );
 
-  const liveStatus = useLiveQuery(
-    () => db.table<StatusShow>(USER_SHOWS_TABLE).get(id),
-    [id]
-  );
+  const liveStatus = useLiveQuery(() => db[USER_SHOWS_TABLE].get(id), [id]);
 
   const item = liveItem;
 

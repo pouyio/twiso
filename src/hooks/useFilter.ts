@@ -1,7 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import Fuse from 'fuse.js';
-import { Movie } from 'models/Movie';
-import { Show } from 'models/Show';
 import { useAppSelector } from 'state/store';
 import db, {
   DETAIL_MOVIES_TABLE,
@@ -13,34 +11,24 @@ import db, {
 export const useFilter = () => {
   const language = useAppSelector((state) => state.config.language);
   const userMovies = useLiveQuery(
-    () => db.table<any, string>(USER_MOVIES_TABLE).toCollection().primaryKeys(),
+    () => db[USER_MOVIES_TABLE].toCollection().primaryKeys(),
     [],
-    [] as string[]
+    []
   );
   const movies = useLiveQuery(
-    () =>
-      db
-        .table<Movie>(DETAIL_MOVIES_TABLE)
-        .where('ids.imdb')
-        .anyOf(userMovies)
-        .toArray(),
+    () => db[DETAIL_MOVIES_TABLE].where('ids.imdb').anyOf(userMovies).toArray(),
     [userMovies],
-    [] as Movie[]
+    []
   );
   const userShows = useLiveQuery(
-    () => db.table<any, string>(USER_SHOWS_TABLE).toCollection().primaryKeys(),
+    () => db[USER_SHOWS_TABLE].toCollection().primaryKeys(),
     [],
-    [] as string[]
+    []
   );
   const shows = useLiveQuery(
-    () =>
-      db
-        .table<Show>(DETAIL_SHOWS_TABLE)
-        .where('ids.imdb')
-        .anyOf(userShows)
-        .toArray(),
+    () => db[DETAIL_SHOWS_TABLE].where('ids.imdb').anyOf(userShows).toArray(),
     [userShows],
-    [] as Show[]
+    []
   );
 
   const filter = (text: string, genres: string[] = []) => {

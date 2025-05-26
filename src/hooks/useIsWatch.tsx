@@ -1,35 +1,23 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { StatusMovie, StatusShow } from 'models/Api';
 import db, { USER_MOVIES_TABLE, USER_SHOWS_TABLE } from 'utils/db';
 
 // TODO maybe can be removed and improve indexedDB query performance where it is used
 export const useIsWatch = () => {
   const watchedMoviIds =
     useLiveQuery(
-      () =>
-        db
-          .table<StatusMovie, string>(USER_MOVIES_TABLE)
-          .where({ status: 'watched' })
-          .primaryKeys(),
+      () => db[USER_MOVIES_TABLE].where({ status: 'watched' }).primaryKeys(),
       [],
       []
     ) ?? [];
 
   const watchlistMovieIds =
     useLiveQuery(() =>
-      db
-        .table<StatusMovie, string>(USER_MOVIES_TABLE)
-        .where({ status: 'watchlist' })
-        .primaryKeys()
+      db[USER_MOVIES_TABLE].where({ status: 'watchlist' }).primaryKeys()
     ) ?? [];
 
   const watchedShows =
     useLiveQuery(
-      () =>
-        db
-          .table<StatusShow, string>(USER_SHOWS_TABLE)
-          .where({ status: 'watched' })
-          .primaryKeys(),
+      () => db[USER_SHOWS_TABLE].where({ status: 'watched' }).primaryKeys(),
       [],
       []
     ) ?? [];
@@ -37,10 +25,7 @@ export const useIsWatch = () => {
 
   const watchlistShowIds =
     useLiveQuery(() =>
-      db
-        .table<StatusMovie, string>(USER_SHOWS_TABLE)
-        .where({ status: 'watchlist' })
-        .primaryKeys()
+      db[USER_SHOWS_TABLE].where({ status: 'watchlist' }).primaryKeys()
     ) ?? [];
 
   const isWatched = (id: string, type: 'show' | 'movie' = 'show') => {

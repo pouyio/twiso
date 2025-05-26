@@ -6,7 +6,6 @@ import { EmptyState } from 'components/EmptyState';
 import { NoResults } from 'components/NoResults';
 import { useLiveQuery } from 'dexie-react-hooks';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from 'utils/db';
-import { StatusShow } from 'models/Api';
 import { Show } from 'models/Show';
 
 const ShowsWatched: React.FC = () => {
@@ -14,21 +13,17 @@ const ShowsWatched: React.FC = () => {
 
   const orderedUserShows = useLiveQuery(
     () =>
-      db
-        .table<StatusShow>(USER_SHOWS_TABLE)
-        .where('status')
+      db[USER_SHOWS_TABLE].where('status')
         .equals('watched')
         .reverse()
         .sortBy('created_at'),
     [],
-    [] as StatusShow[]
+    []
   );
 
   const fullShows = useLiveQuery(
     () =>
-      db
-        .table<Show>(DETAIL_SHOWS_TABLE)
-        .where('ids.imdb')
+      db[DETAIL_SHOWS_TABLE].where('ids.imdb')
         .anyOf(
           orderedUserShows.filter((s) => !s.hidden).map((us) => us.show_imdb)
         )

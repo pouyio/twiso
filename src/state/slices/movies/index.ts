@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  addWatched,
+  addWatchedMovie,
   fillDetail,
   removeWatched,
 } from 'state/slices/movies/thunks';
@@ -24,15 +24,15 @@ const moviesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(addWatched.pending, (state, { meta }) => {
+      .addCase(addWatchedMovie.pending, (state, { meta }) => {
         state.pending.watched.push(meta.arg.movie.ids.imdb);
       })
-      .addCase(addWatched.fulfilled, (state, { meta }) => {
+      .addCase(addWatchedMovie.fulfilled, (state, { meta }) => {
         state.pending.watched = state.pending.watched.filter(
           (p) => p !== meta.arg.movie.ids.imdb
         );
       })
-      .addCase(addWatched.rejected, (state, { meta }) => {
+      .addCase(addWatchedMovie.rejected, (state, { meta }) => {
         state.pending.watched = state.pending.watched.filter(
           (p) => p !== meta.arg.movie.ids.imdb
         );
@@ -61,6 +61,9 @@ const moviesSlice = createSlice({
       });
   },
 });
+
+// actions
+export const {} = moviesSlice.actions;
 
 // reducer
 export const reducer = moviesSlice.reducer;

@@ -1,30 +1,6 @@
 import { Ids } from './Ids';
 import { Translation } from './Translation';
 
-interface BaseShow {
-  listed_at: string;
-  show: Show;
-}
-export interface ShowWatched extends BaseShow {
-  last_updated_at: string;
-  last_watched_at: string;
-  plays: number;
-  reset_at: string;
-  progress?: ShowProgress;
-  fullSeasons?: Season[];
-  seasons?: Season[];
-  localState: 'watched';
-}
-
-export interface ShowWatchlist extends BaseShow {
-  id?: number;
-  rank?: number;
-  localState: 'watchlist';
-  fullSeasons?: Season[];
-  progress?: ShowProgress;
-  last_watched_at?: string;
-}
-
 export type SeasonEpisode = {
   ids: Ids;
   season: number;
@@ -32,6 +8,7 @@ export type SeasonEpisode = {
   title: string;
   translations: Translation[];
 };
+
 export type ShowSeason = {
   ids: Ids;
   number: number;
@@ -39,13 +16,13 @@ export type ShowSeason = {
 };
 
 export interface Show {
-  all_seasons: ShowSeason[];
   aired_episodes: number;
   airs: {
     day: string;
     time: string;
     timezone: string;
   };
+  all_seasons: ShowSeason[];
   available_translations: string[];
   certification: string;
   comment_count: number;
@@ -57,7 +34,9 @@ export interface Show {
     tvrage: any;
   };
   language: string;
+  languages: string[];
   network: string;
+  original_title: string;
   overview: string;
   rating: number;
   runtime: number;
@@ -67,18 +46,12 @@ export interface Show {
     | 'planned'
     | 'canceled'
     | 'ended';
+  tagline: string;
   title: string;
   trailer: string;
   updated_at: string;
   votes: number;
   year: number;
-}
-
-export interface SmallEpisode {
-  ids: Ids;
-  number: number;
-  season: number;
-  title: string;
 }
 
 export interface Episode {
@@ -109,15 +82,4 @@ export interface Season {
   ids: Ids;
   number: number;
   completed: number;
-}
-
-export interface ShowProgress {
-  aired: number;
-  completed: number;
-  hidden_seasons: any[];
-  last_episode: SmallEpisode;
-  last_watched_at: string;
-  next_episode?: SmallEpisode;
-  reset_at: string;
-  seasons: Season[];
 }

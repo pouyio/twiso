@@ -7,29 +7,24 @@ import { NoResults } from 'components/NoResults';
 import { Show } from '../../models/Show';
 import { useLiveQuery } from 'dexie-react-hooks';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from 'utils/db';
-import { StatusShow } from 'models/Api';
 
 const ShowsWatchlist: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);
 
   const orderedUserShowsIds = useLiveQuery(
     () =>
-      db
-        .table<StatusShow>(USER_SHOWS_TABLE)
-        .where('status')
+      db[USER_SHOWS_TABLE].where('status')
         .equals('watchlist')
         .reverse()
         .sortBy('added_to_watchlist_at')
-        .then<string[]>((items) => items.map((i) => i.show_imdb)),
+        .then((items) => items.map((i) => i.show_imdb)),
     [],
     [] as string[]
   );
 
   const fullShows = useLiveQuery(
     () =>
-      db
-        .table<Show>(DETAIL_SHOWS_TABLE)
-        .where('ids.imdb')
+      db[DETAIL_SHOWS_TABLE].where('ids.imdb')
         .anyOf(orderedUserShowsIds)
         .and((show) => genres.every((g) => show.genres.includes(g)))
         .toArray(),

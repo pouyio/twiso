@@ -35,7 +35,7 @@ export default function Profile() {
   useEffect(() => {
     if (isLogged) {
       supabase.auth.getUser().then(({ data }) => {
-        getStatsApi().then(({ data }) => setStats(data));
+        getStatsApi().then(({ data }) => data && setStats(data));
         setDev(
           ['7904e28b-a8bf-49af-9bc3-6efca4bda7ab'].includes(data.user?.id ?? '')
         );

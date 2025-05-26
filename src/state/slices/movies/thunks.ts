@@ -1,29 +1,25 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from 'state/store';
 import {
-  addWatchedApi,
-  addWatchlistApi,
+  addWatchedMovieApi,
+  addWatchlistMovieApi,
   getApi,
   getTranslationsApi,
   removeWatchedApi,
   removeWatchlistApi,
 } from 'utils/api';
 import { Movie, SearchMovie } from '../../../models/Movie';
-import {
-  AddedWatched,
-  AddedWatchlist,
-  RemovedWatched,
-  RemovedWatchlist,
-} from '../../../models/Api';
+import { AddedWatched } from '../../../models/Api';
+import { Translation } from 'models/Translation';
 
-export const addWatched = createAsyncThunk<AddedWatched, { movie: Movie }>(
+export const addWatchedMovie = createAsyncThunk<AddedWatched, { movie: Movie }>(
   'movies/addWatched',
   async ({ movie }) => {
     try {
       if (!movie.ids.imdb) {
         throw Error('no imdb id available');
       }
-      const { data } = await addWatchedApi(movie.ids.imdb, 'movie');
+      const { data } = await addWatchedMovieApi(movie.ids.imdb, 'movie');
       return data;
     } catch (e) {
       console.error(e);
@@ -32,7 +28,7 @@ export const addWatched = createAsyncThunk<AddedWatched, { movie: Movie }>(
   }
 );
 
-export const removeWatched = createAsyncThunk<RemovedWatched, { movie: Movie }>(
+export const removeWatched = createAsyncThunk<null, { movie: Movie }>(
   'movies/removeWatched',
   async ({ movie }) => {
     try {
@@ -48,14 +44,14 @@ export const removeWatched = createAsyncThunk<RemovedWatched, { movie: Movie }>(
   }
 );
 
-export const addWatchlist = createAsyncThunk<AddedWatchlist, { movie: Movie }>(
+export const addWatchlist = createAsyncThunk<AddedWatched, { movie: Movie }>(
   'movies/addWatchlist',
   async ({ movie }) => {
     try {
       if (!movie.ids.imdb) {
         throw Error('no imdb id available');
       }
-      const { data } = await addWatchlistApi(movie.ids.imdb, 'movie');
+      const { data } = await addWatchlistMovieApi(movie.ids.imdb);
       return data;
     } catch (e) {
       console.error(e);
@@ -64,24 +60,24 @@ export const addWatchlist = createAsyncThunk<AddedWatchlist, { movie: Movie }>(
   }
 );
 
-export const removeWatchlist = createAsyncThunk<
-  RemovedWatchlist,
-  { movie: Movie }
->('movies/removeWatchlist', async ({ movie }) => {
-  try {
-    if (!movie.ids.imdb) {
-      throw Error('no imdb id available');
+export const removeWatchlist = createAsyncThunk<null, { movie: Movie }>(
+  'movies/removeWatchlist',
+  async ({ movie }) => {
+    try {
+      if (!movie.ids.imdb) {
+        throw Error('no imdb id available');
+      }
+      const { data } = await removeWatchlistApi(movie.ids.imdb, 'movie');
+      return data;
+    } catch (e) {
+      console.error(e);
+      throw e;
     }
-    const { data } = await removeWatchlistApi(movie.ids.imdb, 'movie');
-    return data;
-  } catch (e) {
-    console.error(e);
-    throw e;
   }
-});
+);
 
 export const fillDetail = createAsyncThunk<
-  Movie,
+  Movie & { translation?: Translation },
   { id: string },
   { state: RootState }
 >('movies/fillDetail', async ({ id }) => {

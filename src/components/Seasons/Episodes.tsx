@@ -5,10 +5,10 @@ import { useAppSelector } from 'state/store';
 import { Icon } from 'components/Icon';
 import { useTranslate } from '../../hooks/useTranslate';
 import { Episode, SeasonEpisode } from '../../models/Show';
-import { EpisodeProgress } from 'models/Api';
+import { EpisodeStatus } from 'models/Api';
 
 interface ISeasonsProps {
-  episodesProgress: EpisodeProgress[];
+  episodesProgress: EpisodeStatus[];
   addEpisodeWatched: (episode: SeasonEpisode) => void;
   removeEpisodeWatched: (episode: SeasonEpisode) => void;
   addSeasonWatched: () => void;
