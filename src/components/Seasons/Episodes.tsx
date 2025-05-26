@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Emoji from '../Emoji';
 import { EpisodesPlaceholder } from './EpisodesPlaceholder';
 import { useAppSelector } from 'state/store';
@@ -6,6 +6,7 @@ import { Icon } from 'components/Icon';
 import { useTranslate } from '../../hooks/useTranslate';
 import { Episode, SeasonEpisode } from '../../models/Show';
 import { EpisodeStatus } from 'models/Api';
+import { AuthContext } from 'contexts/AuthContext';
 
 interface ISeasonsProps {
   episodesProgress: EpisodeStatus[];
@@ -30,6 +31,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
   showModal,
   onlyView,
 }) => {
+  const { session } = useContext(AuthContext);
   const watched = useAppSelector((state) => state.shows.pending.watched);
   const language = useAppSelector((state) => state.config.language);
   const { t } = useTranslate();
@@ -70,6 +72,9 @@ const Episodes: React.FC<ISeasonsProps> = ({
   };
 
   const isEpisodeAvailable = (number: number) => {
+    if (!session) {
+      return false;
+    }
     const foundEpisode = episodesDates.find((e) => e.number === number);
     if (!foundEpisode) {
       return false;
