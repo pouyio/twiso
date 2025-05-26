@@ -218,7 +218,7 @@ export default function ShowDetail() {
                     votes={ratings?.votes ?? 0}
                   />
                 </h2>
-                {['watched', 'hidden'].includes(liveStatus?.status ?? '') && (
+                {liveStatus?.status === 'watched' && (
                   <h2
                     className="text-sm cursor-pointer text-center"
                     style={{ minWidth: '8rem' }}
@@ -249,7 +249,7 @@ export default function ShowDetail() {
                 <h2>{item.network}</h2>
               </div>
 
-              {!['watched', 'hidden'].includes(liveStatus?.status ?? '') && (
+              {liveStatus?.status !== 'watched' && (
                 <div className="my-4">
                   <ShowWatchButton item={item} />
                 </div>
