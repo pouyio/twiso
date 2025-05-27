@@ -187,12 +187,6 @@ export default function MovieDetail() {
                         day: 'numeric',
                       })
                     : item.status}
-                  <button
-                    className="mx-5 cursor-pointer"
-                    onClick={() => dispatch(fillDetail({ id }))}
-                  >
-                    🔄
-                  </button>
                 </h1>
                 <div className="flex mb-4 justify-between items-center text-gray-600">
                   <h2>
