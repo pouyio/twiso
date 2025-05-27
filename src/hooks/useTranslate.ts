@@ -87,6 +87,7 @@ const en = {
   'hours-aprox': '{} hours, {} minutes aprox',
   'loading-session': 'Loading user session...',
   'login-magic-link': 'Log in with a magic link ✨',
+  refresh: 'Refresh',
 };
 
 const es = {
@@ -176,6 +177,7 @@ const es = {
   'hours-aprox': '{} horas, {} minutos aprox',
   'loading-session': 'Cargando sesión de usuario...',
   'login-magic-link': 'Inicia sesión con un enlace mágico ✨',
+  refresh: 'Recargar',
 };
 
 const translations: Record<Language, Record<string, string>> = {
