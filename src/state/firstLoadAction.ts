@@ -71,7 +71,7 @@ const syncRemoteShows = async (
   }
 };
 
-export const firstLoad = async () => {
+export const firstLoad = async (): Promise<boolean> => {
   try {
     const oldActivities: Activities | null = JSON.parse(
       localStorage.getItem('activities') ?? '{}'
@@ -121,8 +121,10 @@ export const firstLoad = async () => {
     });
 
     localStorage.setItem('activities', JSON.stringify(newActivities));
+    return true;
   } catch (e) {
     console.error('Error on firstLoad');
     console.error(e);
+    return false;
   }
 };

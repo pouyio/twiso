@@ -1,8 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import {
   addWatchedMovie,
+  addWatchlist,
   fillDetail,
   removeWatched,
+  removeWatchlist,
 } from 'state/slices/movies/thunks';
 
 interface MoviesState {
@@ -24,41 +26,53 @@ const moviesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(addWatchedMovie.pending, (state, { meta }) => {
-        state.pending.watched.push(meta.arg.movie.ids.imdb);
-      })
-      .addCase(addWatchedMovie.fulfilled, (state, { meta }) => {
-        state.pending.watched = state.pending.watched.filter(
-          (p) => p !== meta.arg.movie.ids.imdb
-        );
-      })
-      .addCase(addWatchedMovie.rejected, (state, { meta }) => {
-        state.pending.watched = state.pending.watched.filter(
-          (p) => p !== meta.arg.movie.ids.imdb
-        );
-      })
-      .addCase(removeWatched.pending, (state, { meta }) => {
-        state.pending.watched.push(meta.arg.movie.ids.imdb);
-      })
-      .addCase(removeWatched.fulfilled, (state, { meta }) => {
-        state.pending.watched = state.pending.watched.filter(
-          (p) => p !== meta.arg.movie.ids.imdb
-        );
-      })
-      .addCase(removeWatched.rejected, (state, { meta }) => {
-        state.pending.watched = state.pending.watched.filter(
-          (p) => p !== meta.arg.movie.ids.imdb
-        );
-      })
       .addCase(fillDetail.pending, (state) => {
         state.totalRequestsPending = state.totalRequestsPending + 1;
       })
-      .addCase(fillDetail.fulfilled, (state) => {
-        state.totalRequestsPending = state.totalRequestsPending - 1;
-      })
-      .addCase(fillDetail.rejected, (state) => {
-        state.totalRequestsPending = state.totalRequestsPending - 1;
-      });
+      .addMatcher(
+        isAnyOf(addWatchedMovie.pending, removeWatched.pending),
+        (state, { meta }) => {
+          state.pending.watched.push(meta.arg.movie.ids.imdb);
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          addWatchedMovie.fulfilled,
+          addWatchedMovie.rejected,
+          removeWatched.fulfilled,
+          removeWatched.rejected
+        ),
+        (state, { meta }) => {
+          state.pending.watched = state.pending.watched.filter(
+            (p) => p !== meta.arg.movie.ids.imdb
+          );
+        }
+      )
+      .addMatcher(
+        isAnyOf(addWatchlist.pending, removeWatchlist.pending),
+        (state, { meta }) => {
+          state.pending.watchlist.push(meta.arg.movie.ids.imdb);
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          addWatchlist.fulfilled,
+          addWatchlist.rejected,
+          removeWatchlist.rejected,
+          removeWatchlist.fulfilled
+        ),
+        (state, { meta }) => {
+          state.pending.watchlist = state.pending.watched.filter(
+            (p) => p !== meta.arg.movie.ids.imdb
+          );
+        }
+      )
+      .addMatcher(
+        isAnyOf(fillDetail.fulfilled, fillDetail.rejected),
+        (state) => {
+          state.totalRequestsPending = state.totalRequestsPending - 1;
+        }
+      );
   },
 });
 
