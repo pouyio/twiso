@@ -35,15 +35,19 @@ export default function MovieDetail() {
     dispatch(fillDetail({ id }));
   };
 
+  useEffect(() => {
+    // @ts-expect-error limitations on Dexie EntityTable
+    db[DETAIL_MOVIES_TABLE].get(id).then((movie) => {
+      if (!movie) {
+        dispatch(fillDetail({ id }));
+      }
+    });
+  }, [id]);
+
   const liveItem = useLiveQuery(
     () =>
       // @ts-expect-error limitations on Dexie EntityTable
-      db[DETAIL_MOVIES_TABLE].get(id).then((movie) => {
-        if (!movie) {
-          dispatch(fillDetail({ id }));
-        }
-        return movie!;
-      }),
+      db[DETAIL_MOVIES_TABLE].get(id),
     [id]
   );
 
@@ -75,7 +79,7 @@ export default function MovieDetail() {
   if (!item) {
     return (
       <div
-        className="flex justify-center text-6xl items-center"
+        className="flex justify-center text-6xl items-center pt-5"
         style={{ marginTop: 'env(safe-area-inset-top)' }}
       >
         <Emoji emoji="⏳" rotating={true} />

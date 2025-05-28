@@ -69,7 +69,7 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
         <Suspense
           fallback={
             <div
-              className="flex justify-center text-6xl items-center"
+              className="flex justify-center text-6xl items-center pt-5"
               style={{ marginTop: 'env(safe-area-inset-top)' }}
             >
               <Emoji emoji="⏳" rotating={true} />
