@@ -67,6 +67,10 @@
   }
 }
 
+* {
+  overscroll-behavior-y: contain;
+}
+
 html {
   background-color: var(--primary-light);
 }
