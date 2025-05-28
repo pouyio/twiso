@@ -18,6 +18,7 @@ import { UserStats } from '../models/Api';
 import { AVAIABLE_LANGUAGES, Language } from '../models/Translation';
 import { useTranslate } from '../hooks/useTranslate';
 import { supabase } from 'utils/supabase';
+import { User } from '@supabase/supabase-js';
 
 const AVG_MOVIE_DURATION = 110;
 const AVG_EPISODE_DURATION = 35;
@@ -26,6 +27,7 @@ export default function Profile() {
   const { theme, setTheme } = useContext(ThemeContext);
   const [stats, setStats] = useState<UserStats>();
   const [dev, setDev] = useState(false);
+  const [user, setUser] = useState<User | null>();
   const { session, logout } = useContext(AuthContext);
   const isLogged = !!session;
   const dispatch = useAppDispatch();
@@ -39,6 +41,7 @@ export default function Profile() {
         setDev(
           ['7904e28b-a8bf-49af-9bc3-6efca4bda7ab'].includes(data.user?.id ?? '')
         );
+        setUser(data.user);
       });
     }
   }, [isLogged]);
@@ -131,10 +134,14 @@ export default function Profile() {
               {t('have_watched')}: {stats?.episodes} en{' '}
               {convertMinutes(stats && stats.episodes * AVG_EPISODE_DURATION)}{' '}
             </p>{' '}
+            <p className="text-sm mt-12 flex flex-col items-end">
+              <span>Logged in as:</span>
+              <span className="italic">{user?.email}</span>
+            </p>
           </>
         ) : null}
 
-        <div className="flex justify-between pt-10 text-sm font-mono items-center">
+        <div className="flex justify-between pt-2 text-sm font-mono items-center">
           <h1 className="inline">Version: {packageInfo.version}</h1>
           <a href="https://status.trakt.tv/" className="underline">
             API status
