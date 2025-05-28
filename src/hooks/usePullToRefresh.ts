@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
-export const PULL_LIMIT = 360;
+const PULL_LIMIT = 300;
 
-const K = 0.5;
+const K = 0.6;
 
-const appr = (x: number) => {
+const resistance = (x: number) => {
   return PULL_LIMIT * (1 - Math.exp((-K * x) / PULL_LIMIT));
 };
 
@@ -26,7 +26,7 @@ export const usePullToRefresh = ({ cb }: { cb: () => void }) => {
     let pullLength =
       lastStartPoint <= screenY ? Math.abs(screenY - lastStartPoint) : 0;
     pullLength = pullLength < PULL_LIMIT ? pullLength : PULL_LIMIT;
-    setPullChange(appr(pullLength));
+    setPullChange(pullLength);
   };
 
   const endPull = () => {
@@ -44,5 +44,8 @@ export const usePullToRefresh = ({ cb }: { cb: () => void }) => {
     };
   });
 
-  return { pullChange };
+  return {
+    pullChange: resistance(pullChange),
+    limitReached: pullChange >= PULL_LIMIT,
+  };
 };
