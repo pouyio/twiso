@@ -136,7 +136,7 @@ export default function Profile() {
             </p>{' '}
             <p className="text-sm mt-12 flex flex-col items-end">
               <span>Logged in as:</span>
-              <span className="italic">{user?.email}</span>
+              <span className="italic h-5">{user?.email}</span>
             </p>
           </>
         ) : null}
