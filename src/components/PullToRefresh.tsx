@@ -16,7 +16,7 @@ export const PullToRefresh: React.FC<
             transform: `rotate(-${
               pullChange <= PULL_LIMIT ? pullChange * 2 : 0
             }deg) scale(${(pullChange + 50) * 1.5}%)`,
-            translate: `0% -${pullChange * 1.3}%`,
+            translate: `0% -1.8rem`,
           }}
         />
       </div>
