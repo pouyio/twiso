@@ -88,6 +88,7 @@ const en = {
   'loading-session': 'Loading user session...',
   'login-magic-link': 'Log in with a magic link ✨',
   refresh: 'Refresh',
+  'nothing-yet': 'Nothing to see here yet',
 };
 
 const es = {
@@ -178,6 +179,7 @@ const es = {
   'loading-session': 'Cargando sesión de usuario...',
   'login-magic-link': 'Inicia sesión con un enlace mágico ✨',
   refresh: 'Recargar',
+  'nothing-yet': 'Nada por aquí todavía',
 };
 
 const translations: Record<Language, Record<string, string>> = {
