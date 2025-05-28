@@ -99,14 +99,14 @@ export const removeEpisodeWatched = createAsyncThunk<
 });
 
 export const setHiddenShow = createAsyncThunk<
-  any,
+  null,
   { showId: string; hidden: boolean },
   { state: RootState }
 >('shows/setHidden', async ({ showId, hidden }) => {
   try {
-    const response = await setHideShow(showId, hidden);
+    const { data } = await setHideShow(showId, hidden);
     firstLoad();
-    return response;
+    return data;
   } catch (e) {
     console.error(e);
     throw e;
