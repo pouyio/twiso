@@ -2,7 +2,6 @@ import React from 'react';
 import ShowsWatchlist from './ShowsWatchlist';
 import ShowsWatched from './ShowsWatched';
 import { useTranslate } from '../../hooks/useTranslate';
-import { useWindowSize } from '../../hooks/useWindowSize';
 import { useSearchParams } from '../../hooks/useSearchParams';
 import { motion } from 'motion/react';
 import { Icon } from 'components/Icon';
@@ -25,7 +24,6 @@ export const Underline: React.FC<{ selected: boolean }> = ({ selected }) => {
 export default function Shows() {
   const [searchParams, setSearchParams] = useSearchParams({ mode: 'watched' });
   const mode = searchParams.get('mode');
-  const { width } = useWindowSize();
 
   const { t } = useTranslate();
 
@@ -39,12 +37,7 @@ export default function Shows() {
   return (
     <>
       <title>Shows</title>
-      <div
-        className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto"
-        style={{
-          ...(width < 1024 ? { paddingTop: 'env(safe-area-inset-top)' } : {}),
-        }}
-      >
+      <div className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto pt-[env(safe-area-inset-top)]">
         <div className="w-full">
           <button
             className="py-2 w-full flex justify-center"

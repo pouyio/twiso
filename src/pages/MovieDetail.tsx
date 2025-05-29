@@ -78,10 +78,7 @@ export default function MovieDetail() {
 
   if (!item) {
     return (
-      <div
-        className="flex justify-center text-6xl items-center pt-5"
-        style={{ marginTop: 'env(safe-area-inset-top)' }}
-      >
+      <div className="flex justify-center text-6xl items-center pt-5 mt-[env(safe-area-inset-top)]">
         <Emoji emoji="⏳" rotating={true} />
       </div>
     );
@@ -113,7 +110,7 @@ export default function MovieDetail() {
           >
             <Image
               ids={item.ids}
-              style={{ marginTop: 'env(safe-area-inset-top)' }}
+              className="mt-[env(safe-area-inset-top)]"
               text={title}
               type="movie"
               size="big"

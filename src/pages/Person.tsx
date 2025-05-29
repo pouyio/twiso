@@ -71,7 +71,7 @@ const Person: React.FC = () => {
           {localState && (
             <Image
               ids={localState.ids}
-              style={{ paddingTop: 'env(safe-area-inset-top)' }}
+              className="pt-[env(safe-area-inset-top)]"
               text={localState.name}
               type="person"
               size="big"
@@ -248,10 +248,7 @@ const Person: React.FC = () => {
       </div>
     </div>
   ) : (
-    <div
-      className="flex justify-center text-6xl items-center pt-5"
-      style={{ marginTop: 'env(safe-area-inset-top)' }}
-    >
+    <div className="flex justify-center text-6xl items-center pt-5 mt-[env(safe-area-inset-top)]">
       <Emoji emoji="⏳" rotating={true} />
     </div>
   );

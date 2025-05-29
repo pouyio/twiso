@@ -26,13 +26,7 @@ export const ModalContext = createContext<IModalContext>({
   isShowing: false,
 });
 
-export const ModalProvider = ({
-  children,
-  modalRef,
-}: {
-  children: ReactNode;
-  modalRef: HTMLDivElement;
-}) => {
+export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [isShowing, setIsShowing] = useState(false);
   const [data, setData] = useState<Data>();
 
@@ -52,7 +46,7 @@ export const ModalProvider = ({
       }}
     >
       {children}
-      {modalRef && <Modal modalRef={modalRef} />}
+      <Modal />
     </ModalContext>
   );
 };

@@ -12,8 +12,8 @@ import { ProgressBar } from './components/ProgressBar/ProgressBar';
 import ProtectedRoute from './components/ProtectedRoute';
 import { firstLoad } from './state/firstLoadAction';
 import { AuthContext } from './contexts/AuthContext';
-import { useWindowSize } from './hooks/useWindowSize';
 import { VerifyMagicLink } from 'pages/VerifyMagicLink';
+import { Layout } from 'components/Layout';
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const Profile = lazy(() => import('./pages/Profile'));
 const MovieDetail = lazy(() => import('./pages/MovieDetail'));
@@ -29,8 +29,6 @@ const SessionRedirect: React.FC<React.PropsWithChildren<unknown>> = () => {
 };
 
 const App: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const { width: windowWidth } = useWindowSize();
-
   const globalSearch = useAppSelector((state) => state.root.globalSearch);
 
   const { session } = useContext(AuthContext);
@@ -48,74 +46,50 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
     <>
       <NewVersion />
       <Alert />
-      <ul
-        className="navbar w-full text-2xl hidden opacity-0 lg:top-0 lg:bottom-auto lg:block select-none"
-        style={{
-          ...(windowWidth >= 1024
-            ? { paddingTop: 'env(safe-area-inset-top)' }
-            : {}),
-        }}
-      >
-        <li className="py-1">
-          <Emoji emoji="📺" /> P
-        </li>
-      </ul>
-      <nav className="w-full flex flex-col lg:flex-col-reverse fixed bottom-0 z-20 justify-around text-2xl lg:top-0 lg:bottom-auto select-none">
-        <ProgressBar />
-        <NavigationTabs logged={isLoggedIn} />
-      </nav>
-      <>
-        {globalSearch && <GlobalFilter />}
-        <Suspense
-          fallback={
-            <div
-              className="flex justify-center text-6xl items-center pt-5"
-              style={{ marginTop: 'env(safe-area-inset-top)' }}
-            >
-              <Emoji emoji="⏳" rotating={true} />
-            </div>
-          }
-        >
-          <Routes>
-            <Route path="/" element={<SessionRedirect />} />
-            <Route path="/auth/confirm" element={<VerifyMagicLink />} />
-            <Route
-              path={ROUTES.movies}
-              element={
-                <ProtectedRoute>
-                  <Movies />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path={ROUTES.shows}
-              element={
-                <ProtectedRoute>
-                  <Shows />
-                </ProtectedRoute>
-              }
-            />
-            <Route path={ROUTES.search} element={<Search />} />
-            <Route path={ROUTE.movie} element={<MovieDetail />} />
-            <Route path={ROUTE.show} element={<ShowDetail />} />
-            <Route path={ROUTE.person} element={<Person />} />
-            <Route path={ROUTES.profile} element={<Profile />} />
-          </Routes>
-        </Suspense>
-        <ul
-          className="navbar flex w-full text-2xl opacity-0 lg:top-0 lg:bottom-auto lg:hidden"
-          style={{
-            paddingBottom: 'env(safe-area-inset-bottom)',
-            ...(windowWidth >= 1024
-              ? { paddingTop: 'env(safe-area-inset-top)' }
-              : {}),
-          }}
-        >
-          <li className="py-1">
-            <Emoji emoji="📺" />P
-          </li>
-        </ul>
-      </>
+      {globalSearch && <GlobalFilter />}
+      <Layout.Root>
+        <Layout.Navbar>
+          <div className="flex flex-col lg:flex-col-reverse">
+            <ProgressBar />
+            <NavigationTabs logged={isLoggedIn} />
+          </div>
+        </Layout.Navbar>
+        <Layout.Content>
+          <Suspense
+            fallback={
+              <div className="flex justify-center text-6xl items-center pt-5 mt-[env(safe-area-inset-top)]">
+                <Emoji emoji="⏳" rotating={true} />
+              </div>
+            }
+          >
+            <Routes>
+              <Route path="/" element={<SessionRedirect />} />
+              <Route path="/auth/confirm" element={<VerifyMagicLink />} />
+              <Route
+                path={ROUTES.movies}
+                element={
+                  <ProtectedRoute>
+                    <Movies />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={ROUTES.shows}
+                element={
+                  <ProtectedRoute>
+                    <Shows />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path={ROUTES.search} element={<Search />} />
+              <Route path={ROUTE.movie} element={<MovieDetail />} />
+              <Route path={ROUTE.show} element={<ShowDetail />} />
+              <Route path={ROUTE.person} element={<Person />} />
+              <Route path={ROUTES.profile} element={<Profile />} />
+            </Routes>
+          </Suspense>
+        </Layout.Content>
+      </Layout.Root>
     </>
   );
 };

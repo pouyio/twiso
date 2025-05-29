@@ -59,7 +59,7 @@ export default function Profile() {
   };
 
   return (
-    <div style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+    <div className="pt-[env(safe-area-inset-top)]">
       <title>Profile</title>
       <div className="lg:max-w-lg m-auto p-4">
         <ul className="flex justify-between">

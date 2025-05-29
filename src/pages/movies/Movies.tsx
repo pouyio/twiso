@@ -4,7 +4,6 @@ import { MoviesWatchlist } from './MoviesWatchlist';
 import { Underline } from '../shows/Shows';
 import { Icon } from 'components/Icon';
 import { useSearchParams } from 'react-router';
-import { useWindowSize } from '../../hooks/useWindowSize';
 import { useTranslate } from '../../hooks/useTranslate';
 import db, { USER_MOVIES_TABLE } from 'utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -13,7 +12,6 @@ export default function Movies() {
   const [searchParams, setSearchParams] = useSearchParams({
     mode: 'watchlist',
   });
-  const { width } = useWindowSize();
   const mode = searchParams.get('mode');
 
   const watchlist = useLiveQuery(() =>
@@ -28,12 +26,7 @@ export default function Movies() {
   return (
     <>
       <title>Movies</title>
-      <div
-        className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto"
-        style={{
-          ...(width < 1024 ? { paddingTop: 'env(safe-area-inset-top)' } : {}),
-        }}
-      >
+      <div className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto pt-[env(safe-area-inset-top)]">
         <div className="w-full">
           <button
             className="py-2 w-full flex justify-center"

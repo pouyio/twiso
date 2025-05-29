@@ -87,11 +87,11 @@ export default function ShowDetail() {
   }, [liveStatus]);
 
   const onShare = () => {
-    share(item!.title).then((action) => {
-      if (action === 'copied') {
-        showAlert(t('link_copied', item!.title));
-      }
-    });
+    showAlert(t('link_copied', item!.title));
+    // share(item!.title).then((action) => {
+    //   if (action === 'copied') {
+    //   }
+    // });
   };
 
   const onToggleHidden = () => {
@@ -142,7 +142,7 @@ export default function ShowDetail() {
           >
             <Image
               ids={item.ids}
-              style={{ marginTop: 'env(safe-area-inset-top)' }}
+              className="mt-[env(safe-area-inset-top)]"
               text={title}
               type="show"
               size="big"

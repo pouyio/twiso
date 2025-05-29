@@ -4,20 +4,14 @@ import { NavLink, useLocation } from 'react-router';
 import LongPress from '../Longpress';
 import { ROUTES } from 'utils/routes';
 import { Icon } from 'components/Icon';
-import { useWindowSize } from '../../hooks/useWindowSize';
 import { useTranslate } from '../../hooks/useTranslate';
 
-const Underline: React.FC<{ width: number }> = ({ width }) => {
+const Underline: React.FC = () => {
   return (
     <motion.div
       layoutId="underline-section"
-      className="bg-gray-600 rounded-sm"
+      className="bg-gray-600 rounded-sm bottom-[calc(env(safe-area-inset-bottom)_+_4px)] h-[2px]"
       initial={false}
-      style={{
-        bottom:
-          width < 1024 ? `calc(env(safe-area-inset-bottom) + 4px)` : '4px',
-        height: '2px',
-      }}
     />
   );
 };
@@ -26,18 +20,10 @@ export const NavigationTabs: React.FC<{
   logged: boolean;
 }> = ({ logged }) => {
   const { pathname } = useLocation();
-  const { width } = useWindowSize();
   const { t } = useTranslate();
 
   return (
-    <ul
-      className="flex justify-around px-2 text-center bg-gray-200"
-      style={{
-        ...(width >= 1024
-          ? { paddingTop: 'env(safe-area-inset-top)' }
-          : { paddingBottom: 'env(safe-area-inset-bottom)' }),
-      }}
-    >
+    <ul className="flex justify-around px-2 text-center bg-gray-200 pt-[env(safe-area-inset-bottom)]">
       {logged ? (
         <>
           <li className="py-1">
@@ -51,7 +37,7 @@ export const NavigationTabs: React.FC<{
                 {t('movies')}
               </span>
             </NavLink>
-            {pathname.startsWith(ROUTES.movies) && <Underline width={width} />}
+            {pathname.startsWith(ROUTES.movies) && <Underline />}
           </li>
           <li className="py-1">
             <NavLink
@@ -64,13 +50,13 @@ export const NavigationTabs: React.FC<{
                 {t('shows')}
               </span>
             </NavLink>
-            {pathname.startsWith(ROUTES.shows) && <Underline width={width} />}
+            {pathname.startsWith(ROUTES.shows) && <Underline />}
           </li>
         </>
       ) : null}
       <li className="py-1">
         <LongPress />
-        {pathname.startsWith(ROUTES.search) && <Underline width={width} />}
+        {pathname.startsWith(ROUTES.search) && <Underline />}
       </li>
       <li className="py-1">
         <NavLink to={ROUTES.profile} className="flex items-center">
@@ -79,7 +65,7 @@ export const NavigationTabs: React.FC<{
             {t('profile')}
           </span>
         </NavLink>
-        {pathname.startsWith(ROUTES.profile) && <Underline width={width} />}
+        {pathname.startsWith(ROUTES.profile) && <Underline />}
         {!Object.values(ROUTES).includes(pathname) && (
           <div
             style={{

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
-import { useWindowSize } from '../../hooks/useWindowSize';
 import { useTranslate } from '../../hooks/useTranslate';
 import { ShowSeason } from '../../models/Show';
 import { ShowStatusComplete } from 'models/Api';
@@ -13,17 +12,13 @@ interface ISeasonsProps {
 }
 
 const Underline: React.FC<{ visible: boolean }> = ({ visible }) => {
-  const { width } = useWindowSize();
   return (
     <motion.div
       layoutId="underline-season"
-      className={`bg-gray-200 mt-2 ${visible ? '' : 'invisible'}`}
+      className={`bg-gray-200 mt-2 ${
+        visible ? '' : 'invisible'
+      } bottom-[calc(env(safe-area-inset-bottom)_+_4px)] h-[2px]`}
       initial={false}
-      style={{
-        bottom:
-          width < 1024 ? `calc(env(safe-area-inset-bottom) + 4px)` : '4px',
-        height: '4px',
-      }}
     />
   );
 };

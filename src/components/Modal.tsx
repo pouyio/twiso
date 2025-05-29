@@ -1,17 +1,14 @@
 import React, { useContext } from 'react';
-import ReactDOM from 'react-dom';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { ModalContext } from '../contexts/ModalContext';
 
-interface IModalProps {
-  modalRef: HTMLDivElement;
-}
+interface IModalProps {}
 
-const Modal: React.FC<IModalProps> = ({ modalRef }) => {
+const Modal: React.FC<IModalProps> = () => {
   const { isShowing, toggle, title, text, custom } = useContext(ModalContext);
   const { theme } = useContext(ThemeContext);
 
-  return ReactDOM.createPortal(
+  return (
     <div
       className={`${theme} ${
         isShowing ? '' : 'hidden'
@@ -38,8 +35,7 @@ const Modal: React.FC<IModalProps> = ({ modalRef }) => {
           )}
         </div>
       </div>
-    </div>,
-    modalRef
+    </div>
   );
 };
 
