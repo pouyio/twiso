@@ -89,6 +89,9 @@ const en = {
   'login-magic-link': 'Log in with a magic link ✨',
   refresh: 'Refresh',
   'nothing-yet': 'Nothing to see here yet',
+  'extra-scenes': 'Extra scenes',
+  'during-credits': 'During credits',
+  'post-credits': 'Post credits',
 };
 
 const es = {
@@ -180,6 +183,9 @@ const es = {
   'login-magic-link': 'Inicia sesión con un enlace mágico ✨',
   refresh: 'Recargar',
   'nothing-yet': 'Nada por aquí todavía',
+  'extra-scenes': 'Escenas extra',
+  'during-credits': 'Durante créditos',
+  'post-credits': 'Post-créditos',
 };
 
 const translations: Record<Language, Record<string, string>> = {

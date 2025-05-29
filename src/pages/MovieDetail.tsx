@@ -214,8 +214,29 @@ export default function MovieDetail() {
               <Genres genres={item.genres} />
             </div>
 
+            <People people={people} type="movie" />
+
             <div className="my-4">
-              <People people={people} type="movie" />
+              <p className="font-medium font-family-text">
+                {t('extra-scenes')}:
+              </p>
+
+              <div className="my-3">
+                <span
+                  className={`mr-5 ${
+                    item.during_credits ? '' : 'opacity-50 line-through'
+                  } bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre`}
+                >
+                  {t('during-credits')} {item.during_credits && '✓'}
+                </span>
+                <span
+                  className={`mt-2 ${
+                    item.after_credits ? '' : 'opacity-50 line-through'
+                  } bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre`}
+                >
+                  {t('post-credits')} {item.after_credits && '✓'}
+                </span>
+              </div>
             </div>
 
             <div className="my-4">
