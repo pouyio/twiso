@@ -133,9 +133,9 @@ export default function ShowDetail() {
 
   return (
     <PullToRefresh callback={refresh}>
-      <div className={bgClassName + ' h-full'}>
+      <div className={bgClassName}>
         <title>{title}</title>
-        <div className="lg:max-w-5xl lg:mx-auto h-full">
+        <div className="lg:max-w-5xl lg:mx-auto">
           <div
             className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
             style={{ minHeight: '15em' }}
@@ -167,7 +167,7 @@ export default function ShowDetail() {
             </button>
           </div>
           <article
-            className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none h-full"
+            className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none"
             style={{ transform: 'translate3d(0,0,0)' }}
           >
             <div className="lg:hidden bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
