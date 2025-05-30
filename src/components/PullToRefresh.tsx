@@ -11,7 +11,9 @@ export const PullToRefresh: React.FC<
   return (
     <div
       style={{ marginTop: pullChange }}
-      className={!pulling ? `duration-100 transition-[margin-top]` : ''}
+      className={
+        'h-full' + (!pulling ? ` duration-200 transition-[margin-top]` : '')
+      }
     >
       <div className="p-2 rounded-full flex flex-col justify-center items-center -mt-10">
         <Icon

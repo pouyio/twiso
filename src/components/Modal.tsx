@@ -10,7 +10,7 @@ const Modal: React.FC<IModalProps> = () => {
 
   return (
     <div
-      className={`${theme} ${
+      className={`${theme ?? ''} ${
         isShowing ? '' : 'hidden'
       } fixed w-full h-full top-0 left-0 flex items-center justify-center z-10`}
     >
