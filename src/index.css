@@ -67,10 +67,6 @@
   }
 }
 
-* {
-  overscroll-behavior-y: none;
-}
-
 html {
   background-color: var(--primary-light);
   height: 100%;
