@@ -6,17 +6,12 @@ import {
 import { useAppDispatch, useAppSelector } from 'state/store';
 import { AuthContext } from '../../contexts/AuthContext';
 import { ModalContext } from '../../contexts/ModalContext';
-import {
-  addWatchedEpisodesApi,
-  getSeasonEpisodesApi,
-  removeWatchedEpisodesApi,
-} from '../../utils/api';
+import { getSeasonEpisodesApi } from '../../utils/api';
 import Episodes from './Episodes';
 import SeasonSelector from './SeasonSelector';
 import { Episode, SeasonEpisode, Show } from '../../models/Show';
 import { useSearchParams } from 'react-router';
 import { ShowStatusComplete } from 'models/Api';
-import { firstLoad } from 'state/firstLoadAction';
 
 interface ISeasonsContainerProps {
   show: Show;
@@ -77,8 +72,9 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     const episodesToWawtch = episodesDates[selectedSeason].filter(
       (e) => new Date(e.first_aired) < new Date()
     );
-    const { data } = await addWatchedEpisodesApi(show.ids, episodesToWawtch);
-    firstLoad();
+    dispatch(
+      addEpisodeWatched({ showIds: show.ids, episodes: episodesToWawtch })
+    );
   };
 
   const removeSeason = async () => {
@@ -88,11 +84,12 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     const episodesToWawtch = episodesDates[selectedSeason].filter(
       (e) => new Date(e.first_aired) < new Date()
     );
-    const { data } = await removeWatchedEpisodesApi(
-      show.ids,
-      episodesToWawtch.map((e) => e.ids)
+    dispatch(
+      removeEpisodeWatched({
+        showIds: show.ids,
+        episodes: episodesToWawtch.map((e) => e.ids),
+      })
     );
-    firstLoad();
   };
 
   const showModal = ({

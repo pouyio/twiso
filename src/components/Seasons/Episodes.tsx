@@ -95,6 +95,13 @@ const Episodes: React.FC<ISeasonsProps> = ({
       : '-';
   };
 
+  const episodesIds = episodes.map((e) => e.ids.imdb);
+  const pendingSeason = !!(
+    watched.length && watched.some((w) => episodesIds.includes(w))
+  );
+
+  console.log(pendingSeason);
+
   return (
     <>
       <ul className="my-4">
@@ -150,14 +157,14 @@ const Episodes: React.FC<ISeasonsProps> = ({
                     <Emoji
                       emoji="⏳"
                       rotating={true}
-                      className="px-5 text-right"
+                      className="w-10 text-center"
                     />
                   ) : (
                     <button
-                      className="px-5 text-right"
+                      className="w-10 flex"
                       onClick={() => toggleEpisode(e)}
                     >
-                      <Icon name="play" className="h-8" />
+                      <Icon name="play" className="h-8 m-auto" />
                     </button>
                   ))}
               </div>
@@ -169,29 +176,29 @@ const Episodes: React.FC<ISeasonsProps> = ({
         <div className="flex justify-center">
           {isSeasonWatched() ? (
             <button
-              className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
+              disabled={pendingSeason}
+              className={`disabled:opacity-50 mx-1 rounded-full text-sm px-3 py-2 bg-gray-200`}
               onClick={() => removeSeasonWatched()}
             >
-              {t('mark_not_watched')} {/* {pendings.includes(seasonId) && ( */}
-              {/*   <Emoji */}
-              {/*     emoji="⏳" */}
-              {/*     rotating={true} */}
-              {/*     className="inline-flex ml-2" */}
-              {/*   /> */}
-              {/* )} */}
+              {t('mark_not_watched')}
+              <Emoji
+                emoji="⏳"
+                rotating={true}
+                className={`${pendingSeason ? 'inline-flex' : 'hidden'} ml-2`}
+              />
             </button>
           ) : (
             <button
-              className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
+              disabled={pendingSeason}
+              className="disabled:opacity-50 mx-1 rounded-full text-sm px-3 py-2 bg-gray-200"
               onClick={() => addSeasonWatched()}
             >
-              {t('mark_watched')} {/* {pendings.includes(seasonId) && ( */}
-              {/*   <Emoji */}
-              {/*     emoji="⏳" */}
-              {/*     rotating={true} */}
-              {/*     className="inline-flex ml-2" */}
-              {/*   /> */}
-              {/* )} */}
+              {t('mark_watched')}
+              <Emoji
+                emoji="⏳"
+                rotating={true}
+                className={`${pendingSeason ? 'inline-flex' : 'hidden'} ml-2`}
+              />
             </button>
           )}
         </div>

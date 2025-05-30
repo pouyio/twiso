@@ -73,7 +73,7 @@ export const addEpisodeWatched = createAsyncThunk<
 >('shows/addEpisodeWatched', async ({ showIds, episodes }) => {
   try {
     const { data } = await addWatchedEpisodesApi(showIds, episodes);
-    firstLoad();
+    await firstLoad();
     return data;
   } catch (e) {
     console.error(e);
@@ -90,7 +90,7 @@ export const removeEpisodeWatched = createAsyncThunk<
 >('shows/removeEpisodeWatched', async ({ showIds, episodes }) => {
   try {
     const { data } = await removeWatchedEpisodesApi(showIds, episodes);
-    firstLoad();
+    await firstLoad();
     return data;
   } catch (e) {
     console.error(e);
@@ -105,7 +105,7 @@ export const setHiddenShow = createAsyncThunk<
 >('shows/setHidden', async ({ showId, hidden }) => {
   try {
     const { data } = await setHideShow(showId, hidden);
-    firstLoad();
+    await firstLoad();
     return data;
   } catch (e) {
     console.error(e);
