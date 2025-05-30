@@ -49,7 +49,7 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
       {globalSearch && <GlobalFilter />}
       <Layout.Root>
         <Layout.Navbar>
-          <div className="flex flex-col lg:flex-col-reverse">
+          <div className="flex flex-col lg:flex-col-reverse bg-gray-200 pb-[env(safe-area-inset-bottom)]">
             <ProgressBar />
             <NavigationTabs logged={isLoggedIn} />
           </div>
