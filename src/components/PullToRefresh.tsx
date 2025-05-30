@@ -11,11 +11,11 @@ export const PullToRefresh: React.FC<
       <div className="p-2 rounded-full flex flex-col justify-center items-center -mt-10">
         <Icon
           name="refresh"
-          className={`h-6 transition-colors ${limitReached && 'animate-ping'}`}
+          className={`h-6 ${limitReached ? 'animate-spin scale-[2.6]' : ``}`}
           style={{
-            transform: `rotate(-${pullChange * 2}deg) scale(${
-              (pullChange + 50) * 1.5
-            }%)`,
+            ...(!limitReached
+              ? { transform: `scale(${(pullChange + 50) * 1.5}%)` }
+              : {}),
             translate: `0% -1.2rem`,
           }}
         />
