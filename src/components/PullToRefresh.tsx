@@ -5,9 +5,14 @@ import { usePullToRefresh } from 'hooks/usePullToRefresh';
 export const PullToRefresh: React.FC<
   PropsWithChildren<{ callback: () => void }>
 > = ({ children, callback }) => {
-  const { pullChange, limitReached } = usePullToRefresh({ cb: callback });
+  const { pullChange, limitReached, pulling } = usePullToRefresh({
+    cb: callback,
+  });
   return (
-    <div style={{ marginTop: pullChange }}>
+    <div
+      style={{ marginTop: pullChange }}
+      className={!pulling ? `duration-100 transition-[margin-top]` : ''}
+    >
       <div className="p-2 rounded-full flex flex-col justify-center items-center -mt-10">
         <Icon
           name="refresh"

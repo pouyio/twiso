@@ -11,6 +11,7 @@ const resistance = (x: number) => {
 export const usePullToRefresh = ({ cb }: { cb: () => void }) => {
   const [startPoint, setStartPoint] = useState(0);
   const [pullChange, setPullChange] = useState<number>(0);
+  const [pulling, setPulling] = useState<boolean>(false);
   const topRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -19,6 +20,7 @@ export const usePullToRefresh = ({ cb }: { cb: () => void }) => {
   }, []);
 
   const pull = (e: TouchEvent) => {
+    setPulling(true);
     let lastStartPoint = startPoint || 0;
     if (topRef.current?.scrollTop === 0 && startPoint === 0) {
       const { screenY } = e.targetTouches[0];
@@ -36,6 +38,7 @@ export const usePullToRefresh = ({ cb }: { cb: () => void }) => {
   };
 
   const endPull = () => {
+    setPulling(false);
     if (pullChange >= PULL_LIMIT) cb();
     setStartPoint(0);
     setPullChange(0);
@@ -53,5 +56,6 @@ export const usePullToRefresh = ({ cb }: { cb: () => void }) => {
   return {
     pullChange: resistance(pullChange),
     limitReached: pullChange >= PULL_LIMIT,
+    pulling,
   };
 };
