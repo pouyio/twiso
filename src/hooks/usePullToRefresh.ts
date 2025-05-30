@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const PULL_LIMIT = 300;
 
@@ -11,15 +11,21 @@ const resistance = (x: number) => {
 export const usePullToRefresh = ({ cb }: { cb: () => void }) => {
   const [startPoint, setStartPoint] = useState(0);
   const [pullChange, setPullChange] = useState<number>(0);
+  const topRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const node = document.getElementById('content') ?? null;
+    topRef.current = node;
+  }, []);
 
   const pull = (e: TouchEvent) => {
     let lastStartPoint = startPoint || 0;
-    if (document.documentElement.scrollTop === 0 && startPoint === 0) {
+    if (topRef.current?.scrollTop === 0 && startPoint === 0) {
       const { screenY } = e.targetTouches[0];
       lastStartPoint = screenY;
       setStartPoint(screenY);
     }
-    if (document.documentElement.scrollTop !== 0) {
+    if (topRef.current?.scrollTop !== 0) {
       return;
     }
     const { screenY } = e.targetTouches[0];
