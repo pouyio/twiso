@@ -20,7 +20,6 @@ import { useTranslate } from '../hooks/useTranslate';
 import { Ratings } from '../models/Api';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from 'utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { PullToRefresh } from 'components/PullToRefresh';
 
 export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -32,10 +31,6 @@ export default function ShowDetail() {
   const { share } = useShare();
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
-
-  const refresh = () => {
-    dispatch(fillDetail({ id }));
-  };
 
   useEffect(() => {
     // @ts-expect-error limitations on Dexie EntityTable
@@ -87,11 +82,11 @@ export default function ShowDetail() {
   }, [liveStatus]);
 
   const onShare = () => {
-    showAlert(t('link_copied', item!.title));
-    // share(item!.title).then((action) => {
-    //   if (action === 'copied') {
-    //   }
-    // });
+    share(title).then((action) => {
+      if (action === 'copied') {
+        showAlert(t('link_copied', title));
+      }
+    });
   };
 
   const onToggleHidden = () => {
@@ -132,179 +127,173 @@ export default function ShowDetail() {
     }, 0) ?? 1;
 
   return (
-    <PullToRefresh callback={refresh}>
-      <div className={bgClassName}>
-        <title>{title}</title>
-        <div className="lg:max-w-5xl lg:mx-auto">
-          <div
-            className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
-            style={{ minHeight: '15em' }}
-          >
-            <Image
-              ids={item.ids}
-              className="mt-[env(safe-area-inset-top)]"
-              text={title}
-              type="show"
-              size="big"
-            />
-            {item.trailer && (
-              <a
-                className="absolute"
-                style={{ right: '4em', bottom: '4em' }}
-                href={item.trailer}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Icon name="trailer" className="h-12" title="Youtube trailer" />
-              </a>
-            )}
-            <button
+    <div className={bgClassName}>
+      <title>{title}</title>
+      <div className="lg:max-w-5xl lg:mx-auto">
+        <div
+          className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
+          style={{ minHeight: '15em' }}
+        >
+          <Image
+            ids={item.ids}
+            className="mt-[env(safe-area-inset-top)]"
+            text={title}
+            type="show"
+            size="big"
+          />
+          {item.trailer && (
+            <a
               className="absolute"
-              style={{ left: '4em', bottom: '4em' }}
-              onClick={onShare}
+              style={{ right: '4em', bottom: '4em' }}
+              href={item.trailer}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <Icon name="share" className="h-12" title="Share" />
-            </button>
-          </div>
-          <article
-            className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none"
-            style={{ transform: 'translate3d(0,0,0)' }}
+              <Icon name="trailer" className="h-12" title="Youtube trailer" />
+            </a>
+          )}
+          <button
+            className="absolute"
+            style={{ left: '4em', bottom: '4em' }}
+            onClick={onShare}
           >
-            <div className="lg:hidden bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
-            <div className="flex items-start justify-center">
-              <div
-                className="hidden lg:block relative pr-4"
-                style={{ minWidth: '10em', maxWidth: '10em' }}
-              >
-                <Image ids={item.ids} text={title} type="show" size="small" />
-                {item.trailer && (
-                  <a
-                    className="absolute"
-                    style={{ right: '15%', bottom: '5%' }}
-                    href={item.trailer}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Icon
-                      name="trailer"
-                      className="h-8"
-                      title="Youtube trailer"
-                    />
-                  </a>
-                )}
-                <button
-                  className="absolute"
-                  style={{ left: '10%', bottom: '5%' }}
-                  onClick={onShare}
-                >
-                  <Icon name="share" className="h-8" title="share" />
-                </button>
-              </div>
-
-              <div className="w-full max-w-3xl">
-                <h1 className="text-4xl leading-none text-center mb-4">
-                  {title}
-                  <button
-                    title={t('refresh')}
-                    className="mx-5 cursor-pointer hidden lg:inline"
-                    onClick={() => dispatch(fillDetail({ id }))}
-                  >
-                    <Icon name="refresh" className="h-6" />
-                  </button>
-                </h1>
-
-                <div className="flex mb-4 justify-between items-center text-gray-600">
-                  <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-100 capitalize">
-                    {t(item.status)}
-                  </h2>
-                  {liveStatus?.status === 'watched' && (
-                    <button onClick={onToggleHidden}>
-                      <Icon
-                        className="h-10"
-                        name={liveStatus?.hidden ? 'no-hidden' : 'hidden'}
-                        title="Toggle visibility"
-                      />
-                    </button>
-                  )}
-                  <h2>{item.runtime || '?'} mins</h2>
-                </div>
-                <div className="flex mb-4 justify-between items-center text-gray-600">
-                  <h2>
-                    <Rating
-                      rating={ratings?.rating ?? 0}
-                      votes={ratings?.votes ?? 0}
-                    />
-                  </h2>
-                  {liveStatus?.status === 'watched' && (
-                    <h2
-                      className="text-sm cursor-pointer text-center"
-                      style={{ minWidth: '8rem' }}
-                      onClick={() => setShowProgressPercentage((s) => !s)}
-                    >
-                      <Emoji emoji="✓" />{' '}
-                      {showProgressPercentage
-                        ? `${Math.round(
-                            ((liveStatus?.episodes.length ?? 0) * 100) /
-                              totalEpisodes
-                          )}% ${t('completed')}`
-                        : `${liveStatus?.episodes.length}/${totalEpisodes} ${t(
-                            'episodes_small'
-                          )}`}
-                      <div className="bg-green-100 rounded-sm">
-                        <div
-                          className="bg-green-400 h-1 rounded-sm text-white text-xs"
-                          style={{
-                            width: `${
-                              ((liveStatus?.episodes.length ?? 0) * 100) /
-                              totalEpisodes
-                            }%`,
-                          }}
-                        ></div>
-                      </div>
-                    </h2>
-                  )}
-
-                  <h2>{item.network}</h2>
-                </div>
-
-                {liveStatus?.status !== 'watched' && (
-                  <div className="my-4">
-                    <ShowWatchButton item={item} />
-                  </div>
-                )}
-                <div className="my-4">
-                  <SeasonsContainer
-                    show={item}
-                    status={liveStatus}
-                    showId={id}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="my-4">
-              <p className="font-medium font-family-text">{t('overview')}:</p>
-              <Collapsable heightInRem={7}>
-                {overview || 'Sin descripción'}
-              </Collapsable>
-            </div>
-
-            <div className="my-4">
-              <p className="font-medium font-family-text">{t('genres')}:</p>
-              <Genres genres={item.genres} />
-            </div>
-
-            <div className="my-4">
-              <People people={people} type="show" />
-            </div>
-
-            <div className="my-4">
-              <p className="font-medium font-family-text">{t('related')}:</p>
-              <Related itemIds={item.ids} type="show" />
-            </div>
-          </article>
+            <Icon name="share" className="h-12" title="Share" />
+          </button>
         </div>
+        <article
+          className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none"
+          style={{ transform: 'translate3d(0,0,0)' }}
+        >
+          <div className="lg:hidden bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
+          <div className="flex items-start justify-center">
+            <div
+              className="hidden lg:block relative pr-4"
+              style={{ minWidth: '10em', maxWidth: '10em' }}
+            >
+              <Image ids={item.ids} text={title} type="show" size="small" />
+              {item.trailer && (
+                <a
+                  className="absolute"
+                  style={{ right: '15%', bottom: '5%' }}
+                  href={item.trailer}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Icon
+                    name="trailer"
+                    className="h-8"
+                    title="Youtube trailer"
+                  />
+                </a>
+              )}
+              <button
+                className="absolute"
+                style={{ left: '10%', bottom: '5%' }}
+                onClick={onShare}
+              >
+                <Icon name="share" className="h-8" title="share" />
+              </button>
+            </div>
+
+            <div className="w-full max-w-3xl">
+              <h1 className="text-4xl leading-none text-center mb-4">
+                {title}
+                <button
+                  title={t('refresh')}
+                  className="mx-5 cursor-pointer inline"
+                  onClick={() => dispatch(fillDetail({ id }))}
+                >
+                  <Icon name="refresh" className="h-6" />
+                </button>
+              </h1>
+
+              <div className="flex mb-4 justify-between items-center text-gray-600">
+                <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-100 capitalize">
+                  {t(item.status)}
+                </h2>
+                {liveStatus?.status === 'watched' && (
+                  <button onClick={onToggleHidden}>
+                    <Icon
+                      className="h-10"
+                      name={liveStatus?.hidden ? 'no-hidden' : 'hidden'}
+                      title="Toggle visibility"
+                    />
+                  </button>
+                )}
+                <h2>{item.runtime || '?'} mins</h2>
+              </div>
+              <div className="flex mb-4 justify-between items-center text-gray-600">
+                <h2>
+                  <Rating
+                    rating={ratings?.rating ?? 0}
+                    votes={ratings?.votes ?? 0}
+                  />
+                </h2>
+                {liveStatus?.status === 'watched' && (
+                  <h2
+                    className="text-sm cursor-pointer text-center"
+                    style={{ minWidth: '8rem' }}
+                    onClick={() => setShowProgressPercentage((s) => !s)}
+                  >
+                    <Emoji emoji="✓" />{' '}
+                    {showProgressPercentage
+                      ? `${Math.round(
+                          ((liveStatus?.episodes.length ?? 0) * 100) /
+                            totalEpisodes
+                        )}% ${t('completed')}`
+                      : `${liveStatus?.episodes.length}/${totalEpisodes} ${t(
+                          'episodes_small'
+                        )}`}
+                    <div className="bg-green-100 rounded-sm">
+                      <div
+                        className="bg-green-400 h-1 rounded-sm text-white text-xs"
+                        style={{
+                          width: `${
+                            ((liveStatus?.episodes.length ?? 0) * 100) /
+                            totalEpisodes
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                  </h2>
+                )}
+
+                <h2>{item.network}</h2>
+              </div>
+
+              {liveStatus?.status !== 'watched' && (
+                <div className="my-4">
+                  <ShowWatchButton item={item} />
+                </div>
+              )}
+              <div className="my-4">
+                <SeasonsContainer show={item} status={liveStatus} showId={id} />
+              </div>
+            </div>
+          </div>
+
+          <div className="my-4">
+            <p className="font-medium font-family-text">{t('overview')}:</p>
+            <Collapsable heightInRem={7}>
+              {overview || 'Sin descripción'}
+            </Collapsable>
+          </div>
+
+          <div className="my-4">
+            <p className="font-medium font-family-text">{t('genres')}:</p>
+            <Genres genres={item.genres} />
+          </div>
+
+          <div className="my-4">
+            <People people={people} type="show" />
+          </div>
+
+          <div className="my-4">
+            <p className="font-medium font-family-text">{t('related')}:</p>
+            <Related itemIds={item.ids} type="show" />
+          </div>
+        </article>
       </div>
-    </PullToRefresh>
+    </div>
   );
 }

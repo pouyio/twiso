@@ -19,7 +19,6 @@ import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
 import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { PullToRefresh } from 'components/PullToRefresh';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -30,10 +29,6 @@ export default function MovieDetail() {
   const { share } = useShare();
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
-
-  const refresh = () => {
-    dispatch(fillDetail({ id }));
-  };
 
   useEffect(() => {
     // @ts-expect-error limitations on Dexie EntityTable
@@ -100,149 +95,145 @@ export default function MovieDetail() {
   };
 
   return (
-    <PullToRefresh callback={refresh}>
-      <div className={bgClassName}>
-        <title>{title}</title>
-        <div className="lg:max-w-5xl lg:mx-auto">
-          <div
-            className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
-            style={{ minHeight: '15em' }}
-          >
-            <Image
-              ids={item.ids}
-              className="mt-[env(safe-area-inset-top)]"
-              text={title}
-              type="movie"
-              size="big"
-            />
-            {item.trailer && (
-              <a
-                className="absolute"
-                style={{ right: '4em', bottom: '4em' }}
-                href={item.trailer}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Icon name="trailer" className="h-12" title="Youtube trailer" />
-              </a>
-            )}
-            <button
+    <div className={bgClassName}>
+      <title>{title}</title>
+      <div className="lg:max-w-5xl lg:mx-auto">
+        <div
+          className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
+          style={{ minHeight: '15em' }}
+        >
+          <Image
+            ids={item.ids}
+            className="mt-[env(safe-area-inset-top)]"
+            text={title}
+            type="movie"
+            size="big"
+          />
+          {item.trailer && (
+            <a
               className="absolute"
-              style={{ left: '4em', bottom: '4em' }}
-              onClick={onShare}
+              style={{ right: '4em', bottom: '4em' }}
+              href={item.trailer}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <Icon name="share" className="h-12" title="Share" />
-            </button>
-          </div>
-          <article
-            className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none"
-            style={{ transform: 'translate3d(0,0,0)' }}
+              <Icon name="trailer" className="h-12" title="Youtube trailer" />
+            </a>
+          )}
+          <button
+            className="absolute"
+            style={{ left: '4em', bottom: '4em' }}
+            onClick={onShare}
           >
-            <div className="lg:hidden bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
-            <div className="flex items-start">
-              <div
-                className="hidden lg:block relative pr-4"
-                style={{ minWidth: '10em', maxWidth: '10em' }}
-              >
-                <Image ids={item.ids} text={title} type="movie" size="small" />
-                {item.trailer && (
-                  <a
-                    className="absolute"
-                    style={{ right: '15%', bottom: '5%' }}
-                    href={item.trailer}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Icon
-                      name="trailer"
-                      className="h-8"
-                      title="Youtube trailer"
-                    />
-                  </a>
-                )}
-                <button
-                  className="absolute"
-                  style={{ left: '10%', bottom: '5%' }}
-                  onClick={onShare}
-                >
-                  <Icon name="share" className="h-8" title="Share" />
-                </button>
-              </div>
-
-              <div className="w-full">
-                <h1 className="text-4xl leading-none text-center">
-                  {title}{' '}
-                  <button
-                    title={t('refresh')}
-                    className="mx-5 cursor-pointer hidden lg:inline"
-                    onClick={() => dispatch(fillDetail({ id }))}
-                  >
-                    <Icon name="refresh" className="h-6" />
-                  </button>
-                </h1>
-                <h1 className="text-xl text-center mb-4 text-gray-300">
-                  {item.released
-                    ? new Date(item.released).toLocaleDateString(language, {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })
-                    : item.status}
-                </h1>
-                <div className="flex mb-4 justify-between items-center text-gray-600">
-                  <h2>
-                    <Rating
-                      rating={ratings?.rating ?? 0}
-                      votes={ratings?.votes ?? 0}
-                    />
-                  </h2>
-                  <h2>{item.runtime || '?'} mins</h2>
-                </div>
-                <WatchButton item={item} />
-              </div>
-            </div>
-            <div className="my-4">
-              <p className="font-medium font-family-text">{t('overview')}:</p>
-              <Collapsable heightInRem={7}>{overview}</Collapsable>
-            </div>
-
-            <div className="my-4">
-              <p className="font-medium font-family-text">{t('genres')}:</p>
-              <Genres genres={item.genres} />
-            </div>
-
-            <People people={people} type="movie" />
-
-            <div className="my-4">
-              <p className="font-medium font-family-text">
-                {t('extra-scenes')}:
-              </p>
-
-              <div className="my-3">
-                <span
-                  className={`mr-5 ${
-                    item.during_credits ? '' : 'opacity-50 line-through'
-                  } bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre`}
-                >
-                  {t('during-credits')} {item.during_credits && '✓'}
-                </span>
-                <span
-                  className={`mt-2 ${
-                    item.after_credits ? '' : 'opacity-50 line-through'
-                  } bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre`}
-                >
-                  {t('post-credits')} {item.after_credits && '✓'}
-                </span>
-              </div>
-            </div>
-
-            <div className="my-4">
-              <p className="font-medium font-family-text">{t('related')}:</p>
-              <Related itemIds={item.ids} type="movie" />
-            </div>
-          </article>
+            <Icon name="share" className="h-12" title="Share" />
+          </button>
         </div>
+        <article
+          className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none"
+          style={{ transform: 'translate3d(0,0,0)' }}
+        >
+          <div className="lg:hidden bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
+          <div className="flex items-start">
+            <div
+              className="hidden lg:block relative pr-4"
+              style={{ minWidth: '10em', maxWidth: '10em' }}
+            >
+              <Image ids={item.ids} text={title} type="movie" size="small" />
+              {item.trailer && (
+                <a
+                  className="absolute"
+                  style={{ right: '15%', bottom: '5%' }}
+                  href={item.trailer}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Icon
+                    name="trailer"
+                    className="h-8"
+                    title="Youtube trailer"
+                  />
+                </a>
+              )}
+              <button
+                className="absolute"
+                style={{ left: '10%', bottom: '5%' }}
+                onClick={onShare}
+              >
+                <Icon name="share" className="h-8" title="Share" />
+              </button>
+            </div>
+
+            <div className="w-full">
+              <h1 className="text-4xl leading-none text-center">
+                {title}{' '}
+                <button
+                  title={t('refresh')}
+                  className="mx-5 cursor-pointer"
+                  onClick={() => dispatch(fillDetail({ id }))}
+                >
+                  <Icon name="refresh" className="h-6" />
+                </button>
+              </h1>
+              <h1 className="text-xl text-center mb-4 text-gray-300">
+                {item.released
+                  ? new Date(item.released).toLocaleDateString(language, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })
+                  : item.status}
+              </h1>
+              <div className="flex mb-4 justify-between items-center text-gray-600">
+                <h2>
+                  <Rating
+                    rating={ratings?.rating ?? 0}
+                    votes={ratings?.votes ?? 0}
+                  />
+                </h2>
+                <h2>{item.runtime || '?'} mins</h2>
+              </div>
+              <WatchButton item={item} />
+            </div>
+          </div>
+          <div className="my-4">
+            <p className="font-medium font-family-text">{t('overview')}:</p>
+            <Collapsable heightInRem={7}>{overview}</Collapsable>
+          </div>
+
+          <div className="my-4">
+            <p className="font-medium font-family-text">{t('genres')}:</p>
+            <Genres genres={item.genres} />
+          </div>
+
+          <People people={people} type="movie" />
+
+          <div className="my-4">
+            <p className="font-medium font-family-text">{t('extra-scenes')}:</p>
+
+            <div className="my-3">
+              <span
+                className={`mr-5 ${
+                  item.during_credits ? '' : 'opacity-50 line-through'
+                } bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre`}
+              >
+                {t('during-credits')} {item.during_credits && '✓'}
+              </span>
+              <span
+                className={`mt-2 ${
+                  item.after_credits ? '' : 'opacity-50 line-through'
+                } bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre`}
+              >
+                {t('post-credits')} {item.after_credits && '✓'}
+              </span>
+            </div>
+          </div>
+
+          <div className="my-4">
+            <p className="font-medium font-family-text">{t('related')}:</p>
+            <Related itemIds={item.ids} type="movie" />
+          </div>
+        </article>
       </div>
-    </PullToRefresh>
+    </div>
   );
 }
