@@ -1,3 +1,10 @@
+# [2.12.0](https://github.com/pouyio/twiso/compare/v2.11.1...v2.12.0) (2025-05-31)
+
+
+### :sparkles:
+
+* added OTP code for login and improved experience ([8a4b4ec](https://github.com/pouyio/twiso/commit/8a4b4ec8e69cd04a4fdbd0024fb191cf838edda0))
+
 ## [2.11.1](https://github.com/pouyio/twiso/compare/v2.11.0...v2.11.1) (2025-05-31)
 
 
