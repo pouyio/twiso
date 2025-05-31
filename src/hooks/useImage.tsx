@@ -36,7 +36,7 @@ export const useImage = (
     const imgArrSize = size === 'small' ? 1 : 2;
     if (cachedUrl) {
       setImgPreview(
-        cachedUrl.replace('__size__', config.images.profile_sizes[1])
+        cachedUrl.replace('__size__', config.images.profile_sizes[0])
       );
       setImgUrl(
         cachedUrl.replace('__size__', config.images.profile_sizes[imgArrSize])
@@ -58,7 +58,7 @@ export const useImage = (
           const url = `${config.images.secure_base_url}__size__${poster.file_path}`;
           saveToCache(id, type, language, url);
           setImgPreview(
-            url.replace('__size__', config.images.profile_sizes[1])
+            url.replace('__size__', config.images.profile_sizes[0])
           );
           setImgUrl(
             url.replace('__size__', config.images.profile_sizes[imgArrSize])
