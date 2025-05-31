@@ -1,3 +1,17 @@
+## [2.12.2](https://github.com/pouyio/twiso/compare/v2.12.1...v2.12.2) (2025-05-31)
+
+
+### :art:
+
+* added animation to episode detail ([6526201](https://github.com/pouyio/twiso/commit/652620179459ab1a1c8b4a7b5220b74394b88537))
+* added episodes animations ([23148ed](https://github.com/pouyio/twiso/commit/23148ed2ba3730465829830754b25adfdec52d89))
+* removed unused hook ([580fb95](https://github.com/pouyio/twiso/commit/580fb956592b387e876af3add351dfb82152f96c))
+* update show with same animations as movies ([c206bf1](https://github.com/pouyio/twiso/commit/c206bf1fdcf43be0aa9b8e650a6713ebfd8053e9))
+
+### :bug:
+
+* fixed pagination/filters state on reload/navigation ([b3c8819](https://github.com/pouyio/twiso/commit/b3c88192e5736384bde4a07d257bf855c8d96fcb))
+
 ## [2.12.1](https://github.com/pouyio/twiso/compare/v2.12.0...v2.12.1) (2025-05-31)
 
 
