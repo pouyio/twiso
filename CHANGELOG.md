@@ -1,3 +1,10 @@
+## [2.11.1](https://github.com/pouyio/twiso/compare/v2.11.0...v2.11.1) (2025-05-31)
+
+
+### :art:
+
+* fixed season selector animation ([04f100a](https://github.com/pouyio/twiso/commit/04f100a7564849240dbe111977e8d0dd442308ac))
+
 # [2.11.0](https://github.com/pouyio/twiso/compare/v2.10.5...v2.11.0) (2025-05-31)
 
 
