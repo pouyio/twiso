@@ -102,7 +102,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
 
   return (
     <>
-      <ul className="my-4">
+      <ul className="">
         {!episodes.length ? (
           <EpisodesPlaceholder />
         ) : (

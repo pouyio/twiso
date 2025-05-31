@@ -15,13 +15,13 @@ const Underline: React.FC = () => {
   return (
     <motion.div
       layoutId="underline-season"
-      className={`bg-gray-200 mt-2 h-[2px]`}
+      className="absolute bottom-0 w-full bg-gray-200 h-1"
       initial={false}
     />
   );
 };
 
-const SELECTED_CLASS = 'bg-white text-gray-600';
+const UNSELECTED_CLASS = 'bg-white text-gray-600';
 
 const SeasonSelector: React.FC<ISeasonsProps> = ({
   progress,
@@ -37,7 +37,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
       return;
     }
     const seasonTag = Array.from(ref.current.children).find(
-      (c) => !c.classList.toString().includes(SELECTED_CLASS)
+      (c) => !c.classList.toString().includes(UNSELECTED_CLASS)
     ) as HTMLUListElement;
     if (!seasonTag) {
       return;
@@ -73,7 +73,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
 
   return (
     <ul
-      className="flex overflow-x-auto my-4 -mx-3 relative border-b"
+      className="flex gap-1 overflow-x-auto -mx-3 relative border-b"
       style={{ WebkitOverflowScrolling: 'touch' }}
       ref={ref}
     >
@@ -88,8 +88,8 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
             }
             key={s.ids.trakt}
             className={
-              'whitespace-pre mx-1 text-sm px-3 pt-3 cursor-pointer border-gray-200 relative' +
-              SELECTED_CLASS
+              'whitespace-pre text-sm px-3 cursor-pointer ' +
+              (selectedSeason?.number === s.number ? '' : UNSELECTED_CLASS)
             }
           >
             {s.number ? `${t('season')} ${s.number}` : t('specials')}
@@ -98,7 +98,9 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
             ) : (
               ''
             )}
-            {s.ids.trakt === selectedSeason?.ids.trakt && <Underline />}
+            <div className="h-2 relative">
+              {s.ids.trakt === selectedSeason?.ids.trakt && <Underline />}
+            </div>
           </li>
         );
       })}
