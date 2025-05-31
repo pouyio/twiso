@@ -12,6 +12,7 @@ import SeasonSelector from './SeasonSelector';
 import { Episode, SeasonEpisode, Show } from '../../models/Show';
 import { useSearchParams } from 'react-router';
 import { ShowStatusComplete } from 'models/Api';
+import { AnimatePresence } from 'framer-motion';
 
 interface ISeasonsContainerProps {
   show: Show;
@@ -118,25 +119,28 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
           })
         }
       />
-      {selectedSeason !== undefined && (
-        <Episodes
-          episodesProgress={
-            status?.episodes?.filter(
-              (e) => e.season_number === selectedSeason
-            ) ?? []
-          }
-          addEpisodeWatched={addEpisode}
-          removeEpisodeWatched={removeEpisode}
-          addSeasonWatched={addSeason}
-          removeSeasonWatched={removeSeason}
-          episodes={
-            show.all_seasons.find((s) => s.number === selectedSeason)?.episodes
-          }
-          episodesDates={episodesDates[selectedSeason]}
-          showModal={showModal}
-          onlyView={!isLogged}
-        />
-      )}
+      <AnimatePresence>
+        {selectedSeason !== undefined && (
+          <Episodes
+            episodesProgress={
+              status?.episodes?.filter(
+                (e) => e.season_number === selectedSeason
+              ) ?? []
+            }
+            addEpisodeWatched={addEpisode}
+            removeEpisodeWatched={removeEpisode}
+            addSeasonWatched={addSeason}
+            removeSeasonWatched={removeSeason}
+            episodes={
+              show.all_seasons.find((s) => s.number === selectedSeason)
+                ?.episodes
+            }
+            episodesDates={episodesDates[selectedSeason]}
+            showModal={showModal}
+            onlyView={!isLogged}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 };

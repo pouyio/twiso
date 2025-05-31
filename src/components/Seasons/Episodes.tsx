@@ -7,6 +7,7 @@ import { useTranslate } from '../../hooks/useTranslate';
 import { Episode, SeasonEpisode } from '../../models/Show';
 import { EpisodeStatus } from 'models/Api';
 import { AuthContext } from 'contexts/AuthContext';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface ISeasonsProps {
   episodesProgress: EpisodeStatus[];
@@ -101,72 +102,81 @@ const Episodes: React.FC<ISeasonsProps> = ({
   );
 
   return (
-    <>
-      <ul className="">
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: 'auto' }}
+      exit={{ opacity: 0, height: 0 }}
+    >
+      <ul>
         {!episodes.length ? (
           <EpisodesPlaceholder />
         ) : (
           episodes.map((e) => (
-            <li
-              className="py-3 text-sm leading-tight"
-              key={e.ids.imdb || e.number}
-            >
-              <div className="flex items-center">
-                <span className="text-gray-600 text-xs font-bold mr-1">
-                  {e.number}
-                </span>
-                {isEpisodeAvailable(e.number) ? (
-                  <>
-                    {isEpisodeWatched(e.number) ? (
-                      <span className="text-gray-600 mr-2 ml-1">✓</span>
-                    ) : (
-                      <span className="text-blue-400 mx-2">•</span>
-                    )}
-                  </>
-                ) : (
-                  <span className="text-blue-400 mx-2 opacity-0	">•</span>
-                )}
-                <div
-                  onClick={() =>
-                    showModal({
-                      title: getTranslated('title', e),
-                      overview: `${getFormattedDate(
+            <AnimatePresence key={e.ids.imdb || e.number}>
+              <motion.li
+                initial={{ opacity: 0, x: -5 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 5 }}
+                className="py-3 text-sm leading-tight"
+                key={e.ids.imdb || e.number}
+              >
+                <div className="flex items-center">
+                  <span className="text-gray-600 text-xs font-bold mr-1">
+                    {e.number}
+                  </span>
+                  {isEpisodeAvailable(e.number) ? (
+                    <>
+                      {isEpisodeWatched(e.number) ? (
+                        <span className="text-gray-600 mr-2 ml-1">✓</span>
+                      ) : (
+                        <span className="text-blue-400 mx-2">•</span>
+                      )}
+                    </>
+                  ) : (
+                    <span className="text-blue-400 mx-2 opacity-0	">•</span>
+                  )}
+                  <div
+                    onClick={() =>
+                      showModal({
+                        title: getTranslated('title', e),
+                        overview: `${getFormattedDate(
+                          episodesDates.find((ed) => ed.number === e.number)
+                            ?.first_aired ?? '',
+                          'long'
+                        )}\n${getTranslated('overview', e)}`,
+                      })
+                    }
+                    className={`grow flex flex-col ${
+                      isEpisodeWatched(e.number) ? 'text-gray-600' : ''
+                    }`}
+                  >
+                    <span>{getTranslated('title', e)}</span>
+                    <span className="text-xs">
+                      {getFormattedDate(
                         episodesDates.find((ed) => ed.number === e.number)
                           ?.first_aired ?? '',
-                        'long'
-                      )}\n${getTranslated('overview', e)}`,
-                    })
-                  }
-                  className={`grow flex flex-col ${
-                    isEpisodeWatched(e.number) ? 'text-gray-600' : ''
-                  }`}
-                >
-                  <span>{getTranslated('title', e)}</span>
-                  <span className="text-xs">
-                    {getFormattedDate(
-                      episodesDates.find((ed) => ed.number === e.number)
-                        ?.first_aired ?? '',
-                      'short'
-                    )}
-                  </span>
+                        'short'
+                      )}
+                    </span>
+                  </div>
+                  {isEpisodeAvailable(e.number) &&
+                    (watched.includes(e.ids.imdb) ? (
+                      <Emoji
+                        emoji="⏳"
+                        rotating={true}
+                        className="w-10 text-center"
+                      />
+                    ) : (
+                      <button
+                        className="w-10 flex"
+                        onClick={() => toggleEpisode(e)}
+                      >
+                        <Icon name="play" className="h-8 m-auto" />
+                      </button>
+                    ))}
                 </div>
-                {isEpisodeAvailable(e.number) &&
-                  (watched.includes(e.ids.imdb) ? (
-                    <Emoji
-                      emoji="⏳"
-                      rotating={true}
-                      className="w-10 text-center"
-                    />
-                  ) : (
-                    <button
-                      className="w-10 flex"
-                      onClick={() => toggleEpisode(e)}
-                    >
-                      <Icon name="play" className="h-8 m-auto" />
-                    </button>
-                  ))}
-              </div>
-            </li>
+              </motion.li>
+            </AnimatePresence>
           ))
         )}
       </ul>
@@ -201,7 +211,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
           )}
         </div>
       )}
-    </>
+    </motion.div>
   );
 };
 
