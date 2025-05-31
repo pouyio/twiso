@@ -10,10 +10,10 @@ import { ROUTE, ROUTES } from 'utils/routes';
 import Emoji from './components/Emoji';
 import { ProgressBar } from './components/ProgressBar/ProgressBar';
 import ProtectedRoute from './components/ProtectedRoute';
-import { firstLoad } from './state/firstLoadAction';
 import { AuthContext } from './contexts/AuthContext';
 import { VerifyMagicLink } from 'pages/VerifyMagicLink';
 import { Layout } from 'components/Layout';
+import { firstLoadThunk } from 'state/slices/root';
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const Profile = lazy(() => import('./pages/Profile'));
 const MovieDetail = lazy(() => import('./pages/MovieDetail'));
@@ -38,7 +38,7 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
   useEffect(() => {
     dispatch(loadImgConfig());
     if (isLoggedIn) {
-      firstLoad();
+      dispatch(firstLoadThunk());
     }
   }, [isLoggedIn]);
 

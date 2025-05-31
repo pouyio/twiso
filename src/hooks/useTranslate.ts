@@ -86,12 +86,16 @@ const en = {
   'days-aprox': '{} days, {} hours, {} minutes aprox',
   'hours-aprox': '{} hours, {} minutes aprox',
   'loading-session': 'Loading user session...',
-  'login-magic-link': 'Log in with a magic link ✨',
+  'login-magic-link': 'Send a magic link ✨',
   refresh: 'Refresh',
   'nothing-yet': 'Nothing to see here yet',
   'extra-scenes': 'Extra scenes',
   'during-credits': 'During credits',
   'post-credits': 'Post credits',
+  'login-code': 'Login with code',
+  'already-have-code': 'I already have the code',
+  'code-sent':
+    'Code sent to your email, click in the link from the email or paste the code below to log in!',
 };
 
 const es = {
@@ -180,12 +184,16 @@ const es = {
   'days-aprox': '{} días, {} horas, {} minutos aprox',
   'hours-aprox': '{} horas, {} minutos aprox',
   'loading-session': 'Cargando sesión de usuario...',
-  'login-magic-link': 'Inicia sesión con un enlace mágico ✨',
+  'login-magic-link': 'Enviar un enlace mágico ✨',
   refresh: 'Recargar',
   'nothing-yet': 'Nada por aquí todavía',
   'extra-scenes': 'Escenas extra',
   'during-credits': 'Durante créditos',
   'post-credits': 'Post-créditos',
+  'login-code': 'Entrar con código',
+  'already-have-code': 'Ya tengo el código',
+  'code-sent':
+    'Código enviado al correo. Pulsa en el enlace recibido o introduce el código debajo!',
 };
 
 const translations: Record<Language, Record<string, string>> = {
