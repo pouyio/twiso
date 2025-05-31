@@ -32,7 +32,7 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
   });
 
   return (
-    <div className="flex justify-around my-8">
+    <div className="flex justify-around">
       {isLoggedIn ? (
         <>
           {isWatched(item.ids.imdb ?? '', 'movie') ? (

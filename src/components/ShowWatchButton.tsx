@@ -22,7 +22,7 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
   const { t } = useTranslate();
 
   return (
-    <div className="flex justify-around my-8">
+    <div className="flex justify-around">
       {!!session ? (
         <>
           {isWatchlist(item.ids.imdb ?? '', 'show') ? (
