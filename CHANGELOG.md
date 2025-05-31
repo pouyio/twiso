@@ -1,3 +1,55 @@
+# [2.11.0](https://github.com/pouyio/twiso/compare/v2.10.5...v2.11.0) (2025-05-31)
+
+
+### :art:
+
+* added basic user info ([1c9a6b9](https://github.com/pouyio/twiso/commit/1c9a6b91f1c31f508d0cdaa6a2ddfb8c6b3dd377))
+* added basic user info ([c0d90bb](https://github.com/pouyio/twiso/commit/c0d90bb8e0b83eba2d9139b3bebd258eaeeb79d5))
+* added post credits info to movie ([75eb5a7](https://github.com/pouyio/twiso/commit/75eb5a7ee2ef4fdc13e797f528b63a08f10f7021))
+* fix navbar on mobile ([de5e72b](https://github.com/pouyio/twiso/commit/de5e72b46e971827086ace104b0b3fc3e64e15d5))
+* improve full height layout ([228bd79](https://github.com/pouyio/twiso/commit/228bd7979a19b0d874c62aa39622996426a1a15e))
+* improve loading bar ([4989e27](https://github.com/pouyio/twiso/commit/4989e272559f1e0c246c504e2e46949df23d8af7))
+* improve profile visuals ([eb5afea](https://github.com/pouyio/twiso/commit/eb5afea4feef7c6296551cdaa680f222adf75c8e))
+* improve pull to refresh ([9f69d13](https://github.com/pouyio/twiso/commit/9f69d133bd1a65b1bb944a81214ab22f407c748f))
+* improve pull to refresh ([779c8ea](https://github.com/pouyio/twiso/commit/779c8ea12452a0f865ee6424b706b213c18654cd))
+* improve pull to refresh ([ba0ff73](https://github.com/pouyio/twiso/commit/ba0ff73cf2c77012040d987718596b517f77ddaa))
+* improved loading states for shows ([c8114d2](https://github.com/pouyio/twiso/commit/c8114d21d999a9b082df74f98e3662d25b5f5629))
+* removed helmet ([a7f0d26](https://github.com/pouyio/twiso/commit/a7f0d26a3cd79b9a173a120e1fdec2360553a74c))
+* removed local search if not logedin ([890b5dc](https://github.com/pouyio/twiso/commit/890b5dc64f4e92cf2fd898d848da9637b0256728))
+* test resistance in pull to refresh ([cbd5a85](https://github.com/pouyio/twiso/commit/cbd5a85eaf4672019e97734000e5d8cad103ad61))
+* updated .env.example ([6dffbaf](https://github.com/pouyio/twiso/commit/6dffbaffdc5279bfbfe852aa661fe13a036a4061))
+* updated layout to use css grid and remove js calcs ([eca2154](https://github.com/pouyio/twiso/commit/eca215412c526f4723d666de635ef8aac239a168))
+* updated README ([ce42ea0](https://github.com/pouyio/twiso/commit/ce42ea0703643f4c83eceb8fb02f3fbe8dfd6560))
+* updated README ([1f95620](https://github.com/pouyio/twiso/commit/1f956203a8b0854ee0a0ce13fd5a3665cab8a7ed))
+* updated translation ([5b01e7b](https://github.com/pouyio/twiso/commit/5b01e7bc657083030b1965047c9d90b672bd8498))
+
+### :bug:
+
+* avoid redirection because of async session from upabase ([52b30cc](https://github.com/pouyio/twiso/commit/52b30ccda65d510cd0e3f21468cf32fb84bbdd74))
+* fix dexie limitation ([0ce5882](https://github.com/pouyio/twiso/commit/0ce588288f8e1dafacaf9018c1b6094ac9c245de))
+* fix open grapsh ([52309c7](https://github.com/pouyio/twiso/commit/52309c7db3c32485e6761bdbe3b220cd09cbad41))
+* fix pull to refresh due to new layout ([752a6a1](https://github.com/pouyio/twiso/commit/752a6a1b2f8a31db8343b4acee9267e35201800a))
+* fix undefined imdb ids ([703027f](https://github.com/pouyio/twiso/commit/703027fb3d5b48001c20381254116202a82ad18f))
+* fixed people details ([445df0a](https://github.com/pouyio/twiso/commit/445df0a91cedbbcd534a3060cc4eb406b6596218))
+* improve code ([ab7d404](https://github.com/pouyio/twiso/commit/ab7d404c36e3582c578931c395d72bc265413b0a))
+* remove controls in episodes if no session ([6d1ae06](https://github.com/pouyio/twiso/commit/6d1ae06e9a2ef11375eb3307535ec23b6e59aefd))
+* test overscroll-behavior ([98c6e26](https://github.com/pouyio/twiso/commit/98c6e26f2085f7d3a5c93df2a676175fa59ce28b))
+* test overscroll-behavior ([55786c2](https://github.com/pouyio/twiso/commit/55786c297cfa583cc869eee76e551fb5539c9778))
+* update search url ([dd99229](https://github.com/pouyio/twiso/commit/dd9922928d847d249ad8f37c9e31f7c589febb7f))
+
+### :rocket:
+
+* improved login and redirects ([3fa7c78](https://github.com/pouyio/twiso/commit/3fa7c78a0bb0bbe62a99f0f3bcacaa13deb2130c))
+* removed dead code ([24b1285](https://github.com/pouyio/twiso/commit/24b12859a2a1545967d5b6338999b941828ae337))
+* removed unused code ([bc8bac1](https://github.com/pouyio/twiso/commit/bc8bac1a577e539a5c50e9c3470db50914817fac))
+* removed unused code ([3d4d412](https://github.com/pouyio/twiso/commit/3d4d41284a8fc834a0335472fdddc9c74bdd0f30))
+* removed unused code ([6b2672d](https://github.com/pouyio/twiso/commit/6b2672d0e5456954975ead19ae0cfa6f73fddc69))
+* updated dexie & improved types ([74a99f9](https://github.com/pouyio/twiso/commit/74a99f9b9f9e740fd014f6e2bd09f0fc4620050d))
+
+### :sparkles:
+
+* added pull to refresh and refresh buttons in movies/shows ([85817db](https://github.com/pouyio/twiso/commit/85817db8fc1af5ab8bfc7b8e463977877525a94e))
+
 ## [2.10.5](https://github.com/pouyio/twiso/compare/v2.10.4...v2.10.5) (2025-03-09)
 
 
