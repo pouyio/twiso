@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { fillDetail } from 'state/slices/movies/thunks';
 import { useAppDispatch, useAppSelector } from 'state/store';
@@ -29,6 +29,8 @@ export default function MovieDetail() {
   const { share } = useShare();
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
+  const [zoom, setZoom] = useState(false);
+  const refreshIconRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // @ts-expect-error limitations on Dexie EntityTable
@@ -94,12 +96,28 @@ export default function MovieDetail() {
     });
   };
 
+  const onRefresh = () => {
+    dispatch(fillDetail({ id }));
+
+    const icon = refreshIconRef.current;
+    if (!icon) return;
+
+    icon.classList.add('animate-spin');
+
+    setTimeout(() => {
+      icon.classList.remove('animate-spin');
+    }, 1000);
+  };
+
   return (
     <div className={bgClassName}>
       <title>{title}</title>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
-          className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
+          onClick={() => setZoom((z) => !z)}
+          className={`${
+            zoom ? 'pb-10 z-10' : 'p-10 pt-5'
+          }  sticky top-0 z-0 lg:hidden transition-[padding]`}
           style={{ minHeight: '15em' }}
         >
           <Image
@@ -109,24 +127,36 @@ export default function MovieDetail() {
             type="movie"
             size="big"
           />
-          {item.trailer && (
-            <a
-              className="absolute"
-              style={{ right: '4em', bottom: '4em' }}
-              href={item.trailer}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Icon name="trailer" className="h-12" title="Youtube trailer" />
-            </a>
+          {!zoom && (
+            <>
+              {item.trailer && (
+                <a
+                  onClick={(e) => e.stopPropagation()}
+                  className="absolute"
+                  style={{ right: '4em', bottom: '4em' }}
+                  href={item.trailer}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Icon
+                    name="trailer"
+                    className="h-12"
+                    title="Youtube trailer"
+                  />
+                </a>
+              )}
+              <button
+                className="absolute"
+                style={{ left: '4em', bottom: '4em' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onShare();
+                }}
+              >
+                <Icon name="share" className="h-12" title="Share" />
+              </button>
+            </>
           )}
-          <button
-            className="absolute"
-            style={{ left: '4em', bottom: '4em' }}
-            onClick={onShare}
-          >
-            <Icon name="share" className="h-12" title="Share" />
-          </button>
         </div>
         <article
           className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none"
@@ -169,9 +199,9 @@ export default function MovieDetail() {
                 <button
                   title={t('refresh')}
                   className="mx-5 cursor-pointer"
-                  onClick={() => dispatch(fillDetail({ id }))}
+                  onClick={() => onRefresh()}
                 >
-                  <Icon name="refresh" className="h-6" />
+                  <Icon ref={refreshIconRef} name="refresh" className="h-6" />
                 </button>
               </h1>
               <h1 className="text-xl text-center mb-4 text-gray-300">
