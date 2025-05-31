@@ -2,11 +2,11 @@ import React from 'react';
 import ShowsWatchlist from './ShowsWatchlist';
 import ShowsWatched from './ShowsWatched';
 import { useTranslate } from '../../hooks/useTranslate';
-import { useSearchParams } from '../../hooks/useSearchParams';
 import { motion } from 'motion/react';
 import { Icon } from 'components/Icon';
 import db, { USER_SHOWS_TABLE } from 'utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useSearchParams } from 'react-router';
 
 export const Underline: React.FC<{ selected: boolean }> = ({ selected }) => {
   return (
@@ -22,7 +22,9 @@ export const Underline: React.FC<{ selected: boolean }> = ({ selected }) => {
 };
 
 export default function Shows() {
-  const [searchParams, setSearchParams] = useSearchParams({ mode: 'watched' });
+  const [searchParams, setSearchParams] = useSearchParams({
+    mode: 'watched',
+  });
   const mode = searchParams.get('mode');
 
   const { t } = useTranslate();
