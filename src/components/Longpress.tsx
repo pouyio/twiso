@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { setGlobalSearch } from 'state/slices/root';
 import { Icon } from './Icon';
 import { useTranslate } from '../hooks/useTranslate';
 import { useLongPress } from '../hooks/useLongPress';
+import { AuthContext } from 'contexts/AuthContext';
 
 const LongPress: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslate();
+  const { session } = useContext(AuthContext);
   const { handlers } = useLongPress({
     onClick: () => navigate('/search'),
-    onLongClick: () => dispatch(setGlobalSearch(true)),
+    onLongClick: () => !!session && dispatch(setGlobalSearch(true)),
   });
 
   const dispatch = useDispatch();

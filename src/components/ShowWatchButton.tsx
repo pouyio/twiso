@@ -16,7 +16,7 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
   const dispatch = useAppDispatch();
   const { isWatchlist } = useIsWatch();
   const isWatchlistPending = useAppSelector((state) => {
-    return state.shows.pending.watchlist.includes(item.ids.trakt);
+    return state.shows.pending.watchlist.includes(item.ids.imdb);
   });
   const { session } = useContext(AuthContext);
   const { t } = useTranslate();
@@ -25,7 +25,7 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
     <div className="flex justify-around my-8">
       {!!session ? (
         <>
-          {isWatchlist(item.ids.trakt, 'show') ? (
+          {isWatchlist(item.ids.imdb ?? '', 'show') ? (
             <button
               className={`bg-blue-400 py-3 pl-12 rounded-full text-white font-bold ${
                 isWatchlistPending ? 'pr-6' : 'pr-12'

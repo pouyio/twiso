@@ -8,7 +8,7 @@ export const Alert: React.FC = () => {
 
   return (
     <div
-      className={`alert-container fixed z-10 text-center bg-gray-300 bg-white rounded-lg leading-tight flex flex-col overflow-hidden shadow-lg ${
+      className={`alert-container fixed z-10 text-center bg-gray-300 rounded-lg leading-tight flex flex-col overflow-hidden shadow-lg ${
         opened ? 'inside' : 'outside'
       }`}
     >

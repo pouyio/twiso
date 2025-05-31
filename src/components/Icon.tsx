@@ -18,6 +18,7 @@ import Logout from 'assets/logout-2-svgrepo-com.svg?react';
 import Ufo from 'assets/ufo-3-svgrepo-com.svg?react';
 import Hidden from 'assets/eye-svgrepo-com.svg?react';
 import NoHidden from 'assets/eye-disable-svgrepo-com.svg?react';
+import Refresh from 'assets/refresh-svgrepo-com.svg?react';
 import { ThemeContext } from 'contexts/ThemeContext';
 import React, { HTMLProps, useContext } from 'react';
 
@@ -42,6 +43,7 @@ const iconsMap = {
   ufo: <Ufo />,
   hidden: <Hidden />,
   'no-hidden': <NoHidden />,
+  refresh: <Refresh />,
 } as const;
 
 interface IconProps extends HTMLProps<HTMLDivElement> {

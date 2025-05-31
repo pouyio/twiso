@@ -1,41 +1,28 @@
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
-import { config, IMG_URL, LOGIN_URL } from './apiConfig';
-import { authTraktClient, traktClient } from './axiosClients';
+import { config, IMG_URL } from './apiConfig';
+import { traktClient } from './axiosClients';
 import Bottleneck from 'bottleneck';
-import { getTranslation } from './getTranslations';
-import { Language } from 'state/slices/config';
-import { Session } from 'contexts/AuthContext';
 import { ImgConfig } from '../models/ImgConfig';
 import { ItemType } from '../models/ItemType';
 import { ImageResponse } from '../models/Image';
+import { Episode, Season, SeasonEpisode } from '../models/Show';
+import { Language, Translation } from '../models/Translation';
+import { SearchMovie, SearchShow } from '../models/Movie';
 import {
-  Episode,
-  Season,
-  Show,
-  ShowProgress,
-  ShowWatched,
-  ShowWatchlist,
-} from '../models/Show';
-import { Translation } from '../models/Translation';
-import { Movie, MovieWatched, MovieWatchlist } from '../models/Movie';
-import {
-  AddedHidden,
-  AddedWatched,
-  AddedWatchlist,
-  HiddenShow,
-  MovieCalendar,
-  Profile,
+  Activity,
+  EpisodeStatus,
+  MovieStatus,
   Ratings,
-  RemovedWatched,
-  RemovedWatchlist,
-  RemoveHidden,
-  ShowCalendar,
+  ShowStatus,
+  ShowStatusComplete,
   UserStats,
 } from '../models/Api';
 import { People } from '../models/People';
 import { Person } from '../models/Person';
 import { Popular } from '../models/Popular';
+import { Ids } from 'models/Ids';
+import { supabase } from './supabase';
 
 const limiter = new Bottleneck({
   reservoir: 800,
@@ -49,24 +36,6 @@ const limitClient = rateLimit(axios.create(), {
   maxRequests: 42,
   perMilliseconds: 10000,
 });
-
-export const loginApi = (code: string) => {
-  return axios.post<Session>(LOGIN_URL, {
-    code,
-    client_id: config.traktApiKey,
-    redirect_uri: config.redirectUrl,
-    grant_type: 'authorization_code',
-  });
-};
-
-export const refreshApi = (refreshToken: string) => {
-  return axios.post<Session>(LOGIN_URL, {
-    refresh_token: refreshToken,
-    client_id: config.traktApiKey,
-    redirect_uri: config.redirectUrl,
-    grant_type: 'refresh_token',
-  });
-};
 
 export const getImgsConfigApi = () => {
   return axios.get<ImgConfig>(
@@ -84,19 +53,23 @@ export const getImgsApi = (id: number, type: ItemType) => {
   );
 };
 
-export const getApi = <T>(id: number, type: ItemType) =>
+export const getApi = <T extends SearchMovie | SearchShow>(id: string) =>
   limiter.wrap(() =>
-    traktClient.get<T[]>(`/search/trakt/${id}?type=${type}&extended=full`)
+    traktClient.get<T[]>(`/search/imdb/${id}?extended=full`)
   )();
 
-export const getSeasonsApi = (id: number, language: Language) => {
+export const getSeasonsApi = (id: string, language: Language) => {
   return limiter.wrap(() =>
-    traktClient.get<Season[]>(`/shows/${id}/seasons?translations=${language}`)
+    traktClient
+      .get<Season[]>(
+        `/shows/${id}/seasons?extended=episodes&translations=${language}`
+      )
+      .then(({ data }) => data)
   )();
 };
 
 export const getSeasonEpisodesApi = (
-  id: number,
+  id: string,
   season: number,
   language: Language
 ) => {
@@ -107,21 +80,17 @@ export const getSeasonEpisodesApi = (
   )();
 };
 
-export const getProgressApi = (id: number) => {
-  return authTraktClient.get<ShowProgress>(
-    `/shows/${id}/progress/watched?specials=true&count_specials=false`
-  );
-};
-
 export const getTranslationsApi = (
-  id: number,
+  id: string,
   type: ItemType,
   language: Language
 ) => {
   return limiter.wrap(() =>
     traktClient
       .get<Translation[]>(`/${type}s/${id}/translations/${language}`)
-      .then(({ data }) => getTranslation(data))
+      .then(({ data }) =>
+        data.find((t) => t.language === 'es' && t.country === 'es')
+      )
   )();
 };
 
@@ -135,60 +104,78 @@ export const searchApi = <T>(
   );
 };
 
-export const getWatchedApi = <T extends MovieWatched | ShowWatched>(
-  type: ItemType
-) => {
-  const url =
-    type === 'movie'
-      ? `/sync/history/movies?page=1&limit=10000&extended=full`
-      : `/sync/watched/shows?extended=full`;
-
-  return authTraktClient.get<T[]>(url);
-};
-
-export const addWatchedApi = (
-  item: Episode | Season | Movie,
-  type: ItemType
-) => {
-  return authTraktClient.post<AddedWatched>(`/sync/history`, {
-    [`${type}s`]: [item],
+export const addWatchedMovieApi = (id: string, type: ItemType) => {
+  return supabase.functions.invoke<MovieStatus>(`api/${type}s/${id}`, {
+    method: 'POST',
+    body: {
+      status: 'watched',
+    },
   });
 };
 
-export const removeWatchedApi = (
-  item: Episode | Season | Movie,
-  type: ItemType
+export const addWatchedEpisodesApi = (
+  showIds: Ids,
+  episodes: SeasonEpisode[]
 ) => {
-  return authTraktClient.post<RemovedWatched>(`/sync/history/remove`, {
-    [`${type}s`]: [item],
-  });
-};
-
-export const getWatchlistApi = <T extends MovieWatchlist | ShowWatchlist>(
-  type: 'movie' | 'show'
-) => {
-  return authTraktClient.get<T[]>(
-    `/sync/watchlist/${type}s/added?extended=full`
+  return supabase.functions.invoke<EpisodeStatus[]>(
+    `api/shows/${showIds.imdb}/episodes`,
+    {
+      method: 'POST',
+      body: {
+        episodes: episodes.map((e) => ({
+          episodeId: e.ids.imdb,
+          season: e.season,
+          episode: e.number,
+        })),
+      },
+    }
   );
 };
 
-export const addWatchlistApi = (item: Show | Movie, type: ItemType) => {
-  return authTraktClient.post<AddedWatchlist>(`/sync/watchlist`, {
-    [`${type}s`]: [item],
+export const removeWatchedEpisodesApi = (showIds: Ids, episodeIds: Ids[]) => {
+  return supabase.functions.invoke<null>(`api/shows/${showIds.imdb}/episodes`, {
+    method: 'DELETE',
+    body: {
+      episodes: episodeIds.map((e) => e.imdb),
+    },
   });
 };
 
-export const removeWatchlistApi = (item: Show | Movie, type: ItemType) => {
-  return authTraktClient.post<RemovedWatchlist>(`/sync/watchlist/remove`, {
-    [`${type}s`]: [item],
+export const removeWatchedApi = (id: string, type: ItemType) => {
+  return supabase.functions.invoke<null>(`api/${type}s/${id}`, {
+    method: 'DELETE',
   });
 };
 
-export const getPeopleApi = (id: number, type: ItemType) => {
+export const addWatchlistShowApi = (id: string) => {
+  return supabase.functions.invoke<ShowStatus>(`api/shows/${id}`, {
+    method: 'POST',
+    body: {
+      status: 'watchlist',
+    },
+  });
+};
+
+export const addWatchlistMovieApi = (id: string) => {
+  return supabase.functions.invoke<MovieStatus>(`api/movies/${id}`, {
+    method: 'POST',
+    body: {
+      status: 'watchlist',
+    },
+  });
+};
+
+export const removeWatchlistApi = (id: string, type: ItemType) => {
+  return supabase.functions.invoke<null>(`api/${type}s/${id}`, {
+    method: 'DELETE',
+  });
+};
+
+export const getPeopleApi = (id: string, type: ItemType) => {
   return traktClient.get<People>(`/${type}s/${id}/people`);
 };
 
-export const getPersonApi = (id: number) => {
+export const getPersonApi = (id: string) => {
   return traktClient.get<Person>(`/people/${id}?extended=full`);
 };
 
@@ -203,63 +190,61 @@ export const getPopularApi = (type: ItemType, limit: number = 40) => {
   );
 };
 
-export const getRelatedApi = <T>(id: number, type: ItemType) => {
-  return traktClient.get<T[]>(
-    `/${type}s/${id}/related?extended=full&page=1&limit=12`
-  );
+export const getRelatedApi = async <T>(type: ItemType, id?: string) => {
+  return id
+    ? traktClient.get<T[]>(
+        `/${type}s/${id}/related?extended=full&page=1&limit=12`
+      )
+    : { data: [] };
 };
 
 export const getStatsApi = () => {
-  return authTraktClient.get<UserStats>(`/users/me/stats`);
-};
-
-export const getProfileApi = () => {
-  return authTraktClient.get<Profile>(`/users/me`);
-};
-
-export const getRatingsApi = (id: number, type: ItemType) => {
-  return traktClient.get<Ratings>(`/${type}s/${id}/ratings`);
-};
-
-export const getCalendar = <T extends MovieCalendar | ShowCalendar>(
-  type: ItemType,
-  firstDaxios: string,
-  period: number
-) => {
-  return authTraktClient.get<T[]>(
-    `/calendars/my/${type}s/${firstDaxios}/${period}`
-  );
-};
-
-export const getHiddenShows = () => {
-  return authTraktClient.get<HiddenShow[]>(
-    `/users/hidden/progress_watched?type=show`
-  );
-};
-
-export const addHideShow = (id: number) => {
-  return authTraktClient.post<AddedHidden>(`/users/hidden/progress_watched`, {
-    shows: [
-      {
-        ids: {
-          trakt: id,
-        },
-      },
-    ],
+  return supabase.functions.invoke<UserStats>('api/profile', {
+    method: 'GET',
   });
 };
 
-export const removeHideShow = (id: number) => {
-  return authTraktClient.post<RemoveHidden>(
-    `/users/hidden/progress_watched/remove`,
+export const getRatingsApi = (id: string, type: ItemType) => {
+  return traktClient.get<Ratings>(`/${type}s/${id}/ratings`);
+};
+
+export const setHideShow = (showId: string, hidden: boolean) => {
+  return supabase.functions.invoke<null>(`api/shows/${showId}/hide`, {
+    method: 'PUT',
+    body: {
+      hidden,
+    },
+  });
+};
+
+export const syncActivities = () => {
+  return supabase.functions.invoke<Activity>(`api/activities`, {
+    method: 'GET',
+  });
+};
+
+export const getAllShows = async () => {
+  return supabase.functions.invoke<ShowStatus[]>(`api/shows`, {
+    method: 'GET',
+  });
+};
+
+export const getAllMovies = (dateFrom?: string | null) => {
+  return supabase.functions.invoke<MovieStatus[]>(
+    `api/movies?${dateFrom ? `date_from=${encodeURIComponent(dateFrom)}` : ''}`,
     {
-      shows: [
-        {
-          ids: {
-            trakt: id,
-          },
-        },
-      ],
+      method: 'GET',
+    }
+  );
+};
+
+export const getAllShowsComplete = (dateFrom?: string | null) => {
+  return supabase.functions.invoke<ShowStatusComplete[]>(
+    `api/shows/complete?${
+      dateFrom ? `date_from=${encodeURIComponent(dateFrom)}` : ''
+    }`,
+    {
+      method: 'GET',
     }
   );
 };

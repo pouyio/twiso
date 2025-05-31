@@ -1,34 +1,53 @@
-import { useAppSelector } from 'state/store';
+import { useLiveQuery } from 'dexie-react-hooks';
+import db, { USER_MOVIES_TABLE, USER_SHOWS_TABLE } from 'utils/db';
 
+// TODO maybe can be removed and improve indexedDB query performance where it is used
 export const useIsWatch = () => {
-  const movies = useAppSelector((state) => state.movies);
-  const shows = useAppSelector((state) => state.shows);
+  const watchedMoviIds =
+    useLiveQuery(
+      () => db[USER_MOVIES_TABLE].where({ status: 'watched' }).primaryKeys(),
+      [],
+      []
+    ) ?? [];
 
-  const isWatched = (id: number, type: 'show' | 'movie' = 'show') => {
+  const watchlistMovieIds =
+    useLiveQuery(() =>
+      db[USER_MOVIES_TABLE].where({ status: 'watchlist' }).primaryKeys()
+    ) ?? [];
+
+  const watchedShows =
+    useLiveQuery(
+      () => db[USER_SHOWS_TABLE].where({ status: 'watched' }).primaryKeys(),
+      [],
+      []
+    ) ?? [];
+  const watchedShowIds = watchedShows.map((s) => s.show_imdb);
+
+  const watchlistShowIds =
+    useLiveQuery(() =>
+      db[USER_SHOWS_TABLE].where({ status: 'watchlist' }).primaryKeys()
+    ) ?? [];
+
+  const isWatched = (id: string, type: 'show' | 'movie' = 'show') => {
     if (type === 'show') {
-      return shows.shows[id]?.localState === 'watched';
+      return watchedShowIds.some((show) => show === id);
     }
     if (type === 'movie') {
-      return movies.movies[id]?.localState === 'watched';
+      return watchedMoviIds.some((movie) => movie === id);
     }
   };
 
-  const isWatchlist = (id: number, type: 'show' | 'movie' = 'show') => {
+  const isWatchlist = (id: string, type: 'show' | 'movie' = 'show') => {
     if (type === 'show') {
-      return shows.shows[id]?.localState === 'watchlist';
+      return watchlistShowIds.some((show) => show === id);
     }
     if (type === 'movie') {
-      return movies.movies[id]?.localState === 'watchlist';
+      return watchlistMovieIds.some((movie) => movie === id);
     }
-  };
-
-  const isHidden = (id: number) => {
-    return shows.hidden[id];
   };
 
   return {
     isWatched,
     isWatchlist,
-    isHidden,
   };
 };

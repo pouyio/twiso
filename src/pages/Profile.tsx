@@ -1,22 +1,33 @@
 import { Icon } from 'components/Icon';
 import { useContext, useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
-import { Language, changeLanguage } from 'state/slices/config';
+import { changeLanguage } from 'state/slices/config';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import packageInfo from '../../package.json';
 import Emoji from '../components/Emoji';
 import { LoginButton } from '../components/LoginButton';
 import { AuthContext } from '../contexts/AuthContext';
 import { ThemeContext, ThemeType } from '../contexts/ThemeContext';
-import { getProfileApi, getStatsApi } from '../utils/api';
-import { removeCaches, removeImgCaches } from '../utils/cache';
+import { getStatsApi } from '../utils/api';
+import {
+  removeDetailsCaches,
+  removeImgCaches,
+  removeUserActivities,
+  removeUserCaches,
+} from '../utils/cache';
 import { UserStats } from '../models/Api';
+import { AVAIABLE_LANGUAGES, Language } from '../models/Translation';
 import { useTranslate } from '../hooks/useTranslate';
+import { supabase } from 'utils/supabase';
+import { User } from '@supabase/supabase-js';
+
+const AVG_MOVIE_DURATION = 110;
+const AVG_EPISODE_DURATION = 35;
 
 export default function Profile() {
   const { theme, setTheme } = useContext(ThemeContext);
   const [stats, setStats] = useState<UserStats>();
   const [dev, setDev] = useState(false);
+  const [user, setUser] = useState<User | null>();
   const { session, logout } = useContext(AuthContext);
   const isLogged = !!session;
   const dispatch = useAppDispatch();
@@ -25,10 +36,13 @@ export default function Profile() {
 
   useEffect(() => {
     if (isLogged) {
-      getStatsApi().then(({ data }) => setStats(data));
-      getProfileApi().then(({ data }) =>
-        setDev(data.ids.slug === 'pouyio' || data.ids.slug === 'pouyio-test')
-      );
+      supabase.auth.getUser().then(({ data }) => {
+        getStatsApi().then(({ data }) => data && setStats(data));
+        setDev(
+          ['7904e28b-a8bf-49af-9bc3-6efca4bda7ab'].includes(data.user?.id ?? '')
+        );
+        setUser(data.user);
+      });
     }
   }, [isLogged]);
 
@@ -38,17 +52,15 @@ export default function Profile() {
     const m = Math.round(minutes % 60);
 
     if (d > 0) {
-      return d + ' días, ' + h + ' horas, ' + m + ' minutos';
+      return t('days-aprox', d, h, m);
     } else {
-      return h + ' horas, ' + m + ' minutos';
+      return t('hours-aprox', h, m);
     }
   };
 
   return (
-    <div style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-      <Helmet>
-        <title>Profile</title>
-      </Helmet>
+    <div className="pt-[env(safe-area-inset-top)]">
+      <title>Profile</title>
       <div className="lg:max-w-lg m-auto p-4">
         <ul className="flex justify-between">
           <li className="py-1 relative">
@@ -87,8 +99,13 @@ export default function Profile() {
               }}
               value={language}
             >
-              <option value="en">🇬🇧 English</option>
-              <option value="es">🇪🇸 Español</option>
+              {AVAIABLE_LANGUAGES.map((code) => {
+                return (
+                  <option key={code} value={code}>
+                    {t(code)}
+                  </option>
+                );
+              })}
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
@@ -107,20 +124,24 @@ export default function Profile() {
               <Icon name="movie" className="h-6 pr-1" /> {t('movies')}
             </h1>
             <p className="text-center">
-              {t('have_watched_f')}: {stats && stats.movies.watched} en{' '}
-              {convertMinutes(stats && stats.movies.minutes)}
+              {t('have_watched_f')}: {stats?.movies} en{' '}
+              {convertMinutes(stats && stats.movies * AVG_MOVIE_DURATION)}
             </p>
             <h1 className="text-2xl text-center text-gray-700 m-4 mt-8 flex justify-center items-center">
               <Icon name="tv" className="h-6 pr-1" /> {t('episodes')}
             </h1>
             <p className="text-center">
-              {t('have_watched')}: {stats && stats.episodes.watched} en{' '}
-              {convertMinutes(stats && stats.episodes.minutes)}{' '}
+              {t('have_watched')}: {stats?.episodes} en{' '}
+              {convertMinutes(stats && stats.episodes * AVG_EPISODE_DURATION)}{' '}
             </p>{' '}
+            <p className="text-sm mt-12 flex flex-col items-end">
+              <span>Logged in as:</span>
+              <span className="italic h-5">{user?.email}</span>
+            </p>
           </>
         ) : null}
 
-        <div className="flex justify-between pt-10 text-sm font-mono">
+        <div className="flex justify-between pt-2 text-sm font-mono items-center">
           <h1 className="inline">Version: {packageInfo.version}</h1>
           <a href="https://status.trakt.tv/" className="underline">
             API status
@@ -128,7 +149,7 @@ export default function Profile() {
           {isLogged ? (
             <button
               onClick={logout}
-              className="bg-gray-200 px-4 py-1 pl-2 rounded-full flex items-center"
+              className="bg-gray-200 px-4 py-1 pl-2 rounded-full flex items-center cursor-pointer"
             >
               <Icon name="logout" className="h-6 pr-1" /> Logout
             </button>
@@ -139,6 +160,7 @@ export default function Profile() {
 
         {dev ? (
           <>
+            <h1 className="text-center text-2xl py-4">Dev tools</h1>
             <p className="text-center py-4">
               <button
                 onClick={() => window.location.reload()}
@@ -150,11 +172,29 @@ export default function Profile() {
             </p>
             <p className="text-center py-4">
               <button
-                onClick={removeCaches}
+                onClick={removeUserActivities}
                 className="bg-gray-200 px-2 py-1 rounded-full"
               >
-                <Emoji emoji="♻️" />
-                Remove app cache
+                <Emoji emoji="⚠️" />
+                Remove USER activities only
+              </button>
+            </p>
+            <p className="text-center py-4">
+              <button
+                onClick={removeUserCaches}
+                className="bg-gray-200 px-2 py-1 rounded-full"
+              >
+                <Emoji emoji="⚠️" />
+                Remove USER data
+              </button>
+            </p>
+            <p className="text-center py-4">
+              <button
+                onClick={removeDetailsCaches}
+                className="bg-gray-200 px-2 py-1 rounded-full"
+              >
+                <Emoji emoji="⚠️" />
+                Remove DETAIL data
               </button>
             </p>
             <p className="text-center py-4">

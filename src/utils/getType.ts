@@ -1,9 +1,7 @@
-import { MovieWatched, MovieWatchlist } from '../models/Movie';
-import { ShowWatched, ShowWatchlist } from '../models/Show';
+import { Movie } from '../models/Movie';
+import { Show } from '../models/Show';
 
-export const getType = (
-  element: MovieWatched | MovieWatchlist | ShowWatched | ShowWatchlist
-): 'movie' | 'show' => {
+export const getType = (element: Movie | Show): 'movie' | 'show' => {
   const keys = Object.keys(element);
-  return keys.includes('movie') ? 'movie' : 'show';
+  return keys.includes('airs') ? 'show' : 'movie';
 };

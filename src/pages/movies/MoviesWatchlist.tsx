@@ -1,33 +1,39 @@
 import ImageLink from 'components/ImageLink';
 import PaginationContainer from 'components/Pagination/PaginationContainer';
 import React, { useState } from 'react';
-import { filterByGenres } from 'state/slices/movies';
-import { useAppSelector } from 'state/store';
 import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from 'components/EmptyState';
 import { NoResults } from 'components/NoResults';
-import { MovieWatchlist } from '../../models/Movie';
+import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../../utils/db';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { Movie } from 'models/Movie';
 
 export const MoviesWatchlist: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);
-  const { watchlist } = useAppSelector(filterByGenres(genres));
+  const orderedUserMoviesIds = useLiveQuery(
+    () =>
+      db[USER_MOVIES_TABLE].where('status')
+        .equals('watchlist')
+        .reverse()
+        .sortBy('created_at')
+        .then((items) => items.map((i) => i.movie_imdb)),
+    [],
+    [] as string[]
+  );
 
-  const nearFuture = new Date();
-  nearFuture.setDate(nearFuture.getDate() + 7);
-  const orderedMovies = watchlist
-    .map((m) => m)
-    .sort((a, b) => (new Date(a.listed_at) < new Date(b.listed_at) ? -1 : 1))
-    .reduce((acc: MovieWatchlist[], m) => {
-      if (!m.movie.released) {
-        return [...acc, m];
-      }
-      const released = new Date(m.movie.released);
-      if (released < nearFuture) {
-        return [m, ...acc];
-      } else {
-        return [...acc, m];
-      }
-    }, []);
+  const fullMovies = useLiveQuery(
+    () =>
+      db[DETAIL_MOVIES_TABLE].where('ids.imdb')
+        .anyOf(orderedUserMoviesIds)
+        .and((movie) => genres.every((g) => movie.genres.includes(g)))
+        .toArray(),
+    [genres, orderedUserMoviesIds],
+    []
+  );
+
+  const orderedMovies: Movie[] = orderedUserMoviesIds
+    .map((m) => fullMovies.find((fm) => fm.ids.imdb === m))
+    .filter(Boolean) as Movie[];
 
   const { getItemsByPage } = usePagination(orderedMovies);
 
@@ -41,16 +47,15 @@ export const MoviesWatchlist: React.FC = () => {
         <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
           {getItemsByPage().map((m, i) => (
             <li
-              key={`${m.movie.ids.trakt}_${i}`}
+              key={`${m.ids.imdb}_${i}`}
               className="p-2"
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >
               <ImageLink
-                text={m.movie.title}
-                ids={m.movie.ids}
-                item={m.movie}
-                style={{}}
+                text={m.title}
+                ids={m.ids}
                 type="movie"
+                forceState="watchlist"
               />
             </li>
           ))}

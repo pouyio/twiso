@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { findFirstValid } from '../src/utils/findFirstValidImage';
 import { SearchMovie, SearchPerson, SearchShow } from '../src/models/Movie';
 import {
-  BASE_URL,
+  BASE_TRAKT_URL,
   CONTENT_TYPE,
   IMG_URL,
   TRAKT_API_VERSION,
@@ -23,7 +23,7 @@ const TYPE_MAP = {
 };
 
 const axiosConfig = (traktApiKey: string): AxiosRequestConfig => ({
-  baseURL: BASE_URL,
+  baseURL: BASE_TRAKT_URL,
   headers: {
     'content-type': CONTENT_TYPE,
     'trakt-api-key': traktApiKey,
@@ -45,13 +45,13 @@ const traktClient = (apiKey: string) => axios.create(axiosConfig(apiKey));
 
 const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
   type: 'movie' | 'show' | 'person',
-  id: number,
+  id: string,
   env: ENVs
 ) => {
   const searchResponses = await traktClient(env.VITE_TRAKT_API_KEY).get<T[]>(
-    `/search/trakt/${id}?type=${type}&extended=full`
+    `/search/imdb/${id}?type=${type}&extended=full`
   );
-  let imgUrl = 'https://via.placeholder.com/185x330';
+  let imgUrl = 'https://placehold.co/185x330';
 
   if (!searchResponses.data[0]) {
     console.log(`Data with id:${id} not found`);
@@ -73,7 +73,13 @@ const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
     imgUrl = `https://image.tmdb.org/t/p/w185${poster.file_path}`;
   }
 
-  return { item, imgUrl };
+  return {
+    item: {
+      title: item?.title ?? item?.name ?? 'No title',
+      overview: item?.overview ?? item?.biography ?? 'No overview',
+    },
+    imgUrl,
+  };
 };
 
 export const onRequest = async (context: EventContext<ENVs, any, any>) => {
@@ -86,10 +92,10 @@ export const onRequest = async (context: EventContext<ENVs, any, any>) => {
   }
 
   const type = parts[0] as 'movie' | 'person' | 'show';
-  const id = parseInt(parts[1]);
+  const id = parts[1];
 
-  if (isNaN(id)) {
-    return new Response('Invalid ID', { status: 400 });
+  if (!id) {
+    return new Response('No ID', { status: 400 });
   }
 
   const { item, imgUrl } = await fetchData<SearchMovie>(type, id, env);

@@ -1,38 +1,47 @@
 import React, { useState } from 'react';
-import { filterByGenres, getHidden } from 'state/slices/shows';
-import { useAppSelector } from 'state/store';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from 'components/EmptyState';
 import { NoResults } from 'components/NoResults';
+import { useLiveQuery } from 'dexie-react-hooks';
+import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from 'utils/db';
+import { Show } from 'models/Show';
 
 const ShowsWatched: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);
-  const { watched } = useAppSelector(filterByGenres(genres));
-  const hidden = useAppSelector(getHidden);
 
-  const orderedShows = watched.sort((a, b) => {
-    if (
-      !a.progress?.next_episode ||
-      a.progress?.next_episode?.season === 0 ||
-      hidden[a.show.ids.trakt]
-    ) {
-      return 1;
-    }
-    if (
-      !b.progress?.next_episode ||
-      b.progress?.next_episode?.season === 0 ||
-      hidden[b.show.ids.trakt]
-    ) {
-      return -1;
-    }
-    const aDate = new Date(a.progress?.last_watched_at ?? '');
-    const bDate = new Date(b.progress?.last_watched_at ?? '');
-    return aDate < bDate ? 1 : -1;
-  });
+  const orderedUserShows = useLiveQuery(
+    () =>
+      db[USER_SHOWS_TABLE].where('status')
+        .equals('watched')
+        .reverse()
+        .sortBy('created_at'),
+    [],
+    []
+  );
+
+  const fullShows = useLiveQuery(
+    () =>
+      db[DETAIL_SHOWS_TABLE].where('ids.imdb')
+        .anyOf(
+          orderedUserShows.filter((s) => !s.hidden).map((us) => us.show_imdb)
+        )
+        .and((show) => genres.every((g) => show.genres.includes(g)))
+        .toArray(),
+    [genres, orderedUserShows],
+    []
+  );
+
+  const orderedShows: Show[] = orderedUserShows
+    .map((m) => fullShows.find((fm) => fm.ids.imdb === m.show_imdb))
+    .filter(Boolean) as Show[];
 
   const { getItemsByPage } = usePagination(orderedShows);
+
+  const isHidden = (id: string) => {
+    return orderedUserShows.find((ous) => ous.show_imdb === id)?.hidden;
+  };
 
   return !genres.length && !orderedShows.length ? (
     <EmptyState />
@@ -44,16 +53,17 @@ const ShowsWatched: React.FC = () => {
         <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
           {getItemsByPage().map((m) => (
             <li
-              key={m.show.ids.trakt}
+              key={m.ids.trakt}
               className="p-2"
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >
               <ImageLink
-                item={m.show}
-                ids={m.show.ids}
-                text={m.show.title}
+                ids={m.ids}
+                text={m.title}
                 style={{ minHeight: '13.5em' }}
                 type="show"
+                forceState="watched"
+                hidden={isHidden(m.ids.imdb)}
               />
             </li>
           ))}

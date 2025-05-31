@@ -1,5 +1,4 @@
 import { Ids } from './Ids';
-import { SmallEpisode } from './Show';
 
 interface BaseNotFound {
   movies?: Ids[];
@@ -15,42 +14,13 @@ interface ItemsCount {
   seasons?: number;
 }
 
-export interface AddedWatched {
-  added: ItemsCount;
-  not_found: BaseNotFound;
-}
-export interface RemovedWatched {
-  deleted: ItemsCount;
-  not_found: BaseNotFound & { ids: number[] };
-}
-
-export interface AddedWatchlist {
-  added: ItemsCount;
-  existing: ItemsCount;
-  not_found: BaseNotFound;
-}
+export type AddedWatched = {
+  movie_imdb: string;
+  status: 'watchlist' | 'watched';
+  created_at: string;
+} | null;
 
 export interface RemovedWatchlist {
-  deleted: ItemsCount;
-  not_found: BaseNotFound;
-}
-
-export interface HiddenShow {
-  hidden_at: string;
-  type: 'show';
-  show: {
-    title: string;
-    year: number;
-    ids: Ids;
-  };
-}
-
-export interface AddedHidden {
-  added: ItemsCount;
-  not_found: BaseNotFound;
-}
-
-export interface RemoveHidden {
   deleted: ItemsCount;
   not_found: BaseNotFound;
 }
@@ -69,41 +39,8 @@ interface Distribution {
 }
 
 export interface UserStats {
-  movies: {
-    plays: number;
-    watched: number;
-    minutes: number;
-    collected: number;
-    ratings: number;
-    comments: number;
-  };
-  shows: {
-    watched: number;
-    collected: number;
-    ratings: number;
-    comments: number;
-  };
-  seasons: {
-    ratings: number;
-    comments: number;
-  };
-  episodes: {
-    plays: number;
-    watched: number;
-    minutes: number;
-    collected: number;
-    ratings: number;
-    comments: number;
-  };
-  network: {
-    friends: number;
-    followers: number;
-    following: number;
-  };
-  ratings: {
-    total: number;
-    distribution: Distribution;
-  };
+  movies: number;
+  episodes: number;
 }
 
 export interface Ratings {
@@ -112,27 +49,51 @@ export interface Ratings {
   distribution: Distribution;
 }
 
-export interface Profile {
-  username: string;
-  private: boolean;
-  name: string;
-  vip: boolean;
-  vip_ep: boolean;
-  ids: {
-    slug: string;
+export type Activities = {
+  shows: {
+    rest: string | null;
+    removed: string | null;
   };
-}
+  movies: {
+    rest: string | null;
+    removed: string | null;
+  };
+};
 
-export interface MovieCalendar {
-  movie: { title: string; year: number; ids: Ids };
-  released: string;
-}
-export interface ShowCalendar {
-  first_aired: string;
-  episode: SmallEpisode;
-  show: {
-    title: string;
-    year: number;
-    ids: Ids;
+type Status = 'watched' | 'watchlist';
+
+export type MovieStatus = {
+  movie_imdb: string;
+  status: Status;
+  created_at: string;
+};
+
+export type ShowStatus = {
+  show_imdb: string;
+  status: Status;
+  created_at: string;
+  hidden: boolean;
+};
+
+export type ShowStatusComplete = ShowStatus & {
+  episodes: EpisodeStatus[];
+};
+
+export type EpisodeStatus = {
+  episode_imdb: string;
+  show_imdb: string;
+  created_at: string;
+  season_number: number;
+  episode_number: number;
+};
+
+export type Activity = {
+  movies: {
+    removed: string | null;
+    rest: string | null;
   };
-}
+  shows: {
+    removed: string | null;
+    rest: string | null;
+  };
+};

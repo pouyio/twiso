@@ -1,28 +1,24 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
-import { useWindowSize } from '../../hooks/useWindowSize';
 import { useTranslate } from '../../hooks/useTranslate';
-import { Season, ShowProgress } from '../../models/Show';
+import { ShowSeason } from '../../models/Show';
+import { ShowStatusComplete } from 'models/Api';
 
 interface ISeasonsProps {
-  progress?: ShowProgress;
-  seasons: Season[];
-  selectedSeason?: Season;
+  progress?: ShowStatusComplete;
+  seasons: ShowSeason[];
+  selectedSeason?: ShowSeason;
   setSelectedSeason: (season?: number) => void;
 }
 
-const Underline: React.FC = () => {
-  const { width } = useWindowSize();
+const Underline: React.FC<{ visible: boolean }> = ({ visible }) => {
   return (
     <motion.div
       layoutId="underline-season"
-      className="bg-gray-200 mt-2"
+      className={`bg-gray-200 mt-2 ${
+        visible ? '' : 'invisible'
+      } bottom-[calc(env(safe-area-inset-bottom)_+_4px)] h-[2px]`}
       initial={false}
-      style={{
-        bottom:
-          width < 1024 ? `calc(env(safe-area-inset-bottom) + 4px)` : '4px',
-        height: '4px',
-      }}
     />
   );
 };
@@ -65,15 +61,16 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
     if (!progress) {
       return false;
     }
-    const foundSeasonProgress = progress.seasons.find(
-      (s) => s.number === seasonNumber
-    );
-    if (!foundSeasonProgress) {
+    const foundSeasonProgress =
+      progress.episodes?.filter((e) => e.season_number === seasonNumber) ?? [];
+    if (!foundSeasonProgress.length) {
       return false;
     }
-    return (
-      foundSeasonProgress.completed === foundSeasonProgress.episodes.length
-    );
+    const foundSeasonDetail = seasons.find((s) => s.number === seasonNumber);
+    if (!foundSeasonDetail) {
+      return false;
+    }
+    return foundSeasonProgress.length === foundSeasonDetail.episodes.length;
   };
 
   return (
@@ -82,29 +79,31 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
       style={{ WebkitOverflowScrolling: 'touch' }}
       ref={ref}
     >
-      {seasons.map((s) => (
-        <li
-          role="button"
-          onClick={() =>
-            setSelectedSeason(
-              selectedSeason?.number === s.number ? undefined : s.number
-            )
-          }
-          key={s.ids.trakt}
-          className={
-            'whitespace-pre mx-1 text-sm px-3 pt-2 cursor-pointer border-gray-200 ' +
-            SELECTED_CLASS
-          }
-        >
-          {s.number ? `${t('season')} ${s.number}` : t('specials')}
-          {isSeasonWatched(s.number) ? (
-            <span className="ml-2 text-gray-600 pb-2">✓</span>
-          ) : (
-            ''
-          )}
-          {s.ids.trakt === selectedSeason?.ids.trakt && <Underline />}
-        </li>
-      ))}
+      {seasons.map((s) => {
+        return (
+          <li
+            role="button"
+            onClick={() =>
+              setSelectedSeason(
+                selectedSeason?.number === s.number ? undefined : s.number
+              )
+            }
+            key={s.ids.trakt}
+            className={
+              'whitespace-pre mx-1 text-sm px-3 pt-3 cursor-pointer border-gray-200 relative' +
+              SELECTED_CLASS
+            }
+          >
+            {s.number ? `${t('season')} ${s.number}` : t('specials')}
+            {isSeasonWatched(s.number) ? (
+              <span className="ml-2 text-gray-600 pb-2">✓</span>
+            ) : (
+              ''
+            )}
+            <Underline visible={s.ids.trakt === selectedSeason?.ids.trakt} />
+          </li>
+        );
+      })}
     </ul>
   );
 };

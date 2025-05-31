@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router';
+import { fillDetail } from 'state/slices/movies/thunks';
 import { useAppDispatch, useAppSelector } from 'state/store';
-import { populateDetail } from 'state/slices/movies/thunks';
 import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
@@ -13,71 +13,90 @@ import WatchButton from '../components/WatchButton';
 import { AlertContext } from '../contexts/AlertContext';
 import { People as IPeople } from '../models/People';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
-import { Helmet } from 'react-helmet';
 import { Icon } from 'components/Icon';
 import { Ratings } from '../models/Api';
-import { Movie } from '../models/Movie';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
-import { useIsWatch } from '../hooks/useIsWatch';
+import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../utils/db';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const language = useAppSelector((state) => state.config.language);
-  const { state } = useLocation() as { state: Movie };
-  const { id } = useParams<{ id: string }>();
+  const { id = '' } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
   const { share } = useShare();
-  const item = useAppSelector((s) => s.movies.detail);
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
 
-  const { isWatchlist, isWatched } = useIsWatch();
-
   useEffect(() => {
-    window.scrollTo(0, 0);
-    dispatch(populateDetail({ id: +id!, movie: state }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state, id]);
+    // @ts-expect-error limitations on Dexie EntityTable
+    db[DETAIL_MOVIES_TABLE].get(id).then((movie) => {
+      if (!movie) {
+        dispatch(fillDetail({ id }));
+      }
+    });
+  }, [id]);
+
+  const liveItem = useLiveQuery(
+    () =>
+      // @ts-expect-error limitations on Dexie EntityTable
+      db[DETAIL_MOVIES_TABLE].get(id),
+    [id]
+  );
+
+  const liveStatus = useLiveQuery(() => db[USER_MOVIES_TABLE].get(id), [id]);
+
+  const item = liveItem;
 
   useEffect(() => {
     setPeople(undefined);
     setRatings(undefined);
-    getPeopleApi(+id!, 'movie').then(({ data }) => {
+    getPeopleApi(id ?? '', 'movie').then(({ data }) => {
       setPeople(data);
     });
-    getRatingsApi(+id!, 'movie').then(({ data }) => {
+    getRatingsApi(id ?? '', 'movie').then(({ data }) => {
       setRatings(data);
     });
   }, [id]);
 
-  const getBgClassName = () => {
-    if (!item) {
-      return;
-    }
-    if (isWatched(+id!, 'movie')) {
+  const bgClassName = useMemo(() => {
+    if (liveStatus?.status === 'watched') {
       return 'bg-green-400';
     }
-    if (isWatchlist(+id!, 'movie')) {
+    if (liveStatus?.status === 'watchlist') {
       return 'bg-blue-400';
     }
     return 'bg-gray-300';
-  };
+  }, [liveStatus]);
+
+  if (!item) {
+    return (
+      <div className="flex justify-center text-6xl items-center pt-5 mt-[env(safe-area-inset-top)]">
+        <Emoji emoji="⏳" rotating={true} />
+      </div>
+    );
+  }
+
+  const title =
+    language === 'es' ? item['translation']?.title || item.title : item.title;
+  const overview =
+    language === 'es'
+      ? item['translation']?.overview || item.overview
+      : item.overview;
 
   const onShare = () => {
-    share(item!.title).then((action) => {
+    share(title).then((action) => {
       if (action === 'copied') {
-        showAlert(t('link_copied', item!.title));
+        showAlert(t('link_copied', title));
       }
     });
   };
 
-  return item ? (
-    <div className={getBgClassName()}>
-      <Helmet>
-        <title>{item.title}</title>
-      </Helmet>
+  return (
+    <div className={bgClassName}>
+      <title>{title}</title>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
           className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
@@ -85,8 +104,8 @@ export default function MovieDetail() {
         >
           <Image
             ids={item.ids}
-            style={{ marginTop: 'env(safe-area-inset-top)' }}
-            text={item.title}
+            className="mt-[env(safe-area-inset-top)]"
+            text={title}
             type="movie"
             size="big"
           />
@@ -119,12 +138,7 @@ export default function MovieDetail() {
               className="hidden lg:block relative pr-4"
               style={{ minWidth: '10em', maxWidth: '10em' }}
             >
-              <Image
-                ids={item.ids}
-                text={item.title}
-                type="movie"
-                size="small"
-              />
+              <Image ids={item.ids} text={title} type="movie" size="small" />
               {item.trailer && (
                 <a
                   className="absolute"
@@ -151,14 +165,23 @@ export default function MovieDetail() {
 
             <div className="w-full">
               <h1 className="text-4xl leading-none text-center">
-                {item.title}
+                {title}{' '}
+                <button
+                  title={t('refresh')}
+                  className="mx-5 cursor-pointer"
+                  onClick={() => dispatch(fillDetail({ id }))}
+                >
+                  <Icon name="refresh" className="h-6" />
+                </button>
               </h1>
               <h1 className="text-xl text-center mb-4 text-gray-300">
-                {new Date(item.released).toLocaleDateString(language, {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
+                {item.released
+                  ? new Date(item.released).toLocaleDateString(language, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })
+                  : item.status}
               </h1>
               <div className="flex mb-4 justify-between items-center text-gray-600">
                 <h2>
@@ -174,9 +197,7 @@ export default function MovieDetail() {
           </div>
           <div className="my-4">
             <p className="font-medium font-family-text">{t('overview')}:</p>
-            <Collapsable heightInRem={7}>
-              {item.overview || 'Sin descripción'}
-            </Collapsable>
+            <Collapsable heightInRem={7}>{overview}</Collapsable>
           </div>
 
           <div className="my-4">
@@ -184,23 +205,35 @@ export default function MovieDetail() {
             <Genres genres={item.genres} />
           </div>
 
+          <People people={people} type="movie" />
+
           <div className="my-4">
-            <People people={people} type="movie" />
+            <p className="font-medium font-family-text">{t('extra-scenes')}:</p>
+
+            <div className="my-3">
+              <span
+                className={`mr-5 ${
+                  item.during_credits ? '' : 'opacity-50 line-through'
+                } bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre`}
+              >
+                {t('during-credits')} {item.during_credits && '✓'}
+              </span>
+              <span
+                className={`mt-2 ${
+                  item.after_credits ? '' : 'opacity-50 line-through'
+                } bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre`}
+              >
+                {t('post-credits')} {item.after_credits && '✓'}
+              </span>
+            </div>
           </div>
 
           <div className="my-4">
             <p className="font-medium font-family-text">{t('related')}:</p>
-            <Related itemId={item.ids.trakt} type="movie" />
+            <Related itemIds={item.ids} type="movie" />
           </div>
         </article>
       </div>
-    </div>
-  ) : (
-    <div
-      className="flex justify-center text-6xl items-center"
-      style={{ marginTop: 'env(safe-area-inset-top)' }}
-    >
-      <Emoji emoji="⏳" rotating={true} />
     </div>
   );
 }

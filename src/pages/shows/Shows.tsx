@@ -1,14 +1,12 @@
 import React from 'react';
 import ShowsWatchlist from './ShowsWatchlist';
 import ShowsWatched from './ShowsWatched';
-import Helmet from 'react-helmet';
-import { useAppSelector } from 'state/store';
 import { useTranslate } from '../../hooks/useTranslate';
-import { useWindowSize } from '../../hooks/useWindowSize';
 import { useSearchParams } from '../../hooks/useSearchParams';
-import { totalByType } from 'state/slices/shows';
 import { motion } from 'motion/react';
 import { Icon } from 'components/Icon';
+import db, { USER_SHOWS_TABLE } from 'utils/db';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 export const Underline: React.FC<{ selected: boolean }> = ({ selected }) => {
   return (
@@ -26,22 +24,20 @@ export const Underline: React.FC<{ selected: boolean }> = ({ selected }) => {
 export default function Shows() {
   const [searchParams, setSearchParams] = useSearchParams({ mode: 'watched' });
   const mode = searchParams.get('mode');
-  const { width } = useWindowSize();
 
-  const { watched, watchlist } = useAppSelector(totalByType);
   const { t } = useTranslate();
+
+  const watchlist = useLiveQuery(() =>
+    db[USER_SHOWS_TABLE].where('status').equals('watchlist').count()
+  );
+  const watched = useLiveQuery(() =>
+    db[USER_SHOWS_TABLE].where('status').equals('watched').count()
+  );
 
   return (
     <>
-      <Helmet>
-        <title>Shows</title>
-      </Helmet>
-      <div
-        className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto"
-        style={{
-          ...(width < 1024 ? { paddingTop: 'env(safe-area-inset-top)' } : {}),
-        }}
-      >
+      <title>Shows</title>
+      <div className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto pt-[env(safe-area-inset-top)]">
         <div className="w-full">
           <button
             className="py-2 w-full flex justify-center"

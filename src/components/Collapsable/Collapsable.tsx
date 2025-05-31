@@ -25,7 +25,6 @@ const isOverflown = (
 const Collapsable: React.FC<React.PropsWithChildren<ICollapsableProps>> = ({
   heightInRem,
   children,
-  disable,
 }) => {
   const [opened, setOpened] = useState(false);
   const [isButtonShown, setIsButtonShown] = useState(false);
@@ -38,37 +37,38 @@ const Collapsable: React.FC<React.PropsWithChildren<ICollapsableProps>> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children]);
 
-  return disable ? (
-    <>{children}</>
-  ) : (
-    <div className="flex flex-col">
-      <motion.div
-        ref={ref}
-        className={`leading-tight font-light overflow-hidden relative ${
-          isButtonShown && !opened ? 'collapsable' : ''
-        }`}
-        initial={{
-          height: isButtonShown
-            ? opened
-              ? 'auto'
-              : `${heightInRem}rem`
-            : undefined,
-        }}
-        {...(isButtonShown
-          ? { animate: { height: opened ? 'auto' : `${heightInRem}rem` } }
-          : {})}
-      >
-        {children}
-      </motion.div>
-      {isButtonShown && (
-        <span
-          className="text-right text-blue-500 cursor-pointer"
-          onClick={() => setOpened((o) => !o)}
+  return (
+    <>
+      <div className="visible lg:hidden">{children}</div>
+      <div className="lg:flex flex-col hidden lg:visible">
+        <motion.div
+          ref={ref}
+          className={`leading-tight font-light overflow-hidden relative ${
+            isButtonShown && !opened ? 'collapsable' : ''
+          }`}
+          initial={{
+            height: isButtonShown
+              ? opened
+                ? 'auto'
+                : `${heightInRem}rem`
+              : undefined,
+          }}
+          {...(isButtonShown
+            ? { animate: { height: opened ? 'auto' : `${heightInRem}rem` } }
+            : {})}
         >
-          {t('to_show', opened ? '-' : '+')}
-        </span>
-      )}
-    </div>
+          {children}
+        </motion.div>
+        {isButtonShown && (
+          <span
+            className="text-right text-blue-500 cursor-pointer"
+            onClick={() => setOpened((o) => !o)}
+          >
+            {t('to_show', opened ? '-' : '+')}
+          </span>
+        )}
+      </div>
+    </>
   );
 };
 

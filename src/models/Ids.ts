@@ -3,4 +3,5 @@ export interface Ids {
   slug: string;
   imdb: string;
   tmdb: number;
+  traktslug: string;
 }

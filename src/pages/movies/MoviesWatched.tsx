@@ -1,19 +1,43 @@
 import React, { useState } from 'react';
-import { filterByGenres } from 'state/slices/movies';
-import { useAppSelector } from 'state/store';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from 'components/EmptyState';
 import { NoResults } from 'components/NoResults';
+import { useLiveQuery } from 'dexie-react-hooks';
+import db, {
+  DBMovieDetail,
+  DETAIL_MOVIES_TABLE,
+  USER_MOVIES_TABLE,
+} from 'utils/db';
+import { Movie } from 'models/Movie';
 
 export const MoviesWatched: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);
-  const { watched } = useAppSelector(filterByGenres(genres));
+  const orderedUserMoviesIds = useLiveQuery(
+    () =>
+      db[USER_MOVIES_TABLE].where('status')
+        .equals('watched')
+        .reverse()
+        .sortBy('created_at')
+        .then((items) => items.map((i) => i.movie_imdb)),
+    [],
+    []
+  );
 
-  const orderedMovies = watched
-    .map((m) => m)
-    .sort((a, b) => (new Date(a.watched_at) < new Date(b.watched_at) ? 1 : -1));
+  const fullMovies = useLiveQuery(
+    () =>
+      db[DETAIL_MOVIES_TABLE].where('ids.imdb')
+        .anyOf(orderedUserMoviesIds)
+        .and((movie) => genres.every((g) => movie.genres.includes(g)))
+        .toArray(),
+    [genres, orderedUserMoviesIds],
+    []
+  );
+
+  const orderedMovies: Movie[] = orderedUserMoviesIds
+    .map((m) => fullMovies.find((fm) => fm.ids.imdb === m))
+    .filter(Boolean) as DBMovieDetail[];
 
   const { getItemsByPage } = usePagination(orderedMovies);
 
@@ -27,16 +51,16 @@ export const MoviesWatched: React.FC = () => {
         <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
           {getItemsByPage().map((m, i) => (
             <li
-              key={`${m.movie.ids.trakt}_${i}`}
+              key={`${m.ids.imdb}_${i}`}
               className="p-2"
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >
               <ImageLink
-                item={m.movie}
-                ids={m.movie.ids}
-                text={m.movie.title}
+                ids={m.ids}
+                text={m.title}
                 style={{ minHeight: '13.5em' }}
                 type="movie"
+                forceState="watched"
               />
             </li>
           ))}

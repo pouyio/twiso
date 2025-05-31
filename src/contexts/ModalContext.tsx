@@ -1,43 +1,52 @@
 import React, { useState, createContext, ReactNode } from 'react';
 import Modal from '../components/Modal';
 
+type Data =
+  | {
+      title: string;
+      text: string;
+      custom?: never;
+    }
+  | {
+      title?: never;
+      text?: never;
+      custom: React.ReactNode;
+    };
+
 interface IModalContext {
-  toggle: (text?: { title: string; text: string }) => void;
+  toggle: (data?: Data) => void;
   isShowing: boolean;
-  title: string;
-  text: string;
+  title?: string;
+  text?: string;
+  custom?: React.ReactNode;
 }
 
 export const ModalContext = createContext<IModalContext>({
-  toggle: (text?: { title: string; text: string }) => {},
+  toggle: () => {},
   isShowing: false,
-  title: '',
-  text: '',
 });
 
-export const ModalProvider = ({
-  children,
-  modalRef,
-}: {
-  children: ReactNode;
-  modalRef: HTMLDivElement;
-}) => {
+export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [isShowing, setIsShowing] = useState(false);
-  const [title, setTitle] = useState('');
-  const [text, setText] = useState('');
+  const [data, setData] = useState<Data>();
 
-  const toggle = (data?: { title: string; text: string }) => {
-    if (data) {
-      setTitle(data.title);
-      setText(data.text);
-    }
+  const toggle = (data?: Data) => {
+    setData(data);
     setIsShowing(!isShowing);
   };
 
   return (
-    <ModalContext value={{ isShowing, toggle, title, text }}>
+    <ModalContext
+      value={{
+        isShowing,
+        toggle,
+        title: data?.title,
+        text: data?.text,
+        custom: data?.custom,
+      }}
+    >
       {children}
-      {modalRef && <Modal modalRef={modalRef} />}
+      <Modal />
     </ModalContext>
   );
 };

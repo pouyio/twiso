@@ -9,7 +9,6 @@ import { Person as IPerson } from '../models/Person';
 import { placeholders } from '../components/Related';
 import { Empty } from '../components/Empty';
 import { useAppSelector } from 'state/store';
-import { Helmet } from 'react-helmet';
 import { Movie } from '../models/Movie';
 import { Show } from '../models/Show';
 import { useTranslate } from '../hooks/useTranslate';
@@ -31,7 +30,7 @@ const Person: React.FC = () => {
   useEffect(() => {
     setShowResults(undefined);
     setMovieResults(undefined);
-    getPersonApi(+id!).then(({ data }) => setLocalState(data));
+    getPersonApi(id!).then(({ data }) => setLocalState(data));
     getPersonItemsApi<PersonShows>(id!, 'show').then(({ data }) => {
       setShowResults(
         data.cast
@@ -63,9 +62,7 @@ const Person: React.FC = () => {
 
   return localState ? (
     <div className="bg-gray-300">
-      <Helmet>
-        <title>{localState.name}</title>
-      </Helmet>
+      <title>{localState.name}</title>
       <div className="lg:max-w-5xl lg:mx-auto">
         <div
           className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
@@ -74,7 +71,7 @@ const Person: React.FC = () => {
           {localState && (
             <Image
               ids={localState.ids}
-              style={{ paddingTop: 'env(safe-area-inset-top)' }}
+              className="pt-[env(safe-area-inset-top)]"
               text={localState.name}
               type="person"
               size="big"
@@ -146,7 +143,7 @@ const Person: React.FC = () => {
               movieResults.length ? (
                 movieResults.map((r, i) => (
                   <li
-                    key={`${r.movie.ids.trakt}-movie-${i}`}
+                    key={`${r.movie.ids.imdb}-movie-${i}`}
                     className="p-2 h-full"
                     style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >
@@ -154,7 +151,6 @@ const Person: React.FC = () => {
                       <ImageLink
                         ids={r.movie.ids}
                         text={r.movie.title}
-                        item={r.movie}
                         type="movie"
                         style={{ minHeight: '13.5em' }}
                       >
@@ -184,7 +180,7 @@ const Person: React.FC = () => {
               movieDirectorResults.length ? (
                 movieDirectorResults.map((r, i) => (
                   <li
-                    key={`${r.movie.ids.trakt}-movie-${i}`}
+                    key={`${r.movie.ids.imdb}-movie-${i}`}
                     className="p-2 h-full"
                     style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >
@@ -192,7 +188,6 @@ const Person: React.FC = () => {
                       <ImageLink
                         ids={r.movie.ids}
                         text={r.movie.title}
-                        item={r.movie}
                         type="movie"
                         style={{ minHeight: '13.5em' }}
                       >
@@ -222,7 +217,7 @@ const Person: React.FC = () => {
               showResults.length ? (
                 showResults.map((r, i) => (
                   <li
-                    key={`${r.show.ids.trakt}-show-${i}`}
+                    key={`${r.show.ids.imdb}-show-${i}`}
                     className="p-2 h-full"
                     style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >
@@ -230,7 +225,6 @@ const Person: React.FC = () => {
                       <ImageLink
                         ids={r.show.ids}
                         text={r.show.title}
-                        item={r.show}
                         type="show"
                         style={{ minHeight: '13.5em' }}
                       >
@@ -254,10 +248,7 @@ const Person: React.FC = () => {
       </div>
     </div>
   ) : (
-    <div
-      className="flex justify-center text-6xl items-center"
-      style={{ marginTop: 'env(safe-area-inset-top)' }}
-    >
+    <div className="flex justify-center text-6xl items-center pt-5 mt-[env(safe-area-inset-top)]">
       <Emoji emoji="⏳" rotating={true} />
     </div>
   );

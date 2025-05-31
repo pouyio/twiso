@@ -3,7 +3,7 @@ import { reducer as moviesReducer } from './slices/movies';
 import { reducer as showsReducer } from './slices/shows';
 import { reducer as configReducer } from './slices/config';
 import { reducer as rootReducer } from './slices/root';
-import { dbMiddleware } from './middleware';
+import { dbMiddleware } from './dbMiddleware';
 import { useDispatch, useSelector } from 'react-redux';
 
 const reducer = combineReducers({

@@ -1,7 +1,7 @@
 import { AuthContext } from 'contexts/AuthContext';
 import React, { useContext } from 'react';
 import {
-  addWatched,
+  addWatchedMovie,
   addWatchlist,
   removeWatched,
   removeWatchlist,
@@ -25,22 +25,22 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
   const isLoggedIn = !!session;
   const dispatch = useAppDispatch();
   const isWatchlistPending = useAppSelector((state) => {
-    return state.movies.pending.watchlist.includes(item.ids.trakt);
+    return state.movies.pending.watchlist.includes(item.ids.imdb);
   });
   const isWatchedPending = useAppSelector((state) => {
-    return state.movies.pending.watched.includes(item.ids.trakt);
+    return state.movies.pending.watched.includes(item.ids.imdb);
   });
 
   return (
     <div className="flex justify-around my-8">
       {isLoggedIn ? (
         <>
-          {isWatched(item.ids.trakt, 'movie') ? (
+          {isWatched(item.ids.imdb ?? '', 'movie') ? (
             <button
               className={`bg-green-400 py-3 pl-12 rounded-full text-white font-bold ${
                 isWatchedPending ? 'pr-6' : 'pr-12'
               }`}
-              onClick={async () => dispatch(removeWatched({ movie: item }))}
+              onClick={() => dispatch(removeWatched({ movie: item }))}
             >
               ✓ {t('watched')}{' '}
               {isWatchedPending && (
@@ -52,7 +52,7 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
               className={`bg-gray-200 py-3 pl-12 rounded-full text-gray-700 font-light ${
                 isWatchedPending ? 'pr-6' : 'pr-12'
               }`}
-              onClick={() => dispatch(addWatched({ movie: item }))}
+              onClick={() => dispatch(addWatchedMovie({ movie: item }))}
             >
               {t('watched')}{' '}
               {isWatchedPending && (
@@ -60,7 +60,7 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
               )}
             </button>
           )}
-          {isWatchlist(item.ids.trakt, 'movie') ? (
+          {isWatchlist(item.ids.imdb ?? '', 'movie') ? (
             <button
               className={`bg-blue-400 py-3 pl-12 rounded-full text-white font-bold ${
                 isWatchlistPending ? 'pr-6' : 'pr-12'

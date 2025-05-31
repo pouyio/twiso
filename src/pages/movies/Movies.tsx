@@ -1,36 +1,32 @@
 import React from 'react';
-import Helmet from 'react-helmet';
 import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';
-import { useAppSelector } from 'state/store';
-import { totalByType } from 'state/slices/movies';
 import { Underline } from '../shows/Shows';
 import { Icon } from 'components/Icon';
 import { useSearchParams } from 'react-router';
-import { useWindowSize } from '../../hooks/useWindowSize';
 import { useTranslate } from '../../hooks/useTranslate';
+import db, { USER_MOVIES_TABLE } from 'utils/db';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 export default function Movies() {
   const [searchParams, setSearchParams] = useSearchParams({
     mode: 'watchlist',
   });
-  const { width } = useWindowSize();
   const mode = searchParams.get('mode');
 
-  const { watched, watchlist } = useAppSelector(totalByType);
+  const watchlist = useLiveQuery(() =>
+    db[USER_MOVIES_TABLE].where({ status: 'watchlist' }).count()
+  );
+  const watched = useLiveQuery(() =>
+    db[USER_MOVIES_TABLE].where({ status: 'watched' }).count()
+  );
+
   const { t } = useTranslate();
 
   return (
     <>
-      <Helmet>
-        <title>Movies</title>
-      </Helmet>
-      <div
-        className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto"
-        style={{
-          ...(width < 1024 ? { paddingTop: 'env(safe-area-inset-top)' } : {}),
-        }}
-      >
+      <title>Movies</title>
+      <div className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto pt-[env(safe-area-inset-top)]">
         <div className="w-full">
           <button
             className="py-2 w-full flex justify-center"

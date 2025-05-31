@@ -4,9 +4,10 @@ import ImageLink from './ImageLink';
 import { Empty } from './Empty';
 import { Show } from '../models/Show';
 import { Movie } from '../models/Movie';
+import { Ids } from 'models/Ids';
 
 interface IRelatedProps {
-  itemId: number;
+  itemIds: Ids;
   type: 'movie' | 'show';
 }
 
@@ -69,15 +70,18 @@ export const placeholders = [
   ></li>,
 ];
 
-const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
+const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
   const [results, setResults] = useState<(Show | Movie)[]>();
 
   useEffect(() => {
     setResults(undefined);
-    getRelatedApi<Show | Movie>(itemId, type).then(({ data }) => {
+    getRelatedApi<Show | Movie>(
+      type,
+      itemIds.imdb || `${itemIds.trakt}` || `${itemIds.traktslug}`
+    ).then(({ data }) => {
       setResults(data);
     });
-  }, [itemId, type]);
+  }, [itemIds, type]);
 
   return (
     <ul
@@ -93,7 +97,7 @@ const Related: React.FC<IRelatedProps> = ({ itemId, type }) => {
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >
               <ImageLink
-                item={r}
+                // item={r}
                 text={r.title}
                 ids={r.ids}
                 type={type}

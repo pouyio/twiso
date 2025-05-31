@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 import { People as IPeople } from '../models/People';
 import Collapsable from './Collapsable/Collapsable';
 import { Empty } from './Empty';
-import { useWindowSize } from '../hooks/useWindowSize';
 import { useTranslate } from '../hooks/useTranslate';
 
 const placeholders = [
@@ -61,7 +60,6 @@ interface IPeopleProps {
 const People: React.FC<IPeopleProps> = ({ people, type }) => {
   const cast = people?.cast ?? [];
   const crew = people?.crew;
-  const { width } = useWindowSize();
   const { t } = useTranslate();
 
   return (
@@ -83,7 +81,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
                     <li key={i} className="my-1">
                       <Link
                         to={{
-                          pathname: `/person/${crew.person.ids.trakt}`,
+                          pathname: `/person/${crew.person.ids.imdb}`,
                         }}
                       >
                         <div className="bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre">
@@ -108,7 +106,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
         <p className="font-medium font-family-text font-family-text">
           {t('cast')}:
         </p>
-        <Collapsable heightInRem={10} disable={width < 1024}>
+        <Collapsable heightInRem={10} disable={true}>
           <ul
             className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap justify-between"
             style={{ WebkitOverflowScrolling: 'touch' }}
@@ -119,7 +117,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
                   <li key={i} className="my-1">
                     <Link
                       to={{
-                        pathname: `/person/${character.person.ids.trakt}`,
+                        pathname: `/person/${character.person.ids.imdb}`,
                       }}
                     >
                       <div className="bg-gray-200 font-light px-3 py-1 rounded-full mx-1 whitespace-pre flex flex-col text-center">

@@ -69,12 +69,18 @@
 
 html {
   background-color: var(--primary-light);
+  height: 100%;
 }
 
 body,
 .theme-wrapper {
   transition: background-color 0.25s, color 0.25s;
   font-family: Nunito, sans-serif;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
 }
 
 .font-family-text {

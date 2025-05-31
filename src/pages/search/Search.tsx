@@ -1,6 +1,5 @@
 import { SearchFilters, IFilters } from '../../pages/search/SearchFilters';
 import React, { useEffect, useState, useCallback } from 'react';
-import Helmet from 'react-helmet';
 import Emoji from '../../components/Emoji';
 import ImageLink from '../../components/ImageLink';
 import Popular from '../../components/Popular';
@@ -37,9 +36,9 @@ export default function Search() {
       const movies: SearchMovie[] = data.filter((r) => r.type === 'movie');
       const shows: SearchShow[] = data.filter((r) => r.type === 'show');
       const person: SearchPerson[] = data.filter((r) => r.type === 'person');
-      setMovieResults(movies);
-      setShowResults(shows);
-      setPeopleResults(person);
+      setMovieResults(movies.filter((m) => m.movie.ids.imdb));
+      setShowResults(shows.filter((m) => m.show.ids.imdb));
+      setPeopleResults(person.filter((m) => m.person.ids.imdb));
       setLoading(false);
     });
   };
@@ -81,9 +80,7 @@ export default function Search() {
 
   return (
     <div className="m-4" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-      <Helmet>
-        <title>Search</title>
-      </Helmet>
+      <title>Search</title>
       <div className="w-full bg-gray-300 rounded-sm flex items-center my-2 m-auto lg:max-w-lg">
         <input
           className="bg-gray-300 rounded-sm text-black px-2 py-1 outline-hidden grow"
@@ -128,7 +125,6 @@ export default function Search() {
                       <ImageLink
                         ids={r.movie.ids}
                         text={r.movie.title}
-                        item={r.movie}
                         type="movie"
                       />
                     </li>
@@ -161,7 +157,6 @@ export default function Search() {
                       <ImageLink
                         ids={r.show.ids}
                         text={r.show.title}
-                        item={r.show}
                         type="show"
                       />
                     </li>
@@ -194,7 +189,6 @@ export default function Search() {
                       <ImageLink
                         ids={r.person.ids}
                         text={r.person.name}
-                        item={r.person}
                         type="person"
                       />
                     </li>
