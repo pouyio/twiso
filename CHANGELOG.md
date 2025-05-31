@@ -1,3 +1,16 @@
+## [2.12.1](https://github.com/pouyio/twiso/compare/v2.12.0...v2.12.1) (2025-05-31)
+
+
+### :art:
+
+* added animations to image and refresh icon ([82f78bf](https://github.com/pouyio/twiso/commit/82f78bfaedd6e4a71bd9dfb5e369363c40bb0a50))
+* compact buttons ([230ad25](https://github.com/pouyio/twiso/commit/230ad25d7140a419022ccd20a849b4b53ca565d1))
+* fixed season selector scroll ([b316b7b](https://github.com/pouyio/twiso/commit/b316b7bfed85eca4a4e93c2c2ab3e4efe6f3cd9f))
+
+### :rocket:
+
+* load smallest res images for previews ([7a2d7a7](https://github.com/pouyio/twiso/commit/7a2d7a773ad10b4ed3ce12875c857c1c5991eebb))
+
 # [2.12.0](https://github.com/pouyio/twiso/compare/v2.11.1...v2.12.0) (2025-05-31)
 
 
