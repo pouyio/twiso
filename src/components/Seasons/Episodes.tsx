@@ -100,8 +100,6 @@ const Episodes: React.FC<ISeasonsProps> = ({
     watched.length && watched.some((w) => episodesIds.includes(w))
   );
 
-  console.log(pendingSeason);
-
   return (
     <>
       <ul className="my-4">

@@ -11,13 +11,11 @@ interface ISeasonsProps {
   setSelectedSeason: (season?: number) => void;
 }
 
-const Underline: React.FC<{ visible: boolean }> = ({ visible }) => {
+const Underline: React.FC = () => {
   return (
     <motion.div
       layoutId="underline-season"
-      className={`bg-gray-200 mt-2 ${
-        visible ? '' : 'invisible'
-      } bottom-[calc(env(safe-area-inset-bottom)_+_4px)] h-[2px]`}
+      className={`bg-gray-200 mt-2 h-[2px]`}
       initial={false}
     />
   );
@@ -100,7 +98,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
             ) : (
               ''
             )}
-            <Underline visible={s.ids.trakt === selectedSeason?.ids.trakt} />
+            {s.ids.trakt === selectedSeason?.ids.trakt && <Underline />}
           </li>
         );
       })}
