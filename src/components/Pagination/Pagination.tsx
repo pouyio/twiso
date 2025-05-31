@@ -23,8 +23,8 @@ const Pagination: React.FC<IPaginationProps> = ({
   last,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedGenres =
-    searchParams.get('genres')?.split(',').filter(Boolean) ?? [];
+  const genres = searchParams.get('genres');
+  const selectedGenres = genres?.split(',').filter(Boolean) ?? [];
   const showFilters = searchParams.has('genres');
 
   const toggleGenre = (genre: string) => {
@@ -32,15 +32,15 @@ const Pagination: React.FC<IPaginationProps> = ({
       ? selectedGenres.filter((selectedGenres) => selectedGenres !== genre)
       : [...selectedGenres, genre];
     searchParams.set('genres', newGenres.join(','));
+    searchParams.set('page', '1');
     setSearchParams(searchParams);
   };
 
   useEffect(() => {
     if (onFilter && selectedGenres) {
-      setFirst();
       onFilter(selectedGenres);
     }
-  }, [searchParams.get('genres')]);
+  }, [genres]);
 
   const setToggleFilters = () => {
     if (showFilters) {
