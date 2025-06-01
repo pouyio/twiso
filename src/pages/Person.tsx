@@ -70,10 +70,7 @@ const Person: React.FC = () => {
     <div className="bg-gray-300">
       <title>{localState.name}</title>
       <div className="lg:max-w-5xl lg:mx-auto">
-        <div
-          className="p-10 pt-5 sticky top-0 z-0 lg:hidden"
-          style={{ minHeight: '15em' }}
-        >
+        <div className="p-10 pt-5 sticky top-0 z-0 lg:hidden min-h-131">
           {localState && (
             <Image
               ids={localState.ids}

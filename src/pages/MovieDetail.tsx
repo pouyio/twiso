@@ -92,8 +92,7 @@ export default function MovieDetail() {
   };
 
   useEffect(() => {
-    console.log(contentRef);
-    contentRef?.current?.scrollTo({ top: 0 });
+    contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, [id]);
 
   const onRefresh = () => {
@@ -118,8 +117,7 @@ export default function MovieDetail() {
           onClick={() => setZoom((z) => !z)}
           className={`${
             zoom ? 'pb-10 z-10' : 'p-10 pt-5'
-          }  sticky top-0 z-0 lg:hidden transition-[padding]`}
-          style={{ minHeight: '15em' }}
+          }  sticky top-0 z-0 lg:hidden transition-[padding] min-h-131`}
         >
           <Image
             ids={item?.ids}
