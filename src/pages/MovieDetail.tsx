@@ -117,8 +117,8 @@ export default function MovieDetail() {
         >
           <Image
             ids={item?.ids}
-            className={`mt-[env(safe-area-inset-top)] min-h-116 ${
-              !item && 'border-2 animate-pulse'
+            className={`mt-[env(safe-area-inset-top)] ${
+              !item && 'min-h-116 border-2 animate-pulse'
             }`}
             text={title}
             type="movie"
