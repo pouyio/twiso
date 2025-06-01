@@ -23,7 +23,6 @@ export const usePagination = <T,>(items: T[]) => {
 
     searchParams.set('page', `${currentPage + direction}`);
     setSearchParams(searchParams);
-    window.scrollTo(0, 0);
   };
 
   const setSafePage = (page: 'first' | 'last') => {

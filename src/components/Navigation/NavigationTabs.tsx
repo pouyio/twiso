@@ -30,7 +30,6 @@ export const NavigationTabs: React.FC<{
             <NavLink
               to={`${ROUTES.movies}?mode=watchlist&page=1`}
               className="flex items-center"
-              onClick={() => window.scrollTo(0, 0)}
             >
               <Icon name="movie" className="h-8" />
               <span className="ml-2 text-base hidden lg:inline">
@@ -43,7 +42,6 @@ export const NavigationTabs: React.FC<{
             <NavLink
               to={`${ROUTES.shows}?mode=watched&page=1`}
               className="flex items-center"
-              onClick={() => window.scrollTo(0, 0)}
             >
               <Icon name="tv" className="h-8" />
               <span className="ml-2 text-base hidden lg:inline">
