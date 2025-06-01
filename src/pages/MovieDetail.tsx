@@ -3,7 +3,6 @@ import { useParams } from 'react-router';
 import { fillDetail } from 'state/slices/movies/thunks';
 import { useAppDispatch, useAppSelector } from 'state/store';
 import Collapsable from '../components/Collapsable/Collapsable';
-import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
 import Image from '../components/Image';
 import People from '../components/People';
@@ -19,6 +18,7 @@ import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
 import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useImage } from 'hooks/useImage';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -41,16 +41,15 @@ export default function MovieDetail() {
     });
   }, [id]);
 
-  const liveItem = useLiveQuery(
+  const item = useLiveQuery(
     () =>
       // @ts-expect-error limitations on Dexie EntityTable
       db[DETAIL_MOVIES_TABLE].get(id),
     [id]
   );
+  const { refresh } = useImage('movie', 'big', true, item?.ids.tmdb);
 
   const liveStatus = useLiveQuery(() => db[USER_MOVIES_TABLE].get(id), [id]);
-
-  const item = liveItem;
 
   useEffect(() => {
     setPeople(undefined);
@@ -73,20 +72,14 @@ export default function MovieDetail() {
     return 'bg-gray-300';
   }, [liveStatus]);
 
-  if (!item) {
-    return (
-      <div className="flex justify-center text-6xl items-center pt-5 mt-[env(safe-area-inset-top)]">
-        <Emoji emoji="⏳" rotating={true} />
-      </div>
-    );
-  }
-
   const title =
-    language === 'es' ? item.translation?.title || item.title : item.title;
+    (language === 'es'
+      ? item?.translation?.title || item?.title
+      : item?.title) || '';
   const overview =
-    language === 'es'
-      ? item.translation?.overview || item.overview
-      : item.overview;
+    (language === 'es'
+      ? item?.translation?.overview || item?.overview
+      : item?.overview) || '';
 
   const onShare = () => {
     share(title).then((action) => {
@@ -98,6 +91,7 @@ export default function MovieDetail() {
 
   const onRefresh = () => {
     dispatch(fillDetail({ id }));
+    refresh();
 
     const icon = refreshIconRef.current;
     if (!icon) return;
@@ -121,15 +115,17 @@ export default function MovieDetail() {
           style={{ minHeight: '15em' }}
         >
           <Image
-            ids={item.ids}
-            className="mt-[env(safe-area-inset-top)]"
+            ids={item?.ids}
+            className={`mt-[env(safe-area-inset-top)] ${
+              !item && 'min-h-116 border-2 animate-pulse'
+            }`}
             text={title}
             type="movie"
             size="big"
           />
           {!zoom && (
             <>
-              {item.trailer && (
+              {item?.trailer && (
                 <a
                   onClick={(e) => e.stopPropagation()}
                   className="absolute"
@@ -165,8 +161,8 @@ export default function MovieDetail() {
               className="hidden lg:block relative pr-4"
               style={{ minWidth: '10em', maxWidth: '10em' }}
             >
-              <Image ids={item.ids} text={title} type="movie" size="small" />
-              {item.trailer && (
+              <Image ids={item?.ids} text={title} type="movie" size="small" />
+              {item?.trailer && (
                 <a
                   className="absolute"
                   style={{ right: '15%', bottom: '5%' }}
@@ -191,7 +187,11 @@ export default function MovieDetail() {
             </div>
 
             <div className="w-full">
-              <h1 className="text-4xl leading-none text-center">
+              <h1
+                className={`text-4xl leading-none text-center ${
+                  !item && 'animate-pulse rounded-full bg-gray-200'
+                }`}
+              >
                 {title}{' '}
                 <button
                   title={t('refresh')}
@@ -201,14 +201,18 @@ export default function MovieDetail() {
                   <Icon ref={refreshIconRef} name="refresh" className="h-6" />
                 </button>
               </h1>
-              <h1 className="text-xl text-center mb-4 text-gray-300">
-                {item.released
+              <h1
+                className={`text-xl text-center mb-4 text-gray-300 ${
+                  !item && 'animate-pulse bg-gray-200 h-6 rounded-full mt-1'
+                }`}
+              >
+                {item?.released
                   ? new Date(item.released).toLocaleDateString(language, {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
                     })
-                  : item.status}
+                  : item?.status}
               </h1>
               <div className="flex mb-4 justify-between items-center text-gray-600">
                 <h2>
@@ -217,19 +221,40 @@ export default function MovieDetail() {
                     votes={ratings?.votes ?? 0}
                   />
                 </h2>
-                <h2>{item.runtime || '?'} mins</h2>
+                <h2>{item?.runtime || '?'} mins</h2>
               </div>
-              <WatchButton item={item} />
+              {item ? (
+                <WatchButton item={item} />
+              ) : (
+                <div
+                  className={`${
+                    !item && 'animate-pulse bg-gray-200 rounded-full h-12 mx-12'
+                  }`}
+                ></div>
+              )}
             </div>
           </div>
           <div className="my-4">
             <p className="font-medium font-family-text">{t('overview')}:</p>
-            <Collapsable heightInRem={7}>{overview}</Collapsable>
+            {item ? (
+              <Collapsable heightInRem={7}>{overview}</Collapsable>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <div className="animate-pulse h-3 rounded bg-gray-200"></div>
+                <div className="animate-pulse h-3 rounded bg-gray-200"></div>
+                <div className="animate-pulse h-3 rounded bg-gray-200"></div>
+                <div className="animate-pulse h-3 rounded bg-gray-200"></div>
+                <div className="animate-pulse h-3 rounded bg-gray-200"></div>
+                <div className="animate-pulse h-3 rounded bg-gray-200"></div>
+                <div className="animate-pulse h-3 rounded bg-gray-200"></div>
+                <div className="animate-pulse h-3 rounded bg-gray-200"></div>
+              </div>
+            )}
           </div>
 
           <div className="my-4">
             <p className="font-medium font-family-text">{t('genres')}:</p>
-            <Genres genres={item.genres} />
+            <Genres genres={item?.genres} />
           </div>
 
           <People people={people} type="movie" />
@@ -240,24 +265,24 @@ export default function MovieDetail() {
             <div className="my-3">
               <span
                 className={`mr-5 ${
-                  item.during_credits ? '' : 'opacity-50 line-through'
+                  item?.during_credits ? '' : 'opacity-50 line-through'
                 } bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre`}
               >
-                {t('during-credits')} {item.during_credits && '✓'}
+                {t('during-credits')} {item?.during_credits && '✓'}
               </span>
               <span
                 className={`mt-2 ${
-                  item.after_credits ? '' : 'opacity-50 line-through'
+                  item?.after_credits ? '' : 'opacity-50 line-through'
                 } bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre`}
               >
-                {t('post-credits')} {item.after_credits && '✓'}
+                {t('post-credits')} {item?.after_credits && '✓'}
               </span>
             </div>
           </div>
 
           <div className="my-4">
             <p className="font-medium font-family-text">{t('related')}:</p>
-            <Related itemIds={item.ids} type="movie" />
+            {item && <Related itemIds={item.ids} type="movie" />}
           </div>
         </article>
       </div>

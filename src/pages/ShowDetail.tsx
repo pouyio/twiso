@@ -20,6 +20,7 @@ import { useTranslate } from '../hooks/useTranslate';
 import { Ratings } from '../models/Api';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from 'utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useImage } from 'hooks/useImage';
 
 export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -43,7 +44,7 @@ export default function ShowDetail() {
     });
   }, [id]);
 
-  const liveItem = useLiveQuery(
+  const item = useLiveQuery(
     () =>
       // @ts-expect-error limitations on Dexie EntityTable
       db[DETAIL_SHOWS_TABLE].get(id),
@@ -51,13 +52,7 @@ export default function ShowDetail() {
   );
 
   const liveStatus = useLiveQuery(() => db[USER_SHOWS_TABLE].get(id), [id]);
-
-  const item = liveItem;
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  const { refresh } = useImage('show', 'big', true, item?.ids.tmdb);
 
   useEffect(() => {
     setPeople(undefined);
@@ -102,26 +97,17 @@ export default function ShowDetail() {
     }
   };
 
-  if (!item) {
-    return (
-      <div
-        className="flex justify-center text-6xl items-center pt-5"
-        style={{ marginTop: 'env(safe-area-inset-top)' }}
-      >
-        <Emoji emoji="⏳" rotating={true} />
-      </div>
-    );
-  }
-
   const title =
-    language === 'es' ? item.translation?.title || item.title : item.title;
+    (language === 'es'
+      ? item?.translation?.title || item?.title
+      : item?.title) || '';
   const overview =
-    language === 'es'
-      ? item.translation?.overview || item.overview
-      : item.overview;
+    (language === 'es'
+      ? item?.translation?.overview || item?.overview
+      : item?.overview) || '';
 
   const totalEpisodes =
-    item.all_seasons.reduce((acc, season) => {
+    item?.all_seasons.reduce((acc, season) => {
       if (season.number > 0) {
         acc += season.episodes.length;
       }
@@ -130,6 +116,7 @@ export default function ShowDetail() {
 
   const onRefresh = () => {
     dispatch(fillDetail({ id }));
+    refresh();
 
     const icon = refreshIconRef.current;
     if (!icon) return;
@@ -153,17 +140,19 @@ export default function ShowDetail() {
           style={{ minHeight: '15em' }}
         >
           <Image
-            ids={item.ids}
-            className="mt-[env(safe-area-inset-top)]"
+            ids={item?.ids}
+            className={`mt-[env(safe-area-inset-top)] ${
+              !item && 'min-h-116 border-2 animate-pulse'
+            }`}
             text={title}
             type="show"
             size="big"
           />
-          {item.trailer && (
+          {item?.trailer && (
             <a
               className="absolute"
               style={{ right: '4em', bottom: '4em' }}
-              href={item.trailer}
+              href={item?.trailer}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -185,8 +174,8 @@ export default function ShowDetail() {
               className="hidden lg:block relative pr-4"
               style={{ minWidth: '10em', maxWidth: '10em' }}
             >
-              <Image ids={item.ids} text={title} type="show" size="small" />
-              {item.trailer && (
+              <Image ids={item?.ids} text={title} type="show" size="small" />
+              {item?.trailer && (
                 <a
                   className="absolute"
                   style={{ right: '15%', bottom: '5%' }}
@@ -211,7 +200,11 @@ export default function ShowDetail() {
             </div>
 
             <div className="w-full max-w-3xl">
-              <h1 className="text-4xl leading-none text-center mb-4">
+              <h1
+                className={`text-4xl leading-none text-center ${
+                  !item && 'animate-pulse rounded-full bg-gray-200 mb-4'
+                }`}
+              >
                 {title}
                 <button
                   title={t('refresh')}
@@ -223,8 +216,12 @@ export default function ShowDetail() {
               </h1>
 
               <div className="flex mb-4 justify-between items-center text-gray-600">
-                <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-100 capitalize">
-                  {t(item.status)}
+                <h2
+                  className={`mx-1 rounded-full text-sm px-3 py-2 bg-gray-100 capitalize ${
+                    !item && 'h-9 w-18'
+                  }`}
+                >
+                  {t(item?.status ?? '')}
                 </h2>
                 {liveStatus?.status === 'watched' && (
                   <button onClick={onToggleHidden}>
@@ -235,7 +232,7 @@ export default function ShowDetail() {
                     />
                   </button>
                 )}
-                <h2>{item.runtime || '?'} mins</h2>
+                <h2>{item?.runtime || '?'} mins</h2>
               </div>
               <div className="flex mb-4 justify-between items-center text-gray-600">
                 <h2>
@@ -260,29 +257,37 @@ export default function ShowDetail() {
                           'episodes_small'
                         )}`}
                     <div className="bg-green-100 rounded-sm">
-                      <div
-                        className="bg-green-400 h-1 rounded-sm text-white text-xs"
-                        style={{
-                          width: `${
-                            ((liveStatus?.episodes.length ?? 0) * 100) /
-                            totalEpisodes
-                          }%`,
-                        }}
-                      ></div>
+                      {item && (
+                        <div
+                          className="bg-green-400 h-1 rounded-sm text-white text-xs"
+                          style={{
+                            width: `${
+                              ((liveStatus?.episodes.length ?? 1) * 100) /
+                              totalEpisodes
+                            }%`,
+                          }}
+                        ></div>
+                      )}
                     </div>
                   </h2>
                 )}
 
-                <h2>{item.network}</h2>
+                <h2>{item?.network}</h2>
               </div>
 
               {liveStatus?.status !== 'watched' && (
                 <div className="my-4">
-                  <ShowWatchButton item={item} />
+                  {item && <ShowWatchButton item={item} />}
                 </div>
               )}
               <div className="my-4">
-                <SeasonsContainer show={item} status={liveStatus} showId={id} />
+                {item && (
+                  <SeasonsContainer
+                    show={item}
+                    status={liveStatus}
+                    showId={id}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -296,7 +301,7 @@ export default function ShowDetail() {
 
           <div className="my-4">
             <p className="font-medium font-family-text">{t('genres')}:</p>
-            <Genres genres={item.genres} />
+            <Genres genres={item?.genres} />
           </div>
 
           <div className="my-4">
@@ -305,7 +310,7 @@ export default function ShowDetail() {
 
           <div className="my-4">
             <p className="font-medium font-family-text">{t('related')}:</p>
-            <Related itemIds={item.ids} type="show" />
+            {item && <Related itemIds={item.ids} type="show" />}
           </div>
         </article>
       </div>

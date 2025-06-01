@@ -1,14 +1,14 @@
 import { getImgsApi } from '../utils/api';
 import { getFromCache, saveToCache } from '../utils/cache';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { findFirstValid } from 'utils/findFirstValidImage';
 import { useAppSelector } from 'state/store';
 
 export const useImage = (
-  id: number,
   type: 'show' | 'movie' | 'person',
   size: 'small' | 'big',
-  inview: boolean
+  inview: boolean,
+  id?: number
 ) => {
   const [imgUrl, setImgUrl] = useState('');
   const [imgPreview, setImgPreview] = useState('');
@@ -21,7 +21,7 @@ export const useImage = (
     };
   });
 
-  useEffect(() => {
+  const load = () => {
     setImgPreview('');
     setImgUrl('');
     if (!config) {
@@ -71,7 +71,17 @@ export const useImage = (
       .catch(() => {
         setMessage(`Not found in TMDB`);
       });
+  };
+
+  useEffect(() => {
+    load();
   }, [config, inview, language, id, type, size]);
 
-  return { imgUrl, imgPreview, message };
+  const refresh = () => {
+    localStorage.removeItem(`${id}-${type}-es`);
+    localStorage.removeItem(`${id}-${type}-en`);
+    load();
+  };
+
+  return { imgUrl, imgPreview, message, refresh };
 };

@@ -9,7 +9,7 @@ import db, { USER_MOVIES_TABLE, USER_SHOWS_TABLE } from 'utils/db';
 import { AuthContext } from 'contexts/AuthContext';
 
 interface IImageProps {
-  ids: Ids;
+  ids?: Ids;
   text: string;
   type: 'movie' | 'show' | 'person';
   className?: string;
@@ -34,14 +34,14 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
   const [ref, inView] = useInView({ unobserveOnEnter: true });
 
   const { imgUrl, imgPreview, message } = useImage(
-    ids.tmdb,
     type,
     size,
-    inView
+    inView,
+    ids?.tmdb
   );
 
   const liveItem = useLiveQuery(() => {
-    if (!ids.imdb || !['movie', 'show'].includes(type) || forceState) {
+    if (!ids?.imdb || !['movie', 'show'].includes(type) || forceState) {
       return null;
     }
     const table = type === 'movie' ? USER_MOVIES_TABLE : USER_SHOWS_TABLE;
@@ -72,39 +72,41 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
       {...props}
       className={
         className +
-        ' min-h-53 h-full bg-gray-300 flex justify-center items-center rounded-lg overflow-hidden ' +
+        ' h-full bg-gray-300 flex justify-center items-center rounded-lg overflow-hidden ' +
         borderClass
       }
     >
-      <Img
-        src={imgUrl}
-        className="m-auto md:max-w-md h-full rounded-lg"
-        alt={text}
-        unloader={
-          <h1 className="justify-center items-center p-2 text-center">
-            {text}
-            <br />
-            {message}
-          </h1>
-        }
-        loader={
-          <Img
-            className="m-auto md:max-w-md h-full rounded-lg"
-            style={{ filter: 'blur(5px)' }}
-            src={imgPreview}
-            alt={text}
-            loader={
-              <h1 className="justify-center items-center p-2 text-center">
-                {text}
-                <br />
-                {message || (
-                  <Emoji className="ml-3" emoji="⏳" rotating={true} />
-                )}
-              </h1>
-            }
-          />
-        }
-      />
+      {(imgUrl || imgPreview) && (
+        <Img
+          src={imgUrl}
+          className="m-auto md:max-w-md h-full rounded-lg"
+          alt={text}
+          unloader={
+            <h1 className="justify-center items-center p-2 text-center">
+              {text}
+              <br />
+              {message}
+            </h1>
+          }
+          loader={
+            <Img
+              className="m-auto md:max-w-md h-full rounded-lg"
+              style={{ filter: 'blur(5px)' }}
+              src={imgPreview}
+              alt={text}
+              loader={
+                <h1 className="justify-center items-center p-2 text-center">
+                  {text}
+                  <br />
+                  {message || (
+                    <Emoji className="ml-3" emoji="⏳" rotating={true} />
+                  )}
+                </h1>
+              }
+            />
+          }
+        />
+      )}
     </div>
   );
 };
