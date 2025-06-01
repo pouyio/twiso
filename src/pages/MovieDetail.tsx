@@ -20,6 +20,7 @@ import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useImage } from 'hooks/useImage';
 import { ThemeContext } from 'contexts/ThemeContext';
+import Emoji from 'components/Emoji';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -104,6 +105,14 @@ export default function MovieDetail() {
       icon.classList.remove('animate-spin');
     }, 1000);
   };
+
+  if (!item) {
+    return (
+      <div className="flex justify-center text-6xl items-center pt-5 mt-[env(safe-area-inset-top)]">
+        <Emoji emoji="⏳" rotating={true} />
+      </div>
+    );
+  }
 
   return (
     <div className={bgClassName}>
