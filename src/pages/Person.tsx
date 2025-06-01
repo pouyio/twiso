@@ -30,6 +30,8 @@ const Person: React.FC = () => {
   const { t } = useTranslate();
 
   useEffect(() => {
+    contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+
     setShowResults(undefined);
     setMovieResults(undefined);
     getPersonApi(id!).then(({ data }) => setLocalState(data));
@@ -61,10 +63,6 @@ const Person: React.FC = () => {
       ]);
     });
   }, [id, language]);
-
-  useEffect(() => {
-    contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [id]);
 
   return localState ? (
     <div className="bg-gray-300">

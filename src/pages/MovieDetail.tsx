@@ -34,15 +34,6 @@ export default function MovieDetail() {
   const [zoom, setZoom] = useState(false);
   const refreshIconRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // @ts-expect-error limitations on Dexie EntityTable
-    db[DETAIL_MOVIES_TABLE].get(id).then((movie) => {
-      if (!movie) {
-        dispatch(fillDetail({ id }));
-      }
-    });
-  }, [id]);
-
   const item = useLiveQuery(
     () =>
       // @ts-expect-error limitations on Dexie EntityTable
@@ -54,6 +45,15 @@ export default function MovieDetail() {
   const liveStatus = useLiveQuery(() => db[USER_MOVIES_TABLE].get(id), [id]);
 
   useEffect(() => {
+    // @ts-expect-error limitations on Dexie EntityTable
+    db[DETAIL_MOVIES_TABLE].get(id).then((movie) => {
+      if (!movie) {
+        dispatch(fillDetail({ id }));
+      }
+    });
+
+    contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+
     setPeople(undefined);
     setRatings(undefined);
     getPeopleApi(id ?? '', 'movie').then(({ data }) => {
@@ -90,10 +90,6 @@ export default function MovieDetail() {
       }
     });
   };
-
-  useEffect(() => {
-    contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [id]);
 
   const onRefresh = () => {
     dispatch(fillDetail({ id }));

@@ -37,15 +37,6 @@ export default function ShowDetail() {
   const refreshIconRef = useRef<HTMLDivElement>(null);
   const { contentRef } = useContext(ThemeContext);
 
-  useEffect(() => {
-    // @ts-expect-error limitations on Dexie EntityTable
-    db[DETAIL_SHOWS_TABLE].get(id).then((show) => {
-      if (!show) {
-        dispatch(fillDetail({ id }));
-      }
-    });
-  }, [id]);
-
   const item = useLiveQuery(
     () =>
       // @ts-expect-error limitations on Dexie EntityTable
@@ -57,6 +48,15 @@ export default function ShowDetail() {
   const { refresh } = useImage('show', 'big', true, item?.ids.tmdb);
 
   useEffect(() => {
+    // @ts-expect-error limitations on Dexie EntityTable
+    db[DETAIL_SHOWS_TABLE].get(id).then((show) => {
+      if (!show) {
+        dispatch(fillDetail({ id }));
+      }
+    });
+
+    contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+
     setPeople(undefined);
     setRatings(undefined);
     getPeopleApi(id, 'show').then(({ data }) => {
@@ -65,10 +65,6 @@ export default function ShowDetail() {
     getRatingsApi(id, 'show').then(({ data }) => {
       setRatings(data);
     });
-  }, [id]);
-
-  useEffect(() => {
-    contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, [id]);
 
   const bgClassName = useMemo(() => {
