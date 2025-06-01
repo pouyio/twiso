@@ -68,6 +68,7 @@ export default function ShowDetail() {
   }, [id]);
 
   useEffect(() => {
+    console.log(contentRef);
     contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, [id]);
 
