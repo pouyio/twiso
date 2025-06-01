@@ -52,7 +52,7 @@ export default function MovieDetail() {
       }
     });
 
-    // contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+    contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
 
     setPeople(undefined);
     setRatings(undefined);
