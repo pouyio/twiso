@@ -20,7 +20,6 @@ import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useImage } from 'hooks/useImage';
 import { ThemeContext } from 'contexts/ThemeContext';
-import Emoji from 'components/Emoji';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -106,14 +105,6 @@ export default function MovieDetail() {
     }, 1000);
   };
 
-  if (!item) {
-    return (
-      <div className="flex justify-center text-6xl items-center pt-5 mt-[env(safe-area-inset-top)]">
-        <Emoji emoji="⏳" rotating={true} />
-      </div>
-    );
-  }
-
   return (
     <div className={bgClassName}>
       <title>{title}</title>
@@ -126,8 +117,8 @@ export default function MovieDetail() {
         >
           <Image
             ids={item?.ids}
-            className={`mt-[env(safe-area-inset-top)] ${
-              !item && 'min-h-116 border-2 animate-pulse'
+            className={`mt-[env(safe-area-inset-top)] min-h-116 ${
+              !item && 'border-2 animate-pulse'
             }`}
             text={title}
             type="movie"
