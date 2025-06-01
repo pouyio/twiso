@@ -1,4 +1,5 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect, useRef } from 'react';
+import { matchPath, useLocation, useParams } from 'react-router';
 
 const Root: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -25,8 +26,16 @@ const Navbar: React.FC<PropsWithChildren> = ({ children }) => {
 const Content: React.FC<
   PropsWithChildren<{ ref: React.Ref<HTMLDivElement> }>
 > = ({ children, ref }) => {
+  const localRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+  const id = matchPath('/:section/:id', location.pathname)?.params.id;
+
+  useEffect(() => {
+    localRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [id]);
+
   return (
-    <div ref={ref} id="content" className="overflow-x-hidden">
+    <div ref={localRef} id="content" className="overflow-x-hidden">
       {children}
     </div>
   );
