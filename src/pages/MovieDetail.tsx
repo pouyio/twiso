@@ -93,7 +93,7 @@ export default function MovieDetail() {
 
   useEffect(() => {
     console.log(contentRef);
-    contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+    contentRef?.current?.scrollTo({ top: 0 });
   }, [id]);
 
   const onRefresh = () => {
