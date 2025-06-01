@@ -21,6 +21,7 @@ import { Ratings } from '../models/Api';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from 'utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useImage } from 'hooks/useImage';
+import { ThemeContext } from 'contexts/ThemeContext';
 
 export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -34,6 +35,7 @@ export default function ShowDetail() {
   const { t } = useTranslate();
   const [zoom, setZoom] = useState(false);
   const refreshIconRef = useRef<HTMLDivElement>(null);
+  const { contentRef } = useContext(ThemeContext);
 
   useEffect(() => {
     // @ts-expect-error limitations on Dexie EntityTable
@@ -63,6 +65,10 @@ export default function ShowDetail() {
     getRatingsApi(id, 'show').then(({ data }) => {
       setRatings(data);
     });
+  }, [id]);
+
+  useEffect(() => {
+    contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, [id]);
 
   const bgClassName = useMemo(() => {

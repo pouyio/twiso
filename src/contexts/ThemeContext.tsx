@@ -1,10 +1,17 @@
-import React, { createContext, useState, ReactNode, useEffect } from 'react';
+import React, {
+  createContext,
+  useState,
+  ReactNode,
+  useEffect,
+  useRef,
+} from 'react';
 
 export type ThemeType = 'theme-light' | 'theme-dark';
 
 interface ThemeContextProps {
   theme: ThemeType;
   setTheme: (theme?: ThemeType) => void;
+  contentRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export const ThemeContext = createContext<Partial<ThemeContextProps>>({});
@@ -25,6 +32,7 @@ export const ThemeProvider: React.FC<
   const [localTheme, setLocalTheme] = useState<ThemeType | undefined>(
     localStorage.getItem('theme') as ThemeType
   );
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const setTheme = (newTheme?: ThemeType) => {
     if (newTheme) {
@@ -47,7 +55,7 @@ export const ThemeProvider: React.FC<
   }, [localTheme]);
 
   return (
-    <ThemeContext value={{ theme: localTheme, setTheme }}>
+    <ThemeContext value={{ theme: localTheme, setTheme, contentRef }}>
       <div className="theme-wrapper text-black bg-white" {...styles()}>
         {children}
       </div>

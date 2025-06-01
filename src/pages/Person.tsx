@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Image from '../components/Image';
 import ImageLink from '../components/ImageLink';
 import Collapsable from '../components/Collapsable/Collapsable';
@@ -13,6 +13,7 @@ import { Movie } from '../models/Movie';
 import { Show } from '../models/Show';
 import { useTranslate } from '../hooks/useTranslate';
 import { PersonMovies, PersonShows } from '../models/People';
+import { ThemeContext } from 'contexts/ThemeContext';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
@@ -23,6 +24,7 @@ const Person: React.FC = () => {
   const [showResults, setShowResults] =
     useState<{ show: Show; title: string }[]>();
   const language = useAppSelector((state) => state.config.language);
+  const { contentRef } = useContext(ThemeContext);
 
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslate();
@@ -59,6 +61,10 @@ const Person: React.FC = () => {
       ]);
     });
   }, [id, language]);
+
+  useEffect(() => {
+    contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [id]);
 
   return localState ? (
     <div className="bg-gray-300">

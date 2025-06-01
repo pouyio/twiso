@@ -22,9 +22,11 @@ const Navbar: React.FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-const Content: React.FC<PropsWithChildren> = ({ children }) => {
+const Content: React.FC<
+  PropsWithChildren<{ ref: React.Ref<HTMLDivElement> }>
+> = ({ children, ref }) => {
   return (
-    <div id="content" className="overflow-x-hidden">
+    <div ref={ref} id="content" className="overflow-x-hidden">
       {children}
     </div>
   );

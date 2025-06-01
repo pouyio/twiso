@@ -14,6 +14,7 @@ import { AuthContext } from './contexts/AuthContext';
 import { VerifyMagicLink } from 'pages/VerifyMagicLink';
 import { Layout } from 'components/Layout';
 import { firstLoadThunk } from 'state/slices/root';
+import { ThemeContext } from 'contexts/ThemeContext';
 const Movies = lazy(() => import('./pages/movies/Movies'));
 const Profile = lazy(() => import('./pages/Profile'));
 const MovieDetail = lazy(() => import('./pages/MovieDetail'));
@@ -32,6 +33,7 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
   const globalSearch = useAppSelector((state) => state.root.globalSearch);
 
   const { session } = useContext(AuthContext);
+  const { contentRef } = useContext(ThemeContext);
   const isLoggedIn = !!session;
   const dispatch = useAppDispatch();
 
@@ -54,7 +56,7 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
             <NavigationTabs logged={isLoggedIn} />
           </div>
         </Layout.Navbar>
-        <Layout.Content>
+        <Layout.Content ref={contentRef!}>
           <Suspense
             fallback={
               <div className="flex justify-center text-6xl items-center pt-5 mt-[env(safe-area-inset-top)]">

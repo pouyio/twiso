@@ -19,6 +19,7 @@ import { useTranslate } from '../hooks/useTranslate';
 import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useImage } from 'hooks/useImage';
+import { ThemeContext } from 'contexts/ThemeContext';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -26,6 +27,7 @@ export default function MovieDetail() {
   const language = useAppSelector((state) => state.config.language);
   const { id = '' } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
+  const { contentRef } = useContext(ThemeContext);
   const { share } = useShare();
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
@@ -88,6 +90,10 @@ export default function MovieDetail() {
       }
     });
   };
+
+  useEffect(() => {
+    contentRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [id]);
 
   const onRefresh = () => {
     dispatch(fillDetail({ id }));
