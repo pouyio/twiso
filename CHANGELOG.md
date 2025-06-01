@@ -1,3 +1,10 @@
+## [2.12.3](https://github.com/pouyio/twiso/compare/v2.12.2...v2.12.3) (2025-06-01)
+
+
+### :rocket:
+
+* improve types ([fd4eb83](https://github.com/pouyio/twiso/commit/fd4eb83ccb2779638fb6eee3973e891dde497d70))
+
 ## [2.12.2](https://github.com/pouyio/twiso/compare/v2.12.1...v2.12.2) (2025-05-31)
 
 
