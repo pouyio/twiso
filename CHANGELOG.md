@@ -1,3 +1,10 @@
+## [2.12.4](https://github.com/pouyio/twiso/compare/v2.12.3...v2.12.4) (2025-06-02)
+
+
+### :art:
+
+* removed window.scroll and refresh images too ([af2a701](https://github.com/pouyio/twiso/commit/af2a701625ada7f720ec5f31caf5ef4846e43ad7))
+
 ## [2.12.3](https://github.com/pouyio/twiso/compare/v2.12.2...v2.12.3) (2025-06-01)
 
 
