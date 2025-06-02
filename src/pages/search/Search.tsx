@@ -110,18 +110,13 @@ export default function Search() {
                   {t('movies')}
                 </h1>
                 <ul
-                  className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto"
+                  className="-mx-2 flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
                   style={{
                     WebkitOverflowScrolling: 'touch',
-                    maxHeight: '30em',
                   }}
                 >
                   {movieResults.map((r) => (
-                    <li
-                      key={r.movie.ids.slug}
-                      className="p-2"
-                      style={{ height: '13.5em', width: '9.5em' }}
-                    >
+                    <li key={r.movie.ids.slug} className="w-35">
                       <ImageLink
                         ids={r.movie.ids}
                         text={r.movie.title}
@@ -142,18 +137,13 @@ export default function Search() {
                   {t('shows')}
                 </h1>
                 <ul
-                  className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
+                  className="-mx-2 flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
                   style={{
                     WebkitOverflowScrolling: 'touch',
-                    maxHeight: '30em',
                   }}
                 >
                   {showResults.map((r) => (
-                    <li
-                      key={r.show.ids.slug}
-                      className="p-2"
-                      style={{ height: '13.5em', width: '9.5em' }}
-                    >
+                    <li key={r.show.ids.slug} className="w-35">
                       <ImageLink
                         ids={r.show.ids}
                         text={r.show.title}
