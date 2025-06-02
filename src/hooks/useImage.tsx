@@ -21,7 +21,7 @@ export const useImage = (
     };
   });
 
-  useEffect(() => {
+  const load = () => {
     setImgPreview('');
     setImgUrl('');
     if (!config) {
@@ -71,7 +71,17 @@ export const useImage = (
       .catch(() => {
         setMessage(`Not found in TMDB`);
       });
+  };
+
+  const refresh = () => {
+    localStorage.removeItem(`${id}-${type}-es`);
+    localStorage.removeItem(`${id}-${type}-en`);
+    load();
+  };
+
+  useEffect(() => {
+    load();
   }, [config, inview, language, id, type, size]);
 
-  return { imgUrl, imgPreview, message };
+  return { imgUrl, imgPreview, message, refresh };
 };

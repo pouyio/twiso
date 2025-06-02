@@ -95,7 +95,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
               )
             ) : (
               <li className="my-1">
-                <div className="my-1 bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-40 h-10 bg-linear-to-r animate-pulse"></div>
+                <div className="bg-gray-200 font-light rounded-full mx-1 whitespace-pre flex flex-col shrink-0 text-center w-40 h-10 bg-linear-to-r animate-pulse"></div>
               </li>
             )}
           </ul>

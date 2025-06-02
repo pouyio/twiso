@@ -19,6 +19,7 @@ import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
 import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useImage } from 'hooks/useImage';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -31,7 +32,6 @@ export default function MovieDetail() {
   const { t } = useTranslate();
   const [zoom, setZoom] = useState(false);
   const refreshIconRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     // @ts-expect-error limitations on Dexie EntityTable
     db[DETAIL_MOVIES_TABLE].get(id).then((movie) => {
@@ -39,20 +39,6 @@ export default function MovieDetail() {
         dispatch(fillDetail({ id }));
       }
     });
-  }, [id]);
-
-  const liveItem = useLiveQuery(
-    () =>
-      // @ts-expect-error limitations on Dexie EntityTable
-      db[DETAIL_MOVIES_TABLE].get(id),
-    [id]
-  );
-
-  const liveStatus = useLiveQuery(() => db[USER_MOVIES_TABLE].get(id), [id]);
-
-  const item = liveItem;
-
-  useEffect(() => {
     setPeople(undefined);
     setRatings(undefined);
     getPeopleApi(id ?? '', 'movie').then(({ data }) => {
@@ -62,6 +48,17 @@ export default function MovieDetail() {
       setRatings(data);
     });
   }, [id]);
+
+  const item = useLiveQuery(
+    () =>
+      // @ts-expect-error limitations on Dexie EntityTable
+      db[DETAIL_MOVIES_TABLE].get(id),
+    [id]
+  );
+
+  const { refresh } = useImage(item?.ids.tmdb ?? 0, 'movie', 'big', true);
+
+  const liveStatus = useLiveQuery(() => db[USER_MOVIES_TABLE].get(id), [id]);
 
   const bgClassName = useMemo(() => {
     if (liveStatus?.status === 'watched') {
@@ -98,6 +95,7 @@ export default function MovieDetail() {
 
   const onRefresh = () => {
     dispatch(fillDetail({ id }));
+    refresh();
 
     const icon = refreshIconRef.current;
     if (!icon) return;
@@ -118,7 +116,6 @@ export default function MovieDetail() {
           className={`${
             zoom ? 'pb-10 z-10' : 'p-10 pt-5'
           }  sticky top-0 z-0 lg:hidden transition-[padding]`}
-          style={{ minHeight: '15em' }}
         >
           <Image
             ids={item.ids}

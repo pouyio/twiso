@@ -20,6 +20,7 @@ import { useTranslate } from '../hooks/useTranslate';
 import { Ratings } from '../models/Api';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from 'utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useImage } from 'hooks/useImage';
 
 export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -41,25 +42,6 @@ export default function ShowDetail() {
         dispatch(fillDetail({ id }));
       }
     });
-  }, [id]);
-
-  const liveItem = useLiveQuery(
-    () =>
-      // @ts-expect-error limitations on Dexie EntityTable
-      db[DETAIL_SHOWS_TABLE].get(id),
-    [id]
-  );
-
-  const liveStatus = useLiveQuery(() => db[USER_SHOWS_TABLE].get(id), [id]);
-
-  const item = liveItem;
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  useEffect(() => {
     setPeople(undefined);
     setRatings(undefined);
     getPeopleApi(id, 'show').then(({ data }) => {
@@ -69,6 +51,17 @@ export default function ShowDetail() {
       setRatings(data);
     });
   }, [id]);
+
+  const item = useLiveQuery(
+    () =>
+      // @ts-expect-error limitations on Dexie EntityTable
+      db[DETAIL_SHOWS_TABLE].get(id),
+    [id]
+  );
+
+  const { refresh } = useImage(item?.ids.tmdb ?? 0, 'show', 'big', true);
+
+  const liveStatus = useLiveQuery(() => db[USER_SHOWS_TABLE].get(id), [id]);
 
   const bgClassName = useMemo(() => {
     if (liveStatus?.hidden) {
@@ -130,6 +123,7 @@ export default function ShowDetail() {
 
   const onRefresh = () => {
     dispatch(fillDetail({ id }));
+    refresh();
 
     const icon = refreshIconRef.current;
     if (!icon) return;
@@ -150,7 +144,6 @@ export default function ShowDetail() {
           className={`${
             zoom ? 'pb-10 z-10' : 'p-10 pt-5'
           }  sticky top-0 z-0 lg:hidden transition-[padding]`}
-          style={{ minHeight: '15em' }}
         >
           <Image
             ids={item.ids}

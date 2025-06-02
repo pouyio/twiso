@@ -72,7 +72,9 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
       {...props}
       className={
         className +
-        ' min-h-53 h-full bg-gray-300 flex justify-center items-center rounded-lg overflow-hidden ' +
+        ` ${
+          size === 'big' ? 'min-h-116' : 'min-h-53'
+        } h-full bg-gray-300 flex justify-center items-center rounded-lg overflow-hidden ` +
         borderClass
       }
     >
