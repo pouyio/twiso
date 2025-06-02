@@ -1,3 +1,10 @@
+## [2.12.5](https://github.com/pouyio/twiso/compare/v2.12.4...v2.12.5) (2025-06-02)
+
+
+### :art:
+
+* improve search ([60e4348](https://github.com/pouyio/twiso/commit/60e4348c3707a96c2284b736a4a04e784482572e))
+
 ## [2.12.4](https://github.com/pouyio/twiso/compare/v2.12.3...v2.12.4) (2025-06-02)
 
 
