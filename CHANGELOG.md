@@ -1,3 +1,10 @@
+## [2.12.6](https://github.com/pouyio/twiso/compare/v2.12.5...v2.12.6) (2025-06-23)
+
+
+### :bug:
+
+* fixed some ids with search params like ref ([c25d944](https://github.com/pouyio/twiso/commit/c25d944bd1e6ac34480eee8484eb63b64027f95e))
+
 ## [2.12.5](https://github.com/pouyio/twiso/compare/v2.12.4...v2.12.5) (2025-06-02)
 
 
