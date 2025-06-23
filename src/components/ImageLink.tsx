@@ -23,10 +23,12 @@ const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
   children = '',
   onClick = () => {},
 }) => {
+  const url = new URL(ids.imdb, 'http://example.com');
+
   return (
     <Link
       to={{
-        pathname: `/${type}/${ids.imdb}`,
+        pathname: `/${type}/${url.pathname.replaceAll('/', '')}`,
       }}
       onClick={onClick}
     >
