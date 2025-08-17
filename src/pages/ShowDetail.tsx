@@ -234,7 +234,7 @@ export default function ShowDetail() {
                 </div>
                 <h2 className="flex justify-end">{item.runtime || '?'} mins</h2>
               </div>
-              <div className="grid grid-cols-[35%_30%_35%] items-center text-gray-600">
+              <div className="grid grid-cols-[35%_30%_35%] items-center text-gray-600 my-1">
                 <div className="flex justify-start">
                   <Rating
                     rating={ratings?.rating ?? 0}
