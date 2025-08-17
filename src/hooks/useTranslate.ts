@@ -4,8 +4,6 @@ import { useAppSelector } from 'state/store';
 const en = {
   en: '🇬🇧 English',
   es: '🇪🇸 Spanish',
-  completed: 'completed',
-  episodes_small: 'episodes',
   movies: 'Movies',
   search: 'Search',
   shows: 'Shows',
@@ -101,8 +99,6 @@ const en = {
 const es = {
   en: '🇬🇧 Inglés',
   es: '🇪🇸 Español',
-  completed: 'completado',
-  episodes_small: 'episodios',
   movies: 'Películas',
   search: 'Buscar',
   shows: 'Series',

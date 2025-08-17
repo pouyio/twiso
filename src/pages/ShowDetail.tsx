@@ -203,8 +203,8 @@ export default function ShowDetail() {
               </button>
             </div>
 
-            <div className="w-full max-w-3xl">
-              <h1 className="text-4xl leading-none text-center mb-4">
+            <div className="w-full max-w-3xl flex flex-col gap-4 mb-4">
+              <h1 className="text-4xl leading-none text-center">
                 {title}
                 <button
                   title={t('refresh')}
@@ -215,66 +215,69 @@ export default function ShowDetail() {
                 </button>
               </h1>
 
-              <div className="flex mb-4 justify-between items-center text-gray-600">
-                <h2 className="mx-1 rounded-full text-sm px-3 py-2 bg-gray-100 capitalize">
-                  {t(item.status)}
-                </h2>
-                {liveStatus?.status === 'watched' && (
-                  <button onClick={onToggleHidden}>
-                    <Icon
-                      className="h-10"
-                      name={liveStatus?.hidden ? 'no-hidden' : 'hidden'}
-                      title="Toggle visibility"
-                    />
-                  </button>
-                )}
-                <h2>{item.runtime || '?'} mins</h2>
+              <div className="grid grid-cols-[45%_10%_45%] justify-between items-center text-gray-600">
+                <div className="flex justify-start">
+                  <h2 className="mx-1 rounded-full text-sm px-3 py-1 bg-gray-100 capitalize">
+                    {t(item.status)}
+                  </h2>
+                </div>
+                <div className="flex justify-center">
+                  {liveStatus?.status === 'watched' && (
+                    <button onClick={onToggleHidden}>
+                      <Icon
+                        className="h-10"
+                        name={liveStatus?.hidden ? 'no-hidden' : 'hidden'}
+                        title="Toggle visibility"
+                      />
+                    </button>
+                  )}
+                </div>
+                <h2 className="flex justify-end">{item.runtime || '?'} mins</h2>
               </div>
-              <div className="flex mb-4 justify-between items-center text-gray-600">
-                <h2>
+              <div className="grid grid-cols-[35%_30%_35%] items-center text-gray-600">
+                <div className="flex justify-start">
                   <Rating
                     rating={ratings?.rating ?? 0}
                     votes={ratings?.votes ?? 0}
                   />
-                </h2>
-                {liveStatus?.status === 'watched' && (
-                  <h2
-                    className="text-sm cursor-pointer text-center"
-                    style={{ minWidth: '8rem' }}
-                    onClick={() => setShowProgressPercentage((s) => !s)}
-                  >
-                    <Emoji emoji="✓" />{' '}
-                    {showProgressPercentage
-                      ? `${Math.round(
-                          ((liveStatus?.episodes.length ?? 0) * 100) /
-                            totalEpisodes
-                        )}% ${t('completed')}`
-                      : `${liveStatus?.episodes.length}/${totalEpisodes} ${t(
-                          'episodes_small'
-                        )}`}
-                    <div className="bg-green-100 rounded-sm">
-                      <div
-                        className="bg-green-400 h-1 rounded-sm text-white text-xs"
-                        style={{
-                          width: `${
+                </div>
+                <div className="flex justify-center">
+                  {liveStatus?.status === 'watched' && (
+                    <h2
+                      className="text-sm cursor-pointer text-center flex-1"
+                      style={{ maxWidth: '8rem' }}
+                      onClick={() => setShowProgressPercentage((s) => !s)}
+                    >
+                      {showProgressPercentage
+                        ? `${Math.round(
                             ((liveStatus?.episodes.length ?? 0) * 100) /
-                            totalEpisodes
-                          }%`,
-                        }}
-                      ></div>
-                    </div>
-                  </h2>
-                )}
+                              totalEpisodes
+                          )}%`
+                        : `${liveStatus?.episodes.length}/${totalEpisodes}`}
+                      <div className="bg-green-100 rounded-sm">
+                        <div
+                          className="bg-green-400 h-1 rounded-sm text-white text-xs"
+                          style={{
+                            width: `${
+                              ((liveStatus?.episodes.length ?? 0) * 100) /
+                              totalEpisodes
+                            }%`,
+                          }}
+                        ></div>
+                      </div>
+                    </h2>
+                  )}
+                </div>
 
-                <h2>{item.network}</h2>
+                <h2 className="flex justify-end">{item.network}</h2>
               </div>
 
               {liveStatus?.status !== 'watched' && (
-                <div className="my-4">
+                <div>
                   <ShowWatchButton item={item} />
                 </div>
               )}
-              <div className="my-4">
+              <div>
                 <SeasonsContainer show={item} status={liveStatus} showId={id} />
               </div>
             </div>

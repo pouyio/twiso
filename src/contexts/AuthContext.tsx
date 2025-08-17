@@ -1,5 +1,6 @@
 import { Session } from '@supabase/supabase-js';
 import React, { createContext, useEffect, useState } from 'react';
+import { removeUserActivities } from 'utils/cache';
 import db, { USER_MOVIES_TABLE, USER_SHOWS_TABLE } from 'utils/db';
 import { supabase } from 'utils/supabase';
 export type { Session };
@@ -24,7 +25,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   );
 
   const logout = async () => {
-    localStorage.removeItem('activities');
+    removeUserActivities();
     await supabase.auth.signOut({ scope: 'local' });
     db[USER_SHOWS_TABLE].clear();
     db[USER_MOVIES_TABLE].clear();
