@@ -1,3 +1,10 @@
+## [2.12.8](https://github.com/pouyio/twiso/compare/v2.12.7...v2.12.8) (2025-08-17)
+
+
+### :bug:
+
+* fix longpress ([4c4360b](https://github.com/pouyio/twiso/commit/4c4360b62ef0b04d63c18044f1dc8450074986de))
+
 ## [2.12.7](https://github.com/pouyio/twiso/compare/v2.12.6...v2.12.7) (2025-08-17)
 
 
