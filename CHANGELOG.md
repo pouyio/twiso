@@ -1,3 +1,11 @@
+## [2.12.7](https://github.com/pouyio/twiso/compare/v2.12.6...v2.12.7) (2025-08-17)
+
+
+### :art:
+
+* improved show detail style ([6266514](https://github.com/pouyio/twiso/commit/626651484e91331dec294ef6bc40ba0cfdbeff35))
+* updated package.json ([a52f4ab](https://github.com/pouyio/twiso/commit/a52f4ab0ebf85762490b5fb22295824ef9c8973e))
+
 ## [2.12.6](https://github.com/pouyio/twiso/compare/v2.12.5...v2.12.6) (2025-06-23)
 
 
