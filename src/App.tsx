@@ -34,6 +34,7 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { session } = useContext(AuthContext);
   const isLoggedIn = !!session;
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(loadImgConfig());
     if (isLoggedIn) {
