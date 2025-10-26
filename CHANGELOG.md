@@ -1,3 +1,10 @@
+## [2.12.11](https://github.com/pouyio/twiso/compare/v2.12.10...v2.12.11) (2025-10-26)
+
+
+### :bug:
+
+* force deploy ([668fe52](https://github.com/pouyio/twiso/commit/668fe5232ae147121f3a70d7f58fde22434ebc67))
+
 ## [2.12.10](https://github.com/pouyio/twiso/compare/v2.12.9...v2.12.10) (2025-10-26)
 
 
