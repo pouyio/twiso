@@ -1,3 +1,10 @@
+## [2.12.12](https://github.com/pouyio/twiso/compare/v2.12.11...v2.12.12) (2025-10-26)
+
+
+### :bug:
+
+* improve secrets ([8f0f2a4](https://github.com/pouyio/twiso/commit/8f0f2a400fe56399b758a9568cbbdc5031b18f5b))
+
 ## [2.12.11](https://github.com/pouyio/twiso/compare/v2.12.10...v2.12.11) (2025-10-26)
 
 
