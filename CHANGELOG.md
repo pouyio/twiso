@@ -1,3 +1,10 @@
+## [2.12.10](https://github.com/pouyio/twiso/compare/v2.12.9...v2.12.10) (2025-10-26)
+
+
+### :rocket:
+
+* force deploy new back ([2c16bba](https://github.com/pouyio/twiso/commit/2c16bba4e3f6dd9c42258312c8859a6249befcc5))
+
 ## [2.12.9](https://github.com/pouyio/twiso/compare/v2.12.8...v2.12.9) (2025-10-26)
 
 
