@@ -12,7 +12,11 @@ interface ShowsState {
   totalRequestsPending: number;
   pending: {
     watchlist: string[];
-    watched: string[];
+    watched: Array<{
+      showId: string;
+      season: number;
+      episode: number;
+    }>;
   };
 }
 
@@ -31,10 +35,22 @@ const showsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(addEpisodeWatched.pending, (state, { meta }) => {
-        state.pending.watched.push(...meta.arg.episodes.map((e) => e.ids.imdb));
+        state.pending.watched.push(
+          ...meta.arg.episodes.map((e) => ({
+            showId: meta.arg.showIds.imdb,
+            season: e.season,
+            episode: e.number,
+          }))
+        );
       })
       .addCase(removeEpisodeWatched.pending, (state, { meta }) => {
-        state.pending.watched.push(...meta.arg.episodes.map((e) => e.imdb));
+        state.pending.watched.push(
+          ...meta.arg.episodes.map((e) => ({
+            showId: meta.arg.showIds.imdb,
+            season: e.season,
+            episode: e.number,
+          }))
+        );
       })
       .addMatcher(
         isAnyOf(removeWatchlist.pending, addWatchlist.pending),
@@ -56,20 +72,21 @@ const showsSlice = createSlice({
         }
       )
       .addMatcher(
-        isAnyOf(addEpisodeWatched.rejected, addEpisodeWatched.fulfilled),
+        isAnyOf(
+          addEpisodeWatched.rejected,
+          addEpisodeWatched.fulfilled,
+          removeEpisodeWatched.rejected,
+          removeEpisodeWatched.fulfilled
+        ),
         (state, { meta }) => {
-          const addedEpisodes = meta.arg.episodes.map((e) => e.ids.imdb);
           state.pending.watched = state.pending.watched.filter(
-            (p) => !addedEpisodes.includes(p)
-          );
-        }
-      )
-      .addMatcher(
-        isAnyOf(removeEpisodeWatched.rejected, removeEpisodeWatched.fulfilled),
-        (state, { meta }) => {
-          const removedEpisodes = meta.arg.episodes.map((e) => e.imdb);
-          state.pending.watched = state.pending.watched.filter(
-            (p) => !removedEpisodes.includes(p)
+            (p) =>
+              !meta.arg.episodes.find(
+                (me) =>
+                  me.number === p.episode &&
+                  me.season === p.season &&
+                  meta.arg.showIds.imdb === p.showId
+              )
           );
         }
       )

@@ -28,6 +28,7 @@ const axiosConfig = (traktApiKey: string): AxiosRequestConfig => ({
     'content-type': CONTENT_TYPE,
     'trakt-api-key': traktApiKey,
     'trakt-api-version': TRAKT_API_VERSION,
+    'User-Agent': 'twiso/1.0',
   },
 });
 

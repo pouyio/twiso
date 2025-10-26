@@ -61,7 +61,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     dispatch(
       removeEpisodeWatched({
         showIds: show.ids,
-        episodes: [episode.ids],
+        episodes: [episode],
       })
     );
   };
@@ -88,7 +88,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     dispatch(
       removeEpisodeWatched({
         showIds: show.ids,
-        episodes: episodesToWawtch.map((e) => e.ids),
+        episodes: episodesToWawtch,
       })
     );
   };
@@ -138,6 +138,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
             episodesDates={episodesDates[selectedSeason]}
             showModal={showModal}
             onlyView={!isLogged}
+            showId={show.ids.imdb}
           />
         )}
       </AnimatePresence>

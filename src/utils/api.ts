@@ -132,11 +132,18 @@ export const addWatchedEpisodesApi = (
   );
 };
 
-export const removeWatchedEpisodesApi = (showIds: Ids, episodeIds: Ids[]) => {
+export const removeWatchedEpisodesApi = (
+  showIds: Ids,
+  episodes: SeasonEpisode[]
+) => {
   return supabase.functions.invoke<null>(`api/shows/${showIds.imdb}/episodes`, {
     method: 'DELETE',
     body: {
-      episodes: episodeIds.map((e) => e.imdb),
+      episodes: episodes.map((e) => ({
+        episodeId: e.ids.imdb,
+        season: e.season,
+        episode: e.number,
+      })),
     },
   });
 };

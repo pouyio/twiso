@@ -19,6 +19,7 @@ interface ISeasonsProps {
   episodesDates?: Episode[];
   showModal: (data: { title: string; overview: string }) => void;
   onlyView: boolean;
+  showId: string;
 }
 
 const Episodes: React.FC<ISeasonsProps> = ({
@@ -31,6 +32,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
   episodesDates = [],
   showModal,
   onlyView,
+  showId,
 }) => {
   const { session } = useContext(AuthContext);
   const watched = useAppSelector((state) => state.shows.pending.watched);
@@ -96,9 +98,14 @@ const Episodes: React.FC<ISeasonsProps> = ({
       : '-';
   };
 
-  const episodesIds = episodes.map((e) => e.ids.imdb);
   const pendingSeason = !!(
-    watched.length && watched.some((w) => episodesIds.includes(w))
+    watched.length &&
+    watched.some((w) =>
+      episodes.find(
+        (e) =>
+          showId === w.showId && e.number === w.episode && w.season === e.season
+      )
+    )
   );
 
   return (
@@ -160,7 +167,12 @@ const Episodes: React.FC<ISeasonsProps> = ({
                     </span>
                   </div>
                   {isEpisodeAvailable(e.number) &&
-                    (watched.includes(e.ids.imdb) ? (
+                    (watched.find(
+                      (w) =>
+                        w.episode === e.number &&
+                        w.season === e.season &&
+                        w.showId === showId
+                    ) ? (
                       <Emoji
                         emoji="⏳"
                         rotating={true}

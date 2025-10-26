@@ -85,7 +85,7 @@ export const removeEpisodeWatched = createAsyncThunk<
   null,
   {
     showIds: Ids;
-    episodes: Ids[];
+    episodes:  SeasonEpisode[];
   }
 >('shows/removeEpisodeWatched', async ({ showIds, episodes }) => {
   try {
