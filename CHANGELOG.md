@@ -1,3 +1,10 @@
+## [2.12.13](https://github.com/pouyio/twiso/compare/v2.12.12...v2.12.13) (2025-11-27)
+
+
+### :bug:
+
+* force release ([16529a1](https://github.com/pouyio/twiso/commit/16529a1e0d9b2ab7a3e52d8571a03ca4a4d538a9))
+
 ## [2.12.12](https://github.com/pouyio/twiso/compare/v2.12.11...v2.12.12) (2025-10-26)
 
 
