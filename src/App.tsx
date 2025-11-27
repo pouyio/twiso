@@ -30,7 +30,6 @@ const SessionRedirect: React.FC<React.PropsWithChildren<unknown>> = () => {
 
 const App: React.FC<React.PropsWithChildren<unknown>> = () => {
   const globalSearch = useAppSelector((state) => state.root.globalSearch);
-
   const { session } = useContext(AuthContext);
   const isLoggedIn = !!session;
   const dispatch = useAppDispatch();
