@@ -10,4 +10,5 @@ export const ROUTE = {
   movie: '/movie/:id',
   show: '/show/:id',
   person: '/person/:id',
+  user: '/user/:id',
 };

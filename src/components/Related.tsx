@@ -97,7 +97,6 @@ const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >
               <ImageLink
-                // item={r}
                 text={r.title}
                 ids={r.ids}
                 type={type}

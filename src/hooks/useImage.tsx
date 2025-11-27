@@ -5,7 +5,7 @@ import { findFirstValid } from 'utils/findFirstValidImage';
 import { useAppSelector } from 'state/store';
 
 export const useImage = (
-  id: number,
+  id: number | string,
   type: 'show' | 'movie' | 'person',
   size: 'small' | 'big',
   inview: boolean

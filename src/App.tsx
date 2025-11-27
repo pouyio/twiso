@@ -21,6 +21,7 @@ const ShowDetail = lazy(() => import('./pages/ShowDetail'));
 const Person = lazy(() => import('./pages/Person'));
 const Shows = lazy(() => import('./pages/shows/Shows'));
 const Search = lazy(() => import('./pages/search/Search'));
+const User = lazy(() => import('./pages/user/User'));
 
 const SessionRedirect: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { session } = useContext(AuthContext);
@@ -85,6 +86,7 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
               <Route path={ROUTE.movie} element={<MovieDetail />} />
               <Route path={ROUTE.show} element={<ShowDetail />} />
               <Route path={ROUTE.person} element={<Person />} />
+              <Route path={ROUTE.user} element={<User />} />
               <Route path={ROUTES.profile} element={<Profile />} />
             </Routes>
           </Suspense>

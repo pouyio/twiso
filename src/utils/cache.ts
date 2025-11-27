@@ -6,7 +6,7 @@ import db, {
 } from './db';
 
 export const saveToCache = (
-  id: number,
+  id: number | string,
   type: 'show' | 'movie' | 'person',
   language: string,
   url: string
@@ -15,7 +15,7 @@ export const saveToCache = (
 };
 
 export const getFromCache = (
-  id: number,
+  id: number | string,
   type: 'show' | 'movie' | 'person',
   language: string
 ) => {

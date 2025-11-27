@@ -43,7 +43,7 @@ export const getImgsConfigApi = () => {
   );
 };
 
-export const getImgsApi = (id: number, type: ItemType) => {
+export const getImgsApi = (id: number | string, type: ItemType) => {
   let newType: string = type;
   if (type === 'show') {
     newType = 'tv';
@@ -254,4 +254,10 @@ export const getAllShowsComplete = (dateFrom?: string | null) => {
       method: 'GET',
     }
   );
+};
+
+export const getUserMovies = (userId: string) => {
+  return supabase.functions.invoke<MovieStatus[]>(`api/movies/user/${userId}`, {
+    method: 'GET',
+  });
 };

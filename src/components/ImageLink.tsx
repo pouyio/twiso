@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Image from './Image';
-import { Ids } from '../models/Ids';
+import { ImageIds } from '../models/Ids';
 
 interface IImageLinkProps {
-  ids: Ids;
+  ids: ImageIds;
   text: string;
   style?: React.CSSProperties;
   type: 'movie' | 'show' | 'person';

@@ -5,3 +5,5 @@ export interface Ids {
   tmdb: number;
   traktslug: string;
 }
+
+export type ImageIds = { imdb: string } & Partial<Ids>;

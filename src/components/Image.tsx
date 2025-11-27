@@ -3,13 +3,13 @@ import { useInView } from 'react-hook-inview';
 import Emoji from './Emoji';
 import { useImage } from '../hooks/useImage';
 import { Img } from '../lib/react-image'; // temporary load local lib until remote is updated https://github.com/mbrevda/react-image/pull/1006
-import { Ids } from '../models/Ids';
+import { ImageIds } from '../models/Ids';
 import { useLiveQuery } from 'dexie-react-hooks';
 import db, { USER_MOVIES_TABLE, USER_SHOWS_TABLE } from 'utils/db';
 import { AuthContext } from 'contexts/AuthContext';
 
 interface IImageProps {
-  ids: Ids;
+  ids: ImageIds;
   text: string;
   type: 'movie' | 'show' | 'person';
   className?: string;
@@ -34,7 +34,7 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
   const [ref, inView] = useInView({ unobserveOnEnter: true });
 
   const { imgUrl, imgPreview, message } = useImage(
-    ids.tmdb,
+    ids.tmdb ?? ids.imdb,
     type,
     size,
     inView
