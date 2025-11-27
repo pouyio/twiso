@@ -68,10 +68,10 @@ const Episodes: React.FC<ISeasonsProps> = ({
     string: 'title' | 'overview',
     episode: SeasonEpisode
   ) => {
-    if (episode.translations.length) {
+    if (episode.translations?.length) {
       return episode.translations[0][string] ?? '';
     }
-    return string === 'title' ? episode.title : '';
+    return string === 'title' ? episode.title : episode['overview'] ?? '';
   };
 
   const isEpisodeAvailable = (number: number) => {
