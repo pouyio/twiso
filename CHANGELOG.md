@@ -1,3 +1,10 @@
+## [2.12.14](https://github.com/pouyio/twiso/compare/v2.12.13...v2.12.14) (2025-12-06)
+
+
+### :bug:
+
+* fix api call missing type ([c68918a](https://github.com/pouyio/twiso/commit/c68918ab0e8235be81aebc6af07e74d13cf4bfed))
+
 ## [2.12.13](https://github.com/pouyio/twiso/compare/v2.12.12...v2.12.13) (2025-11-27)
 
 
