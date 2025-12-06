@@ -82,7 +82,7 @@ export const fillDetail = createAsyncThunk<
   { state: RootState }
 >('movies/fillDetail', async ({ id }) => {
   const results = await Promise.all([
-    getApi<SearchMovie>(id),
+    getApi<SearchMovie>(id, 'movie'),
     getTranslationsApi(id, 'movie', 'es'),
   ]);
   const movie = results[0].data[0].movie;

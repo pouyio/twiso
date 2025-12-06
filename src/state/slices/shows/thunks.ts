@@ -21,7 +21,7 @@ const _getRemoteWithTranslations = async (
   id: string
 ): Promise<Show & { translation?: Translation }> => {
   const results = await Promise.all([
-    getApi<SearchShow>(id),
+    getApi<SearchShow>(id, 'show'),
     getTranslationsApi(id, 'show', 'es'),
   ]);
   const show = results[0].data[0].show;
@@ -85,7 +85,7 @@ export const removeEpisodeWatched = createAsyncThunk<
   null,
   {
     showIds: Ids;
-    episodes:  SeasonEpisode[];
+    episodes: SeasonEpisode[];
   }
 >('shows/removeEpisodeWatched', async ({ showIds, episodes }) => {
   try {

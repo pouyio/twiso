@@ -53,10 +53,14 @@ export const getImgsApi = (id: number, type: ItemType) => {
   );
 };
 
-export const getApi = <T extends SearchMovie | SearchShow>(id: string) =>
-  limiter.wrap(() =>
-    traktClient.get<T[]>(`/search/imdb/${id}?extended=full`)
+export const getApi = <T extends SearchMovie | SearchShow>(
+  id: string,
+  type: 'movie' | 'show'
+) => {
+  return limiter.wrap(() =>
+    traktClient.get<T[]>(`/search/imdb/${id}?type=${type}&extended=full`)
   )();
+};
 
 export const getSeasonsApi = (id: string, language: Language) => {
   return limiter.wrap(() =>
