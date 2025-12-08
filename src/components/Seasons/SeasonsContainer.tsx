@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   addEpisodeWatched,
   removeEpisodeWatched,
-} from 'state/slices/shows/thunks';
-import { useAppDispatch, useAppSelector } from 'state/store';
+} from '../../state/slices/shows/thunks';
+import { useAppDispatch, useAppSelector } from '../../state/store';
 import { AuthContext } from '../../contexts/AuthContext';
 import { ModalContext } from '../../contexts/ModalContext';
 import { getSeasonEpisodesApi } from '../../utils/api';
@@ -11,7 +11,7 @@ import Episodes from './Episodes';
 import SeasonSelector from './SeasonSelector';
 import { Episode, SeasonEpisode, Show } from '../../models/Show';
 import { useSearchParams } from 'react-router';
-import { ShowStatusComplete } from 'models/Api';
+import { ShowStatusComplete } from '../../models/Api';
 import { AnimatePresence } from 'framer-motion';
 
 interface ISeasonsContainerProps {

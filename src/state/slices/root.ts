@@ -4,7 +4,7 @@ import {
   isAnyOf,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import { firstLoad } from 'state/firstLoadAction';
+import { firstLoad } from '../../state/firstLoadAction';
 
 interface RootState {
   globalSearch: boolean;

@@ -8,7 +8,7 @@ import { useParams } from 'react-router';
 import { Person as IPerson } from '../models/Person';
 import { placeholders } from '../components/Related';
 import { Empty } from '../components/Empty';
-import { useAppSelector } from 'state/store';
+import { useAppSelector } from '../state/store';
 import { Movie } from '../models/Movie';
 import { Show } from '../models/Show';
 import { useTranslate } from '../hooks/useTranslate';

@@ -4,7 +4,7 @@ import ImageLink from './ImageLink';
 import { Empty } from './Empty';
 import { Show } from '../models/Show';
 import { Movie } from '../models/Movie';
-import { Ids } from 'models/Ids';
+import { Ids } from '../models/Ids';
 
 interface IRelatedProps {
   itemIds: Ids;

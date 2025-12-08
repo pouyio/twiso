@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { useTranslate } from '../hooks/useTranslate';
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 import { AuthOtpResponse } from '@supabase/supabase-js';
-import { supabase } from 'utils/supabase';
-import { ModalContext } from 'contexts/ModalContext';
+import { supabase } from '../utils/supabase';
+import { ModalContext } from '../contexts/ModalContext';
 
 const Login: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { session } = useContext(AuthContext);

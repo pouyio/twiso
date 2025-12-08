@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import db, { USER_MOVIES_TABLE, USER_SHOWS_TABLE } from 'utils/db';
+import db, { USER_MOVIES_TABLE, USER_SHOWS_TABLE } from '../utils/db';
 
 // TODO maybe can be removed and improve indexedDB query performance where it is used
 export const useIsWatch = () => {

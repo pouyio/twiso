@@ -1,7 +1,7 @@
-import { Icon } from 'components/Icon';
+import { Icon } from '../components/Icon';
 import { useContext, useEffect, useState } from 'react';
-import { changeLanguage } from 'state/slices/config';
-import { useAppDispatch, useAppSelector } from 'state/store';
+import { changeLanguage } from '../state/slices/config';
+import { useAppDispatch, useAppSelector } from '../state/store';
 import packageInfo from '../../package.json';
 import Emoji from '../components/Emoji';
 import { LoginButton } from '../components/LoginButton';
@@ -17,7 +17,7 @@ import {
 import { UserStats } from '../models/Api';
 import { AVAIABLE_LANGUAGES, Language } from '../models/Translation';
 import { useTranslate } from '../hooks/useTranslate';
-import { supabase } from 'utils/supabase';
+import { supabase } from '../utils/supabase';
 import { User } from '@supabase/supabase-js';
 
 const AVG_MOVIE_DURATION = 110;

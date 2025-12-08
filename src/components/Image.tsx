@@ -5,8 +5,8 @@ import { useImage } from '../hooks/useImage';
 import { Img } from '../lib/react-image'; // temporary load local lib until remote is updated https://github.com/mbrevda/react-image/pull/1006
 import { Ids } from '../models/Ids';
 import { useLiveQuery } from 'dexie-react-hooks';
-import db, { USER_MOVIES_TABLE, USER_SHOWS_TABLE } from 'utils/db';
-import { AuthContext } from 'contexts/AuthContext';
+import db, { USER_MOVIES_TABLE, USER_SHOWS_TABLE } from '../utils/db';
+import { AuthContext } from '../contexts/AuthContext';
 
 interface IImageProps {
   ids: Ids;

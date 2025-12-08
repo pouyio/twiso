@@ -1,4 +1,4 @@
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
 import React, { useContext, useEffect, useState } from 'react';
 import { RemoteFilterTypes } from './Search';
 import { useTranslate } from '../../hooks/useTranslate';

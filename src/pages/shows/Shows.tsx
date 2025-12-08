@@ -3,8 +3,8 @@ import ShowsWatchlist from './ShowsWatchlist';
 import ShowsWatched from './ShowsWatched';
 import { useTranslate } from '../../hooks/useTranslate';
 import { motion } from 'motion/react';
-import { Icon } from 'components/Icon';
-import db, { USER_SHOWS_TABLE } from 'utils/db';
+import { Icon } from '../../components/Icon';
+import db, { USER_SHOWS_TABLE } from '../../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useSearchParams } from 'react-router';
 

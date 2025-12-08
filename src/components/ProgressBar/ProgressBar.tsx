@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppSelector } from 'state/store';
+import { useAppSelector } from '../../state/store';
 import './ProgressBar.css';
 
 export const ProgressBar: React.FC<React.PropsWithChildren<unknown>> = () => {

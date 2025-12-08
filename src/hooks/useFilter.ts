@@ -1,12 +1,12 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import Fuse from 'fuse.js';
-import { useAppSelector } from 'state/store';
+import { useAppSelector } from '../state/store';
 import db, {
   DETAIL_MOVIES_TABLE,
   DETAIL_SHOWS_TABLE,
   USER_MOVIES_TABLE,
   USER_SHOWS_TABLE,
-} from 'utils/db';
+} from '../utils/db';
 
 export const useFilter = () => {
   const language = useAppSelector((state) => state.config.language);

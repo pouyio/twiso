@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { RootState } from 'state/store';
+import { RootState } from '../../../state/store';
 import {
   addWatchedEpisodesApi,
   addWatchlistShowApi,
@@ -9,13 +9,13 @@ import {
   removeWatchedEpisodesApi,
   removeWatchlistApi,
   setHideShow,
-} from 'utils/api';
+} from '../../../utils/api';
 import { SearchShow } from '../../../models/Movie';
 import { Season, SeasonEpisode, Show } from '../../../models/Show';
-import { Translation } from 'models/Translation';
-import { Ids } from 'models/Ids';
-import { firstLoad } from 'state/firstLoadAction';
-import { ShowStatusComplete } from 'models/Api';
+import { Translation } from '../../../models/Translation';
+import { Ids } from '../../../models/Ids';
+import { firstLoad } from '../../../state/firstLoadAction';
+import { ShowStatusComplete } from '../../../models/Api';
 
 const _getRemoteWithTranslations = async (
   id: string

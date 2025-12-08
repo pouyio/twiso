@@ -2,10 +2,10 @@ import React from 'react';
 import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';
 import { Underline } from '../shows/Shows';
-import { Icon } from 'components/Icon';
+import { Icon } from '../../components/Icon';
 import { useSearchParams } from 'react-router';
 import { useTranslate } from '../../hooks/useTranslate';
-import db, { USER_MOVIES_TABLE } from 'utils/db';
+import db, { USER_MOVIES_TABLE } from '../../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 
 export default function Movies() {

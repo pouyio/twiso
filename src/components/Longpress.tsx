@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { setGlobalSearch } from 'state/slices/root';
+import { setGlobalSearch } from '../state/slices/root';
 import { Icon } from './Icon';
 import { useTranslate } from '../hooks/useTranslate';
 import { useLongPress } from 'use-long-press';
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 
 const LongPress: React.FC = () => {
   const navigate = useNavigate();

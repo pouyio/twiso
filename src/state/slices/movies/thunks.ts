@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { RootState } from 'state/store';
+import { RootState } from '../../../state/store';
 import {
   addWatchedMovieApi,
   addWatchlistMovieApi,
@@ -7,10 +7,10 @@ import {
   getTranslationsApi,
   removeWatchedApi,
   removeWatchlistApi,
-} from 'utils/api';
+} from '../../../utils/api';
 import { Movie, SearchMovie } from '../../../models/Movie';
 import { AddedWatched } from '../../../models/Api';
-import { Translation } from 'models/Translation';
+import { Translation } from '../../../models/Translation';
 
 export const addWatchedMovie = createAsyncThunk<AddedWatched, { movie: Movie }>(
   'movies/addWatched',

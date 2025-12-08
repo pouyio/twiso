@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router';
-import { useAppDispatch, useAppSelector } from 'state/store';
-import { fillDetail, setHiddenShow } from 'state/slices/shows/thunks';
+import { useAppDispatch, useAppSelector } from '../state/store';
+import { fillDetail, setHiddenShow } from '../state/slices/shows/thunks';
 import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
@@ -14,13 +14,13 @@ import ShowWatchButton from '../components/ShowWatchButton';
 import { AlertContext } from '../contexts/AlertContext';
 import { People as IPeople } from '../models/People';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
-import { Icon } from 'components/Icon';
+import { Icon } from '../components/Icon';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
 import { Ratings } from '../models/Api';
-import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from 'utils/db';
+import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useImage } from 'hooks/useImage';
+import { useImage } from '../hooks/useImage';
 
 export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();

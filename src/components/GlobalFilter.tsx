@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setGlobalSearch } from 'state/slices/root';
-import { getType } from 'utils/getType';
+import { setGlobalSearch } from '../state/slices/root';
+import { getType } from '../utils/getType';
 import Emoji from './Emoji';
 import ImageLink from './ImageLink';
 import { useFilter } from '../hooks/useFilter';
 import { useIsWatch } from '../hooks/useIsWatch';
 import { Movie } from '../models/Movie';
 import { Show } from '../models/Show';
-import { useAppSelector } from 'state/store';
+import { useAppSelector } from '../state/store';
 
 export const GlobalFilter = () => {
   const { filter } = useFilter();

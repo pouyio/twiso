@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getImgsConfigApi } from 'utils/api';
+import { getImgsConfigApi } from '../../utils/api';
 import { ImgConfig } from '../../models/ImgConfig';
-import { Language } from 'models/Translation';
+import { Language } from '../../models/Translation';
 
 interface ConfigState {
   img?: ImgConfig;

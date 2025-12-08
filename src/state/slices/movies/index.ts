@@ -5,7 +5,7 @@ import {
   fillDetail,
   removeWatched,
   removeWatchlist,
-} from 'state/slices/movies/thunks';
+} from '../../../state/slices/movies/thunks';
 
 interface MoviesState {
   totalRequestsPending: number;

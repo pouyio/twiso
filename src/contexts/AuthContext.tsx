@@ -1,8 +1,8 @@
 import { Session } from '@supabase/supabase-js';
 import React, { createContext, useEffect, useState } from 'react';
-import { removeUserActivities } from 'utils/cache';
-import db, { USER_MOVIES_TABLE, USER_SHOWS_TABLE } from 'utils/db';
-import { supabase } from 'utils/supabase';
+import { removeUserActivities } from '../utils/cache';
+import db, { USER_MOVIES_TABLE, USER_SHOWS_TABLE } from '../utils/db';
+import { supabase } from '../utils/supabase';
 export type { Session };
 
 interface AuthContextProps {

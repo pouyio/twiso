@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { useTranslate } from '../../hooks/useTranslate';
 import { ShowSeason } from '../../models/Show';
-import { ShowStatusComplete } from 'models/Api';
+import { ShowStatusComplete } from '../../models/Api';
 
 interface ISeasonsProps {
   progress?: ShowStatusComplete;

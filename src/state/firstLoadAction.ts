@@ -3,17 +3,17 @@ import {
   getAllShowsComplete,
   getAllShows,
   syncActivities,
-} from 'utils/api';
+} from '../utils/api';
 import db, {
   DETAIL_MOVIES_TABLE,
   DETAIL_SHOWS_TABLE,
   USER_MOVIES_TABLE,
   USER_SHOWS_TABLE,
-} from 'utils/db';
+} from '../utils/db';
 import { store } from './store';
 import { fillDetail } from './slices/movies/thunks';
 import { fillDetail as fillDetailShow } from './slices/shows/thunks';
-import { Activities } from 'models/Api';
+import { Activities } from '../models/Api';
 
 const syncRemoteMovies = async (
   oldActivities: Activities | null,

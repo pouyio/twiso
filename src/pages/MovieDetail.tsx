@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router';
-import { fillDetail } from 'state/slices/movies/thunks';
-import { useAppDispatch, useAppSelector } from 'state/store';
+import { fillDetail } from '../state/slices/movies/thunks';
+import { useAppDispatch, useAppSelector } from '../state/store';
 import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
@@ -13,13 +13,13 @@ import WatchButton from '../components/WatchButton';
 import { AlertContext } from '../contexts/AlertContext';
 import { People as IPeople } from '../models/People';
 import { getPeopleApi, getRatingsApi } from '../utils/api';
-import { Icon } from 'components/Icon';
+import { Icon } from '../components/Icon';
 import { Ratings } from '../models/Api';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
 import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useImage } from 'hooks/useImage';
+import { useImage } from '../hooks/useImage';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();

@@ -1,12 +1,12 @@
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 import React, { useContext } from 'react';
 import {
   addWatchedMovie,
   addWatchlist,
   removeWatched,
   removeWatchlist,
-} from 'state/slices/movies/thunks';
-import { useAppDispatch, useAppSelector } from 'state/store';
+} from '../state/slices/movies/thunks';
+import { useAppDispatch, useAppSelector } from '../state/store';
 import { LoginButton } from '../components/LoginButton';
 import Emoji from './Emoji';
 import { Movie } from '../models/Movie';

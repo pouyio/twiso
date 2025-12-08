@@ -1,12 +1,12 @@
-import ImageLink from 'components/ImageLink';
-import PaginationContainer from 'components/Pagination/PaginationContainer';
+import ImageLink from '../../components/ImageLink';
+import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import React, { useState } from 'react';
 import { usePagination } from '../../hooks/usePagination';
-import { EmptyState } from 'components/EmptyState';
-import { NoResults } from 'components/NoResults';
+import { EmptyState } from '../../components/EmptyState';
+import { NoResults } from '../../components/NoResults';
 import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Movie } from 'models/Movie';
+import { Movie } from '../../models/Movie';
 
 export const MoviesWatchlist: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);

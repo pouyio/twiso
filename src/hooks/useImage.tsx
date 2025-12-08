@@ -1,8 +1,8 @@
 import { getImgsApi } from '../utils/api';
 import { getFromCache, saveToCache } from '../utils/cache';
 import { useState, useEffect } from 'react';
-import { findFirstValid } from 'utils/findFirstValidImage';
-import { useAppSelector } from 'state/store';
+import { findFirstValid } from '../utils/findFirstValidImage';
+import { useAppSelector } from '../state/store';
 
 export const useImage = (
   id: number,

@@ -1,7 +1,7 @@
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 import React, { useContext } from 'react';
-import { addWatchlist, removeWatchlist } from 'state/slices/shows/thunks';
-import { useAppDispatch, useAppSelector } from 'state/store';
+import { addWatchlist, removeWatchlist } from '../state/slices/shows/thunks';
+import { useAppDispatch, useAppSelector } from '../state/store';
 import Emoji from './Emoji';
 import { LoginButton } from './LoginButton';
 import { Show } from '../models/Show';

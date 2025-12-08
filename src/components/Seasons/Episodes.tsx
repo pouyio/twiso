@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import Emoji from '../Emoji';
 import { EpisodesPlaceholder } from './EpisodesPlaceholder';
-import { useAppSelector } from 'state/store';
-import { Icon } from 'components/Icon';
+import { useAppSelector } from '../../state/store';
+import { Icon } from '../../components/Icon';
 import { useTranslate } from '../../hooks/useTranslate';
 import { Episode, SeasonEpisode } from '../../models/Show';
-import { EpisodeStatus } from 'models/Api';
-import { AuthContext } from 'contexts/AuthContext';
+import { EpisodeStatus } from '../../models/Api';
+import { AuthContext } from '../../contexts/AuthContext';
 import { AnimatePresence, motion } from 'framer-motion';
 
 interface ISeasonsProps {

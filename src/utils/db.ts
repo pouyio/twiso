@@ -1,7 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie';
-import { Ids } from 'models/Ids';
-import { ShowSeason } from 'models/Show';
-import { Translation } from 'models/Translation';
+import { Ids } from '../models/Ids';
+import { ShowSeason } from '../models/Show';
+import { Translation } from '../models/Translation';
 
 type DBStatus = 'watchlist' | 'watched';
 

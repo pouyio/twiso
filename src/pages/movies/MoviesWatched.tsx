@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks/usePagination';
-import { EmptyState } from 'components/EmptyState';
-import { NoResults } from 'components/NoResults';
+import { EmptyState } from '../../components/EmptyState';
+import { NoResults } from '../../components/NoResults';
 import { useLiveQuery } from 'dexie-react-hooks';
 import db, {
   DBMovieDetail,
   DETAIL_MOVIES_TABLE,
   USER_MOVIES_TABLE,
-} from 'utils/db';
-import { Movie } from 'models/Movie';
+} from '../../utils/db';
+import { Movie } from '../../models/Movie';
 
 export const MoviesWatched: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);

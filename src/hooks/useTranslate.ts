@@ -1,5 +1,5 @@
-import { Language } from 'models/Translation';
-import { useAppSelector } from 'state/store';
+import { Language } from '../models/Translation';
+import { useAppSelector } from '../state/store';
 
 const en = {
   en: '🇬🇧 English',

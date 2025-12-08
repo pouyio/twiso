@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import ImageLink from '../../components/ImageLink';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks/usePagination';
-import { EmptyState } from 'components/EmptyState';
-import { NoResults } from 'components/NoResults';
+import { EmptyState } from '../../components/EmptyState';
+import { NoResults } from '../../components/NoResults';
 import { Show } from '../../models/Show';
 import { useLiveQuery } from 'dexie-react-hooks';
-import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from 'utils/db';
+import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from '../../utils/db';
 
 const ShowsWatchlist: React.FC = () => {
   const [genres, setGenres] = useState<string[]>([]);

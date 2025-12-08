@@ -15,8 +15,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
-    "baseUrl": "src"
+    "jsx": "preserve"
   },
   "include": ["src", "functions"]
 }

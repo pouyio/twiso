@@ -21,7 +21,7 @@ import {
 import { People } from '../models/People';
 import { Person } from '../models/Person';
 import { Popular } from '../models/Popular';
-import { Ids } from 'models/Ids';
+import { Ids } from '../models/Ids';
 import { supabase } from './supabase';
 
 const limiter = new Bottleneck({

@@ -1,8 +1,8 @@
-import Emoji from 'components/Emoji';
-import { useTranslate } from 'hooks/useTranslate';
+import Emoji from '../components/Emoji';
+import { useTranslate } from '../hooks/useTranslate';
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
-import { supabase } from 'utils/supabase';
+import { supabase } from '../utils/supabase';
 
 export const VerifyMagicLink: React.FC<React.PropsWithChildren> = () => {
   const navigate = useNavigate();

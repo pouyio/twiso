@@ -1,6 +1,6 @@
-import Genres from 'components/Genres';
+import Genres from '../../components/Genres';
 import React, { useEffect } from 'react';
-import { Icon } from 'components/Icon';
+import { Icon } from '../../components/Icon';
 import { useSearchParams } from 'react-router';
 
 interface IPaginationProps {
