@@ -1,3 +1,10 @@
+## [2.12.15](https://github.com/pouyio/twiso/compare/v2.12.14...v2.12.15) (2025-12-08)
+
+
+### :bug:
+
+* prepare build to work with typescript 6 ([bc6dca5](https://github.com/pouyio/twiso/commit/bc6dca57a732b732aaddcb659811ac7f85f9c1de))
+
 ## [2.12.14](https://github.com/pouyio/twiso/compare/v2.12.13...v2.12.14) (2025-12-06)
 
 
