@@ -1,3 +1,10 @@
+## [2.12.16](https://github.com/pouyio/twiso/compare/v2.12.15...v2.12.16) (2025-12-09)
+
+
+### :art:
+
+* improved seasons with no episodes ([eb14175](https://github.com/pouyio/twiso/commit/eb141755908c2049b2cd57771198c764d909bbb4))
+
 ## [2.12.15](https://github.com/pouyio/twiso/compare/v2.12.14...v2.12.15) (2025-12-08)
 
 
