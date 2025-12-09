@@ -133,7 +133,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
             removeSeasonWatched={removeSeason}
             episodes={
               show.all_seasons.find((s) => s.number === selectedSeason)
-                ?.episodes
+                ?.episodes ?? []
             }
             episodesDates={episodesDates[selectedSeason]}
             showModal={showModal}

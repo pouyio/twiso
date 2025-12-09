@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Emoji from '../Emoji';
-import { EpisodesPlaceholder } from './EpisodesPlaceholder';
+import { EmptySeason } from './EmptySeason';
 import { useAppSelector } from '../../state/store';
 import { Icon } from '../../components/Icon';
 import { useTranslate } from '../../hooks/useTranslate';
@@ -15,7 +15,7 @@ interface ISeasonsProps {
   removeEpisodeWatched: (episode: SeasonEpisode) => void;
   addSeasonWatched: () => void;
   removeSeasonWatched: () => void;
-  episodes?: SeasonEpisode[];
+  episodes: SeasonEpisode[];
   episodesDates?: Episode[];
   showModal: (data: { title: string; overview: string }) => void;
   onlyView: boolean;
@@ -114,12 +114,12 @@ const Episodes: React.FC<ISeasonsProps> = ({
       animate={{ opacity: 1, height: 'auto' }}
       exit={{ opacity: 0, height: 0 }}
     >
-      <ul>
-        {!episodes.length ? (
-          <EpisodesPlaceholder />
-        ) : (
-          episodes.map((e) => (
-            <AnimatePresence key={e.ids.imdb || e.number}>
+      <AnimatePresence key={showId}>
+        <ul>
+          {!episodes.length ? (
+            <EmptySeason />
+          ) : (
+            episodes.map((e) => (
               <motion.li
                 initial={{ opacity: 0, x: -5 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -188,11 +188,11 @@ const Episodes: React.FC<ISeasonsProps> = ({
                     ))}
                 </div>
               </motion.li>
-            </AnimatePresence>
-          ))
-        )}
-      </ul>
-      {!onlyView && (
+            ))
+          )}
+        </ul>
+      </AnimatePresence>
+      {!onlyView && !!episodes.length && (
         <div className="flex justify-center">
           {isSeasonWatched() ? (
             <button

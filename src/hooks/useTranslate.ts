@@ -94,6 +94,7 @@ const en = {
   'already-have-code': 'I already have the code',
   'code-sent':
     'Code sent to your email, click in the link from the email or paste the code below to log in!',
+  'no-episodes': 'No episodes available yet',
 };
 
 const es = {
@@ -190,6 +191,7 @@ const es = {
   'already-have-code': 'Ya tengo el código',
   'code-sent':
     'Código enviado al correo. Pulsa en el enlace recibido o introduce el código debajo!',
+  'no-episodes': 'Aún no hay episodios disponibles',
 };
 
 const translations: Record<Language, Record<string, string>> = {
