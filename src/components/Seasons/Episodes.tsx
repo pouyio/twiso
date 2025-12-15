@@ -125,7 +125,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 5 }}
                 className="py-3 text-sm leading-tight"
-                key={e.ids.imdb || e.number}
+                key={`${e.season}_${e.number}`}
               >
                 <div className="flex items-center">
                   <span className="text-gray-600 text-xs font-bold mr-1">
