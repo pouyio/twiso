@@ -1,3 +1,10 @@
+## [2.12.17](https://github.com/pouyio/twiso/compare/v2.12.16...v2.12.17) (2025-12-15)
+
+
+### :bug:
+
+* fix wrong key ([7d114ba](https://github.com/pouyio/twiso/commit/7d114ba7cf81ba45dd679ae106d3b1405fcad298))
+
 ## [2.12.16](https://github.com/pouyio/twiso/compare/v2.12.15...v2.12.16) (2025-12-09)
 
 
