@@ -273,13 +273,9 @@ export default function ShowDetail() {
               </div>
 
               {liveStatus?.status !== 'watched' && (
-                <div>
-                  <ShowWatchButton item={item} />
-                </div>
+                <ShowWatchButton item={item} />
               )}
-              <div>
-                <SeasonsContainer show={item} status={liveStatus} showId={id} />
-              </div>
+              <SeasonsContainer show={item} status={liveStatus} showId={id} />
             </div>
           </div>
 
