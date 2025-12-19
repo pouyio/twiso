@@ -1,3 +1,10 @@
+# [2.13.0](https://github.com/pouyio/twiso/compare/v2.12.17...v2.13.0) (2025-12-19)
+
+
+### :sparkles:
+
+* added studios section to movie detail ([663cbe4](https://github.com/pouyio/twiso/commit/663cbe4fc5332b50efb170f7dbce0ee3ca54056f))
+
 ## [2.12.17](https://github.com/pouyio/twiso/compare/v2.12.16...v2.12.17) (2025-12-15)
 
 
