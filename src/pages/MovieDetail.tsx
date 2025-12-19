@@ -12,18 +12,20 @@ import Related from '../components/Related';
 import WatchButton from '../components/WatchButton';
 import { AlertContext } from '../contexts/AlertContext';
 import { People as IPeople } from '../models/People';
-import { getPeopleApi, getRatingsApi } from '../utils/api';
+import { getPeopleApi, getRatingsApi, getStudiosApi } from '../utils/api';
 import { Icon } from '../components/Icon';
-import { Ratings } from '../models/Api';
+import { Ratings, Studio } from '../models/Api';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
 import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useImage } from '../hooks/useImage';
+import Studios from '../components/Studios';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
+  const [studios, setStudios] = useState<Studio[]>([]);
   const language = useAppSelector((state) => state.config.language);
   const { id = '' } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
@@ -41,11 +43,15 @@ export default function MovieDetail() {
     });
     setPeople(undefined);
     setRatings(undefined);
+    setStudios([]);
     getPeopleApi(id ?? '', 'movie').then(({ data }) => {
       setPeople(data);
     });
     getRatingsApi(id ?? '', 'movie').then(({ data }) => {
       setRatings(data);
+    });
+    getStudiosApi(id, 'movie').then(({ data }) => {
+      setStudios(data);
     });
   }, [id]);
 
@@ -188,7 +194,7 @@ export default function MovieDetail() {
             </div>
 
             <div className="w-full">
-              <h1 className="text-4xl leading-none text-center">
+              <h1 className="text-4xl text-center">
                 {title}{' '}
                 <button
                   title={t('refresh')}
@@ -230,6 +236,11 @@ export default function MovieDetail() {
           </div>
 
           <People people={people} type="movie" />
+
+          <div className="my-4">
+            <p className="font-medium font-family-text">{t('studios')}:</p>
+            <Studios studios={studios} />
+          </div>
 
           <div className="my-4">
             <p className="font-medium font-family-text">{t('extra-scenes')}:</p>

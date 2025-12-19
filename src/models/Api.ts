@@ -49,6 +49,12 @@ export interface Ratings {
   distribution: Distribution;
 }
 
+export interface Studio {
+  name: string;
+  country: string;
+  ids: Ids;
+}
+
 export type Activities = {
   shows: {
     rest: string | null;

@@ -95,6 +95,7 @@ const en = {
   'code-sent':
     'Code sent to your email, click in the link from the email or paste the code below to log in!',
   'no-episodes': 'No episodes available yet',
+  studios: 'Studios',
 };
 
 const es = {
@@ -192,6 +193,7 @@ const es = {
   'code-sent':
     'Código enviado al correo. Pulsa en el enlace recibido o introduce el código debajo!',
   'no-episodes': 'Aún no hay episodios disponibles',
+  studios: 'Estudios',
 };
 
 const translations: Record<Language, Record<string, string>> = {

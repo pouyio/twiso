@@ -219,6 +219,10 @@ export const getRatingsApi = (id: string, type: ItemType) => {
   return traktClient.get<Ratings>(`/${type}s/${id}/ratings`);
 };
 
+export const getStudiosApi = (id: string, type: ItemType) => {
+  return traktClient.get<Studio[]>(`/${type}s/${id}/studios`);
+};
+
 export const setHideShow = (showId: string, hidden: boolean) => {
   return supabase.functions.invoke<null>(`api/shows/${showId}/hide`, {
     method: 'PUT',
