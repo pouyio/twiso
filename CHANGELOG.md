@@ -1,3 +1,14 @@
+# [2.14.0](https://github.com/pouyio/twiso/compare/v2.13.1...v2.14.0) (2025-12-19)
+
+
+### :bug:
+
+* removed unused nodes ([0f2a135](https://github.com/pouyio/twiso/commit/0f2a135fa2c020879df13bdec31a2e0b187ee0aa))
+
+### :sparkles:
+
+* added releases in Spain clicking in the release date ([a79b779](https://github.com/pouyio/twiso/commit/a79b7793356311f85f6aebca3985c8a67f4d3d6a))
+
 ## [2.13.1](https://github.com/pouyio/twiso/compare/v2.13.0...v2.13.1) (2025-12-19)
 
 
