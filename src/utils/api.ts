@@ -16,6 +16,7 @@ import {
   Ratings,
   ShowStatus,
   ShowStatusComplete,
+  Studio,
   UserStats,
 } from '../models/Api';
 import { People } from '../models/People';
