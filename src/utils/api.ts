@@ -14,6 +14,7 @@ import {
   EpisodeStatus,
   MovieStatus,
   Ratings,
+  Release,
   ShowStatus,
   ShowStatusComplete,
   Studio,
@@ -222,6 +223,10 @@ export const getRatingsApi = (id: string, type: ItemType) => {
 
 export const getStudiosApi = (id: string, type: ItemType) => {
   return traktClient.get<Studio[]>(`/${type}s/${id}/studios`);
+};
+
+export const getMovieReleasesApi = (id: string) => {
+  return traktClient.get<Release[]>(`/movies/${id}/releases/es`);
 };
 
 export const setHideShow = (showId: string, hidden: boolean) => {

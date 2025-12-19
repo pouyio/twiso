@@ -12,20 +12,27 @@ import Related from '../components/Related';
 import WatchButton from '../components/WatchButton';
 import { AlertContext } from '../contexts/AlertContext';
 import { People as IPeople } from '../models/People';
-import { getPeopleApi, getRatingsApi, getStudiosApi } from '../utils/api';
+import {
+  getMovieReleasesApi,
+  getPeopleApi,
+  getRatingsApi,
+  getStudiosApi,
+} from '../utils/api';
 import { Icon } from '../components/Icon';
-import { Ratings, Studio } from '../models/Api';
+import { Ratings, Release, Studio } from '../models/Api';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
 import db, { DETAIL_MOVIES_TABLE, USER_MOVIES_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useImage } from '../hooks/useImage';
 import Studios from '../components/Studios';
+import { Releases } from '../components/Releases';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const [studios, setStudios] = useState<Studio[]>([]);
+  const [releases, setReleases] = useState<Release[]>([]);
   const language = useAppSelector((state) => state.config.language);
   const { id = '' } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
@@ -52,6 +59,9 @@ export default function MovieDetail() {
     });
     getStudiosApi(id, 'movie').then(({ data }) => {
       setStudios(data);
+    });
+    getMovieReleasesApi(id).then(({ data }) => {
+      setReleases(data);
     });
   }, [id]);
 
@@ -205,13 +215,11 @@ export default function MovieDetail() {
                 </button>
               </h1>
               <h1 className="text-xl text-center mb-4 text-gray-300">
-                {item.released
-                  ? new Date(item.released).toLocaleDateString(language, {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })
-                  : item.status}
+                <Releases
+                  original_release={item.released}
+                  status={item.status}
+                  releases={releases}
+                />
               </h1>
               <div className="flex mb-4 justify-between items-center text-gray-600">
                 <h2>

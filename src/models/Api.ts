@@ -55,6 +55,14 @@ export interface Studio {
   ids: Ids;
 }
 
+export interface Release {
+  country: string;
+  certification: string;
+  release_date: string;
+  release_type: string;
+  note: string | null;
+}
+
 export type Activities = {
   shows: {
     rest: string | null;
