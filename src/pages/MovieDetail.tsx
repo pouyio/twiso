@@ -126,7 +126,7 @@ export default function MovieDetail() {
   return (
     <div className={bgClassName}>
       <title>{title}</title>
-      <div className="lg:max-w-5xl lg:mx-auto">
+      <div className="lg:max-w-6xl m-auto">
         <div
           onClick={() => setZoom((z) => !z)}
           className={`${

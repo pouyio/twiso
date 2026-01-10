@@ -61,7 +61,7 @@ export default function Shows() {
           <Underline selected={mode === 'watched'} />
         </div>
       </div>
-      <div className="py-3">
+      <div className="py-3 lg:max-w-6xl m-auto">
         {mode === 'watchlist' ? <ShowsWatchlist /> : <ShowsWatched />}
       </div>
     </>

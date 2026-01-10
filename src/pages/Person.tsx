@@ -63,7 +63,7 @@ const Person: React.FC = () => {
   return localState ? (
     <div className="bg-gray-300">
       <title>{localState.name}</title>
-      <div className="lg:max-w-5xl lg:mx-auto">
+      <div className="lg:max-w-6xl lg:mx-auto">
         <div className="p-10 pt-5 sticky top-0 z-0 lg:hidden">
           {localState && (
             <Image

@@ -79,7 +79,10 @@ export default function Search() {
   }, [filters, debouncedSearch]);
 
   return (
-    <div className="m-4" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+    <div
+      className="m-4 lg:max-w-6xl lg:m-auto"
+      style={{ paddingTop: 'env(safe-area-inset-top)' }}
+    >
       <title>Search</title>
       <div className="w-full bg-gray-300 rounded-sm flex items-center my-2 m-auto lg:max-w-lg">
         <input

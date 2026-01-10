@@ -138,7 +138,7 @@ export default function ShowDetail() {
   return (
     <div className={bgClassName}>
       <title>{title}</title>
-      <div className="lg:max-w-5xl lg:mx-auto">
+      <div className="lg:max-w-6xl m-auto">
         <div
           onClick={() => setZoom((z) => !z)}
           className={`${
@@ -173,7 +173,7 @@ export default function ShowDetail() {
         </div>
         <article className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none">
           <div className="lg:hidden bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
-          <div className="flex items-start justify-center">
+          <div className="flex items-start justify-around">
             <div
               className="hidden lg:block relative pr-4"
               style={{ minWidth: '10em', maxWidth: '10em' }}
