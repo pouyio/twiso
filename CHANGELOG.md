@@ -1,3 +1,10 @@
+## [2.14.1](https://github.com/pouyio/twiso/compare/v2.14.0...v2.14.1) (2026-01-10)
+
+
+### :art:
+
+* fixed max-width for wide viewports (lg) ([960a3d4](https://github.com/pouyio/twiso/commit/960a3d48777d2cfea4e916d205f0f7b1d96070b0))
+
 # [2.14.0](https://github.com/pouyio/twiso/compare/v2.13.1...v2.14.0) (2025-12-19)
 
 
