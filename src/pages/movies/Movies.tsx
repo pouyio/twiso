@@ -1,7 +1,7 @@
 import React from 'react';
 import { MoviesWatched } from './MoviesWatched';
 import { MoviesWatchlist } from './MoviesWatchlist';
-import { Underline } from '../shows/Shows';
+import { Underline } from '../../components/Underline';
 import { Icon } from '../../components/Icon';
 import { useSearchParams } from 'react-router';
 import { useTranslate } from '../../hooks/useTranslate';

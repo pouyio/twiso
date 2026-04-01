@@ -1,25 +1,12 @@
 import React from 'react';
 import ShowsWatchlist from './ShowsWatchlist';
 import ShowsWatched from './ShowsWatched';
+import { Underline } from '../../components/Underline';
 import { useTranslate } from '../../hooks/useTranslate';
-import { motion } from 'motion/react';
 import { Icon } from '../../components/Icon';
 import db, { USER_SHOWS_TABLE } from '../../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useSearchParams } from 'react-router';
-
-export const Underline: React.FC<{ selected: boolean }> = ({ selected }) => {
-  return (
-    <div className="border-b-2 border-transparent h-0.5 w-full">
-      {selected && (
-        <motion.div
-          layoutId="underline-tab"
-          className="bg-blue-300 h-0.5 w-full"
-        />
-      )}
-    </div>
-  );
-};
 
 export default function Shows() {
   const [searchParams, setSearchParams] = useSearchParams({
