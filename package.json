@@ -3,6 +3,9 @@
   "version": "2.14.1",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/assets/*.js'",
     "start": "vite",
