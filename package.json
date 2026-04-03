@@ -57,7 +57,7 @@
     "@vitest/browser": "^4.1.2",
     "@vitest/browser-playwright": "^4.1.2",
     "conventional-changelog-atom": "^2.0.3",
-    "esbuild": "0.28.0",
+    "esbuild": "^0.27.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jsdom": "^29.0.1",
@@ -90,5 +90,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.3",
+    "vite-plugin-pwa": {
+      "vite": "$vite"
+    },
+    "esbuild": "^0.27.0"
   }
 }
