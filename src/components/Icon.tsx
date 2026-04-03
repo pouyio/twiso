@@ -1,52 +1,52 @@
-import ArrowLeft from '../assets/round-alt-arrow-left-svgrepo-com.svg?react';
-import ArrowRight from '../assets/round-alt-arrow-right-svgrepo-com.svg?react';
-import DoubleArrowLeft from '../assets/round-double-alt-arrow-left-svgrepo-com.svg?react';
-import DoubleArrowRight from '../assets/round-double-alt-arrow-right-svgrepo-com.svg?react';
-import Tags from '../assets/tag-svgrepo-com.svg?react';
-import Movie from '../assets/clapperboard-open-play-svgrepo-com.svg?react';
-import TV from '../assets/tv-svgrepo-com.svg?react';
-import Calendar from '../assets/calendar-svgrepo-com.svg?react';
-import Search from '../assets/magnifer-svgrepo-com.svg?react';
-import Profile from '../assets/user-svgrepo-com.svg?react';
-import Clock from '../assets/alarm-svgrepo-com.svg?react';
-import Archive from '../assets/archive-check-svgrepo-com.svg?react';
-import Trailer from '../assets/video-frame-play-vertical-svgrepo-com.svg?react';
-import Share from '../assets/share-svgrepo-com.svg?react';
-import Like from '../assets/like-svgrepo-com.svg?react';
-import Play from '../assets/play-circle-svgrepo-com.svg?react';
-import Logout from '../assets/logout-2-svgrepo-com.svg?react';
-import Ufo from '../assets/ufo-3-svgrepo-com.svg?react';
-import Hidden from '../assets/eye-svgrepo-com.svg?react';
-import NoHidden from '../assets/eye-disable-svgrepo-com.svg?react';
-import Refresh from '../assets/refresh-svgrepo-com.svg?react';
+import ArrowLeft from '../assets/round-alt-arrow-left-svgrepo-com.svg';
+import ArrowRight from '../assets/round-alt-arrow-right-svgrepo-com.svg';
+import DoubleArrowLeft from '../assets/round-double-alt-arrow-left-svgrepo-com.svg';
+import DoubleArrowRight from '../assets/round-double-alt-arrow-right-svgrepo-com.svg';
+import Tags from '../assets/tag-svgrepo-com.svg';
+import Movie from '../assets/clapperboard-open-play-svgrepo-com.svg';
+import TV from '../assets/tv-svgrepo-com.svg';
+import Calendar from '../assets/calendar-svgrepo-com.svg';
+import Search from '../assets/magnifer-svgrepo-com.svg';
+import Profile from '../assets/user-svgrepo-com.svg';
+import Clock from '../assets/alarm-svgrepo-com.svg';
+import Archive from '../assets/archive-check-svgrepo-com.svg';
+import Trailer from '../assets/video-frame-play-vertical-svgrepo-com.svg';
+import Share from '../assets/share-svgrepo-com.svg';
+import Like from '../assets/like-svgrepo-com.svg';
+import Play from '../assets/play-circle-svgrepo-com.svg';
+import Logout from '../assets/logout-2-svgrepo-com.svg';
+import Ufo from '../assets/ufo-3-svgrepo-com.svg';
+import Hidden from '../assets/eye-svgrepo-com.svg';
+import NoHidden from '../assets/eye-disable-svgrepo-com.svg';
+import Refresh from '../assets/refresh-svgrepo-com.svg';
 import { ThemeContext } from '../contexts/ThemeContext';
 import React, { HTMLProps, useContext } from 'react';
 
 const iconsMap = {
-  'arrow-left': <ArrowLeft />,
-  'arrow-right': <ArrowRight />,
-  'double-arrow-left': <DoubleArrowLeft />,
-  'double-arrow-right': <DoubleArrowRight />,
-  tags: <Tags />,
-  tv: <TV />,
-  movie: <Movie />,
-  calendar: <Calendar />,
-  search: <Search />,
-  profile: <Profile />,
-  clock: <Clock />,
-  archive: <Archive />,
-  trailer: <Trailer />,
-  share: <Share />,
-  like: <Like />,
-  play: <Play />,
-  logout: <Logout />,
-  ufo: <Ufo />,
-  hidden: <Hidden />,
-  'no-hidden': <NoHidden />,
-  refresh: <Refresh />,
+  'arrow-left': ArrowLeft,
+  'arrow-right': ArrowRight,
+  'double-arrow-left': DoubleArrowLeft,
+  'double-arrow-right': DoubleArrowRight,
+  tags: Tags,
+  tv: TV,
+  movie: Movie,
+  calendar: Calendar,
+  search: Search,
+  profile: Profile,
+  clock: Clock,
+  archive: Archive,
+  trailer: Trailer,
+  share: Share,
+  like: Like,
+  play: Play,
+  logout: Logout,
+  ufo: Ufo,
+  hidden: Hidden,
+  'no-hidden': NoHidden,
+  refresh: Refresh,
 } as const;
 
-interface IconProps extends HTMLProps<HTMLDivElement> {
+interface IconProps extends HTMLProps<HTMLImageElement> {
   name: keyof typeof iconsMap;
 }
 
@@ -56,17 +56,19 @@ export const Icon: React.FC<IconProps> = ({
   ...props
 }) => {
   const { theme } = useContext(ThemeContext);
+  const IconComponent = iconsMap[name];
 
   return (
-    <div
+    <img
       {...props}
+      src={IconComponent}
+      alt={name}
+      style={{ width: 'auto' }}
       className={
         className +
-        (!theme || theme === 'theme-dark' ? ' invert hue-rotate-180' : '')
+        (!theme || theme === 'theme-dark' ? ' invert hue-rotate-180' : '') +
+        ''
       }
-      role="image"
-    >
-      {iconsMap[name]}
-    </div>
+    />
   );
 };

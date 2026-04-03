@@ -45,9 +45,8 @@
     "!**/*.test.js",
     "*.d.ts"
   ],
-  "module": "esm/index.js",
-  "main": "cjs/index.js",
-  "browser": "umd/index.js",
+  "main": "src/cjs/index.js",
+  "module": "src/esm/index.js",
   "types": "react-image.d.ts",
   "author": "mbrevda@gmail.com",
   "license": "MIT",
