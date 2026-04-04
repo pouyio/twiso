@@ -14,12 +14,8 @@ export const useImage = (
   const [imgPreview, setImgPreview] = useState('');
   const [message, setMessage] = useState('');
 
-  const { language, config } = useAppSelector((state) => {
-    return {
-      language: state.config.language,
-      config: state.config.img,
-    };
-  });
+  const language = useAppSelector((state) => state.config.language);
+  const config = useAppSelector((state) => state.config.img);
 
   const load = () => {
     setImgPreview('');
