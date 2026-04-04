@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "2.5.0",
-    "@sentry/react": "8.42.0",
+    "@sentry/react": "8.45.0",
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "2.101.1",
@@ -41,7 +41,6 @@
     "@cloudflare/workers-types": "^4.20250303.0",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "@sentry/browser": "7.119.2",
     "@tailwindcss/vite": "4.2.2",
     "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
