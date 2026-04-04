@@ -88,9 +88,11 @@ function useImage({
   imgPromise,
   useSuspense = true,
 }: UseImageOptions): UseImageResult {
-  const [, setState] = useState(false);
+  const [, setState] = useState(0);
   const filteredSrcList = filterEmpty(normalizeSrcList(srcList));
   const cacheKey = filteredSrcList.join('');
+
+  const triggerRender = () => setState((c) => c + 1);
 
   if (imageCache[cacheKey]) {
     const cached = imageCache[cacheKey];
@@ -107,11 +109,11 @@ function useImage({
     cached.promise
       .then((src) => {
         imageCache[cacheKey] = { ...cached, cache: 'resolved', src };
-        if (!useSuspense) setState((c) => !c);
+        if (!useSuspense) triggerRender();
       })
       .catch((error) => {
         imageCache[cacheKey] = { ...cached, cache: 'rejected', error };
-        if (!useSuspense) setState((c) => !c);
+        if (!useSuspense) triggerRender();
       });
 
     if (useSuspense) {
@@ -136,7 +138,7 @@ function useImage({
         cache: 'resolved',
         src,
       };
-      if (!useSuspense) setState((c) => !c);
+      if (!useSuspense) triggerRender();
     })
     .catch((error) => {
       imageCache[cacheKey] = {
@@ -144,7 +146,7 @@ function useImage({
         cache: 'rejected',
         error,
       };
-      if (!useSuspense) setState((c) => !c);
+      if (!useSuspense) triggerRender();
       if (useSuspense) throw error;
     });
 
