@@ -2,7 +2,7 @@ import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
 import { config, IMG_URL } from './apiConfig';
 import { traktClient } from './axiosClients';
-import Bottleneck from 'bottleneck';
+import PQueue from 'p-queue';
 import { ImgConfig } from '../models/ImgConfig';
 import { ItemType } from '../models/ItemType';
 import { ImageResponse } from '../models/Image';
@@ -26,13 +26,14 @@ import { Popular } from '../models/Popular';
 import { Ids } from '../models/Ids';
 import { supabase } from './supabase';
 
-const limiter = new Bottleneck({
-  reservoir: 800,
-  reservoirRefreshAmount: 800,
-  reservoirRefreshInterval: 5 * 60 * 1000,
-  minTime: 50,
-  maxConcurrent: 100,
+const limiter = new PQueue({
+  concurrency: 100,
+  interval: 5 * 60 * 1000,
+  intervalCap: 800,
 });
+
+const addToLimiter = <T>(fn: () => Promise<T>) =>
+  limiter.add(fn, { throwOnTimeout: true }) as Promise<T>;
 
 const limitClient = rateLimit(axios.create(), {
   maxRequests: 42,
@@ -59,19 +60,19 @@ export const getApi = <T extends SearchMovie | SearchShow>(
   id: string,
   type: 'movie' | 'show'
 ) => {
-  return limiter.wrap(() =>
+  return addToLimiter(() =>
     traktClient.get<T[]>(`/search/imdb/${id}?type=${type}&extended=full`)
-  )();
+  );
 };
 
 export const getSeasonsApi = (id: string, language: Language) => {
-  return limiter.wrap(() =>
+  return addToLimiter(() =>
     traktClient
       .get<Season[]>(
         `/shows/${id}/seasons?extended=episodes&translations=${language}`
       )
       .then(({ data }) => data)
-  )();
+  );
 };
 
 export const getSeasonEpisodesApi = (
@@ -79,11 +80,11 @@ export const getSeasonEpisodesApi = (
   season: number,
   language: Language
 ) => {
-  return limiter.wrap(() =>
+  return addToLimiter(() =>
     traktClient.get<Episode[]>(
       `/shows/${id}/seasons/${season}?extended=full&translations=${language}`
     )
-  )();
+  );
 };
 
 export const getTranslationsApi = (
@@ -91,13 +92,13 @@ export const getTranslationsApi = (
   type: ItemType,
   language: Language
 ) => {
-  return limiter.wrap(() =>
+  return addToLimiter(() =>
     traktClient
       .get<Translation[]>(`/${type}s/${id}/translations/${language}`)
       .then(({ data }) =>
         data.find((t) => t.language === 'es' && t.country === 'es')
       )
-  )();
+  );
 };
 
 export const searchApi = <T>(
