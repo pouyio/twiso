@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { getRelatedApi } from '../utils/api';
 import ImageLink from './ImageLink';
 import { Empty } from './Empty';
 import { Show } from '../models/Show';
 import { Movie } from '../models/Movie';
 import { Ids } from '../models/Ids';
+import { useScrollRestoration } from '../hooks/useScrollRestoration';
 
 interface IRelatedProps {
   itemIds: Ids;
@@ -72,6 +73,8 @@ export const placeholders = [
 
 const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
   const [results, setResults] = useState<(Show | Movie)[]>();
+  const resultsRef = useRef<HTMLUListElement>(null);
+  useScrollRestoration(resultsRef, 'horizontal');
 
   useEffect(() => {
     setResults(undefined);
@@ -85,6 +88,7 @@ const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
 
   return (
     <ul
+      ref={resultsRef}
       className="flex overflow-x-auto -mx-4 my-2 lg:mx-0 justify-between lg:overflow-auto lg:flex-wrap"
       style={{ WebkitOverflowScrolling: 'touch' }}
     >

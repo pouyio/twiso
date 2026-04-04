@@ -1,4 +1,5 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useRef } from 'react';
+import { useScrollRestoration } from '../hooks/useScrollRestoration';
 
 const Root: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -23,8 +24,10 @@ const Navbar: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 const Content: React.FC<PropsWithChildren> = ({ children }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  useScrollRestoration(ref);
   return (
-    <div id="content" className="overflow-x-hidden">
+    <div id="content" className="overflow-x-hidden" ref={ref}>
       {children}
     </div>
   );

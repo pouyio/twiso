@@ -1,5 +1,5 @@
 import { SearchFilters, IFilters } from '../../pages/search/SearchFilters';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Emoji from '../../components/Emoji';
 import ImageLink from '../../components/ImageLink';
 import Popular from '../../components/Popular';
@@ -9,6 +9,7 @@ import { useFilter } from '../../hooks/useFilter';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useTranslate } from '../../hooks/useTranslate';
 import { SearchMovie, SearchPerson, SearchShow } from '../../models/Movie';
+import { useScrollRestoration } from '../../hooks/useScrollRestoration';
 
 export type RemoteFilterTypes = Array<'movie' | 'show' | 'person'>;
 type LocalFilterTypes = Array<'movie' | 'show'>;
@@ -26,6 +27,12 @@ export default function Search() {
   const { filterBy } = useFilter();
   const debouncedSearch = useDebounce(search, 500);
   const { t } = useTranslate();
+  const moviesScroll = useRef<HTMLUListElement>(null);
+  const showsScroll = useRef<HTMLUListElement>(null);
+  const peopleScroll = useRef<HTMLUListElement>(null);
+  useScrollRestoration(moviesScroll, 'horizontal', 'movies');
+  useScrollRestoration(showsScroll, 'horizontal', 'shows');
+  useScrollRestoration(peopleScroll, 'horizontal', 'people');
 
   const remoteSearch = (query: string, types: RemoteFilterTypes) => {
     setLoading(true);
@@ -113,6 +120,7 @@ export default function Search() {
                   {t('movies')}
                 </h1>
                 <ul
+                  ref={moviesScroll}
                   className="-mx-2 flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
                   style={{
                     WebkitOverflowScrolling: 'touch',
@@ -140,6 +148,7 @@ export default function Search() {
                   {t('shows')}
                 </h1>
                 <ul
+                  ref={showsScroll}
                   className="-mx-2 flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
                   style={{
                     WebkitOverflowScrolling: 'touch',
@@ -167,6 +176,7 @@ export default function Search() {
                   {t('people')}
                 </h1>
                 <ul
+                  ref={peopleScroll}
                   className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
                   style={{
                     WebkitOverflowScrolling: 'touch',

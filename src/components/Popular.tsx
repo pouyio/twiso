@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ImageLink from './ImageLink';
 import { getPopularApi } from '../utils/api';
 import Emoji from './Emoji';
 import { Popular as IPopular } from '../models/Popular';
 import { useTranslate } from '../hooks/useTranslate';
+import { useScrollRestoration } from '../hooks/useScrollRestoration';
 
 interface IPopularProps {
   type: 'movie' | 'show';
@@ -13,6 +14,8 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<IPopular[]>([]);
   const { t } = useTranslate();
+  const resultsScroll = useRef<HTMLUListElement>(null);
+  useScrollRestoration(resultsScroll, 'horizontal', `popular_${type}`);
 
   useEffect(() => {
     let isSubscribed = true;
@@ -35,6 +38,7 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
         <span className="mx-2">{t(`popular_${type}`)}</span>
       </h1>
       <ul
+        ref={resultsScroll}
         className="-mx-4 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto"
         style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
       >
