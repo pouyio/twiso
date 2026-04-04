@@ -1,3 +1,10 @@
+# [2.15.0](https://github.com/pouyio/twiso/compare/v2.14.1...v2.15.0) (2026-04-04)
+
+
+### :sparkles:
+
+* save scroll state when navigating ([13e54ad](https://github.com/pouyio/twiso/commit/13e54ad4211b20ee9865beb0fdf6ecd7d36a35b3))
+
 ## [2.14.1](https://github.com/pouyio/twiso/compare/v2.14.0...v2.14.1) (2026-01-10)
 
 
