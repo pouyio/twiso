@@ -40,7 +40,7 @@ export default function MovieDetail() {
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
   const [zoom, setZoom] = useState(false);
-  const refreshIconRef = useRef<HTMLDivElement>(null);
+  const refreshIconRef = useRef<HTMLImageElement>(null);
   useEffect(() => {
     // @ts-expect-error limitations on Dexie EntityTable
     db[DETAIL_MOVIES_TABLE].get(id).then((movie) => {

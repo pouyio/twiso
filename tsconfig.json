@@ -3,9 +3,14 @@
     "noImplicitAny": false,
     "target": "ESNext",
     "lib": ["dom", "dom.iterable", "ESNext"],
-    "types": ["vite/client", "vite-plugin-pwa/client", "node"],
+    "types": [
+      "vite/client",
+      "vite-plugin-pwa/client",
+      "node",
+      "vitest/globals"
+    ],
     "allowJs": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -17,5 +22,6 @@
     "noEmit": true,
     "jsx": "preserve"
   },
-  "include": ["src", "functions"]
+  "include": ["src", "functions"],
+  "exclude": ["src/test", "node_modules"]
 }

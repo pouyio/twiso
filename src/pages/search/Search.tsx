@@ -1,5 +1,5 @@
 import { SearchFilters, IFilters } from '../../pages/search/SearchFilters';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import Emoji from '../../components/Emoji';
 import ImageLink from '../../components/ImageLink';
 import Popular from '../../components/Popular';
@@ -43,18 +43,18 @@ export default function Search() {
     });
   };
 
-  const localSearch = useCallback((query: string, types: LocalFilterTypes) => {
+  const localSearch = (query: string, types: LocalFilterTypes) => {
     setMovieResults([]);
     setShowResults([]);
     setPeopleResults([]);
 
     if (types.includes('movie')) {
-      setMovieResults(filterBy(query, 'movie'));
+      setMovieResults(filterBy<SearchMovie>(query, 'movie'));
     }
     if (types.includes('show')) {
-      setShowResults(filterBy(query, 'show'));
+      setShowResults(filterBy<SearchShow>(query, 'show'));
     }
-  }, []);
+  };
 
   useEffect(() => {
     if (!debouncedSearch) {

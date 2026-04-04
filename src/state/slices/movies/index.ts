@@ -62,7 +62,7 @@ const moviesSlice = createSlice({
           removeWatchlist.fulfilled
         ),
         (state, { meta }) => {
-          state.pending.watchlist = state.pending.watched.filter(
+          state.pending.watchlist = state.pending.watchlist.filter(
             (p) => p !== meta.arg.movie.ids.imdb
           );
         }

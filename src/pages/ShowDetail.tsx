@@ -33,7 +33,7 @@ export default function ShowDetail() {
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
   const [zoom, setZoom] = useState(false);
-  const refreshIconRef = useRef<HTMLDivElement>(null);
+  const refreshIconRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     // @ts-expect-error limitations on Dexie EntityTable

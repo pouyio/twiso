@@ -1,7 +1,11 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import Fuse from 'fuse.js';
 import { useAppSelector } from '../state/store';
+import { ItemType } from '../models/ItemType';
+import { SearchMovie, SearchShow } from '../models/Movie';
 import db, {
+  DBMovieDetail,
+  DBShowDetail,
   DETAIL_MOVIES_TABLE,
   DETAIL_SHOWS_TABLE,
   USER_MOVIES_TABLE,
@@ -61,37 +65,37 @@ export const useFilter = () => {
       });
   };
 
-  const filterBy = (text: string, type: 'movie' | 'show') => {
+  const filterBy = <T extends SearchMovie | SearchShow>(
+    text: string,
+    type: 'movie' | 'show'
+  ): T[] => {
     if (!text) {
       return [];
     }
 
-    const originalItems: any[] =
-      type === 'movie'
-        ? [...Object.values(movies)]
-        : type === 'show'
-        ? [...Object.values(shows)]
-        : [];
-
-    const keys =
-      type === 'movie'
-        ? [
-            { name: 'movie.title', weight: 0.7 },
-            { name: 'movie.overview', weight: 0.3 },
-          ]
-        : type === 'show'
-        ? [
-            { name: 'show.title', weight: 0.7 },
-            { name: 'show.overview', weight: 0.3 },
-          ]
-        : [];
-
-    const fuse = new Fuse(originalItems, {
+    const originalItems = type === 'movie' ? movies : shows;
+    const fuse = new Fuse(originalItems as (DBMovieDetail | DBShowDetail)[], {
       threshold: 0.38,
-      keys,
+      keys: [
+        { name: 'title', weight: 0.7 },
+        { name: 'overview', weight: 0.3 },
+      ],
     });
 
-    return fuse.search(text).map((r) => r.item);
+    const results = fuse.search(text);
+
+    if (type === 'movie') {
+      return results.map((r) => ({
+        movie: r.item as DBMovieDetail,
+        score: r.score ?? 0,
+        type: 'movie',
+      })) as T[];
+    }
+    return results.map((r) => ({
+      show: r.item as DBShowDetail,
+      score: r.score ?? 0,
+      type: 'show' as ItemType,
+    })) as T[];
   };
 
   return { filter, filterBy };
