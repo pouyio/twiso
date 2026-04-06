@@ -183,7 +183,10 @@ const Episodes: React.FC<ISeasonsProps> = ({
                         className="w-10 flex"
                         onClick={() => toggleEpisode(e)}
                       >
-                        <Icon name="play" className="h-8 m-auto" />
+                        <Icon
+                          name={isEpisodeWatched(e.number) ? 'cancel' : 'play'}
+                          className="h-8 m-auto"
+                        />
                       </button>
                     ))}
                 </div>
