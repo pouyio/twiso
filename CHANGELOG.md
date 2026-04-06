@@ -1,3 +1,10 @@
+## [2.16.1](https://github.com/pouyio/twiso/compare/v2.16.0...v2.16.1) (2026-04-06)
+
+
+### :bug:
+
+* fix episodes translations & create Episode component ([0e9f912](https://github.com/pouyio/twiso/commit/0e9f912e54c2123960c4c9f681b341f3b4d26b2a))
+
 # [2.16.0](https://github.com/pouyio/twiso/compare/v2.15.1...v2.16.0) (2026-04-06)
 
 
