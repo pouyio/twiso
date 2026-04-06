@@ -1,3 +1,10 @@
+## [2.17.1](https://github.com/pouyio/twiso/compare/v2.17.0...v2.17.1) (2026-04-06)
+
+
+### :bug:
+
+* update translations ([1ed9248](https://github.com/pouyio/twiso/commit/1ed9248540e5b44c3f010f2f26ed745a5574b49d))
+
 # [2.17.0](https://github.com/pouyio/twiso/compare/v2.16.2...v2.17.0) (2026-04-06)
 
 
