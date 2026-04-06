@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import Emoji from '../Emoji';
 import { Icon } from '../../components/Icon';
-import { SeasonEpisode } from '../../models/Show';
+import { SeasonEpisode, Episode as EpisodeModel } from '../../models/Show';
 import { motion } from 'framer-motion';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useAppSelector } from '../../state/store';
 
 interface EpisodeProps {
   episode: SeasonEpisode;
-  episodeDate: { number: number; first_aired: string } | undefined;
+  episodeDate: EpisodeModel | undefined;
   watchedEpisodeNumbers: Set<number>;
   isPending: boolean;
   addEpisodeWatched: (episode: SeasonEpisode) => void;
@@ -31,7 +31,7 @@ export const Episode: React.FC<EpisodeProps> = ({
 
   const getTranslated = (string: 'title' | 'overview') => {
     if (language !== 'es') {
-      return episode[string];
+      return string === 'title' ? episode.title : episodeDate?.overview ?? '';
     }
 
     if (episode.translations?.length) {
