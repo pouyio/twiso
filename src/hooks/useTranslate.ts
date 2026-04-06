@@ -98,6 +98,8 @@ const en = {
   studios: 'Studios',
   in_spain: 'In Spain',
   'no-info-title': 'Ups, there was a problem',
+  show: 'show',
+  movie: 'movie',
   'no-info-message':
     'It looks like this {} has no information available yet, try again later.',
   'go-back': 'Go back',
@@ -202,8 +204,10 @@ const es = {
   studios: 'Estudios',
   in_spain: 'En España',
   'no-info-title': 'Ups, ha habido un problema',
+  show: 'serie',
+  movie: 'película',
   'no-info-message':
-    'Parece que esta serie no tiene información disponible, inténtalo más tarde.',
+    'Parece que esta {} no tiene información disponible, inténtalo más tarde.',
   'no-info-movie-message':
     'Parece que esta película no tiene información disponible, inténtalo más tarde.',
   'go-back': 'Volver',
