@@ -1,3 +1,14 @@
+# [2.16.0](https://github.com/pouyio/twiso/compare/v2.15.1...v2.16.0) (2026-04-06)
+
+
+### :art:
+
+* added new icon to unwatch episode ([ad9c545](https://github.com/pouyio/twiso/commit/ad9c5450d31ca33a5f49f14fe3bd533e6ed5df58))
+
+### :sparkles:
+
+* added studios to shows ([31682e2](https://github.com/pouyio/twiso/commit/31682e2ddc672398507a2c08b1d7e29804ac5a1c))
+
 ## [2.15.1](https://github.com/pouyio/twiso/compare/v2.15.0...v2.15.1) (2026-04-06)
 
 
