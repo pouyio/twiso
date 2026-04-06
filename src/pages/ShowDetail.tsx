@@ -13,18 +13,20 @@ import SeasonsContainer from '../components/Seasons/SeasonsContainer';
 import ShowWatchButton from '../components/ShowWatchButton';
 import { AlertContext } from '../contexts/AlertContext';
 import { People as IPeople } from '../models/People';
-import { getPeopleApi, getRatingsApi } from '../utils/api';
+import { getPeopleApi, getRatingsApi, getStudiosApi } from '../utils/api';
 import { Icon } from '../components/Icon';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
-import { Ratings } from '../models/Api';
+import { Ratings, Studio } from '../models/Api';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useImage } from '../hooks/useImage';
+import Studios from '../components/Studios';
 
 export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
+  const [studios, setStudios] = useState<Studio[]>([]);
   const [showProgressPercentage, setShowProgressPercentage] = useState(false);
   const language = useAppSelector((state) => state.config.language);
   const { id = '' } = useParams<{ id: string }>();
@@ -49,6 +51,9 @@ export default function ShowDetail() {
     });
     getRatingsApi(id, 'show').then(({ data }) => {
       setRatings(data);
+    });
+    getStudiosApi(id, 'show').then(({ data }) => {
+      setStudios(data);
     });
   }, [id]);
 
@@ -293,6 +298,11 @@ export default function ShowDetail() {
 
           <div className="my-4">
             <People people={people} type="show" />
+          </div>
+
+          <div className="my-4">
+            <p className="font-medium font-family-text">{t('studios')}:</p>
+            <Studios studios={studios} />
           </div>
 
           <div className="my-4">
