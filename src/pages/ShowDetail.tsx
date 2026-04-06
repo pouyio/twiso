@@ -22,12 +22,14 @@ import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useImage } from '../hooks/useImage';
 import Studios from '../components/Studios';
+import { Error } from './Error';
 
 export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const [studios, setStudios] = useState<Studio[]>([]);
   const [showProgressPercentage, setShowProgressPercentage] = useState(false);
+  const [loadError, setLoadError] = useState<boolean>(false);
   const language = useAppSelector((state) => state.config.language);
   const { id = '' } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
@@ -41,7 +43,9 @@ export default function ShowDetail() {
     // @ts-expect-error limitations on Dexie EntityTable
     db[DETAIL_SHOWS_TABLE].get(id).then((show) => {
       if (!show) {
-        dispatch(fillDetail({ id }));
+        dispatch(fillDetail({ id }))
+          .unwrap()
+          .catch(() => setLoadError(true));
       }
     });
     setPeople(undefined);
@@ -101,6 +105,19 @@ export default function ShowDetail() {
   };
 
   if (!item) {
+    if (loadError) {
+      return (
+        <Error
+          subtitle={t('no-info-message', t('show'))}
+          onRetry={() => {
+            setLoadError(false);
+            dispatch(fillDetail({ id }))
+              .unwrap()
+              .catch(() => setLoadError(true));
+          }}
+        />
+      );
+    }
     return (
       <div
         className="flex justify-center text-6xl items-center pt-5"

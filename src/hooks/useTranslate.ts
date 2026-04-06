@@ -97,6 +97,11 @@ const en = {
   'no-episodes': 'No episodes available yet',
   studios: 'Studios',
   in_spain: 'In Spain',
+  'no-info-title': 'Ups, there was a problem',
+  'no-info-message':
+    'It looks like this {} has no information available yet, try again later.',
+  'go-back': 'Go back',
+  retry: 'Retry',
 };
 
 const es = {
@@ -196,6 +201,13 @@ const es = {
   'no-episodes': 'Aún no hay episodios disponibles',
   studios: 'Estudios',
   in_spain: 'En España',
+  'no-info-title': 'Ups, ha habido un problema',
+  'no-info-message':
+    'Parece que esta serie no tiene información disponible, inténtalo más tarde.',
+  'no-info-movie-message':
+    'Parece que esta película no tiene información disponible, inténtalo más tarde.',
+  'go-back': 'Volver',
+  retry: 'Reintentar',
 };
 
 const translations: Record<Language, Record<string, string>> = {

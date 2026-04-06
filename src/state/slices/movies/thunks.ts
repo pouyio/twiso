@@ -85,6 +85,10 @@ export const fillDetail = createAsyncThunk<
     getApi<SearchMovie>(id, 'movie'),
     getTranslationsApi(id, 'movie', 'es'),
   ]);
+  if (!results[0].data || results[0].data.length === 0) {
+    throw new Error('No info available for this movie: ' + id);
+  }
   const movie = results[0].data[0].movie;
+
   return { ...movie, translation: results[1] };
 });

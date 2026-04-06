@@ -24,6 +24,9 @@ const _getRemoteWithTranslations = async (
     getApi<SearchShow>(id, 'show'),
     getTranslationsApi(id, 'show', 'es'),
   ]);
+  if (!results[0].data || results[0].data.length === 0) {
+    throw new Error('No info available for this show: ' + id);
+  }
   const show = results[0].data[0].show;
   return { ...show, translation: results[1] };
 };

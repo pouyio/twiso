@@ -27,12 +27,14 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useImage } from '../hooks/useImage';
 import Studios from '../components/Studios';
 import { Releases } from '../components/Releases';
+import { Error } from './Error';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
   const [ratings, setRatings] = useState<Ratings>();
   const [studios, setStudios] = useState<Studio[]>([]);
   const [releases, setReleases] = useState<Release[]>([]);
+  const [loadError, setLoadError] = useState(false);
   const language = useAppSelector((state) => state.config.language);
   const { id = '' } = useParams<{ id: string }>();
   const { showAlert } = useContext(AlertContext);
@@ -45,7 +47,9 @@ export default function MovieDetail() {
     // @ts-expect-error limitations on Dexie EntityTable
     db[DETAIL_MOVIES_TABLE].get(id).then((movie) => {
       if (!movie) {
-        dispatch(fillDetail({ id }));
+        dispatch(fillDetail({ id }))
+          .unwrap()
+          .catch(() => setLoadError(true));
       }
     });
     setPeople(undefined);
@@ -87,6 +91,19 @@ export default function MovieDetail() {
   }, [liveStatus]);
 
   if (!item) {
+    if (loadError) {
+      return (
+        <Error
+          subtitle={t('no-info-message', t('movie'))}
+          onRetry={() => {
+            setLoadError(false);
+            dispatch(fillDetail({ id }))
+              .unwrap()
+              .catch(() => setLoadError(true));
+          }}
+        />
+      );
+    }
     return (
       <div className="flex justify-center text-6xl items-center pt-5 mt-[env(safe-area-inset-top)]">
         <Emoji emoji="⏳" rotating={true} />

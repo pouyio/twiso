@@ -20,6 +20,7 @@ import Hidden from '../assets/eye-svgrepo-com.svg';
 import NoHidden from '../assets/eye-disable-svgrepo-com.svg';
 import Refresh from '../assets/refresh-svgrepo-com.svg';
 import Cancel from '../assets/close-circle-svgrepo-com.svg';
+import Incongnito from '../assets/incognito-svgrepo-com.svg';
 import { ThemeContext } from '../contexts/ThemeContext';
 import React, { HTMLProps, useContext } from 'react';
 
@@ -46,6 +47,7 @@ const iconsMap = {
   'no-hidden': NoHidden,
   refresh: Refresh,
   cancel: Cancel,
+  incognito: Incongnito,
 } as const;
 
 interface IconProps extends HTMLProps<HTMLImageElement> {
