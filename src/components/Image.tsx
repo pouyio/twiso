@@ -100,7 +100,11 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
                 {text}
                 <br />
                 {message || (
-                  <Emoji className="ml-3" emoji="⏳" rotating={true} />
+                  <Emoji
+                    className="ml-3 inline-block"
+                    emoji="⏳"
+                    rotating={true}
+                  />
                 )}
               </h1>
             }

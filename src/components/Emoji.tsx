@@ -16,9 +16,7 @@ export default function Emoji({
   return (
     <span
       {...props}
-      className={
-        className + (rotating ? ' animate-spin' : '') + ' inline-block'
-      }
+      className={className + (rotating ? ' animate-spin' : '')}
       role="img"
       aria-label="emoji"
     >
