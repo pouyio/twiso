@@ -1,3 +1,10 @@
+## [2.15.1](https://github.com/pouyio/twiso/compare/v2.15.0...v2.15.1) (2026-04-06)
+
+
+### :bug:
+
+* undo fix emoji spinning, display inline always ([2857447](https://github.com/pouyio/twiso/commit/2857447eee368731550673ea36356ebb7e304729))
+
 # [2.15.0](https://github.com/pouyio/twiso/compare/v2.14.1...v2.15.0) (2026-04-04)
 
 
