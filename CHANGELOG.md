@@ -1,3 +1,10 @@
+# [2.17.0](https://github.com/pouyio/twiso/compare/v2.16.2...v2.17.0) (2026-04-06)
+
+
+### :sparkles:
+
+* added error handling for missing movies and shows ([336d6df](https://github.com/pouyio/twiso/commit/336d6df48b6f8bdf121f79fa79d2e98237e4db3a))
+
 ## [2.16.2](https://github.com/pouyio/twiso/compare/v2.16.1...v2.16.2) (2026-04-06)
 
 
