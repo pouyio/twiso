@@ -1,3 +1,10 @@
+## [2.16.2](https://github.com/pouyio/twiso/compare/v2.16.1...v2.16.2) (2026-04-06)
+
+
+### :bug:
+
+* fix missing string in original language ([58bfeec](https://github.com/pouyio/twiso/commit/58bfeec36f81befb7e0aef372c65e8e3794f82cd))
+
 ## [2.16.1](https://github.com/pouyio/twiso/compare/v2.16.0...v2.16.1) (2026-04-06)
 
 
