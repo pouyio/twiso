@@ -19,7 +19,7 @@
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "2.101.1",
-    "axios": "1.7.4",
+    "axios": "1.15.0",
     "axios-rate-limit": "1.4.0",
     "date-fns": "4.1.0",
     "dexie": "4.0.11",
