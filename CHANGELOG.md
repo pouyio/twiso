@@ -1,3 +1,10 @@
+## [2.17.2](https://github.com/pouyio/twiso/compare/v2.17.1...v2.17.2) (2026-04-14)
+
+
+### :art:
+
+* store filters on url to preserve state when navigating back and for ([9ceda4e](https://github.com/pouyio/twiso/commit/9ceda4e5619f165010cfdb26f2ea1a5376a967a4))
+
 ## [2.17.1](https://github.com/pouyio/twiso/compare/v2.17.0...v2.17.1) (2026-04-06)
 
 
