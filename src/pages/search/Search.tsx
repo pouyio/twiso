@@ -1,11 +1,11 @@
-import { SearchFilters, IFilters } from '../../pages/search/SearchFilters';
+import { SearchFilters } from '../../pages/search/SearchFilters';
 import React, { useEffect, useRef, useState } from 'react';
 import Emoji from '../../components/Emoji';
 import ImageLink from '../../components/ImageLink';
 import Popular from '../../components/Popular';
 import { searchApi } from '../../utils/api';
-import { useSearch } from '../../hooks/useSearch';
 import { useFilter } from '../../hooks/useFilter';
+import { useSearchParams } from '../../hooks/useSearchParams';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useTranslate } from '../../hooks/useTranslate';
 import { SearchMovie, SearchPerson, SearchShow } from '../../models/Movie';
@@ -15,17 +15,13 @@ export type RemoteFilterTypes = Array<'movie' | 'show' | 'person'>;
 type LocalFilterTypes = Array<'movie' | 'show'>;
 
 export default function Search() {
-  const { search, setSearch } = useSearch();
+  const { params, setQuery, setFilters } = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [movieResults, setMovieResults] = useState<SearchMovie[]>([]);
   const [showResults, setShowResults] = useState<SearchShow[]>([]);
   const [peopleResults, setPeopleResults] = useState<SearchPerson[]>([]);
-  const [filters, setFilters] = useState<IFilters>({
-    remote: false,
-    types: [],
-  });
   const { filterBy } = useFilter();
-  const debouncedSearch = useDebounce(search, 500);
+  const debouncedSearch = useDebounce(params.query, 500);
   const { t } = useTranslate();
   const moviesScroll = useRef<HTMLUListElement>(null);
   const showsScroll = useRef<HTMLUListElement>(null);
@@ -38,7 +34,7 @@ export default function Search() {
     setLoading(true);
     searchApi<SearchMovie & SearchShow & SearchPerson>(
       query,
-      types.join(',')
+      types.join(','),
     ).then(({ data }) => {
       const movies: SearchMovie[] = data.filter((r) => r.type === 'movie');
       const shows: SearchShow[] = data.filter((r) => r.type === 'show');
@@ -71,19 +67,19 @@ export default function Search() {
       return;
     }
 
-    if (filters.remote) {
-      const fullTypes: RemoteFilterTypes = filters.types.length
-        ? filters.types
+    if (params.remote) {
+      const fullTypes: RemoteFilterTypes = params.types.length
+        ? params.types
         : ['movie', 'show', 'person'];
       remoteSearch(debouncedSearch, fullTypes);
       return;
     }
 
-    const fullTypes = filters.types.filter((f) => f !== 'person').length
-      ? filters.types.filter((f) => f !== 'person')
+    const fullTypes = params.types.filter((f) => f !== 'person').length
+      ? params.types.filter((f) => f !== 'person')
       : ['movie', 'show'];
     localSearch(debouncedSearch, fullTypes as LocalFilterTypes);
-  }, [filters, debouncedSearch]);
+  }, [params, debouncedSearch]);
 
   return (
     <div
@@ -97,10 +93,10 @@ export default function Search() {
           type="text"
           placeholder={t('search_placeholder')}
           autoFocus={true}
-          onChange={(e) => setSearch(e.target.value)}
-          value={search}
+          onChange={(e) => setQuery(e.target.value)}
+          value={params.query}
         />
-        <button onClick={() => setSearch('')}>
+        <button onClick={() => setQuery('')}>
           <Emoji
             className="ml-3 mr-2"
             emoji={loading ? '⏳' : '❌'}
@@ -109,11 +105,11 @@ export default function Search() {
         </button>
       </div>
 
-      <SearchFilters onFiltersChange={setFilters} />
+      <SearchFilters filters={params} onFiltersChange={setFilters} />
 
-      {search ? (
+      {params.query ? (
         <>
-          {(filters.types.length === 0 || filters.types.includes('movie')) &&
+          {(params.types.length === 0 || params.types.includes('movie')) &&
             (movieResults.length ? (
               <>
                 <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
@@ -141,7 +137,7 @@ export default function Search() {
               <h1 className="text-3xl mt-8 text-gray-700">{t('no_movies')}</h1>
             ))}
 
-          {(filters.types.length === 0 || filters.types.includes('show')) &&
+          {(params.types.length === 0 || params.types.includes('show')) &&
             (showResults.length ? (
               <>
                 <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
@@ -169,7 +165,7 @@ export default function Search() {
               <h1 className="text-3xl mt-8 text-gray-700">{t('no_shows')}</h1>
             ))}
 
-          {(filters.types.length === 0 || filters.types.includes('person')) &&
+          {(params.types.length === 0 || params.types.includes('person')) &&
             (peopleResults.length ? (
               <>
                 <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
