@@ -10,7 +10,7 @@ interface IRatingProps {
 const Rating: React.FC<IRatingProps> = ({ rating = 0, votes = 0, onClick }) => {
   const totalVotes = React.useMemo(() => {
     if (votes < 999) return votes;
-    return Math.ceil(votes / 1000) + 'K';
+    return Math.ceil(votes / 1000) + 'k';
   }, [votes]);
 
   return (
@@ -21,7 +21,8 @@ const Rating: React.FC<IRatingProps> = ({ rating = 0, votes = 0, onClick }) => {
     >
       <Icon name="like" className="h-5" />
       <span className="whitespace-nowrap">
-        {Math.floor((rating ?? 0) * 10)}% &middot; {totalVotes}
+        <span className="font-semibold">{(rating ?? 0).toFixed(1)} </span>
+        <span className="text-sm">({totalVotes})</span>
       </span>
     </div>
   );

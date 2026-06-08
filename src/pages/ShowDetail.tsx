@@ -17,14 +17,14 @@ import { AlertContext } from '../contexts/AlertContext';
 import { People as IPeople } from '../models/People';
 import {
   getPeopleApi,
-  getRatingsApi,
+  getShowRatingsApi,
   getShowSeasonRatingsApi,
   getStudiosApi,
 } from '../utils/api';
 import { Icon } from '../components/Icon';
 import { useShare } from '../hooks/useShare';
 import { useTranslate } from '../hooks/useTranslate';
-import { Ratings, SeasonRating, Studio } from '../models/Api';
+import { SeasonRating, ShowRating, Studio } from '../models/Api';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useImage } from '../hooks/useImage';
@@ -33,9 +33,9 @@ import { Error } from './Error';
 
 export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
-  const [ratings, setRatings] = useState<Ratings>();
   const [studios, setStudios] = useState<Studio[]>([]);
   const [seasonRatings, setSeasonRatings] = useState<SeasonRating[] | null>();
+  const [showRating, setShowRating] = useState<ShowRating>();
   const [showProgressPercentage, setShowProgressPercentage] = useState(false);
   const [ratingsExpanded, setRatingsExpanded] = useState(false);
   const [loadError, setLoadError] = useState<boolean>(false);
@@ -58,12 +58,8 @@ export default function ShowDetail() {
       }
     });
     setPeople(undefined);
-    setRatings(undefined);
     getPeopleApi(id, 'show').then(({ data }) => {
       setPeople(data);
-    });
-    getRatingsApi(id, 'show').then(({ data }) => {
-      setRatings(data);
     });
     getStudiosApi(id, 'show').then(({ data }) => {
       setStudios(data);
@@ -82,14 +78,17 @@ export default function ShowDetail() {
   useEffect(() => {
     if (!item?.ids.tmdb) return;
     let cancelled = false;
-    getShowSeasonRatingsApi(item.ids.tmdb)
-      .then(({ data }) => {
-        if (!cancelled) setSeasonRatings(data);
+    Promise.all([
+      getShowSeasonRatingsApi(item.ids.tmdb),
+      getShowRatingsApi(item.ids.tmdb),
+    ])
+      .then(([{ data: seasonData }, { data: showData }]) => {
+        if (cancelled) return;
+        setSeasonRatings(seasonData);
+        setShowRating(showData ?? undefined);
       })
       .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [item?.ids.tmdb]);
 
   const liveStatus = useLiveQuery(() => db[USER_SHOWS_TABLE].get(id), [id]);
@@ -281,8 +280,8 @@ export default function ShowDetail() {
               <div className="grid grid-cols-[35%_30%_35%] items-center text-gray-600 my-1">
                 <div className="flex justify-start">
                   <Rating
-                    rating={ratings?.rating ?? 0}
-                    votes={ratings?.votes ?? 0}
+                    rating={showRating?.vote_average ?? 0}
+                    votes={showRating?.vote_count ?? 0}
                     onClick={() => setRatingsExpanded((e) => !e)}
                   />
                 </div>

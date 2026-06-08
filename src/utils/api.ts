@@ -16,6 +16,7 @@ import {
   Ratings,
   Release,
   SeasonRating,
+  ShowRating,
   ShowStatus,
   ShowStatusComplete,
   Studio,
@@ -230,6 +231,13 @@ export const getStudiosApi = (id: string, type: ItemType) => {
 export const getShowSeasonRatingsApi = (showId: number) => {
   return supabase.functions.invoke<SeasonRating[]>(
     `api/season-ratings/${showId}`,
+    { method: 'GET' }
+  );
+};
+
+export const getShowRatingsApi = (showId: number) => {
+  return supabase.functions.invoke<ShowRating>(
+    `api/show-ratings/${showId}`,
     { method: 'GET' }
   );
 };
