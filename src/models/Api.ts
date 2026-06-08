@@ -101,6 +101,17 @@ export type EpisodeStatus = {
   episode_number: number;
 };
 
+export type SeasonRating = {
+  episodes: Array<{
+    vote_average?: number;
+    num_votes?: number;
+    episode_number: number;
+    name?: string;
+    season_number?: number;
+    tconst?: string;
+  }>;
+};
+
 export type Activity = {
   movies: {
     removed: string | null;
