@@ -283,7 +283,6 @@ export default function ShowDetail() {
                   <Rating
                     rating={ratings?.rating ?? 0}
                     votes={ratings?.votes ?? 0}
-                    expanded={ratingsExpanded}
                     onClick={() => setRatingsExpanded((e) => !e)}
                   />
                 </div>
@@ -326,7 +325,12 @@ export default function ShowDetail() {
               {liveStatus?.status !== 'watched' && (
                 <ShowWatchButton item={item} />
               )}
-              <SeasonsContainer show={item} status={liveStatus} showId={id} />
+              <SeasonsContainer
+                show={item}
+                status={liveStatus}
+                showId={id}
+                seasonRatings={seasonRatings}
+              />
             </div>
           </div>
 

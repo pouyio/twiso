@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import {
   addEpisodeWatched,
   removeEpisodeWatched,
@@ -11,19 +11,21 @@ import Episodes from './Episodes';
 import SeasonSelector from './SeasonSelector';
 import { Episode, SeasonEpisode, Show } from '../../models/Show';
 import { useSearchParams } from 'react-router';
-import { ShowStatusComplete } from '../../models/Api';
+import { ShowStatusComplete, SeasonRating } from '../../models/Api';
 import { AnimatePresence } from 'framer-motion';
 
 interface ISeasonsContainerProps {
   show: Show;
   status?: ShowStatusComplete;
   showId: string;
+  seasonRatings?: SeasonRating[] | null;
 }
 
 const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   show,
   showId,
   status,
+  seasonRatings,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -103,6 +105,21 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     toggle({ title, text: overview });
   };
 
+  const episodesRatings = useMemo(() => {
+    if (!seasonRatings || selectedSeason === undefined) return undefined;
+    const sr = seasonRatings.find((r) =>
+      r.episodes.some((ep) => ep.season_number === selectedSeason)
+    );
+    if (!sr) return undefined;
+    const map: Record<number, number> = {};
+    for (const ep of sr.episodes) {
+      if (ep.vote_average !== undefined) {
+        map[ep.episode_number] = ep.vote_average;
+      }
+    }
+    return map;
+  }, [seasonRatings, selectedSeason]);
+
   const getFullSeason = (season?: number) => {
     return show?.all_seasons?.find((s) => s.number === season);
   };
@@ -136,6 +153,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
                 ?.episodes ?? []
             }
             episodesDates={episodesDates[selectedSeason]}
+            episodesRatings={episodesRatings}
             showModal={showModal}
             onlyView={!isLogged}
             showId={show.ids.imdb}
