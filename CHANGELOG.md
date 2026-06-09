@@ -1,3 +1,15 @@
+# [2.18.0](https://github.com/pouyio/twiso/compare/v2.17.2...v2.18.0) (2026-06-09)
+
+
+### :ambulance:
+
+* swapped show ratings ([7509a0c](https://github.com/pouyio/twiso/commit/7509a0c8227427115ea156c01899e25caf3fc16f))
+
+### :sparkles:
+
+* added episode ratings to individual episodes ([6c3d017](https://github.com/pouyio/twiso/commit/6c3d0171a2f36985b3d0bb9d7b66a78cdcc0be0c))
+* added show rates grid ([b8844de](https://github.com/pouyio/twiso/commit/b8844de1aea57968d18d2c22467ffc5dd53c5e35))
+
 ## [2.17.2](https://github.com/pouyio/twiso/compare/v2.17.1...v2.17.2) (2026-04-14)
 
 
