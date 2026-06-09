@@ -5,6 +5,7 @@ import { SeasonEpisode, Episode as EpisodeModel } from '../../models/Show';
 import { motion } from 'framer-motion';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useAppSelector } from '../../state/store';
+import { getColor, textFill, formatVote } from '../../utils/ratings';
 
 interface EpisodeProps {
   episode: SeasonEpisode;
@@ -14,6 +15,7 @@ interface EpisodeProps {
   addEpisodeWatched: (episode: SeasonEpisode) => void;
   removeEpisodeWatched: (episode: SeasonEpisode) => void;
   showModal: (data: { title: string; overview: string }) => void;
+  rating?: number;
 }
 
 export const Episode: React.FC<EpisodeProps> = ({
@@ -24,6 +26,7 @@ export const Episode: React.FC<EpisodeProps> = ({
   addEpisodeWatched,
   removeEpisodeWatched,
   showModal,
+  rating,
 }) => {
   const { session } = useContext(AuthContext);
   const language = useAppSelector((state) => state.config.language);
@@ -108,8 +111,19 @@ export const Episode: React.FC<EpisodeProps> = ({
           }`}
         >
           <span>{getTranslated('title')}</span>
-          <span className="text-xs">
+          <span className="text-xs flex items-center gap-1.5">
             {getFormattedDate(episodeDate?.first_aired ?? '', 'short')}
+            {rating !== undefined && (() => {
+              const bg = getColor(rating);
+              return (
+                <span
+                  className="font-semibold px-1.5 rounded text-center leading-none"
+                  style={{ backgroundColor: bg, color: textFill(bg), fontSize: '0.65rem', paddingTop: '1px', paddingBottom: '1px' }}
+                >
+                  {formatVote(rating)}
+                </span>
+              );
+            })()}
           </span>
         </div>
         {isEpisodeAvailable() &&

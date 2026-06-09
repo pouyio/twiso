@@ -16,6 +16,7 @@ interface ISeasonsProps {
   removeSeasonWatched: () => void;
   episodes: SeasonEpisode[];
   episodesDates?: EpisodeModel[];
+  episodesRatings?: Record<number, number>;
   showModal: (data: { title: string; overview: string }) => void;
   onlyView: boolean;
   showId: string;
@@ -29,6 +30,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
   removeSeasonWatched,
   episodes = [],
   episodesDates = [],
+  episodesRatings,
   showModal,
   onlyView,
   showId,
@@ -90,6 +92,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
                   addEpisodeWatched={addEpisodeWatched}
                   removeEpisodeWatched={removeEpisodeWatched}
                   showModal={showModal}
+                  rating={episodesRatings?.[e.number]}
                 />
               );
             })

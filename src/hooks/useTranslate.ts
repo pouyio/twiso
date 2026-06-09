@@ -104,6 +104,10 @@ const en = {
     'It looks like this {} has no information available yet, try again later.',
   'go-back': 'Go back',
   retry: 'Retry',
+  avg: 'AVG',
+  episode_num: 'Episode {}',
+  votes: 'votes',
+  season_abbreviation: 'S',
 };
 
 const es = {
@@ -212,6 +216,10 @@ const es = {
     'Parece que esta película no tiene información disponible, inténtalo más tarde.',
   'go-back': 'Volver',
   retry: 'Reintentar',
+  avg: 'AVG',
+  episode_num: 'Episodio {}',
+  votes: 'votos',
+  season_abbreviation: 'T',
 };
 
 const translations: Record<Language, Record<string, string>> = {

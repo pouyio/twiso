@@ -15,6 +15,8 @@ import {
   MovieStatus,
   Ratings,
   Release,
+  SeasonRating,
+  ShowRating,
   ShowStatus,
   ShowStatusComplete,
   Studio,
@@ -224,6 +226,20 @@ export const getRatingsApi = (id: string, type: ItemType) => {
 
 export const getStudiosApi = (id: string, type: ItemType) => {
   return traktClient.get<Studio[]>(`/${type}s/${id}/studios`);
+};
+
+export const getShowSeasonRatingsApi = (showId: number) => {
+  return supabase.functions.invoke<SeasonRating[]>(
+    `api/season-ratings/${showId}`,
+    { method: 'GET' }
+  );
+};
+
+export const getShowRatingsApi = (showId: number) => {
+  return supabase.functions.invoke<ShowRating>(
+    `api/show-ratings/${showId}`,
+    { method: 'GET' }
+  );
 };
 
 export const getMovieReleasesApi = (id: string) => {
