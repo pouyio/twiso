@@ -1,3 +1,10 @@
+## [2.18.1](https://github.com/pouyio/twiso/compare/v2.18.0...v2.18.1) (2026-07-17)
+
+
+### :bug:
+
+* update graph types ([2511f14](https://github.com/pouyio/twiso/commit/2511f14708f8698d50910e9d7223610984d795ad))
+
 # [2.18.0](https://github.com/pouyio/twiso/compare/v2.17.2...v2.18.0) (2026-06-09)
 
 
