@@ -280,8 +280,8 @@ export default function ShowDetail() {
               <div className="grid grid-cols-[35%_30%_35%] items-center text-gray-600 my-1">
                 <div className="flex justify-start">
                   <Rating
-                    rating={showRating?.vote_average ?? 0}
-                    votes={showRating?.vote_count ?? 0}
+                    rating={showRating?.overallAvg ?? 0}
+                    votes={showRating?.totalRaters ?? 0}
                     onClick={() => setRatingsExpanded((e) => !e)}
                   />
                 </div>
