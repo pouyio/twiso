@@ -113,19 +113,15 @@ export type SeasonRating = {
 };
 
 export type ShowRating = {
-  id: number;
-  name: string;
-  vote_average: number;
-  vote_count: number;
-  poster_path: string | null;
-  backdrop_path: string | null;
-  first_air_date: string;
-  last_air_date: string;
-  status: string;
-  number_of_seasons: number;
-  external_ids: {
-    imdb_id: string | null;
-  };
+  episodeRatings: unknown;
+  lastComputed: string;
+  overallAvg: number;
+  overallDistribution: unknown;
+  posterPath: string;
+  showName: string;
+  tmdbId: number;
+  totalRaters: number;
+  totalSeasons: number;
 };
 
 export type Activity = {
