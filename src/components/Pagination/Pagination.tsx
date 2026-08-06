@@ -8,7 +8,7 @@ interface IPaginationProps {
   setPrev: () => void;
   setNext: () => void;
   setLast: () => void;
-  onFilter?: (genres: string[]) => void;
+  onFilter?: (genres: number[]) => void;
   page: number;
   last: number;
 }
@@ -24,10 +24,10 @@ const Pagination: React.FC<IPaginationProps> = ({
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const genres = searchParams.get('genres');
-  const selectedGenres = genres?.split(',').filter(Boolean) ?? [];
+  const selectedGenres = genres?.split(',').filter(Boolean).map(Number) ?? [];
   const showFilters = searchParams.has('genres');
 
-  const toggleGenre = (genre: string) => {
+  const toggleGenre = (genre: number) => {
     const newGenres = selectedGenres.includes(genre)
       ? selectedGenres.filter((selectedGenres) => selectedGenres !== genre)
       : [...selectedGenres, genre];

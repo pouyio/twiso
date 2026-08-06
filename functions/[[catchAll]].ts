@@ -1,18 +1,11 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 import { findFirstValid } from '../src/utils/findFirstValidImage';
-import { SearchMovie, SearchPerson, SearchShow } from '../src/models/Movie';
-import {
-  BASE_TRAKT_URL,
-  CONTENT_TYPE,
-  IMG_URL,
-  TRAKT_API_VERSION,
-} from '../src/utils/apiConsts';
+import { IMG_URL } from '../src/utils/apiConsts';
 import { EventContext } from '@cloudflare/workers-types';
 import { ImageResponse } from '../src/models/Image';
 import { ItemType } from '../src/models/ItemType';
 
 type ENVs = {
-  VITE_TRAKT_API_KEY: string;
   VITE_TMDB_API_KEY: string;
 };
 
@@ -21,16 +14,6 @@ const TYPE_MAP = {
   show: 'video.tv_show',
   person: 'video.profile',
 };
-
-const axiosConfig = (traktApiKey: string): AxiosRequestConfig => ({
-  baseURL: BASE_TRAKT_URL,
-  headers: {
-    'content-type': CONTENT_TYPE,
-    'trakt-api-key': traktApiKey,
-    'trakt-api-version': TRAKT_API_VERSION,
-    'User-Agent': 'twiso/1.0',
-  },
-});
 
 export const getImgsApi = (id: number, type: ItemType, tmdbApiKey: string) => {
   let newType: string = type;
@@ -42,26 +25,30 @@ export const getImgsApi = (id: number, type: ItemType, tmdbApiKey: string) => {
   );
 };
 
-const traktClient = (apiKey: string) => axios.create(axiosConfig(apiKey));
-
-const fetchData = async <T extends SearchMovie | SearchShow | SearchPerson>(
+const fetchData = async (
   type: 'movie' | 'show' | 'person',
   id: string,
   env: ENVs
 ) => {
-  const searchResponses = await traktClient(env.VITE_TRAKT_API_KEY).get<T[]>(
-    `/search/imdb/${id}?type=${type}&extended=full`
+  const tmdbType = type === 'show' ? 'tv' : type;
+  const detailResponse = await axios.get<{
+    title?: string;
+    name?: string;
+    overview?: string;
+    biography?: string;
+  }>(
+    `${IMG_URL}/${tmdbType}/${id}?api_key=${env.VITE_TMDB_API_KEY}&language=es`
   );
+  const item = detailResponse.data;
   let imgUrl = 'https://placehold.co/185x330';
 
-  if (!searchResponses.data[0]) {
+  if (!item.title && !item.name) {
     console.log(`Data with id:${id} not found`);
     return { imgUrl };
   }
 
-  const item = searchResponses.data[0][type];
   const imgResponse = await getImgsApi(
-    item.ids.tmdb,
+    Number(id),
     type,
     env.VITE_TMDB_API_KEY
   );
@@ -99,7 +86,7 @@ export const onRequest = async (context: EventContext<ENVs, any, any>) => {
     return new Response('No ID', { status: 400 });
   }
 
-  const { item, imgUrl } = await fetchData<SearchMovie>(type, id, env);
+  const { item, imgUrl } = await fetchData(type, id, env);
 
   // Load your index.html file (Cloudflare Workers does not support fs.readFileSync)
   const indexHtml = await fetch(new Request(`${url.origin}/index.html`));

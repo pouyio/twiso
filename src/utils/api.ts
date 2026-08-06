@@ -1,14 +1,12 @@
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
 import { config, IMG_URL } from './apiConfig';
-import { traktClient } from './axiosClients';
-import PQueue from 'p-queue';
 import { ImgConfig } from '../models/ImgConfig';
 import { ItemType } from '../models/ItemType';
 import { ImageResponse } from '../models/Image';
-import { Episode, Season, SeasonEpisode } from '../models/Show';
+import { Episode, Season, SeasonEpisode, Show } from '../models/Show';
 import { Language, Translation } from '../models/Translation';
-import { SearchMovie, SearchShow } from '../models/Movie';
+import { Movie } from '../models/Movie';
 import {
   Activity,
   EpisodeStatus,
@@ -27,15 +25,6 @@ import { Person } from '../models/Person';
 import { Popular } from '../models/Popular';
 import { Ids } from '../models/Ids';
 import { supabase } from './supabase';
-
-const limiter = new PQueue({
-  concurrency: 100,
-  interval: 5 * 60 * 1000,
-  intervalCap: 800,
-});
-
-const addToLimiter = <T>(fn: () => Promise<T>) =>
-  limiter.add(fn, { throwOnTimeout: true }) as Promise<T>;
 
 const limitClient = rateLimit(axios.create(), {
   maxRequests: 42,
@@ -58,48 +47,51 @@ export const getImgsApi = (id: number, type: ItemType) => {
   );
 };
 
-export const getApi = <T extends SearchMovie | SearchShow>(
-  id: string,
-  type: 'movie' | 'show'
-) => {
-  return addToLimiter(() =>
-    traktClient.get<T[]>(`/search/imdb/${id}?type=${type}&extended=full`)
+const getTmdb = async <T>(path: string): Promise<T> => {
+  const { data, error } = await supabase.functions.invoke<T>(
+    `api/tmdb${path}`,
+    {
+      method: 'GET',
+    }
   );
+  if (error) {
+    throw error;
+  }
+  return data as T;
 };
 
-export const getSeasonsApi = (id: string, language: Language) => {
-  return addToLimiter(() =>
-    traktClient
-      .get<Season[]>(
-        `/shows/${id}/seasons?extended=episodes&translations=${language}`
-      )
-      .then(({ data }) => data)
-  );
+const typeSegment = (type: ItemType) =>
+  type === 'show' ? 'shows' : 'movies';
+
+export const getMovieApi = (id: number, language: Language = 'es') => {
+  return getTmdb<Movie>(`/movies/${id}?language=${language}`);
+};
+
+export const getShowApi = (id: number, language: Language = 'es') => {
+  return getTmdb<Show>(`/shows/${id}?language=${language}`);
+};
+
+export const getSeasonsApi = (id: number, language: Language) => {
+  return getTmdb<Season[]>(`/shows/${id}/seasons?language=${language}`);
 };
 
 export const getSeasonEpisodesApi = (
-  id: string,
+  id: number,
   season: number,
   language: Language
 ) => {
-  return addToLimiter(() =>
-    traktClient.get<Episode[]>(
-      `/shows/${id}/seasons/${season}?extended=full&translations=${language}`
-    )
+  return getTmdb<Episode[]>(
+    `/shows/${id}/seasons/${season}?language=${language}`
   );
 };
 
 export const getTranslationsApi = (
-  id: string,
+  id: number,
   type: ItemType,
   language: Language
 ) => {
-  return addToLimiter(() =>
-    traktClient
-      .get<Translation[]>(`/${type}s/${id}/translations/${language}`)
-      .then(({ data }) =>
-        data.find((t) => t.language === 'es' && t.country === 'es')
-      )
+  return getTmdb<Translation | null>(
+    `/${typeSegment(type)}/${id}/translations/${language}`
   );
 };
 
@@ -108,13 +100,13 @@ export const searchApi = <T>(
   type: string,
   limit: number = 40
 ) => {
-  return traktClient.get<T[]>(
-    `/search/${type}?query=${query}&extended=full&page=1&limit=${limit}`
+  return getTmdb<T[]>(
+    `/search?query=${encodeURIComponent(query)}&type=${type}&limit=${limit}`
   );
 };
 
-export const addWatchedMovieApi = (id: string, type: ItemType) => {
-  return supabase.functions.invoke<MovieStatus>(`api/${type}s/${id}`, {
+export const addWatchedMovieApi = (id: number, type: ItemType) => {
+  return supabase.functions.invoke<MovieStatus>(`api/${typeSegment(type)}/${id}`, {
     method: 'POST',
     body: {
       status: 'watched',
@@ -127,12 +119,12 @@ export const addWatchedEpisodesApi = (
   episodes: SeasonEpisode[]
 ) => {
   return supabase.functions.invoke<EpisodeStatus[]>(
-    `api/shows/${showIds.imdb}/episodes`,
+    `api/shows/${showIds.tmdb}/episodes`,
     {
       method: 'POST',
       body: {
         episodes: episodes.map((e) => ({
-          episodeId: e.ids.imdb,
+          episodeId: e.ids.tmdb,
           season: e.season,
           episode: e.number,
         })),
@@ -145,11 +137,11 @@ export const removeWatchedEpisodesApi = (
   showIds: Ids,
   episodes: SeasonEpisode[]
 ) => {
-  return supabase.functions.invoke<null>(`api/shows/${showIds.imdb}/episodes`, {
+  return supabase.functions.invoke<null>(`api/shows/${showIds.tmdb}/episodes`, {
     method: 'DELETE',
     body: {
       episodes: episodes.map((e) => ({
-        episodeId: e.ids.imdb,
+        episodeId: e.ids.tmdb,
         season: e.season,
         episode: e.number,
       })),
@@ -157,13 +149,13 @@ export const removeWatchedEpisodesApi = (
   });
 };
 
-export const removeWatchedApi = (id: string, type: ItemType) => {
-  return supabase.functions.invoke<null>(`api/${type}s/${id}`, {
+export const removeWatchedApi = (id: number, type: ItemType) => {
+  return supabase.functions.invoke<null>(`api/${typeSegment(type)}/${id}`, {
     method: 'DELETE',
   });
 };
 
-export const addWatchlistShowApi = (id: string) => {
+export const addWatchlistShowApi = (id: number) => {
   return supabase.functions.invoke<ShowStatus>(`api/shows/${id}`, {
     method: 'POST',
     body: {
@@ -172,7 +164,7 @@ export const addWatchlistShowApi = (id: string) => {
   });
 };
 
-export const addWatchlistMovieApi = (id: string) => {
+export const addWatchlistMovieApi = (id: number) => {
   return supabase.functions.invoke<MovieStatus>(`api/movies/${id}`, {
     method: 'POST',
     body: {
@@ -181,37 +173,38 @@ export const addWatchlistMovieApi = (id: string) => {
   });
 };
 
-export const removeWatchlistApi = (id: string, type: ItemType) => {
-  return supabase.functions.invoke<null>(`api/${type}s/${id}`, {
+export const removeWatchlistApi = (id: number, type: ItemType) => {
+  return supabase.functions.invoke<null>(`api/${typeSegment(type)}/${id}`, {
     method: 'DELETE',
   });
 };
 
-export const getPeopleApi = (id: string, type: ItemType) => {
-  return traktClient.get<People>(`/${type}s/${id}/people`);
-};
-
-export const getPersonApi = (id: string) => {
-  return traktClient.get<Person>(`/people/${id}?extended=full`);
-};
-
-export const getPersonItemsApi = <T>(person: string, type: ItemType) => {
-  return traktClient.get<T>(`/people/${person}/${type}s?extended=full`);
-};
-
-export const getPopularApi = (type: ItemType, limit: number = 40) => {
-  const year = new Date().getFullYear();
-  return traktClient.get<Popular[]>(
-    `/${type}s/watched/weekly?extended=full&page=1&limit=${limit}&years=${year}`
+export const getPeopleApi = (id: number, type: ItemType, language: Language = 'es') => {
+  return getTmdb<People>(
+    `/${typeSegment(type)}/${id}/people?language=${language}`
   );
 };
 
-export const getRelatedApi = async <T>(type: ItemType, id?: string) => {
+export const getPersonApi = (id: number, language: Language = 'es') => {
+  return getTmdb<Person>(`/people/${id}?language=${language}`);
+};
+
+export const getPersonItemsApi = <T>(
+  person: number,
+  type: ItemType,
+  language: Language = 'es'
+) => {
+  return getTmdb<T>(`/people/${person}/${typeSegment(type)}?language=${language}`);
+};
+
+export const getPopularApi = (type: ItemType, limit: number = 40) => {
+  return getTmdb<Popular[]>(`/${typeSegment(type)}/trending?limit=${limit}`);
+};
+
+export const getRelatedApi = async <T>(type: ItemType, id?: number) => {
   return id
-    ? traktClient.get<T[]>(
-        `/${type}s/${id}/related?extended=full&page=1&limit=12`
-      )
-    : { data: [] };
+    ? getTmdb<T[]>(`/${typeSegment(type)}/${id}/related?limit=12`)
+    : [];
 };
 
 export const getStatsApi = () => {
@@ -220,12 +213,12 @@ export const getStatsApi = () => {
   });
 };
 
-export const getRatingsApi = (id: string, type: ItemType) => {
-  return traktClient.get<Ratings>(`/${type}s/${id}/ratings`);
+export const getRatingsApi = (id: number, type: ItemType) => {
+  return getTmdb<Ratings>(`/${typeSegment(type)}/${id}/ratings`);
 };
 
-export const getStudiosApi = (id: string, type: ItemType) => {
-  return traktClient.get<Studio[]>(`/${type}s/${id}/studios`);
+export const getStudiosApi = (id: number, type: ItemType) => {
+  return getTmdb<Studio[]>(`/${typeSegment(type)}/${id}/studios`);
 };
 
 export const getShowSeasonRatingsApi = (showId: number) => {
@@ -242,11 +235,11 @@ export const getShowRatingsApi = (showId: number) => {
   );
 };
 
-export const getMovieReleasesApi = (id: string) => {
-  return traktClient.get<Release[]>(`/movies/${id}/releases/es`);
+export const getMovieReleasesApi = (id: number) => {
+  return getTmdb<Release[]>(`/movies/${id}/releases/es`);
 };
 
-export const setHideShow = (showId: string, hidden: boolean) => {
+export const setHideShow = (showId: number, hidden: boolean) => {
   return supabase.functions.invoke<null>(`api/shows/${showId}/hide`, {
     method: 'PUT',
     body: {

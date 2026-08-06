@@ -50,18 +50,18 @@ export default function ShowDetail() {
 
   useEffect(() => {
     // @ts-expect-error limitations on Dexie EntityTable
-    db[DETAIL_SHOWS_TABLE].get(id).then((show) => {
+    db[DETAIL_SHOWS_TABLE].get(Number(id)).then((show) => {
       if (!show) {
-        dispatch(fillDetail({ id }))
+        dispatch(fillDetail({ id: Number(id) }))
           .unwrap()
           .catch(() => setLoadError(true));
       }
     });
     setPeople(undefined);
-    getPeopleApi(id, 'show').then(({ data }) => {
+    getPeopleApi(Number(id), 'show', language).then((data) => {
       setPeople(data);
     });
-    getStudiosApi(id, 'show').then(({ data }) => {
+    getStudiosApi(Number(id), 'show').then((data) => {
       setStudios(data);
     });
   }, [id]);
@@ -69,7 +69,7 @@ export default function ShowDetail() {
   const item = useLiveQuery(
     () =>
       // @ts-expect-error limitations on Dexie EntityTable
-      db[DETAIL_SHOWS_TABLE].get(id),
+      db[DETAIL_SHOWS_TABLE].get(Number(id)),
     [id]
   );
 
@@ -91,7 +91,7 @@ export default function ShowDetail() {
     return () => { cancelled = true; };
   }, [item?.ids.tmdb]);
 
-  const liveStatus = useLiveQuery(() => db[USER_SHOWS_TABLE].get(id), [id]);
+  const liveStatus = useLiveQuery(() => db[USER_SHOWS_TABLE].get(Number(id)), [id]);
 
   const bgClassName = useMemo(() => {
     if (liveStatus?.hidden) {
@@ -118,7 +118,7 @@ export default function ShowDetail() {
     if (liveStatus) {
       dispatch(
         setHiddenShow({
-          showId: liveStatus.show_imdb,
+          showId: liveStatus.show_tmdb,
           hidden: !liveStatus.hidden,
         })
       );
@@ -132,7 +132,7 @@ export default function ShowDetail() {
           subtitle={t('no-info-message', t('show'))}
           onRetry={() => {
             setLoadError(false);
-            dispatch(fillDetail({ id }))
+            dispatch(fillDetail({ id: Number(id) }))
               .unwrap()
               .catch(() => setLoadError(true));
           }}
@@ -165,7 +165,7 @@ export default function ShowDetail() {
     }, 0) ?? 1;
 
   const onRefresh = () => {
-    dispatch(fillDetail({ id }));
+    dispatch(fillDetail({ id: Number(id) }));
     refresh();
 
     const icon = refreshIconRef.current;
@@ -327,7 +327,7 @@ export default function ShowDetail() {
               <SeasonsContainer
                 show={item}
                 status={liveStatus}
-                showId={id}
+                showId={Number(id)}
                 seasonRatings={seasonRatings}
               />
             </div>

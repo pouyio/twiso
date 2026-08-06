@@ -20,7 +20,7 @@ export const useFilter = () => {
     []
   );
   const movies = useLiveQuery(
-    () => db[DETAIL_MOVIES_TABLE].where('ids.imdb').anyOf(userMovies).toArray(),
+    () => db[DETAIL_MOVIES_TABLE].where('ids.tmdb').anyOf(userMovies).toArray(),
     [userMovies],
     []
   );
@@ -30,12 +30,12 @@ export const useFilter = () => {
     []
   );
   const shows = useLiveQuery(
-    () => db[DETAIL_SHOWS_TABLE].where('ids.imdb').anyOf(userShows).toArray(),
+    () => db[DETAIL_SHOWS_TABLE].where('ids.tmdb').anyOf(userShows).toArray(),
     [userShows],
     []
   );
 
-  const filter = (text: string, genres: string[] = []) => {
+  const filter = (text: string, genres: number[] = []) => {
     if (!text) {
       return [];
     }

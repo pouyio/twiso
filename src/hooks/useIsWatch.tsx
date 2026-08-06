@@ -21,14 +21,14 @@ export const useIsWatch = () => {
       [],
       []
     ) ?? [];
-  const watchedShowIds = watchedShows.map((s) => s.show_imdb);
+  const watchedShowIds = watchedShows.map((s) => s.show_tmdb);
 
   const watchlistShowIds =
     useLiveQuery(() =>
       db[USER_SHOWS_TABLE].where({ status: 'watchlist' }).primaryKeys()
     ) ?? [];
 
-  const isWatched = (id: string, type: 'show' | 'movie' = 'show') => {
+  const isWatched = (id: number, type: 'show' | 'movie' = 'show') => {
     if (type === 'show') {
       return watchedShowIds.some((show) => show === id);
     }
@@ -37,7 +37,7 @@ export const useIsWatch = () => {
     }
   };
 
-  const isWatchlist = (id: string, type: 'show' | 'movie' = 'show') => {
+  const isWatchlist = (id: number, type: 'show' | 'movie' = 'show') => {
     if (type === 'show') {
       return watchlistShowIds.some((show) => show === id);
     }

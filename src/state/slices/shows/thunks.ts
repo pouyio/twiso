@@ -3,43 +3,39 @@ import { RootState } from '../../../state/store';
 import {
   addWatchedEpisodesApi,
   addWatchlistShowApi,
-  getApi,
   getSeasonsApi,
+  getShowApi,
   getTranslationsApi,
   removeWatchedEpisodesApi,
   removeWatchlistApi,
   setHideShow,
 } from '../../../utils/api';
-import { SearchShow } from '../../../models/Movie';
 import { Season, SeasonEpisode, Show } from '../../../models/Show';
-import { Translation } from '../../../models/Translation';
+import { Translation, Language } from '../../../models/Translation';
 import { Ids } from '../../../models/Ids';
 import { firstLoad } from '../../../state/firstLoadAction';
 import { ShowStatusComplete } from '../../../models/Api';
 
 const _getRemoteWithTranslations = async (
-  id: string
+  id: number,
+  language: Language
 ): Promise<Show & { translation?: Translation }> => {
   const results = await Promise.all([
-    getApi<SearchShow>(id, 'show'),
-    getTranslationsApi(id, 'show', 'es'),
+    getShowApi(id, language),
+    getTranslationsApi(id, 'show', language),
   ]);
-  if (!results[0].data || results[0].data.length === 0) {
+  if (!results[0]?.ids?.tmdb) {
     throw new Error('No info available for this show: ' + id);
   }
-  const show = results[0].data[0].show;
-  return { ...show, translation: results[1] };
+  return { ...results[0], translation: results[1] ?? undefined };
 };
 
 export const addWatchlist = createAsyncThunk<
   ShowStatusComplete | null,
   { show: Show }
 >('shows/addWatchlist', async ({ show }) => {
-  if (!show.ids.imdb) {
-    throw Error('no imdb id available');
-  }
   try {
-    const { data } = await addWatchlistShowApi(show.ids.imdb);
+    const { data } = await addWatchlistShowApi(show.ids.tmdb);
     if (data) {
       return { ...data, episodes: [] };
     }
@@ -53,11 +49,8 @@ export const addWatchlist = createAsyncThunk<
 export const removeWatchlist = createAsyncThunk<null, { show: Show }>(
   'shows/removeWatchlist',
   async ({ show }) => {
-    if (!show.ids.imdb) {
-      throw Error('no imdb id available');
-    }
     try {
-      const { data } = await removeWatchlistApi(show.ids.imdb, 'show');
+      const { data } = await removeWatchlistApi(show.ids.tmdb, 'show');
       return data;
     } catch (e) {
       console.error(e);
@@ -103,7 +96,7 @@ export const removeEpisodeWatched = createAsyncThunk<
 
 export const setHiddenShow = createAsyncThunk<
   null,
-  { showId: string; hidden: boolean },
+  { showId: number; hidden: boolean },
   { state: RootState }
 >('shows/setHidden', async ({ showId, hidden }) => {
   try {
@@ -122,14 +115,15 @@ export const fillDetail = createAsyncThunk<
     translation?: Translation;
   },
   {
-    id: string;
+    id: number;
   },
   { state: RootState }
->('shows/fillDetail', async ({ id }) => {
+>('shows/fillDetail', async ({ id }, { getState }) => {
+  const language = getState().config.language;
   try {
     const [detail, seasons] = await Promise.all([
-      _getRemoteWithTranslations(id),
-      getSeasonsApi(id, 'es'),
+      _getRemoteWithTranslations(id, language),
+      getSeasonsApi(id, language),
     ]);
 
     return { ...detail, all_seasons: seasons };

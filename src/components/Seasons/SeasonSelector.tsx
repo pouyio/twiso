@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { useTranslate } from '../../hooks/useTranslate';
-import { ShowSeason } from '../../models/Show';
+import { Season } from '../../models/Show';
 import { ShowStatusComplete } from '../../models/Api';
 
 interface ISeasonsProps {
   progress?: ShowStatusComplete;
-  seasons: ShowSeason[];
-  selectedSeason?: ShowSeason;
+  seasons: Season[];
+  selectedSeason?: Season;
   setSelectedSeason: (season?: number) => void;
 }
 
@@ -86,7 +86,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
                 selectedSeason?.number === s.number ? undefined : s.number
               )
             }
-            key={s.ids.trakt}
+            key={s.ids.tmdb}
             className={
               'whitespace-pre text-sm px-3 cursor-pointer ' +
               (selectedSeason?.number === s.number ? '' : UNSELECTED_CLASS)
@@ -99,7 +99,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
               ''
             )}
             <div className="h-2 relative">
-              {s.ids.trakt === selectedSeason?.ids.trakt && <Underline />}
+              {s.ids.tmdb === selectedSeason?.ids.tmdb && <Underline />}
             </div>
           </li>
         );

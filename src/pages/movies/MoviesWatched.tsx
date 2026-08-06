@@ -13,21 +13,21 @@ import db, {
 import { Movie } from '../../models/Movie';
 
 export const MoviesWatched: React.FC = () => {
-  const [genres, setGenres] = useState<string[]>([]);
+  const [genres, setGenres] = useState<number[]>([]);
   const orderedUserMoviesIds = useLiveQuery(
     () =>
       db[USER_MOVIES_TABLE].where('status')
         .equals('watched')
         .reverse()
         .sortBy('created_at')
-        .then((items) => items.map((i) => i.movie_imdb)),
+        .then((items) => items.map((i) => i.movie_tmdb)),
     [],
     []
   );
 
   const fullMovies = useLiveQuery(
     () =>
-      db[DETAIL_MOVIES_TABLE].where('ids.imdb')
+      db[DETAIL_MOVIES_TABLE].where('ids.tmdb')
         .anyOf(orderedUserMoviesIds)
         .and((movie) => genres.every((g) => movie.genres.includes(g)))
         .toArray(),
@@ -36,7 +36,7 @@ export const MoviesWatched: React.FC = () => {
   );
 
   const orderedMovies: Movie[] = orderedUserMoviesIds
-    .map((m) => fullMovies.find((fm) => fm.ids.imdb === m))
+    .map((m) => fullMovies.find((fm) => fm.ids.tmdb === m))
     .filter(Boolean) as DBMovieDetail[];
 
   const { getItemsByPage } = usePagination(orderedMovies);
@@ -51,7 +51,7 @@ export const MoviesWatched: React.FC = () => {
         <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
           {getItemsByPage().map((m, i) => (
             <li
-              key={`${m.ids.imdb}_${i}`}
+              key={`${m.ids.tmdb}_${i}`}
               className="p-2"
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >

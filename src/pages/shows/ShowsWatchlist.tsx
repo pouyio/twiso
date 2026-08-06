@@ -9,7 +9,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from '../../utils/db';
 
 const ShowsWatchlist: React.FC = () => {
-  const [genres, setGenres] = useState<string[]>([]);
+  const [genres, setGenres] = useState<number[]>([]);
 
   const orderedUserShowsIds = useLiveQuery(
     () =>
@@ -17,14 +17,14 @@ const ShowsWatchlist: React.FC = () => {
         .equals('watchlist')
         .reverse()
         .sortBy('added_to_watchlist_at')
-        .then((items) => items.map((i) => i.show_imdb)),
+        .then((items) => items.map((i) => i.show_tmdb)),
     [],
     [] as string[]
   );
 
   const fullShows = useLiveQuery(
     () =>
-      db[DETAIL_SHOWS_TABLE].where('ids.imdb')
+      db[DETAIL_SHOWS_TABLE].where('ids.tmdb')
         .anyOf(orderedUserShowsIds)
         .and((show) => genres.every((g) => show.genres.includes(g)))
         .toArray(),
@@ -33,7 +33,7 @@ const ShowsWatchlist: React.FC = () => {
   );
 
   const orderedShows: Show[] = orderedUserShowsIds
-    .map((m) => fullShows.find((fm) => fm.ids.imdb === m))
+    .map((m) => fullShows.find((fm) => fm.ids.tmdb === m))
     .filter(Boolean) as Show[];
 
   const { getItemsByPage } = usePagination(orderedShows);
@@ -48,7 +48,7 @@ const ShowsWatchlist: React.FC = () => {
         <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
           {getItemsByPage().map((s) => (
             <li
-              key={s.ids.trakt}
+              key={s.ids.tmdb}
               className="p-2"
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >

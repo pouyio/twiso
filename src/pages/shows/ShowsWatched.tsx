@@ -9,7 +9,7 @@ import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from '../../utils/db';
 import { Show } from '../../models/Show';
 
 const ShowsWatched: React.FC = () => {
-  const [genres, setGenres] = useState<string[]>([]);
+  const [genres, setGenres] = useState<number[]>([]);
 
   const orderedUserShows = useLiveQuery(
     () =>
@@ -23,9 +23,9 @@ const ShowsWatched: React.FC = () => {
 
   const fullShows = useLiveQuery(
     () =>
-      db[DETAIL_SHOWS_TABLE].where('ids.imdb')
+      db[DETAIL_SHOWS_TABLE].where('ids.tmdb')
         .anyOf(
-          orderedUserShows.filter((s) => !s.hidden).map((us) => us.show_imdb)
+          orderedUserShows.filter((s) => !s.hidden).map((us) => us.show_tmdb)
         )
         .and((show) => genres.every((g) => show.genres.includes(g)))
         .toArray(),
@@ -34,13 +34,13 @@ const ShowsWatched: React.FC = () => {
   );
 
   const orderedShows: Show[] = orderedUserShows
-    .map((m) => fullShows.find((fm) => fm.ids.imdb === m.show_imdb))
+    .map((m) => fullShows.find((fm) => fm.ids.tmdb === m.show_tmdb))
     .filter(Boolean) as Show[];
 
   const { getItemsByPage } = usePagination(orderedShows);
 
-  const isHidden = (id: string) => {
-    return orderedUserShows.find((ous) => ous.show_imdb === id)?.hidden;
+  const isHidden = (id: number) => {
+    return orderedUserShows.find((ous) => ous.show_tmdb === id)?.hidden;
   };
 
   return !genres.length && !orderedShows.length ? (
@@ -53,7 +53,7 @@ const ShowsWatched: React.FC = () => {
         <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
           {getItemsByPage().map((m) => (
             <li
-              key={m.ids.trakt}
+              key={m.ids.tmdb}
               className="p-2"
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >
@@ -63,7 +63,7 @@ const ShowsWatched: React.FC = () => {
                 style={{ minHeight: '13.5em' }}
                 type="show"
                 forceState="watched"
-                hidden={isHidden(m.ids.imdb)}
+                hidden={isHidden(m.ids.tmdb)}
               />
             </li>
           ))}

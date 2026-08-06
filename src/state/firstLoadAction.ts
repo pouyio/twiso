@@ -5,6 +5,7 @@ import {
   syncActivities,
 } from '../utils/api';
 import db, {
+  dbReady,
   DETAIL_MOVIES_TABLE,
   DETAIL_SHOWS_TABLE,
   USER_MOVIES_TABLE,
@@ -21,15 +22,15 @@ const syncRemoteMovies = async (
 ) => {
   if (oldActivities?.movies?.removed !== newActivities?.movies.removed) {
     const allMoviesIds = await getAllMovies().then(({ data }) =>
-      data?.map((m) => m.movie_imdb)
+      data?.map((m) => m.movie_tmdb)
     );
     const userMovies = await db.table(USER_MOVIES_TABLE).toArray();
     const moviesToDelete = userMovies.filter(
-      (um) => !allMoviesIds?.includes(um.movie_imdb)
+      (um) => !allMoviesIds?.includes(um.movie_tmdb)
     );
     await db
       .table(USER_MOVIES_TABLE)
-      .bulkDelete(moviesToDelete.map((m) => m.movie_imdb));
+      .bulkDelete(moviesToDelete.map((m) => m.movie_tmdb));
   }
 
   if (
@@ -38,7 +39,9 @@ const syncRemoteMovies = async (
   ) {
     const { data: allMovies } = await getAllMovies(oldActivities?.movies?.rest);
     if (allMovies) {
-      await db.table(USER_MOVIES_TABLE).bulkPut(allMovies);
+      await db
+        .table(USER_MOVIES_TABLE)
+        .bulkPut(allMovies.map((m) => ({ ...m, movie_tmdb: Number(m.movie_tmdb) })));
     }
   }
 };
@@ -49,16 +52,16 @@ const syncRemoteShows = async (
 ) => {
   if (oldActivities?.shows?.removed !== newActivities?.shows.removed) {
     const allShowsIds = await getAllShows().then(({ data }) =>
-      data?.map((s) => s.show_imdb)
+      data?.map((s) => s.show_tmdb)
     );
     const userShows = await db.table(USER_SHOWS_TABLE).toArray();
 
     const showsToDelete = userShows.filter(
-      (us) => !allShowsIds?.includes(us.show_imdb)
+      (us) => !allShowsIds?.includes(us.show_tmdb)
     );
     await db
       .table(USER_SHOWS_TABLE)
-      .bulkDelete(showsToDelete.map((s) => s.show_imdb));
+      .bulkDelete(showsToDelete.map((s) => s.show_tmdb));
   }
 
   if (oldActivities?.shows?.rest !== newActivities?.shows.rest) {
@@ -66,13 +69,30 @@ const syncRemoteShows = async (
       oldActivities?.shows?.rest
     );
     if (allShows) {
-      await db.table(USER_SHOWS_TABLE).bulkPut(allShows);
+      await db
+        .table(USER_SHOWS_TABLE)
+        .bulkPut(
+          allShows.map((s) => ({
+            ...s,
+            show_tmdb: Number(s.show_tmdb),
+            episodes: (s.episodes ?? []).map((e) => ({
+              ...e,
+              episode_tmdb: Number(e.episode_tmdb),
+              show_tmdb: Number(e.show_tmdb),
+            })),
+          }))
+        );
     }
   }
 };
 
 export const firstLoad = async (): Promise<boolean> => {
   try {
+    await dbReady;
+    if (localStorage.getItem('twiso-migrated-v4')) {
+      localStorage.removeItem('twiso-migrated-v4');
+      localStorage.removeItem('activities');
+    }
     const oldActivities: Activities | null = JSON.parse(
       localStorage.getItem('activities') ?? '{}'
     );
@@ -81,15 +101,15 @@ export const firstLoad = async (): Promise<boolean> => {
     await syncRemoteMovies(oldActivities, newActivities);
 
     const localUserMovieWatchlistIds = await db
-      .table<any, string>(USER_MOVIES_TABLE)
+      .table<any, number>(USER_MOVIES_TABLE)
       .where({ status: 'watchlist' })
       .primaryKeys();
     const localUserMovieWatchedIds = await db
-      .table<any, string>(USER_MOVIES_TABLE)
+      .table<any, number>(USER_MOVIES_TABLE)
       .where({ status: 'watched' })
       .primaryKeys();
     const localDetailMovieIds = await db
-      .table<any, string>(DETAIL_MOVIES_TABLE)
+      .table<any, number>(DETAIL_MOVIES_TABLE)
       .toCollection()
       .primaryKeys();
 
@@ -104,11 +124,11 @@ export const firstLoad = async (): Promise<boolean> => {
 
     await syncRemoteShows(oldActivities, newActivities);
     const localUserShowIds = await db
-      .table<any, string>(USER_SHOWS_TABLE)
+      .table<any, number>(USER_SHOWS_TABLE)
       .toCollection()
       .primaryKeys();
     const localDetailShowIds = await db
-      .table<any, string>(DETAIL_SHOWS_TABLE)
+      .table<any, number>(DETAIL_SHOWS_TABLE)
       .toCollection()
       .primaryKeys();
 

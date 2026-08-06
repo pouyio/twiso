@@ -25,17 +25,17 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
   const isLoggedIn = !!session;
   const dispatch = useAppDispatch();
   const isWatchlistPending = useAppSelector((state) => {
-    return state.movies.pending.watchlist.includes(item.ids.imdb);
+    return state.movies.pending.watchlist.includes(item.ids.tmdb);
   });
   const isWatchedPending = useAppSelector((state) => {
-    return state.movies.pending.watched.includes(item.ids.imdb);
+    return state.movies.pending.watched.includes(item.ids.tmdb);
   });
 
   return (
     <div className="flex justify-around">
       {isLoggedIn ? (
         <>
-          {isWatched(item.ids.imdb ?? '', 'movie') ? (
+          {isWatched(item.ids.tmdb, 'movie') ? (
             <button
               className={`bg-green-400 py-3 pl-12 rounded-full text-white font-bold ${
                 isWatchedPending ? 'pr-6' : 'pr-12'
@@ -60,7 +60,7 @@ const WatchButton: React.FC<IWatchButtonProps> = ({ item }) => {
               )}
             </button>
           )}
-          {isWatchlist(item.ids.imdb ?? '', 'movie') ? (
+          {isWatchlist(item.ids.tmdb, 'movie') ? (
             <button
               className={`bg-blue-400 py-3 pl-12 rounded-full text-white font-bold ${
                 isWatchlistPending ? 'pr-6' : 'pr-12'

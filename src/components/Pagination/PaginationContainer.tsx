@@ -4,7 +4,7 @@ import { PAGE_SIZE, usePagination } from '../../hooks/usePagination';
 
 interface IPaginationContainerProps {
   items: any[];
-  onFilter?: (genres: string[]) => void;
+  onFilter?: (genres: number[]) => void;
 }
 
 const TopPagination: React.FC<IPaginationContainerProps> = ({

@@ -19,7 +19,7 @@ interface ISeasonsProps {
   episodesRatings?: Record<number, number>;
   showModal: (data: { title: string; overview: string }) => void;
   onlyView: boolean;
-  showId: string;
+  showId: number;
 }
 
 const Episodes: React.FC<ISeasonsProps> = ({
@@ -47,7 +47,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
       return false;
     }
     const episodesAvailable = episodesDates.filter(
-      (e) => new Date(e.first_aired) < new Date()
+      (e) => e.first_aired && new Date(e.first_aired) < new Date()
     );
     return episodesProgress.length === episodesAvailable.length;
   };

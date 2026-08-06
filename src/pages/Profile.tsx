@@ -143,9 +143,6 @@ export default function Profile() {
 
         <div className="flex justify-between pt-2 text-sm font-mono items-center">
           <h1 className="inline">Version: {packageInfo.version}</h1>
-          <a href="https://status.trakt.tv/" className="underline">
-            API status
-          </a>
           {isLogged ? (
             <button
               onClick={logout}

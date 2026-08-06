@@ -24,17 +24,26 @@ export const dbMiddleware: Middleware = (_store) => (next) => (action) => {
   } else if (
     isAnyOf(removeWatched.fulfilled, removeWatchlistMovie.fulfilled)(action)
   ) {
-    db[USER_MOVIES_TABLE].delete(action.meta.arg.movie.ids.imdb);
+    db[USER_MOVIES_TABLE].delete(action.meta.arg.movie.ids.tmdb);
   } else if (isAnyOf(addWatchlistMovie.fulfilled)(action) && action.payload) {
-    db[USER_MOVIES_TABLE].put(action.payload);
+    db[USER_MOVIES_TABLE].put({
+      ...action.payload,
+      movie_tmdb: Number(action.payload.movie_tmdb),
+    });
   } else if (isAnyOf(addWatchedMovie.fulfilled)(action) && action.payload) {
-    db[USER_MOVIES_TABLE].put(action.payload);
+    db[USER_MOVIES_TABLE].put({
+      ...action.payload,
+      movie_tmdb: Number(action.payload.movie_tmdb),
+    });
   } else if (isAnyOf(fillDetailShow.fulfilled)(action)) {
     db[DETAIL_SHOWS_TABLE].put(action.payload);
   } else if (isAnyOf(addWatchlistShow.fulfilled)(action) && action.payload) {
-    db[USER_SHOWS_TABLE].put(action.payload);
+    db[USER_SHOWS_TABLE].put({
+      ...action.payload,
+      show_tmdb: Number(action.payload.show_tmdb),
+    });
   } else if (isAnyOf(removeWatchlistShow.fulfilled)(action)) {
-    db[USER_SHOWS_TABLE].delete(action.meta.arg.show.ids.imdb);
+    db[USER_SHOWS_TABLE].delete(action.meta.arg.show.ids.tmdb);
   }
 
   return next(action);

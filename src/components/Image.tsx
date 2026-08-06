@@ -41,11 +41,11 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
   );
 
   const liveItem = useLiveQuery(() => {
-    if (!ids.imdb || !['movie', 'show'].includes(type) || forceState) {
+    if (!ids.tmdb || !['movie', 'show'].includes(type) || forceState) {
       return null;
     }
     const table = type === 'movie' ? USER_MOVIES_TABLE : USER_SHOWS_TABLE;
-    return db.table(table).get(ids.imdb);
+    return db.table(table).get(ids.tmdb);
   }, [ids, forceState]);
 
   const status = forceState ? forceState : liveItem?.status;

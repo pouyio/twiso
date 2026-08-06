@@ -17,7 +17,7 @@ import { AnimatePresence } from 'framer-motion';
 interface ISeasonsContainerProps {
   show: Show;
   status?: ShowStatusComplete;
-  showId: string;
+  showId: number;
   seasonRatings?: SeasonRating[] | null;
 }
 
@@ -46,7 +46,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     if (selectedSeason !== undefined && episodesDates[selectedSeason]) {
       return;
     }
-    getSeasonEpisodesApi(showId, selectedSeason, language).then(({ data }) => {
+    getSeasonEpisodesApi(showId, selectedSeason, language).then((data) => {
       setEpisodesDates((e) => {
         e[selectedSeason] = data;
         return [...e];
@@ -73,7 +73,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       return;
     }
     const episodesToWawtch = episodesDates[selectedSeason].filter(
-      (e) => new Date(e.first_aired) < new Date()
+      (e) => e.first_aired && new Date(e.first_aired) < new Date()
     );
     dispatch(
       addEpisodeWatched({ showIds: show.ids, episodes: episodesToWawtch })
@@ -85,7 +85,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       return;
     }
     const episodesToWawtch = episodesDates[selectedSeason].filter(
-      (e) => new Date(e.first_aired) < new Date()
+      (e) => e.first_aired && new Date(e.first_aired) < new Date()
     );
     dispatch(
       removeEpisodeWatched({
@@ -156,7 +156,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
             episodesRatings={episodesRatings}
             showModal={showModal}
             onlyView={!isLogged}
-            showId={show.ids.imdb}
+            showId={show.ids.tmdb}
           />
         )}
       </AnimatePresence>

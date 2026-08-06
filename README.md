@@ -10,6 +10,6 @@
 
 📽🍿 Yet another movie/series app 📽🍿
 
-Uses [Supabase](https://supabase.com/), [trakt.tv API](https://trakt.tv) and [TMDB API](https://www.themoviedb.org/)
+Uses [Supabase](https://supabase.com/) and [TMDB API](https://www.themoviedb.org/)
 
 Uses [Free Solar Bold Duotone icons SVG](https://www.svgrepo.com/collection/solar-bold-duotone-icons/).

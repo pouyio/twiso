@@ -15,7 +15,7 @@ interface ItemsCount {
 }
 
 export type AddedWatched = {
-  movie_imdb: string;
+  movie_tmdb: number;
   status: 'watchlist' | 'watched';
   created_at: string;
 } | null;
@@ -77,13 +77,13 @@ export type Activities = {
 type Status = 'watched' | 'watchlist';
 
 export type MovieStatus = {
-  movie_imdb: string;
+  movie_tmdb: number;
   status: Status;
   created_at: string;
 };
 
 export type ShowStatus = {
-  show_imdb: string;
+  show_tmdb: number;
   status: Status;
   created_at: string;
   hidden: boolean;
@@ -94,8 +94,8 @@ export type ShowStatusComplete = ShowStatus & {
 };
 
 export type EpisodeStatus = {
-  episode_imdb: string;
-  show_imdb: string;
+  episode_tmdb: number;
+  show_tmdb: number;
   created_at: string;
   season_number: number;
   episode_number: number;

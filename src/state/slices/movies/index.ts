@@ -9,7 +9,7 @@ import {
 
 interface MoviesState {
   totalRequestsPending: number;
-  pending: { watched: string[]; watchlist: string[] };
+  pending: { watched: number[]; watchlist: number[] };
 }
 
 const initialState: MoviesState = {
@@ -32,7 +32,7 @@ const moviesSlice = createSlice({
       .addMatcher(
         isAnyOf(addWatchedMovie.pending, removeWatched.pending),
         (state, { meta }) => {
-          state.pending.watched.push(meta.arg.movie.ids.imdb);
+          state.pending.watched.push(meta.arg.movie.ids.tmdb);
         }
       )
       .addMatcher(
@@ -44,14 +44,14 @@ const moviesSlice = createSlice({
         ),
         (state, { meta }) => {
           state.pending.watched = state.pending.watched.filter(
-            (p) => p !== meta.arg.movie.ids.imdb
+            (p) => p !== meta.arg.movie.ids.tmdb
           );
         }
       )
       .addMatcher(
         isAnyOf(addWatchlist.pending, removeWatchlist.pending),
         (state, { meta }) => {
-          state.pending.watchlist.push(meta.arg.movie.ids.imdb);
+          state.pending.watchlist.push(meta.arg.movie.ids.tmdb);
         }
       )
       .addMatcher(
@@ -63,7 +63,7 @@ const moviesSlice = createSlice({
         ),
         (state, { meta }) => {
           state.pending.watchlist = state.pending.watchlist.filter(
-            (p) => p !== meta.arg.movie.ids.imdb
+            (p) => p !== meta.arg.movie.ids.tmdb
           );
         }
       )

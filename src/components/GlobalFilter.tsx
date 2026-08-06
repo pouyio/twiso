@@ -26,10 +26,10 @@ export const GlobalFilter = () => {
   }, [searchValue]);
 
   const getBgClass = (item: Movie | Show, type: 'movie' | 'show') => {
-    if (isWatched(item.ids.imdb ?? '', type)) {
+    if (isWatched(item.ids.tmdb, type)) {
       return 'bg-green-400';
     }
-    if (isWatchlist(item.ids.imdb ?? '', type)) {
+    if (isWatchlist(item.ids.tmdb, type)) {
       return 'bg-blue-400';
     }
     return '';
@@ -63,7 +63,7 @@ export const GlobalFilter = () => {
 
             return (
               <li
-                key={item?.ids?.imdb}
+                key={item?.ids?.tmdb}
                 className="p-2"
                 style={{ flex: '1 0 50%', maxWidth: '10em' }}
                 tabIndex={i + 1}
