@@ -44,30 +44,34 @@ export default function MovieDetail() {
   const [zoom, setZoom] = useState(false);
   const refreshIconRef = useRef<HTMLImageElement>(null);
   useEffect(() => {
+    let cancelled = false;
     // @ts-expect-error limitations on Dexie EntityTable
     db[DETAIL_MOVIES_TABLE].get(Number(id)).then((movie) => {
-      if (!movie) {
-        dispatch(fillDetail({ id: Number(id) }))
-          .unwrap()
-          .catch(() => setLoadError(true));
-      }
+      if (cancelled) return;
+      if (movie && movie.contentLanguage === language) return;
+      dispatch(fillDetail({ id: Number(id) }))
+        .unwrap()
+        .catch(() => setLoadError(true));
     });
     setPeople(undefined);
     setRatings(undefined);
     setStudios([]);
     getPeopleApi(Number(id), 'movie', language).then((data) => {
-      setPeople(data);
+      if (!cancelled) setPeople(data);
     });
     getRatingsApi(Number(id), 'movie').then((data) => {
-      setRatings(data);
+      if (!cancelled) setRatings(data);
     });
     getStudiosApi(Number(id), 'movie').then((data) => {
-      setStudios(data);
+      if (!cancelled) setStudios(data);
     });
     getMovieReleasesApi(Number(id)).then((data) => {
-      setReleases(data);
+      if (!cancelled) setReleases(data);
     });
-  }, [id]);
+    return () => {
+      cancelled = true;
+    };
+  }, [id, language]);
 
   const item = useLiveQuery(
     () =>

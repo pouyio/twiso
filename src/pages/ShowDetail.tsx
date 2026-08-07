@@ -28,6 +28,7 @@ import { SeasonRating, ShowRating, Studio } from '../models/Api';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useImage } from '../hooks/useImage';
+import { getMedianRuntime } from '../utils/showRuntime';
 import Studios from '../components/Studios';
 import { Error } from './Error';
 
@@ -49,22 +50,26 @@ export default function ShowDetail() {
   const refreshIconRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
+    let cancelled = false;
     // @ts-expect-error limitations on Dexie EntityTable
     db[DETAIL_SHOWS_TABLE].get(Number(id)).then((show) => {
-      if (!show) {
-        dispatch(fillDetail({ id: Number(id) }))
-          .unwrap()
-          .catch(() => setLoadError(true));
-      }
+      if (cancelled) return;
+      if (show && show.contentLanguage === language) return;
+      dispatch(fillDetail({ id: Number(id) }))
+        .unwrap()
+        .catch(() => setLoadError(true));
     });
     setPeople(undefined);
     getPeopleApi(Number(id), 'show', language).then((data) => {
-      setPeople(data);
+      if (!cancelled) setPeople(data);
     });
     getStudiosApi(Number(id), 'show').then((data) => {
-      setStudios(data);
+      if (!cancelled) setStudios(data);
     });
-  }, [id]);
+    return () => {
+      cancelled = true;
+    };
+  }, [id, language]);
 
   const item = useLiveQuery(
     () =>
@@ -105,6 +110,11 @@ export default function ShowDetail() {
     }
     return 'bg-gray-300';
   }, [liveStatus]);
+
+  const showRuntime = useMemo(
+    () => getMedianRuntime(item?.all_seasons ?? []),
+    [item?.all_seasons]
+  );
 
   const onShare = () => {
     share(title).then((action) => {
@@ -275,7 +285,9 @@ export default function ShowDetail() {
                     </button>
                   )}
                 </div>
-                <h2 className="flex justify-end">{item.runtime || '?'} mins</h2>
+                <h2 className="flex justify-end">
+                  {showRuntime ?? (item.runtime || '?')} mins
+                </h2>
               </div>
               <div className="grid grid-cols-[35%_30%_35%] items-center text-gray-600 my-1">
                 <div className="flex justify-start">
@@ -327,7 +339,6 @@ export default function ShowDetail() {
               <SeasonsContainer
                 show={item}
                 status={liveStatus}
-                showId={Number(id)}
                 seasonRatings={seasonRatings}
               />
             </div>

@@ -1,6 +1,6 @@
 import Dexie, { type EntityTable } from 'dexie';
 import { Show } from '../models/Show';
-import { Translation } from '../models/Translation';
+import { Translation, Language } from '../models/Translation';
 import { Movie } from '../models/Movie';
 
 type DBStatus = 'watchlist' | 'watched';
@@ -25,8 +25,14 @@ type DBShowStatus = {
   }>;
 };
 
-export type DBMovieDetail = Movie & { translation?: Translation };
-export type DBShowDetail = Show & { translation?: Translation };
+export type DBMovieDetail = Movie & {
+  translation?: Translation;
+  contentLanguage?: Language;
+};
+export type DBShowDetail = Show & {
+  translation?: Translation;
+  contentLanguage?: Language;
+};
 
 // New DB name: Dexie cannot change a store's primary key in place, so reusing
 // 'twisoDB' (v3, keyed by imdb) would need a delete+recreate across two

@@ -10,7 +10,7 @@ import {
 } from '../../../utils/api';
 import { Movie } from '../../../models/Movie';
 import { AddedWatched } from '../../../models/Api';
-import { Translation } from '../../../models/Translation';
+import { Translation, Language } from '../../../models/Translation';
 
 export const addWatchedMovie = createAsyncThunk<AddedWatched, { movie: Movie }>(
   'movies/addWatched',
@@ -65,7 +65,7 @@ export const removeWatchlist = createAsyncThunk<null, { movie: Movie }>(
 );
 
 export const fillDetail = createAsyncThunk<
-  Movie & { translation?: Translation },
+  Movie & { translation?: Translation; contentLanguage?: Language },
   { id: number },
   { state: RootState }
 >('movies/fillDetail', async ({ id }, { getState }) => {
@@ -77,5 +77,9 @@ export const fillDetail = createAsyncThunk<
   if (!results[0]?.ids?.tmdb) {
     throw new Error('No info available for this movie: ' + id);
   }
-  return { ...results[0], translation: results[1] ?? undefined };
+  return {
+    ...results[0],
+    translation: results[1] ?? undefined,
+    contentLanguage: language,
+  };
 });

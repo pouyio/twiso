@@ -113,6 +113,7 @@ export const fillDetail = createAsyncThunk<
   Show & {
     all_seasons: Season[];
     translation?: Translation;
+    contentLanguage?: Language;
   },
   {
     id: number;
@@ -126,7 +127,7 @@ export const fillDetail = createAsyncThunk<
       getSeasonsApi(id, language),
     ]);
 
-    return { ...detail, all_seasons: seasons };
+    return { ...detail, all_seasons: seasons, contentLanguage: language };
   } catch (e) {
     console.error(e);
     throw e;
