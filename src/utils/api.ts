@@ -4,7 +4,7 @@ import { config, IMG_URL } from './apiConfig';
 import { ImgConfig } from '../models/ImgConfig';
 import { ItemType } from '../models/ItemType';
 import { ImageResponse } from '../models/Image';
-import { Episode, Season, SeasonEpisode, Show } from '../models/Show';
+import { Season, SeasonEpisode, Show } from '../models/Show';
 import { Language, Translation } from '../models/Translation';
 import { Movie } from '../models/Movie';
 import {
@@ -73,16 +73,6 @@ export const getShowApi = (id: number, language: Language = 'es') => {
 
 export const getSeasonsApi = (id: number, language: Language) => {
   return getTmdb<Season[]>(`/shows/${id}/seasons?language=${language}`);
-};
-
-export const getSeasonEpisodesApi = (
-  id: number,
-  season: number,
-  language: Language
-) => {
-  return getTmdb<Episode[]>(
-    `/shows/${id}/seasons/${season}?language=${language}`
-  );
 };
 
 export const getTranslationsApi = (

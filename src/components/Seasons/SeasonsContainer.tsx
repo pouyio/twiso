@@ -1,15 +1,14 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useMemo } from 'react';
 import {
   addEpisodeWatched,
   removeEpisodeWatched,
 } from '../../state/slices/shows/thunks';
-import { useAppDispatch, useAppSelector } from '../../state/store';
+import { useAppDispatch } from '../../state/store';
 import { AuthContext } from '../../contexts/AuthContext';
 import { ModalContext } from '../../contexts/ModalContext';
-import { getSeasonEpisodesApi } from '../../utils/api';
 import Episodes from './Episodes';
 import SeasonSelector from './SeasonSelector';
-import { Episode, SeasonEpisode, Show } from '../../models/Show';
+import { SeasonEpisode, Show } from '../../models/Show';
 import { useSearchParams } from 'react-router';
 import { ShowStatusComplete, SeasonRating } from '../../models/Api';
 import { AnimatePresence } from 'framer-motion';
@@ -17,13 +16,11 @@ import { AnimatePresence } from 'framer-motion';
 interface ISeasonsContainerProps {
   show: Show;
   status?: ShowStatusComplete;
-  showId: number;
   seasonRatings?: SeasonRating[] | null;
 }
 
 const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   show,
-  showId,
   status,
   seasonRatings,
 }) => {
@@ -32,28 +29,13 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const selectedSeason = !searchParams.get('season')
     ? undefined
     : +searchParams.get('season')!;
-  const [episodesDates, setEpisodesDates] = useState<Episode[][]>([]);
   const { session } = useContext(AuthContext);
   const isLogged = !!session;
   const { toggle } = useContext(ModalContext);
   const dispatch = useAppDispatch();
-  const language = useAppSelector((state) => state.config.language);
 
-  useEffect(() => {
-    if (selectedSeason === undefined) {
-      return;
-    }
-    if (selectedSeason !== undefined && episodesDates[selectedSeason]) {
-      return;
-    }
-    getSeasonEpisodesApi(showId, selectedSeason, language).then((data) => {
-      setEpisodesDates((e) => {
-        e[selectedSeason] = data;
-        return [...e];
-      });
-    });
-    // eslint-disable-next-line
-  }, [selectedSeason, showId, language]);
+  const selectedSeasonEpisodes =
+    show.all_seasons.find((s) => s.number === selectedSeason)?.episodes ?? [];
 
   const addEpisode = async (episode: SeasonEpisode) => {
     dispatch(addEpisodeWatched({ showIds: show.ids, episodes: [episode] }));
@@ -72,7 +54,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     if (!selectedSeason) {
       return;
     }
-    const episodesToWawtch = episodesDates[selectedSeason].filter(
+    const episodesToWawtch = selectedSeasonEpisodes.filter(
       (e) => e.first_aired && new Date(e.first_aired) < new Date()
     );
     dispatch(
@@ -84,7 +66,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
     if (!selectedSeason) {
       return;
     }
-    const episodesToWawtch = episodesDates[selectedSeason].filter(
+    const episodesToWawtch = selectedSeasonEpisodes.filter(
       (e) => e.first_aired && new Date(e.first_aired) < new Date()
     );
     dispatch(
@@ -152,7 +134,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
               show.all_seasons.find((s) => s.number === selectedSeason)
                 ?.episodes ?? []
             }
-            episodesDates={episodesDates[selectedSeason]}
+            episodesDates={selectedSeasonEpisodes}
             episodesRatings={episodesRatings}
             showModal={showModal}
             onlyView={!isLogged}
