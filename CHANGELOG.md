@@ -1,3 +1,11 @@
+## [2.19.1](https://github.com/pouyio/twiso/compare/v2.19.0...v2.19.1) (2026-08-07)
+
+
+### :bug:
+
+* fix genres, split movies and shows ([71a69c1](https://github.com/pouyio/twiso/commit/71a69c159b2b6b6e4b868b87cefb4f042d647262))
+* update query on language change & remove seasons query ([0cced4e](https://github.com/pouyio/twiso/commit/0cced4ede98ae67aa9bed4d697455f3e075d7e52))
+
 ## [2.18.1](https://github.com/pouyio/twiso/compare/v2.18.0...v2.18.1) (2026-07-17)
 
 
