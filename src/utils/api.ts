@@ -47,9 +47,9 @@ export const getImgsApi = (id: number, type: ItemType) => {
   );
 };
 
-const getTmdb = async <T>(path: string): Promise<T> => {
+const getCatalog = async <T>(path: string): Promise<T> => {
   const { data, error } = await supabase.functions.invoke<T>(
-    `api/tmdb${path}`,
+    `api${path}`,
     {
       method: 'GET',
     }
@@ -64,15 +64,15 @@ const typeSegment = (type: ItemType) =>
   type === 'show' ? 'shows' : 'movies';
 
 export const getMovieApi = (id: number, language: Language = 'es') => {
-  return getTmdb<Movie>(`/movies/${id}?language=${language}`);
+  return getCatalog<Movie>(`/movies/${id}?language=${language}`);
 };
 
 export const getShowApi = (id: number, language: Language = 'es') => {
-  return getTmdb<Show>(`/shows/${id}?language=${language}`);
+  return getCatalog<Show>(`/shows/${id}?language=${language}`);
 };
 
 export const getSeasonsApi = (id: number, language: Language) => {
-  return getTmdb<Season[]>(`/shows/${id}/seasons?language=${language}`);
+  return getCatalog<Season[]>(`/shows/${id}/seasons?language=${language}`);
 };
 
 export const getTranslationsApi = (
@@ -80,7 +80,7 @@ export const getTranslationsApi = (
   type: ItemType,
   language: Language
 ) => {
-  return getTmdb<Translation | null>(
+  return getCatalog<Translation | null>(
     `/${typeSegment(type)}/${id}/translations/${language}`
   );
 };
@@ -90,7 +90,7 @@ export const searchApi = <T>(
   type: string,
   limit: number = 40
 ) => {
-  return getTmdb<T[]>(
+  return getCatalog<T[]>(
     `/search?query=${encodeURIComponent(query)}&type=${type}&limit=${limit}`
   );
 };
@@ -170,13 +170,13 @@ export const removeWatchlistApi = (id: number, type: ItemType) => {
 };
 
 export const getPeopleApi = (id: number, type: ItemType, language: Language = 'es') => {
-  return getTmdb<People>(
+  return getCatalog<People>(
     `/${typeSegment(type)}/${id}/people?language=${language}`
   );
 };
 
 export const getPersonApi = (id: number, language: Language = 'es') => {
-  return getTmdb<Person>(`/people/${id}?language=${language}`);
+  return getCatalog<Person>(`/people/${id}?language=${language}`);
 };
 
 export const getPersonItemsApi = <T>(
@@ -184,16 +184,16 @@ export const getPersonItemsApi = <T>(
   type: ItemType,
   language: Language = 'es'
 ) => {
-  return getTmdb<T>(`/people/${person}/${typeSegment(type)}?language=${language}`);
+  return getCatalog<T>(`/people/${person}/${typeSegment(type)}?language=${language}`);
 };
 
 export const getPopularApi = (type: ItemType, limit: number = 40) => {
-  return getTmdb<Popular[]>(`/${typeSegment(type)}/trending?limit=${limit}`);
+  return getCatalog<Popular[]>(`/${typeSegment(type)}/trending?limit=${limit}`);
 };
 
 export const getRelatedApi = async <T>(type: ItemType, id?: number) => {
   return id
-    ? getTmdb<T[]>(`/${typeSegment(type)}/${id}/related?limit=12`)
+    ? getCatalog<T[]>(`/${typeSegment(type)}/${id}/related?limit=12`)
     : [];
 };
 
@@ -204,11 +204,11 @@ export const getStatsApi = () => {
 };
 
 export const getRatingsApi = (id: number, type: ItemType) => {
-  return getTmdb<Ratings>(`/${typeSegment(type)}/${id}/ratings`);
+  return getCatalog<Ratings>(`/${typeSegment(type)}/${id}/ratings`);
 };
 
 export const getStudiosApi = (id: number, type: ItemType) => {
-  return getTmdb<Studio[]>(`/${typeSegment(type)}/${id}/studios`);
+  return getCatalog<Studio[]>(`/${typeSegment(type)}/${id}/studios`);
 };
 
 export const getShowSeasonRatingsApi = (showId: number) => {
@@ -226,7 +226,7 @@ export const getShowRatingsApi = (showId: number) => {
 };
 
 export const getMovieReleasesApi = (id: number) => {
-  return getTmdb<Release[]>(`/movies/${id}/releases/es`);
+  return getCatalog<Release[]>(`/movies/${id}/releases/es`);
 };
 
 export const setHideShow = (showId: number, hidden: boolean) => {
