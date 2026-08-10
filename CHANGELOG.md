@@ -1,3 +1,10 @@
+## [2.19.2](https://github.com/pouyio/twiso/compare/v2.19.1...v2.19.2) (2026-08-10)
+
+
+### :bug:
+
+* moved to generic catalog client ([80af6f8](https://github.com/pouyio/twiso/commit/80af6f8b1cf5dab89555cb8646b9855f99370b87))
+
 ## [2.19.1](https://github.com/pouyio/twiso/compare/v2.19.0...v2.19.1) (2026-08-07)
 
 
