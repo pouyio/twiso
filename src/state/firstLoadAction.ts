@@ -98,6 +98,10 @@ export const firstLoad = async (): Promise<boolean> => {
     );
     const { data: newActivities } = await syncActivities();
 
+    await Promise.all([
+      syncRemoteMovies(oldActivities, newActivities),
+      syncRemoteShows(oldActivities, newActivities),
+    ]);
     await syncRemoteMovies(oldActivities, newActivities);
 
     const localUserMovieWatchlistIds = await db
@@ -122,7 +126,6 @@ export const firstLoad = async (): Promise<boolean> => {
       store.dispatch(fillDetail({ id }));
     });
 
-    await syncRemoteShows(oldActivities, newActivities);
     const localUserShowIds = await db
       .table<any, number>(USER_SHOWS_TABLE)
       .toCollection()
