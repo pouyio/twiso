@@ -1,3 +1,10 @@
+## [2.19.3](https://github.com/pouyio/twiso/compare/v2.19.2...v2.19.3) (2026-08-19)
+
+
+### :bug:
+
+* remove duplicate calls on first load action ([190142a](https://github.com/pouyio/twiso/commit/190142afbf1db3882221634571ca25d541fc7bef))
+
 ## [2.19.2](https://github.com/pouyio/twiso/compare/v2.19.1...v2.19.2) (2026-08-10)
 
 
