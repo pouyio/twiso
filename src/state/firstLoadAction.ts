@@ -86,7 +86,20 @@ const syncRemoteShows = async (
   }
 };
 
-export const firstLoad = async (): Promise<boolean> => {
+let firstLoadPromise: Promise<boolean> | null = null;
+
+export const firstLoad = (): Promise<boolean> => {
+  if (firstLoadPromise) {
+    return firstLoadPromise;
+  }
+  firstLoadPromise = firstLoadInternal();
+  firstLoadPromise.finally(() => {
+    firstLoadPromise = null;
+  });
+  return firstLoadPromise;
+};
+
+const firstLoadInternal = async (): Promise<boolean> => {
   try {
     await dbReady;
     if (localStorage.getItem('twiso-migrated-v4')) {
@@ -102,7 +115,6 @@ export const firstLoad = async (): Promise<boolean> => {
       syncRemoteMovies(oldActivities, newActivities),
       syncRemoteShows(oldActivities, newActivities),
     ]);
-    await syncRemoteMovies(oldActivities, newActivities);
 
     const localUserMovieWatchlistIds = await db
       .table<any, number>(USER_MOVIES_TABLE)
