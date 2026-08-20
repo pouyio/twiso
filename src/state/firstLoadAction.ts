@@ -102,10 +102,6 @@ export const firstLoad = (): Promise<boolean> => {
 const firstLoadInternal = async (): Promise<boolean> => {
   try {
     await dbReady;
-    if (localStorage.getItem('twiso-migrated-v4')) {
-      localStorage.removeItem('twiso-migrated-v4');
-      localStorage.removeItem('activities');
-    }
     const oldActivities: Activities | null = JSON.parse(
       localStorage.getItem('activities') ?? '{}'
     );
