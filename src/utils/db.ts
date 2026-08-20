@@ -34,9 +34,6 @@ export type DBShowDetail = Show & {
   contentLanguage?: Language;
 };
 
-// New DB name: Dexie cannot change a store's primary key in place, so reusing
-// 'twisoDB' (v3, keyed by imdb) would need a delete+recreate across two
-// versions. A fresh DB is created directly at version 4 keyed by tmdb ids.
 const db = new Dexie('twisoDB4') as Dexie & {
   [DETAIL_MOVIES_TABLE]: EntityTable<DBMovieDetail, 'ids' | 'genres'>; // Key should be ids.tmdb, but EntityTable wont allow nested keys
   [DETAIL_SHOWS_TABLE]: EntityTable<DBShowDetail, 'ids' | 'genres'>; // Key should be ids.tmdb, but EntityTable wont allow nested keys
@@ -62,14 +59,6 @@ db.version(4).stores({
   [USER_SHOWS_TABLE]: 'show_tmdb,status,created_at',
 });
 
-export const dbReady = db
-  .open()
-  .then(() => {
-    if (!localStorage.getItem('twiso-migrated-v4')) {
-      localStorage.setItem('twiso-migrated-v4', '1');
-      localStorage.removeItem('activities');
-    }
-  })
-  .catch(() => {});
+export const dbReady = db.open().catch(() => {});
 
 export default db;
