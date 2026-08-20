@@ -1,3 +1,10 @@
+## [2.19.4](https://github.com/pouyio/twiso/compare/v2.19.3...v2.19.4) (2026-08-20)
+
+
+### :bug:
+
+* fix last duplicate call ([744ef67](https://github.com/pouyio/twiso/commit/744ef67774ebb9419f7882193a980c454a2403d4))
+
 ## [2.19.3](https://github.com/pouyio/twiso/compare/v2.19.2...v2.19.3) (2026-08-19)
 
 
