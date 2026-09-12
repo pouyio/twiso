@@ -16,6 +16,9 @@ import { fillDetail } from './slices/movies/thunks';
 import { fillDetail as fillDetailShow } from './slices/shows/thunks';
 import { Activities } from '../models/Api';
 
+const DETAIL_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+const MAX_STALE_DETAIL_REFRESH = 20;
+
 const syncRemoteMovies = async (
   oldActivities: Activities | null,
   newActivities: Activities | null
@@ -148,6 +151,28 @@ const firstLoadInternal = async (): Promise<boolean> => {
     );
 
     showIdsToFill.forEach((id) => {
+      store.dispatch(fillDetailShow({ id }));
+    });
+
+    const now = Date.now();
+    const staleDetailShowIds = (
+      await db[DETAIL_SHOWS_TABLE]
+        .where('ids.tmdb')
+        .anyOf(localUserShowIds)
+        .toArray()
+    )
+      .filter(
+        (show) =>
+          show.status !== 'ended' &&
+          show.status !== 'canceled' &&
+          (!show.updatedAt ||
+            now - Date.parse(show.updatedAt) > DETAIL_TTL_MS)
+      )
+      .map((show) => show.ids.tmdb)
+      .filter((id) => !showIdsToFill.includes(id))
+      .slice(0, MAX_STALE_DETAIL_REFRESH);
+
+    staleDetailShowIds.forEach((id) => {
       store.dispatch(fillDetailShow({ id }));
     });
 

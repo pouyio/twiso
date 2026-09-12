@@ -135,6 +135,7 @@ const en = {
   episode_num: 'Episode {}',
   votes: 'votes',
   season_abbreviation: 'S',
+  hide_finished: 'Hide shows with no new episodes',
 };
 
 const es = {
@@ -274,6 +275,7 @@ const es = {
   episode_num: 'Episodio {}',
   votes: 'votos',
   season_abbreviation: 'T',
+  hide_finished: 'Ocultar series sin episodios nuevos',
 };
 
 const translations: Record<Language, Record<string, string>> = {

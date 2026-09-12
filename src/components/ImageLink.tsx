@@ -11,6 +11,7 @@ interface IImageLinkProps {
   onClick?: React.MouseEventHandler<HTMLAnchorElement> | undefined;
   forceState?: 'watched' | 'watchlist';
   hidden?: boolean;
+  dimmed?: boolean;
 }
 
 const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
@@ -20,6 +21,7 @@ const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
   type,
   forceState,
   hidden,
+  dimmed,
   children = '',
   onClick = () => {},
 }) => {
@@ -37,6 +39,7 @@ const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
         type={type}
         forceState={forceState}
         hidden={hidden}
+        dimmed={dimmed}
       />
       {children}
     </Link>

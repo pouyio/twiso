@@ -2,6 +2,7 @@ import Genres from '../../components/Genres';
 import React, { useEffect } from 'react';
 import { Icon } from '../../components/Icon';
 import { useSearchParams } from 'react-router';
+import { useTranslate } from '../../hooks/useTranslate';
 
 interface IPaginationProps {
   setFirst: () => void;
@@ -9,6 +10,7 @@ interface IPaginationProps {
   setNext: () => void;
   setLast: () => void;
   onFilter?: (genres: number[]) => void;
+  onHideFinishedToggle?: (hide: boolean) => void;
   page: number;
   last: number;
 }
@@ -19,13 +21,17 @@ const Pagination: React.FC<IPaginationProps> = ({
   setNext,
   setLast,
   onFilter,
+  onHideFinishedToggle,
   page,
   last,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t } = useTranslate();
   const genres = searchParams.get('genres');
   const selectedGenres = genres?.split(',').filter(Boolean).map(Number) ?? [];
   const showFilters = searchParams.has('genres');
+  const showFinished = searchParams.get('showFinished') === '1';
+  const hideFinished = !showFinished;
 
   const toggleGenre = (genre: number) => {
     const newGenres = selectedGenres.includes(genre)
@@ -41,6 +47,22 @@ const Pagination: React.FC<IPaginationProps> = ({
       onFilter(selectedGenres);
     }
   }, [genres]);
+
+  useEffect(() => {
+    if (onHideFinishedToggle) {
+      onHideFinishedToggle(!showFinished);
+    }
+  }, [showFinished]);
+
+  const toggleHideFinished = () => {
+    if (showFinished) {
+      searchParams.delete('showFinished');
+    } else {
+      searchParams.set('showFinished', '1');
+    }
+    searchParams.set('page', '1');
+    setSearchParams(searchParams);
+  };
 
   const setToggleFilters = () => {
     if (showFilters) {
@@ -99,6 +121,17 @@ const Pagination: React.FC<IPaginationProps> = ({
       {showFilters && onFilter && (
         <div className="sticky top-0">
           <div className="inline-flex bg-blue-100 px-4 w-full flex-col border-b-2">
+            {onHideFinishedToggle && (
+              <label className="flex items-center gap-2 py-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  className="accent-blue-600 h-4 w-4"
+                  checked={hideFinished}
+                  onChange={() => toggleHideFinished()}
+                />
+                <span className="text-sm">{t('hide_finished')}</span>
+              </label>
+            )}
             <Genres onClick={toggleGenre} selected={selectedGenres} />
           </div>
         </div>
