@@ -1,3 +1,10 @@
+# [2.20.0](https://github.com/pouyio/twiso/compare/v2.19.4...v2.20.0) (2026-09-12)
+
+
+### :sparkles:
+
+* hide shows without new episodes by default ([eaab419](https://github.com/pouyio/twiso/commit/eaab419095d8544eaf86c05535936b6e6fcc69a5))
+
 ## [2.19.4](https://github.com/pouyio/twiso/compare/v2.19.3...v2.19.4) (2026-08-20)
 
 
