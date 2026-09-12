@@ -5,11 +5,17 @@ import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from '../../components/EmptyState';
 import { NoResults } from '../../components/NoResults';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useSearchParams } from 'react-router';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from '../../utils/db';
 import { Show } from '../../models/Show';
+import { hasAvailableEpisodes } from '../../utils/showAvailability';
 
 const ShowsWatched: React.FC = () => {
   const [genres, setGenres] = useState<number[]>([]);
+  const [searchParams] = useSearchParams();
+  const [hideFinished, setHideFinished] = useState(
+    () => searchParams.get('showFinished') !== '1'
+  );
 
   const orderedUserShows = useLiveQuery(
     () =>
@@ -37,17 +43,41 @@ const ShowsWatched: React.FC = () => {
     .map((m) => fullShows.find((fm) => fm.ids.tmdb === m.show_tmdb))
     .filter(Boolean) as Show[];
 
-  const { getItemsByPage } = usePagination(orderedShows);
+  const watchedEpisodesByShow = new Map<number, Set<string>>();
+  orderedUserShows.forEach((ous) => {
+    watchedEpisodesByShow.set(
+      ous.show_tmdb,
+      new Set(
+        ous.episodes?.map((e) => `${e.season_number}:${e.episode_number}`) ?? []
+      )
+    );
+  });
+
+  const hasAvailable = (show: Show) =>
+    hasAvailableEpisodes(
+      show,
+      watchedEpisodesByShow.get(show.ids.tmdb) ?? new Set<string>()
+    );
+
+  const visibleShows = hideFinished
+    ? orderedShows.filter((s) => hasAvailable(s))
+    : orderedShows;
+
+  const { getItemsByPage } = usePagination(visibleShows);
 
   const isHidden = (id: number) => {
     return orderedUserShows.find((ous) => ous.show_tmdb === id)?.hidden;
   };
 
-  return !genres.length && !orderedShows.length ? (
+  return !genres.length && !hideFinished && !orderedShows.length ? (
     <EmptyState />
   ) : (
-    <PaginationContainer items={orderedShows} onFilter={setGenres}>
-      {genres.length && !orderedShows.length ? (
+    <PaginationContainer
+      items={visibleShows}
+      onFilter={setGenres}
+      onHideFinishedToggle={setHideFinished}
+    >
+      {!visibleShows.length ? (
         <NoResults />
       ) : (
         <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
@@ -64,6 +94,7 @@ const ShowsWatched: React.FC = () => {
                 type="show"
                 forceState="watched"
                 hidden={isHidden(m.ids.tmdb)}
+                dimmed={!hasAvailable(m)}
               />
             </li>
           ))}

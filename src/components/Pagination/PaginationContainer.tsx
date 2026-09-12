@@ -5,11 +5,13 @@ import { PAGE_SIZE, usePagination } from '../../hooks/usePagination';
 interface IPaginationContainerProps {
   items: any[];
   onFilter?: (genres: number[]) => void;
+  onHideFinishedToggle?: (hide: boolean) => void;
 }
 
 const TopPagination: React.FC<IPaginationContainerProps> = ({
   items,
   onFilter,
+  onHideFinishedToggle,
 }) => {
   const { currentPage, lastPage, setFirst, setLast, setPrev, setNext } =
     usePagination(items);
@@ -22,6 +24,7 @@ const TopPagination: React.FC<IPaginationContainerProps> = ({
       setNext={setNext}
       setLast={setLast}
       onFilter={onFilter}
+      onHideFinishedToggle={onHideFinishedToggle}
     />
   );
 };
@@ -43,10 +46,14 @@ const BottomPagination: React.FC<IPaginationContainerProps> = ({ items }) => {
 
 const PaginationContainer: React.FC<
   React.PropsWithChildren<IPaginationContainerProps>
-> = ({ children, items, onFilter }) => {
+> = ({ children, items, onFilter, onHideFinishedToggle }) => {
   return (
     <>
-      <TopPagination items={items} onFilter={onFilter} />
+      <TopPagination
+        items={items}
+        onFilter={onFilter}
+        onHideFinishedToggle={onHideFinishedToggle}
+      />
       {children}
       {items.length > PAGE_SIZE && <BottomPagination items={items} />}
     </>

@@ -32,6 +32,7 @@ export type DBMovieDetail = Movie & {
 export type DBShowDetail = Show & {
   translation?: Translation;
   contentLanguage?: Language;
+  updatedAt?: string;
 };
 
 const db = new Dexie('twisoDB4') as Dexie & {

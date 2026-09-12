@@ -17,6 +17,7 @@ interface IImageProps {
   size?: 'small' | 'big';
   forceState?: 'watched' | 'watchlist';
   hidden?: boolean;
+  dimmed?: boolean;
 }
 
 const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
@@ -28,6 +29,7 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
   size = 'small',
   forceState,
   hidden = false,
+  dimmed = false,
   ...props
 }) => {
   const { session } = useContext(AuthContext);
@@ -74,7 +76,7 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
         className +
         ` ${
           size === 'big' ? 'min-h-116' : 'min-h-53'
-        } h-full bg-gray-300 flex justify-center items-center rounded-lg overflow-hidden ` +
+        } ${dimmed && 'opacity-50'} h-full bg-gray-300 flex justify-center items-center rounded-lg overflow-hidden ` +
         borderClass
       }
     >

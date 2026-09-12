@@ -36,7 +36,10 @@ export const dbMiddleware: Middleware = (_store) => (next) => (action) => {
       movie_tmdb: Number(action.payload.movie_tmdb),
     });
   } else if (isAnyOf(fillDetailShow.fulfilled)(action)) {
-    db[DETAIL_SHOWS_TABLE].put(action.payload);
+    db[DETAIL_SHOWS_TABLE].put({
+      ...action.payload,
+      updatedAt: new Date().toISOString(),
+    });
   } else if (isAnyOf(addWatchlistShow.fulfilled)(action) && action.payload) {
     db[USER_SHOWS_TABLE].put({
       ...action.payload,
