@@ -1,3 +1,10 @@
+## [2.20.1](https://github.com/pouyio/twiso/compare/v2.20.0...v2.20.1) (2026-09-12)
+
+
+### :bug:
+
+* fix long press in ios ([e54a523](https://github.com/pouyio/twiso/commit/e54a52337682144534994a8ba2107430ee460bae))
+
 # [2.20.0](https://github.com/pouyio/twiso/compare/v2.19.4...v2.20.0) (2026-09-12)
 
 
