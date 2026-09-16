@@ -80,6 +80,7 @@ export const Episode: React.FC<EpisodeProps> = ({
       exit={{ opacity: 0, x: 5 }}
       className="py-3 text-sm leading-tight"
       key={`${episode.season}_${episode.number}`}
+      id={`episode-${episode.season}-${episode.number}`}
     >
       <div className="flex items-center">
         <span className="text-gray-600 text-xs font-bold mr-1">

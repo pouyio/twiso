@@ -47,6 +47,18 @@
   --color-purple-700: var(--purple-700);
   --color-purple-800: var(--purple-800);
   --color-purple-900: var(--purple-900);
+
+  --animate-breathe: breathe 0.5s ease-in-out infinite;
+
+  @keyframes breathe {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
 }
 
 /*

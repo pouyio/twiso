@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../state/store';
 import { fillDetail, setHiddenShow } from '../state/slices/shows/thunks';
 import Collapsable from '../components/Collapsable/Collapsable';
@@ -14,6 +14,7 @@ import SeasonsContainer from '../components/Seasons/SeasonsContainer';
 import ShowWatchButton from '../components/ShowWatchButton';
 import { AnimatePresence } from 'framer-motion';
 import { AlertContext } from '../contexts/AlertContext';
+import { AuthContext } from '../contexts/AuthContext';
 import { People as IPeople } from '../models/People';
 import {
   getPeopleApi,
@@ -48,6 +49,8 @@ export default function ShowDetail() {
   const { t } = useTranslate();
   const [zoom, setZoom] = useState(false);
   const refreshIconRef = useRef<HTMLImageElement>(null);
+  const { session } = useContext(AuthContext);
+  const [, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     let cancelled = false;
@@ -98,6 +101,24 @@ export default function ShowDetail() {
 
   const liveStatus = useLiveQuery(() => db[USER_SHOWS_TABLE].get(Number(id)), [id]);
 
+  const nextEpisode = useMemo(() => {
+    if (!item) return undefined;
+    const watched = new Set(
+      (liveStatus?.episodes ?? []).map(
+        (e) => `${e.season_number}_${e.episode_number}`
+      )
+    );
+    for (const season of item.all_seasons) {
+      if (season.number === 0) continue;
+      for (const episode of season.episodes) {
+        if (!watched.has(`${season.number}_${episode.number}`)) {
+          return { season: season.number, episode: episode.number };
+        }
+      }
+    }
+    return null;
+  }, [item, liveStatus]);
+
   const bgClassName = useMemo(() => {
     if (liveStatus?.hidden) {
       return 'bg-green-800';
@@ -133,6 +154,16 @@ export default function ShowDetail() {
         })
       );
     }
+  };
+
+  const goToEpisode = (season: number, episode: number) => {
+    setSearchParams({ season: `${season}` }, { replace: true });
+    setTimeout(() => {
+      const element = document.getElementById(`episode-${season}-${episode}`);
+      element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element?.classList.add('animate-breathe');
+      setTimeout(() => element?.classList.remove('animate-breathe'), 1000);
+    }, 300);
   };
 
   if (!item) {
@@ -268,15 +299,15 @@ export default function ShowDetail() {
                 </button>
               </h1>
 
-              <div className="grid grid-cols-[45%_10%_45%] justify-between items-center text-gray-600">
+              <div className="flex justify-between items-center text-gray-600">
                 <div className="flex justify-start">
                   <h2 className="mx-1 rounded-full text-sm px-3 py-1 bg-gray-100 capitalize">
                     {t(item.status)}
                   </h2>
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center items-center gap-1">
                   {liveStatus?.status === 'watched' && (
-                    <button onClick={onToggleHidden}>
+                    <button onClick={onToggleHidden} className="cursor-pointer">
                       <Icon
                         className="h-10"
                         name={liveStatus?.hidden ? 'no-hidden' : 'hidden'}
@@ -284,6 +315,21 @@ export default function ShowDetail() {
                       />
                     </button>
                   )}
+                  {session && liveStatus?.status === 'watched' &&
+                    (nextEpisode && (
+                      <button
+                        onClick={() =>
+                          goToEpisode(nextEpisode.season, nextEpisode.episode)
+                        }
+                        className="mx-1 rounded-full text-sm px-3 py-1 bg-gray-100 flex items-center gap-1 cursor-pointer"
+                        title={t('next_to_watch')}
+                      >
+                        <Icon name="play" className="h-3.5" />
+                        {t('season_abbreviation')}
+                        {nextEpisode.season} - {t('episode_abbreviation')}
+                        {nextEpisode.episode}
+                      </button>
+                    ))}
                 </div>
                 <h2 className="flex justify-end">
                   {showRuntime ?? (item.runtime || '?')} mins
