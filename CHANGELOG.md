@@ -1,3 +1,10 @@
+# [2.21.0](https://github.com/pouyio/twiso/compare/v2.20.2...v2.21.0) (2026-09-16)
+
+
+### :sparkles:
+
+* add next episode button ([b4f2917](https://github.com/pouyio/twiso/commit/b4f2917e4c59c489c18eac11546b6d73d44cb740))
+
 ## [2.20.2](https://github.com/pouyio/twiso/compare/v2.20.1...v2.20.2) (2026-09-16)
 
 
