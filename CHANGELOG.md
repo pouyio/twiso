@@ -1,3 +1,10 @@
+## [2.20.2](https://github.com/pouyio/twiso/compare/v2.20.1...v2.20.2) (2026-09-16)
+
+
+### :bug:
+
+* Actualizar index.html ([e665e10](https://github.com/pouyio/twiso/commit/e665e10a8df567019011174bd579bc226ea04551))
+
 ## [2.20.1](https://github.com/pouyio/twiso/compare/v2.20.0...v2.20.1) (2026-09-12)
 
 
