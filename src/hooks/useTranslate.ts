@@ -135,6 +135,9 @@ const en = {
   episode_num: 'Episode {}',
   votes: 'votes',
   season_abbreviation: 'S',
+  episode_abbreviation: 'E',
+  next_to_watch: 'Next',
+  all_watched: 'All watched',
   hide_finished: 'Hide shows with no new episodes',
 };
 
@@ -275,6 +278,9 @@ const es = {
   episode_num: 'Episodio {}',
   votes: 'votos',
   season_abbreviation: 'T',
+  episode_abbreviation: 'E',
+  next_to_watch: 'Siguiente',
+  all_watched: 'Todo visto',
   hide_finished: 'Ocultar series sin episodios nuevos',
 };
 
