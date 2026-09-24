@@ -1,3 +1,10 @@
+## [2.21.1](https://github.com/pouyio/twiso/compare/v2.21.0...v2.21.1) (2026-09-24)
+
+
+### :bug:
+
+* fix caret lost ([de3e956](https://github.com/pouyio/twiso/commit/de3e956473dc708e57fbb5e9b2fc0dd2609bd3b3))
+
 # [2.21.0](https://github.com/pouyio/twiso/compare/v2.20.2...v2.21.0) (2026-09-16)
 
 
