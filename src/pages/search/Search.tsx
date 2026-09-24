@@ -20,6 +20,7 @@ export default function Search() {
   const [movieResults, setMovieResults] = useState<SearchMovie[]>([]);
   const [showResults, setShowResults] = useState<SearchShow[]>([]);
   const [peopleResults, setPeopleResults] = useState<SearchPerson[]>([]);
+  const [query, setLocalQuery] = useState(params.query);
   const { filterBy } = useFilter();
   const debouncedSearch = useDebounce(params.query, 500);
   const { t } = useTranslate();
@@ -29,6 +30,10 @@ export default function Search() {
   useScrollRestoration(moviesScroll, 'horizontal', 'movies');
   useScrollRestoration(showsScroll, 'horizontal', 'shows');
   useScrollRestoration(peopleScroll, 'horizontal', 'people');
+
+  useEffect(() => {
+    setLocalQuery(params.query);
+  }, [params.query]);
 
   const remoteSearch = (query: string, types: RemoteFilterTypes) => {
     setLoading(true);
@@ -93,10 +98,18 @@ export default function Search() {
           type="text"
           placeholder={t('search_placeholder')}
           autoFocus={true}
-          onChange={(e) => setQuery(e.target.value)}
-          value={params.query}
+          onChange={(e) => {
+            setLocalQuery(e.target.value);
+            setQuery(e.target.value);
+          }}
+          value={query}
         />
-        <button onClick={() => setQuery('')}>
+        <button
+          onClick={() => {
+            setLocalQuery('');
+            setQuery('');
+          }}
+        >
           <Emoji
             className="ml-3 mr-2"
             emoji={loading ? '⏳' : '❌'}
