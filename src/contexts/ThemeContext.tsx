@@ -49,6 +49,7 @@ export const ThemeProvider: React.FC<
   return (
     <ThemeContext value={{ theme: localTheme, setTheme }}>
       <div className="theme-wrapper text-black bg-white" {...styles()}>
+        <div className="pwa-status-bar-surface" aria-hidden="true" />
         {children}
       </div>
     </ThemeContext>
