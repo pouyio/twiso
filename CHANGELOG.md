@@ -1,3 +1,10 @@
+## [2.21.3](https://github.com/pouyio/twiso/compare/v2.21.2...v2.21.3) (2026-10-04)
+
+
+### :bug:
+
+* revert ios 27 fix ([13c1914](https://github.com/pouyio/twiso/commit/13c19149395ce073a1b0bd7a07d50d07c303e3c6))
+
 ## [2.21.2](https://github.com/pouyio/twiso/compare/v2.21.1...v2.21.2) (2026-10-04)
 
 
