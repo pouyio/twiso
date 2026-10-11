@@ -76,7 +76,7 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
         className +
         ` ${
           size === 'big' ? 'min-h-116' : 'min-h-53'
-        } ${dimmed && 'opacity-50'} h-full bg-gray-300 flex justify-center items-center rounded-lg overflow-hidden ` +
+        } ${dimmed ? 'opacity-50' : ''} h-full bg-transparent flex justify-center items-center rounded-lg overflow-hidden ` +
         borderClass
       }
     >
