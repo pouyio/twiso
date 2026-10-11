@@ -1,3 +1,18 @@
+## [2.21.9](https://github.com/pouyio/twiso/compare/v2.21.8...v2.21.9) (2026-10-11)
+
+
+### :arrow_up:
+
+* Bump @vitest/browser, @vitest/browser-playwright and vitest ([8706c74](https://github.com/pouyio/twiso/commit/8706c748a4189ff5300897d847296e1ceb6a2756))
+* Bump axios from 1.7.4 to 1.20.0 ([640bcc5](https://github.com/pouyio/twiso/commit/640bcc56db7651d7c5f72aa3aa2c59f84e374224))
+* Bump form-data from 4.0.1 to 4.0.6 ([a5cce34](https://github.com/pouyio/twiso/commit/a5cce340796d90348ef6086d1e68a60330309f2c))
+* Bump handlebars from 4.7.8 to 4.7.10 ([dbc4b5a](https://github.com/pouyio/twiso/commit/dbc4b5ae17d7e62918c84db6dc46080c5abbc728))
+
+### :bug:
+
+* update deps ([da57709](https://github.com/pouyio/twiso/commit/da577092f7d7a454a66f4e651433ee970821ef08))
+* update semantinc-release ([af55b5b](https://github.com/pouyio/twiso/commit/af55b5b40eff6a2b4c3e21174d627437f1cfc300))
+
 ## [2.21.8](https://github.com/pouyio/twiso/compare/v2.21.7...v2.21.8) (2026-10-11)
 
 
