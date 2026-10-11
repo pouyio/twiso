@@ -30,8 +30,9 @@ const Person: React.FC = () => {
   useEffect(() => {
     setShowResults(undefined);
     setMovieResults(undefined);
-    getPersonApi(id!).then(({ data }) => setLocalState(data));
-    getPersonItemsApi<PersonShows>(id!, 'show').then(({ data }) => {
+    const personId = Number(id);
+    getPersonApi(personId, language).then((data) => setLocalState(data));
+    getPersonItemsApi<PersonShows>(personId, 'show', language).then((data) => {
       setShowResults(
         data.cast
           .filter((r) => r.series_regular)
@@ -41,7 +42,7 @@ const Person: React.FC = () => {
           .map((r) => ({ show: r.show, title: r.character }))
       );
     });
-    getPersonItemsApi<PersonMovies>(id!, 'movie').then(({ data }) => {
+    getPersonItemsApi<PersonMovies>(personId, 'movie', language).then((data) => {
       setMovieResults([
         ...data.cast
           .filter(
@@ -140,7 +141,7 @@ const Person: React.FC = () => {
               movieResults.length ? (
                 movieResults.map((r, i) => (
                   <li
-                    key={`${r.movie.ids.imdb}-movie-${i}`}
+                    key={`${r.movie.ids.tmdb}-movie-${i}`}
                     className="p-2 h-full"
                     style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >
@@ -177,7 +178,7 @@ const Person: React.FC = () => {
               movieDirectorResults.length ? (
                 movieDirectorResults.map((r, i) => (
                   <li
-                    key={`${r.movie.ids.imdb}-movie-${i}`}
+                    key={`${r.movie.ids.tmdb}-movie-${i}`}
                     className="p-2 h-full"
                     style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >
@@ -214,7 +215,7 @@ const Person: React.FC = () => {
               showResults.length ? (
                 showResults.map((r, i) => (
                   <li
-                    key={`${r.show.ids.imdb}-show-${i}`}
+                    key={`${r.show.ids.tmdb}-show-${i}`}
                     className="p-2 h-full"
                     style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >

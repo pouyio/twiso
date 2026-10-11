@@ -5,6 +5,7 @@ import {
   syncActivities,
 } from '../utils/api';
 import db, {
+  dbReady,
   DETAIL_MOVIES_TABLE,
   DETAIL_SHOWS_TABLE,
   USER_MOVIES_TABLE,
@@ -15,21 +16,24 @@ import { fillDetail } from './slices/movies/thunks';
 import { fillDetail as fillDetailShow } from './slices/shows/thunks';
 import { Activities } from '../models/Api';
 
+const DETAIL_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+const MAX_STALE_DETAIL_REFRESH = 20;
+
 const syncRemoteMovies = async (
   oldActivities: Activities | null,
   newActivities: Activities | null
 ) => {
   if (oldActivities?.movies?.removed !== newActivities?.movies.removed) {
     const allMoviesIds = await getAllMovies().then(({ data }) =>
-      data?.map((m) => m.movie_imdb)
+      data?.map((m) => m.movie_tmdb)
     );
     const userMovies = await db.table(USER_MOVIES_TABLE).toArray();
     const moviesToDelete = userMovies.filter(
-      (um) => !allMoviesIds?.includes(um.movie_imdb)
+      (um) => !allMoviesIds?.includes(um.movie_tmdb)
     );
     await db
       .table(USER_MOVIES_TABLE)
-      .bulkDelete(moviesToDelete.map((m) => m.movie_imdb));
+      .bulkDelete(moviesToDelete.map((m) => m.movie_tmdb));
   }
 
   if (
@@ -38,7 +42,9 @@ const syncRemoteMovies = async (
   ) {
     const { data: allMovies } = await getAllMovies(oldActivities?.movies?.rest);
     if (allMovies) {
-      await db.table(USER_MOVIES_TABLE).bulkPut(allMovies);
+      await db
+        .table(USER_MOVIES_TABLE)
+        .bulkPut(allMovies.map((m) => ({ ...m, movie_tmdb: Number(m.movie_tmdb) })));
     }
   }
 };
@@ -49,16 +55,16 @@ const syncRemoteShows = async (
 ) => {
   if (oldActivities?.shows?.removed !== newActivities?.shows.removed) {
     const allShowsIds = await getAllShows().then(({ data }) =>
-      data?.map((s) => s.show_imdb)
+      data?.map((s) => s.show_tmdb)
     );
     const userShows = await db.table(USER_SHOWS_TABLE).toArray();
 
     const showsToDelete = userShows.filter(
-      (us) => !allShowsIds?.includes(us.show_imdb)
+      (us) => !allShowsIds?.includes(us.show_tmdb)
     );
     await db
       .table(USER_SHOWS_TABLE)
-      .bulkDelete(showsToDelete.map((s) => s.show_imdb));
+      .bulkDelete(showsToDelete.map((s) => s.show_tmdb));
   }
 
   if (oldActivities?.shows?.rest !== newActivities?.shows.rest) {
@@ -66,30 +72,59 @@ const syncRemoteShows = async (
       oldActivities?.shows?.rest
     );
     if (allShows) {
-      await db.table(USER_SHOWS_TABLE).bulkPut(allShows);
+      await db
+        .table(USER_SHOWS_TABLE)
+        .bulkPut(
+          allShows.map((s) => ({
+            ...s,
+            show_tmdb: Number(s.show_tmdb),
+            episodes: (s.episodes ?? []).map((e) => ({
+              ...e,
+              episode_tmdb: Number(e.episode_tmdb),
+              show_tmdb: Number(e.show_tmdb),
+            })),
+          }))
+        );
     }
   }
 };
 
-export const firstLoad = async (): Promise<boolean> => {
+let firstLoadPromise: Promise<boolean> | null = null;
+
+export const firstLoad = (): Promise<boolean> => {
+  if (firstLoadPromise) {
+    return firstLoadPromise;
+  }
+  firstLoadPromise = firstLoadInternal();
+  firstLoadPromise.finally(() => {
+    firstLoadPromise = null;
+  });
+  return firstLoadPromise;
+};
+
+const firstLoadInternal = async (): Promise<boolean> => {
   try {
+    await dbReady;
     const oldActivities: Activities | null = JSON.parse(
       localStorage.getItem('activities') ?? '{}'
     );
     const { data: newActivities } = await syncActivities();
 
-    await syncRemoteMovies(oldActivities, newActivities);
+    await Promise.all([
+      syncRemoteMovies(oldActivities, newActivities),
+      syncRemoteShows(oldActivities, newActivities),
+    ]);
 
     const localUserMovieWatchlistIds = await db
-      .table<any, string>(USER_MOVIES_TABLE)
+      .table<any, number>(USER_MOVIES_TABLE)
       .where({ status: 'watchlist' })
       .primaryKeys();
     const localUserMovieWatchedIds = await db
-      .table<any, string>(USER_MOVIES_TABLE)
+      .table<any, number>(USER_MOVIES_TABLE)
       .where({ status: 'watched' })
       .primaryKeys();
     const localDetailMovieIds = await db
-      .table<any, string>(DETAIL_MOVIES_TABLE)
+      .table<any, number>(DETAIL_MOVIES_TABLE)
       .toCollection()
       .primaryKeys();
 
@@ -102,13 +137,12 @@ export const firstLoad = async (): Promise<boolean> => {
       store.dispatch(fillDetail({ id }));
     });
 
-    await syncRemoteShows(oldActivities, newActivities);
     const localUserShowIds = await db
-      .table<any, string>(USER_SHOWS_TABLE)
+      .table<any, number>(USER_SHOWS_TABLE)
       .toCollection()
       .primaryKeys();
     const localDetailShowIds = await db
-      .table<any, string>(DETAIL_SHOWS_TABLE)
+      .table<any, number>(DETAIL_SHOWS_TABLE)
       .toCollection()
       .primaryKeys();
 
@@ -117,6 +151,28 @@ export const firstLoad = async (): Promise<boolean> => {
     );
 
     showIdsToFill.forEach((id) => {
+      store.dispatch(fillDetailShow({ id }));
+    });
+
+    const now = Date.now();
+    const staleDetailShowIds = (
+      await db[DETAIL_SHOWS_TABLE]
+        .where('ids.tmdb')
+        .anyOf(localUserShowIds)
+        .toArray()
+    )
+      .filter(
+        (show) =>
+          show.status !== 'ended' &&
+          show.status !== 'canceled' &&
+          (!show.updatedAt ||
+            now - Date.parse(show.updatedAt) > DETAIL_TTL_MS)
+      )
+      .map((show) => show.ids.tmdb)
+      .filter((id) => !showIdsToFill.includes(id))
+      .slice(0, MAX_STALE_DETAIL_REFRESH);
+
+    staleDetailShowIds.forEach((id) => {
       store.dispatch(fillDetailShow({ id }));
     });
 

@@ -11,9 +11,9 @@ import {
 interface ShowsState {
   totalRequestsPending: number;
   pending: {
-    watchlist: string[];
+    watchlist: number[];
     watched: Array<{
-      showId: string;
+      showId: number;
       season: number;
       episode: number;
     }>;
@@ -37,7 +37,7 @@ const showsSlice = createSlice({
       .addCase(addEpisodeWatched.pending, (state, { meta }) => {
         state.pending.watched.push(
           ...meta.arg.episodes.map((e) => ({
-            showId: meta.arg.showIds.imdb,
+            showId: meta.arg.showIds.tmdb,
             season: e.season,
             episode: e.number,
           }))
@@ -46,7 +46,7 @@ const showsSlice = createSlice({
       .addCase(removeEpisodeWatched.pending, (state, { meta }) => {
         state.pending.watched.push(
           ...meta.arg.episodes.map((e) => ({
-            showId: meta.arg.showIds.imdb,
+            showId: meta.arg.showIds.tmdb,
             season: e.season,
             episode: e.number,
           }))
@@ -55,7 +55,7 @@ const showsSlice = createSlice({
       .addMatcher(
         isAnyOf(removeWatchlist.pending, addWatchlist.pending),
         (state, { meta }) => {
-          state.pending.watchlist.push(meta.arg.show.ids.imdb);
+          state.pending.watchlist.push(meta.arg.show.ids.tmdb);
         }
       )
       .addMatcher(
@@ -67,7 +67,7 @@ const showsSlice = createSlice({
         ),
         (state, { meta }) => {
           state.pending.watchlist = state.pending.watchlist.filter(
-            (p) => p !== meta.arg.show.ids.imdb
+            (p) => p !== meta.arg.show.ids.tmdb
           );
         }
       )
@@ -85,7 +85,7 @@ const showsSlice = createSlice({
                 (me) =>
                   me.number === p.episode &&
                   me.season === p.season &&
-                  meta.arg.showIds.imdb === p.showId
+                  meta.arg.showIds.tmdb === p.showId
               )
           );
         }

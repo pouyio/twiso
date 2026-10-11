@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../state/store';
 import { fillDetail, setHiddenShow } from '../state/slices/shows/thunks';
 import Collapsable from '../components/Collapsable/Collapsable';
@@ -14,6 +14,7 @@ import SeasonsContainer from '../components/Seasons/SeasonsContainer';
 import ShowWatchButton from '../components/ShowWatchButton';
 import { AnimatePresence } from 'framer-motion';
 import { AlertContext } from '../contexts/AlertContext';
+import { AuthContext } from '../contexts/AuthContext';
 import { People as IPeople } from '../models/People';
 import {
   getPeopleApi,
@@ -28,6 +29,7 @@ import { SeasonRating, ShowRating, Studio } from '../models/Api';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useImage } from '../hooks/useImage';
+import { getMedianRuntime } from '../utils/showRuntime';
 import Studios from '../components/Studios';
 import { Error } from './Error';
 
@@ -47,29 +49,35 @@ export default function ShowDetail() {
   const { t } = useTranslate();
   const [zoom, setZoom] = useState(false);
   const refreshIconRef = useRef<HTMLImageElement>(null);
+  const { session } = useContext(AuthContext);
+  const [, setSearchParams] = useSearchParams();
 
   useEffect(() => {
+    let cancelled = false;
     // @ts-expect-error limitations on Dexie EntityTable
-    db[DETAIL_SHOWS_TABLE].get(id).then((show) => {
-      if (!show) {
-        dispatch(fillDetail({ id }))
-          .unwrap()
-          .catch(() => setLoadError(true));
-      }
+    db[DETAIL_SHOWS_TABLE].get(Number(id)).then((show) => {
+      if (cancelled) return;
+      if (show && show.contentLanguage === language) return;
+      dispatch(fillDetail({ id: Number(id) }))
+        .unwrap()
+        .catch(() => setLoadError(true));
     });
     setPeople(undefined);
-    getPeopleApi(id, 'show').then(({ data }) => {
-      setPeople(data);
+    getPeopleApi(Number(id), 'show', language).then((data) => {
+      if (!cancelled) setPeople(data);
     });
-    getStudiosApi(id, 'show').then(({ data }) => {
-      setStudios(data);
+    getStudiosApi(Number(id), 'show').then((data) => {
+      if (!cancelled) setStudios(data);
     });
-  }, [id]);
+    return () => {
+      cancelled = true;
+    };
+  }, [id, language]);
 
   const item = useLiveQuery(
     () =>
       // @ts-expect-error limitations on Dexie EntityTable
-      db[DETAIL_SHOWS_TABLE].get(id),
+      db[DETAIL_SHOWS_TABLE].get(Number(id)),
     [id]
   );
 
@@ -91,7 +99,25 @@ export default function ShowDetail() {
     return () => { cancelled = true; };
   }, [item?.ids.tmdb]);
 
-  const liveStatus = useLiveQuery(() => db[USER_SHOWS_TABLE].get(id), [id]);
+  const liveStatus = useLiveQuery(() => db[USER_SHOWS_TABLE].get(Number(id)), [id]);
+
+  const nextEpisode = useMemo(() => {
+    if (!item) return undefined;
+    const watched = new Set(
+      (liveStatus?.episodes ?? []).map(
+        (e) => `${e.season_number}_${e.episode_number}`
+      )
+    );
+    for (const season of item.all_seasons) {
+      if (season.number === 0) continue;
+      for (const episode of season.episodes) {
+        if (!watched.has(`${season.number}_${episode.number}`)) {
+          return { season: season.number, episode: episode.number };
+        }
+      }
+    }
+    return null;
+  }, [item, liveStatus]);
 
   const bgClassName = useMemo(() => {
     if (liveStatus?.hidden) {
@@ -106,6 +132,11 @@ export default function ShowDetail() {
     return 'bg-gray-300';
   }, [liveStatus]);
 
+  const showRuntime = useMemo(
+    () => getMedianRuntime(item?.all_seasons ?? []),
+    [item?.all_seasons]
+  );
+
   const onShare = () => {
     share(title).then((action) => {
       if (action === 'copied') {
@@ -118,11 +149,21 @@ export default function ShowDetail() {
     if (liveStatus) {
       dispatch(
         setHiddenShow({
-          showId: liveStatus.show_imdb,
+          showId: liveStatus.show_tmdb,
           hidden: !liveStatus.hidden,
         })
       );
     }
+  };
+
+  const goToEpisode = (season: number, episode: number) => {
+    setSearchParams({ season: `${season}` }, { replace: true });
+    setTimeout(() => {
+      const element = document.getElementById(`episode-${season}-${episode}`);
+      element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element?.classList.add('animate-breathe');
+      setTimeout(() => element?.classList.remove('animate-breathe'), 1000);
+    }, 300);
   };
 
   if (!item) {
@@ -132,7 +173,7 @@ export default function ShowDetail() {
           subtitle={t('no-info-message', t('show'))}
           onRetry={() => {
             setLoadError(false);
-            dispatch(fillDetail({ id }))
+            dispatch(fillDetail({ id: Number(id) }))
               .unwrap()
               .catch(() => setLoadError(true));
           }}
@@ -165,7 +206,7 @@ export default function ShowDetail() {
     }, 0) ?? 1;
 
   const onRefresh = () => {
-    dispatch(fillDetail({ id }));
+    dispatch(fillDetail({ id: Number(id) }));
     refresh();
 
     const icon = refreshIconRef.current;
@@ -179,7 +220,7 @@ export default function ShowDetail() {
   };
 
   return (
-    <div className={bgClassName}>
+    <div className={`${bgClassName} transition-colors duration-300`}>
       <title>{title}</title>
       <div className="lg:max-w-6xl m-auto">
         <div
@@ -258,15 +299,15 @@ export default function ShowDetail() {
                 </button>
               </h1>
 
-              <div className="grid grid-cols-[45%_10%_45%] justify-between items-center text-gray-600">
+              <div className="flex justify-between items-center text-gray-600">
                 <div className="flex justify-start">
                   <h2 className="mx-1 rounded-full text-sm px-3 py-1 bg-gray-100 capitalize">
                     {t(item.status)}
                   </h2>
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center items-center gap-1">
                   {liveStatus?.status === 'watched' && (
-                    <button onClick={onToggleHidden}>
+                    <button onClick={onToggleHidden} className="cursor-pointer">
                       <Icon
                         className="h-10"
                         name={liveStatus?.hidden ? 'no-hidden' : 'hidden'}
@@ -274,14 +315,31 @@ export default function ShowDetail() {
                       />
                     </button>
                   )}
+                  {session && liveStatus?.status === 'watched' &&
+                    (nextEpisode && (
+                      <button
+                        onClick={() =>
+                          goToEpisode(nextEpisode.season, nextEpisode.episode)
+                        }
+                        className="mx-1 rounded-full text-sm px-3 py-1 bg-gray-100 flex items-center gap-1 cursor-pointer"
+                        title={t('next_to_watch')}
+                      >
+                        <Icon name="play" className="h-3.5" />
+                        {t('season_abbreviation')}
+                        {nextEpisode.season} - {t('episode_abbreviation')}
+                        {nextEpisode.episode}
+                      </button>
+                    ))}
                 </div>
-                <h2 className="flex justify-end">{item.runtime || '?'} mins</h2>
+                <h2 className="flex justify-end">
+                  {showRuntime ?? (item.runtime || '?')} mins
+                </h2>
               </div>
               <div className="grid grid-cols-[35%_30%_35%] items-center text-gray-600 my-1">
                 <div className="flex justify-start">
                   <Rating
-                    rating={showRating?.vote_average ?? 0}
-                    votes={showRating?.vote_count ?? 0}
+                    rating={showRating?.overallAvg ?? 0}
+                    votes={showRating?.totalRaters ?? 0}
                     onClick={() => setRatingsExpanded((e) => !e)}
                   />
                 </div>
@@ -327,7 +385,6 @@ export default function ShowDetail() {
               <SeasonsContainer
                 show={item}
                 status={liveStatus}
-                showId={id}
                 seasonRatings={seasonRatings}
               />
             </div>

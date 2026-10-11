@@ -44,41 +44,45 @@ export default function MovieDetail() {
   const [zoom, setZoom] = useState(false);
   const refreshIconRef = useRef<HTMLImageElement>(null);
   useEffect(() => {
+    let cancelled = false;
     // @ts-expect-error limitations on Dexie EntityTable
-    db[DETAIL_MOVIES_TABLE].get(id).then((movie) => {
-      if (!movie) {
-        dispatch(fillDetail({ id }))
-          .unwrap()
-          .catch(() => setLoadError(true));
-      }
+    db[DETAIL_MOVIES_TABLE].get(Number(id)).then((movie) => {
+      if (cancelled) return;
+      if (movie && movie.contentLanguage === language) return;
+      dispatch(fillDetail({ id: Number(id) }))
+        .unwrap()
+        .catch(() => setLoadError(true));
     });
     setPeople(undefined);
     setRatings(undefined);
     setStudios([]);
-    getPeopleApi(id ?? '', 'movie').then(({ data }) => {
-      setPeople(data);
+    getPeopleApi(Number(id), 'movie', language).then((data) => {
+      if (!cancelled) setPeople(data);
     });
-    getRatingsApi(id ?? '', 'movie').then(({ data }) => {
-      setRatings(data);
+    getRatingsApi(Number(id), 'movie').then((data) => {
+      if (!cancelled) setRatings(data);
     });
-    getStudiosApi(id, 'movie').then(({ data }) => {
-      setStudios(data);
+    getStudiosApi(Number(id), 'movie').then((data) => {
+      if (!cancelled) setStudios(data);
     });
-    getMovieReleasesApi(id).then(({ data }) => {
-      setReleases(data);
+    getMovieReleasesApi(Number(id)).then((data) => {
+      if (!cancelled) setReleases(data);
     });
-  }, [id]);
+    return () => {
+      cancelled = true;
+    };
+  }, [id, language]);
 
   const item = useLiveQuery(
     () =>
       // @ts-expect-error limitations on Dexie EntityTable
-      db[DETAIL_MOVIES_TABLE].get(id),
+      db[DETAIL_MOVIES_TABLE].get(Number(id)),
     [id]
   );
 
   const { refresh } = useImage(item?.ids.tmdb ?? 0, 'movie', 'big', true);
 
-  const liveStatus = useLiveQuery(() => db[USER_MOVIES_TABLE].get(id), [id]);
+  const liveStatus = useLiveQuery(() => db[USER_MOVIES_TABLE].get(Number(id)), [id]);
 
   const bgClassName = useMemo(() => {
     if (liveStatus?.status === 'watched') {
@@ -97,7 +101,7 @@ export default function MovieDetail() {
           subtitle={t('no-info-message', t('movie'))}
           onRetry={() => {
             setLoadError(false);
-            dispatch(fillDetail({ id }))
+            dispatch(fillDetail({ id: Number(id) }))
               .unwrap()
               .catch(() => setLoadError(true));
           }}
@@ -127,7 +131,7 @@ export default function MovieDetail() {
   };
 
   const onRefresh = () => {
-    dispatch(fillDetail({ id }));
+    dispatch(fillDetail({ id: Number(id) }));
     refresh();
 
     const icon = refreshIconRef.current;
@@ -141,7 +145,7 @@ export default function MovieDetail() {
   };
 
   return (
-    <div className={bgClassName}>
+    <div className={`${bgClassName} transition-colors duration-300`}>
       <title>{title}</title>
       <div className="lg:max-w-6xl m-auto">
         <div
@@ -265,27 +269,6 @@ export default function MovieDetail() {
           <div className="my-4">
             <p className="font-medium font-family-text">{t('studios')}:</p>
             <Studios studios={studios} />
-          </div>
-
-          <div className="my-4">
-            <p className="font-medium font-family-text">{t('extra-scenes')}:</p>
-
-            <div className="my-3">
-              <span
-                className={`mr-5 ${
-                  item.during_credits ? '' : 'opacity-50 line-through'
-                } bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre`}
-              >
-                {t('during-credits')} {item.during_credits && '✓'}
-              </span>
-              <span
-                className={`mt-2 ${
-                  item.after_credits ? '' : 'opacity-50 line-through'
-                } bg-gray-200 font-light px-2 py-1 rounded-full mx-1 whitespace-pre`}
-              >
-                {t('post-credits')} {item.after_credits && '✓'}
-              </span>
-            </div>
           </div>
 
           <div className="my-4">

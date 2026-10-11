@@ -11,6 +11,7 @@ interface IImageLinkProps {
   onClick?: React.MouseEventHandler<HTMLAnchorElement> | undefined;
   forceState?: 'watched' | 'watchlist';
   hidden?: boolean;
+  dimmed?: boolean;
 }
 
 const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
@@ -20,15 +21,14 @@ const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
   type,
   forceState,
   hidden,
+  dimmed,
   children = '',
   onClick = () => {},
 }) => {
-  const url = new URL(ids.imdb, 'http://example.com');
-
   return (
     <Link
       to={{
-        pathname: `/${type}/${url.pathname.replaceAll('/', '')}`,
+        pathname: `/${type}/${ids.tmdb}`,
       }}
       onClick={onClick}
     >
@@ -39,6 +39,7 @@ const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
         type={type}
         forceState={forceState}
         hidden={hidden}
+        dimmed={dimmed}
       />
       {children}
     </Link>
