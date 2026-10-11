@@ -1,3 +1,10 @@
+## [2.21.8](https://github.com/pouyio/twiso/compare/v2.21.7...v2.21.8) (2026-10-11)
+
+
+### :bug:
+
+* fix person border ([46ad319](https://github.com/pouyio/twiso/commit/46ad3195c3db8bd2f57fc3392639d094f5d781cb))
+
 ## [2.21.7](https://github.com/pouyio/twiso/compare/v2.21.6...v2.21.7) (2026-10-11)
 
 
