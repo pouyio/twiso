@@ -23,7 +23,7 @@ export const NavigationTabs: React.FC<{
   const { t } = useTranslate();
 
   return (
-    <ul className="flex justify-around px-2 text-center lg:max-w-6xl lg:w-full lg:m-auto lg:pt-[env(safe-area-inset-top)]">
+    <ul className="flex justify-around px-2 text-center lg:max-w-6xl lg:w-full lg:m-auto lg:pt-[calc(1.5*env(safe-area-inset-top))]">
       {logged ? (
         <>
           <li className="py-1">
