@@ -1,3 +1,10 @@
+## [2.21.4](https://github.com/pouyio/twiso/compare/v2.21.3...v2.21.4) (2026-10-11)
+
+
+### :bug:
+
+* fix ipad landscape ([38fb71b](https://github.com/pouyio/twiso/commit/38fb71b765aa6ce57fe478e3dd97b7362d1cb706))
+
 ## [2.21.3](https://github.com/pouyio/twiso/compare/v2.21.2...v2.21.3) (2026-10-04)
 
 
