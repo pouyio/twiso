@@ -5,11 +5,17 @@ import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from '../../components/EmptyState';
 import { NoResults } from '../../components/NoResults';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useSearchParams } from 'react-router';
 import db, { DETAIL_SHOWS_TABLE, USER_SHOWS_TABLE } from '../../utils/db';
 import { Show } from '../../models/Show';
+import { hasAvailableEpisodes } from '../../utils/showAvailability';
 
 const ShowsWatched: React.FC = () => {
-  const [genres, setGenres] = useState<string[]>([]);
+  const [genres, setGenres] = useState<number[]>([]);
+  const [searchParams] = useSearchParams();
+  const [hideFinished, setHideFinished] = useState(
+    () => searchParams.get('showFinished') !== '1'
+  );
 
   const orderedUserShows = useLiveQuery(
     () =>
@@ -23,9 +29,9 @@ const ShowsWatched: React.FC = () => {
 
   const fullShows = useLiveQuery(
     () =>
-      db[DETAIL_SHOWS_TABLE].where('ids.imdb')
+      db[DETAIL_SHOWS_TABLE].where('ids.tmdb')
         .anyOf(
-          orderedUserShows.filter((s) => !s.hidden).map((us) => us.show_imdb)
+          orderedUserShows.filter((s) => !s.hidden).map((us) => us.show_tmdb)
         )
         .and((show) => genres.every((g) => show.genres.includes(g)))
         .toArray(),
@@ -34,26 +40,50 @@ const ShowsWatched: React.FC = () => {
   );
 
   const orderedShows: Show[] = orderedUserShows
-    .map((m) => fullShows.find((fm) => fm.ids.imdb === m.show_imdb))
+    .map((m) => fullShows.find((fm) => fm.ids.tmdb === m.show_tmdb))
     .filter(Boolean) as Show[];
 
-  const { getItemsByPage } = usePagination(orderedShows);
+  const watchedEpisodesByShow = new Map<number, Set<string>>();
+  orderedUserShows.forEach((ous) => {
+    watchedEpisodesByShow.set(
+      ous.show_tmdb,
+      new Set(
+        ous.episodes?.map((e) => `${e.season_number}:${e.episode_number}`) ?? []
+      )
+    );
+  });
 
-  const isHidden = (id: string) => {
-    return orderedUserShows.find((ous) => ous.show_imdb === id)?.hidden;
+  const hasAvailable = (show: Show) =>
+    hasAvailableEpisodes(
+      show,
+      watchedEpisodesByShow.get(show.ids.tmdb) ?? new Set<string>()
+    );
+
+  const visibleShows = hideFinished
+    ? orderedShows.filter((s) => hasAvailable(s))
+    : orderedShows;
+
+  const { getItemsByPage } = usePagination(visibleShows);
+
+  const isHidden = (id: number) => {
+    return orderedUserShows.find((ous) => ous.show_tmdb === id)?.hidden;
   };
 
-  return !genres.length && !orderedShows.length ? (
+  return !genres.length && !hideFinished && !orderedShows.length ? (
     <EmptyState />
   ) : (
-    <PaginationContainer items={orderedShows} onFilter={setGenres}>
-      {genres.length && !orderedShows.length ? (
+    <PaginationContainer
+      items={visibleShows}
+      onFilter={setGenres}
+      onHideFinishedToggle={setHideFinished}
+    >
+      {!visibleShows.length ? (
         <NoResults />
       ) : (
         <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
           {getItemsByPage().map((m) => (
             <li
-              key={m.ids.trakt}
+              key={m.ids.tmdb}
               className="p-2"
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >
@@ -63,7 +93,8 @@ const ShowsWatched: React.FC = () => {
                 style={{ minHeight: '13.5em' }}
                 type="show"
                 forceState="watched"
-                hidden={isHidden(m.ids.imdb)}
+                hidden={isHidden(m.ids.tmdb)}
+                dimmed={!hasAvailable(m)}
               />
             </li>
           ))}

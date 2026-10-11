@@ -20,7 +20,7 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
   useEffect(() => {
     let isSubscribed = true;
     setLoading(true);
-    getPopularApi(type).then(({ data }) => {
+    getPopularApi(type).then((data) => {
       if (isSubscribed) {
         setResults(data);
         setLoading(false);
@@ -44,7 +44,7 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
       >
         {results.map((r) => (
           <li
-            key={r[type]!.ids.trakt}
+            key={r[type]!.ids.tmdb}
             className="p-2"
             style={{ height: '13.5em', width: '9.5em' }}
           >

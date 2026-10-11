@@ -78,10 +78,7 @@ const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
 
   useEffect(() => {
     setResults(undefined);
-    getRelatedApi<Show | Movie>(
-      type,
-      itemIds.imdb || `${itemIds.trakt}` || `${itemIds.traktslug}`
-    ).then(({ data }) => {
+    getRelatedApi<Show | Movie>(type, itemIds.tmdb).then((data) => {
       setResults(data);
     });
   }, [itemIds, type]);
@@ -96,7 +93,7 @@ const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
         results.length ? (
           results.map((r) => (
             <li
-              key={r.ids.trakt}
+              key={r.ids.tmdb}
               className="p-2"
               style={{ flex: '1 0 50%', maxWidth: '10em' }}
             >

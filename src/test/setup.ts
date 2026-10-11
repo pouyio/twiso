@@ -18,7 +18,6 @@ vi.mock('../lib/react-image', () => ({
 // Environment variables
 vi.stubGlobal('process', {
   env: {
-    VITE_TRAKT_API_KEY: 'test',
     VITE_TMDB_API_KEY: 'test',
     VITE_SUPABASE_DB: 'test',
     VITE_SUPABASE_ANON_KEY: 'test',

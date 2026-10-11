@@ -20,6 +20,7 @@ export default function Search() {
   const [movieResults, setMovieResults] = useState<SearchMovie[]>([]);
   const [showResults, setShowResults] = useState<SearchShow[]>([]);
   const [peopleResults, setPeopleResults] = useState<SearchPerson[]>([]);
+  const [query, setLocalQuery] = useState(params.query);
   const { filterBy } = useFilter();
   const debouncedSearch = useDebounce(params.query, 500);
   const { t } = useTranslate();
@@ -30,18 +31,22 @@ export default function Search() {
   useScrollRestoration(showsScroll, 'horizontal', 'shows');
   useScrollRestoration(peopleScroll, 'horizontal', 'people');
 
+  useEffect(() => {
+    setLocalQuery(params.query);
+  }, [params.query]);
+
   const remoteSearch = (query: string, types: RemoteFilterTypes) => {
     setLoading(true);
     searchApi<SearchMovie & SearchShow & SearchPerson>(
       query,
       types.join(','),
-    ).then(({ data }) => {
+    ).then((data) => {
       const movies: SearchMovie[] = data.filter((r) => r.type === 'movie');
       const shows: SearchShow[] = data.filter((r) => r.type === 'show');
       const person: SearchPerson[] = data.filter((r) => r.type === 'person');
-      setMovieResults(movies.filter((m) => m.movie.ids.imdb));
-      setShowResults(shows.filter((m) => m.show.ids.imdb));
-      setPeopleResults(person.filter((m) => m.person.ids.imdb));
+      setMovieResults(movies.filter((m) => m.movie.ids.tmdb));
+      setShowResults(shows.filter((m) => m.show.ids.tmdb));
+      setPeopleResults(person.filter((m) => m.person.ids.tmdb));
       setLoading(false);
     });
   };
@@ -93,10 +98,18 @@ export default function Search() {
           type="text"
           placeholder={t('search_placeholder')}
           autoFocus={true}
-          onChange={(e) => setQuery(e.target.value)}
-          value={params.query}
+          onChange={(e) => {
+            setLocalQuery(e.target.value);
+            setQuery(e.target.value);
+          }}
+          value={query}
         />
-        <button onClick={() => setQuery('')}>
+        <button
+          onClick={() => {
+            setLocalQuery('');
+            setQuery('');
+          }}
+        >
           <Emoji
             className="ml-3 mr-2"
             emoji={loading ? '⏳' : '❌'}
@@ -123,7 +136,7 @@ export default function Search() {
                   }}
                 >
                   {movieResults.map((r) => (
-                    <li key={r.movie.ids.slug} className="w-35">
+                    <li key={r.movie.ids.tmdb} className="w-35">
                       <ImageLink
                         ids={r.movie.ids}
                         text={r.movie.title}
@@ -151,7 +164,7 @@ export default function Search() {
                   }}
                 >
                   {showResults.map((r) => (
-                    <li key={r.show.ids.slug} className="w-35">
+                    <li key={r.show.ids.tmdb} className="w-35">
                       <ImageLink
                         ids={r.show.ids}
                         text={r.show.title}
@@ -181,7 +194,7 @@ export default function Search() {
                 >
                   {peopleResults.map((r) => (
                     <li
-                      key={r.person.ids.slug}
+                      key={r.person.ids.tmdb}
                       className="p-2"
                       style={{ height: '13.5em', width: '9.5em' }}
                     >

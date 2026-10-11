@@ -21,13 +21,8 @@ export type SearchPerson = SearchItem & {
 };
 
 export interface Movie {
-  after_credits: false;
-  available_translations: string[];
-  certification: string;
-  comment_count: number;
   country: string;
-  during_credits: boolean;
-  genres: string[];
+  genres: number[];
   homepage: string | null;
   ids: Ids;
   language: string;
@@ -47,7 +42,6 @@ export interface Movie {
   tagline: string;
   title: string;
   trailer: string;
-  updated_at: string;
   votes: number;
   year: number | null;
 }

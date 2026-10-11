@@ -1,3 +1,124 @@
+## [2.21.8](https://github.com/pouyio/twiso/compare/v2.21.7...v2.21.8) (2026-10-11)
+
+
+### :bug:
+
+* fix person border ([46ad319](https://github.com/pouyio/twiso/commit/46ad3195c3db8bd2f57fc3392639d094f5d781cb))
+
+## [2.21.7](https://github.com/pouyio/twiso/compare/v2.21.6...v2.21.7) (2026-10-11)
+
+
+### :art:
+
+* added color animations ([eed0c15](https://github.com/pouyio/twiso/commit/eed0c159616847b6c8d8a5e4267b88702f58197d))
+* remove bg ([d9cc472](https://github.com/pouyio/twiso/commit/d9cc4729e8044e635402f900c715030c088c1723))
+
+## [2.21.6](https://github.com/pouyio/twiso/compare/v2.21.5...v2.21.6) (2026-10-11)
+
+
+### :bug:
+
+* fix ipad landscape ([148e027](https://github.com/pouyio/twiso/commit/148e027dceb755183238b327768b431d75e4bb5c))
+
+## [2.21.5](https://github.com/pouyio/twiso/compare/v2.21.4...v2.21.5) (2026-10-11)
+
+
+### :bug:
+
+* fix ipad landscape ([4b03d0a](https://github.com/pouyio/twiso/commit/4b03d0a879efb130cd696ecedf0c092691ec6bd7))
+
+## [2.21.4](https://github.com/pouyio/twiso/compare/v2.21.3...v2.21.4) (2026-10-11)
+
+
+### :bug:
+
+* fix ipad landscape ([38fb71b](https://github.com/pouyio/twiso/commit/38fb71b765aa6ce57fe478e3dd97b7362d1cb706))
+
+## [2.21.3](https://github.com/pouyio/twiso/compare/v2.21.2...v2.21.3) (2026-10-04)
+
+
+### :bug:
+
+* revert ios 27 fix ([13c1914](https://github.com/pouyio/twiso/commit/13c19149395ce073a1b0bd7a07d50d07c303e3c6))
+
+## [2.21.2](https://github.com/pouyio/twiso/compare/v2.21.1...v2.21.2) (2026-10-04)
+
+
+### :bug:
+
+* fix ios 27 ([0403ffd](https://github.com/pouyio/twiso/commit/0403ffd195a3d1b435907bc9969aa410e6202acc))
+
+## [2.21.1](https://github.com/pouyio/twiso/compare/v2.21.0...v2.21.1) (2026-09-24)
+
+
+### :bug:
+
+* fix caret lost ([de3e956](https://github.com/pouyio/twiso/commit/de3e956473dc708e57fbb5e9b2fc0dd2609bd3b3))
+
+# [2.21.0](https://github.com/pouyio/twiso/compare/v2.20.2...v2.21.0) (2026-09-16)
+
+
+### :sparkles:
+
+* add next episode button ([b4f2917](https://github.com/pouyio/twiso/commit/b4f2917e4c59c489c18eac11546b6d73d44cb740))
+
+## [2.20.2](https://github.com/pouyio/twiso/compare/v2.20.1...v2.20.2) (2026-09-16)
+
+
+### :bug:
+
+* Actualizar index.html ([e665e10](https://github.com/pouyio/twiso/commit/e665e10a8df567019011174bd579bc226ea04551))
+
+## [2.20.1](https://github.com/pouyio/twiso/compare/v2.20.0...v2.20.1) (2026-09-12)
+
+
+### :bug:
+
+* fix long press in ios ([e54a523](https://github.com/pouyio/twiso/commit/e54a52337682144534994a8ba2107430ee460bae))
+
+# [2.20.0](https://github.com/pouyio/twiso/compare/v2.19.4...v2.20.0) (2026-09-12)
+
+
+### :sparkles:
+
+* hide shows without new episodes by default ([eaab419](https://github.com/pouyio/twiso/commit/eaab419095d8544eaf86c05535936b6e6fcc69a5))
+
+## [2.19.4](https://github.com/pouyio/twiso/compare/v2.19.3...v2.19.4) (2026-08-20)
+
+
+### :bug:
+
+* fix last duplicate call ([744ef67](https://github.com/pouyio/twiso/commit/744ef67774ebb9419f7882193a980c454a2403d4))
+
+## [2.19.3](https://github.com/pouyio/twiso/compare/v2.19.2...v2.19.3) (2026-08-19)
+
+
+### :bug:
+
+* remove duplicate calls on first load action ([190142a](https://github.com/pouyio/twiso/commit/190142afbf1db3882221634571ca25d541fc7bef))
+
+## [2.19.2](https://github.com/pouyio/twiso/compare/v2.19.1...v2.19.2) (2026-08-10)
+
+
+### :bug:
+
+* moved to generic catalog client ([80af6f8](https://github.com/pouyio/twiso/commit/80af6f8b1cf5dab89555cb8646b9855f99370b87))
+
+## [2.19.1](https://github.com/pouyio/twiso/compare/v2.19.0...v2.19.1) (2026-08-07)
+
+
+### :bug:
+
+* fix genres, split movies and shows ([71a69c1](https://github.com/pouyio/twiso/commit/71a69c159b2b6b6e4b868b87cefb4f042d647262))
+* update query on language change & remove seasons query ([0cced4e](https://github.com/pouyio/twiso/commit/0cced4ede98ae67aa9bed4d697455f3e075d7e52))
+
+## [2.18.1](https://github.com/pouyio/twiso/compare/v2.18.0...v2.18.1) (2026-07-17)
+
+
+### :bug:
+
+* update graph types ([2511f14](https://github.com/pouyio/twiso/commit/2511f14708f8698d50910e9d7223610984d795ad))
+
 # [2.18.0](https://github.com/pouyio/twiso/compare/v2.17.2...v2.18.0) (2026-06-09)
 
 

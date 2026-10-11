@@ -9,12 +9,6 @@ export type SeasonEpisode = {
   translations: Translation[];
 };
 
-export type ShowSeason = {
-  ids: Ids;
-  number: number;
-  episodes: SeasonEpisode[];
-};
-
 export interface Show {
   aired_episodes: number;
   airs: {
@@ -22,13 +16,10 @@ export interface Show {
     time: string;
     timezone: string;
   };
-  all_seasons: ShowSeason[];
-  available_translations: string[];
-  certification: string;
-  comment_count: number;
+  all_seasons: Season[];
   country: string;
-  first_aired: string;
-  genres: string[];
+  first_aired: string | null;
+  genres: number[];
   homepage: string;
   ids: Ids & {
     tvrage: any;
@@ -49,32 +40,23 @@ export interface Show {
   tagline: string;
   title: string;
   trailer: string;
-  updated_at: string;
   votes: number;
-  year: number;
+  year: number | null;
 }
 
 export interface Episode {
   ids: Ids;
   number: number;
-  number_abs: 14;
+  number_abs: number;
   season: number;
   title: string;
   overview: string;
-  available_translations: string[];
-  translations: {
-    title: string;
-    overview: string;
-    tagline: string;
-    language: string;
-  }[];
+  translations: Translation[];
   completed: boolean;
-  comment_count: number;
-  first_aired: string;
+  first_aired: string | null;
   rating: number;
   runtime: number;
-  updated_at: string;
-  votes: string;
+  votes: number;
 }
 
 export interface Season {
