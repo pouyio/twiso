@@ -1,3 +1,11 @@
+## [2.21.7](https://github.com/pouyio/twiso/compare/v2.21.6...v2.21.7) (2026-10-11)
+
+
+### :art:
+
+* added color animations ([eed0c15](https://github.com/pouyio/twiso/commit/eed0c159616847b6c8d8a5e4267b88702f58197d))
+* remove bg ([d9cc472](https://github.com/pouyio/twiso/commit/d9cc4729e8044e635402f900c715030c088c1723))
+
 ## [2.21.6](https://github.com/pouyio/twiso/compare/v2.21.5...v2.21.6) (2026-10-11)
 
 
