@@ -54,7 +54,7 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
 
   const borderClass = useMemo(() => {
     if (!session) return '';
-    if (type === 'person') return '';
+    if (type === 'person') return 'outline-transparent';
     if (hidden) {
       return 'brightness-70 opacity-50';
     }
