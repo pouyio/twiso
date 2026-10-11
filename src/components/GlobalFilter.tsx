@@ -68,7 +68,9 @@ export const GlobalFilter = () => {
                 style={{ flex: '1 0 50%', maxWidth: '10em' }}
                 tabIndex={i + 1}
               >
-                <div className={`rounded-lg ${getBgClass(item, type)}`}>
+                <div
+                  className={`rounded-lg transition-colors duration-300 ${getBgClass(item, type)}`}
+                >
                   <ImageLink
                     text={title}
                     ids={item?.ids}

@@ -56,15 +56,15 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
     if (!session) return '';
     if (type === 'person') return '';
     if (hidden) {
-      return 'border-2 brightness-70 opacity-50';
+      return 'brightness-70 opacity-50';
     }
     if (status === 'watched') {
-      return 'border-2 border-green-400';
+      return 'outline-green-400';
     }
     if (status === 'watchlist') {
-      return 'border-2 border-blue-400';
+      return 'outline-blue-400';
     }
-    return '';
+    return 'outline-transparent';
   }, [status]);
 
   return (
@@ -76,7 +76,7 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
         className +
         ` ${
           size === 'big' ? 'min-h-116' : 'min-h-53'
-        } ${dimmed ? 'opacity-50' : ''} h-full bg-transparent flex justify-center items-center rounded-lg overflow-hidden ` +
+        } ${dimmed ? 'opacity-50' : ''} h-full bg-transparent flex justify-center items-center rounded-lg overflow-hidden transition-colors duration-300 outline-2 ` +
         borderClass
       }
     >

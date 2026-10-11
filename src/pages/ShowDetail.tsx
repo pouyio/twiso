@@ -220,7 +220,7 @@ export default function ShowDetail() {
   };
 
   return (
-    <div className={bgClassName}>
+    <div className={`${bgClassName} transition-colors duration-300`}>
       <title>{title}</title>
       <div className="lg:max-w-6xl m-auto">
         <div
