@@ -27,7 +27,7 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
   const ref = useRef<HTMLDivElement>(null);
   useScrollRestoration(ref);
   return (
-    <div id="content" className="overflow-x-hidden" ref={ref}>
+    <div id="content" ref={ref}>
       {children}
     </div>
   );
