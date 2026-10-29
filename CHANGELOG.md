@@ -1,3 +1,10 @@
+## [2.21.10](https://github.com/pouyio/twiso/compare/v2.21.9...v2.21.10) (2026-10-29)
+
+
+### :bug:
+
+* fix double scroll ([d2ce168](https://github.com/pouyio/twiso/commit/d2ce168a096e1de375edd9dc804a4baf70a98ebe))
+
 ## [2.21.9](https://github.com/pouyio/twiso/compare/v2.21.8...v2.21.9) (2026-10-11)
 
 
