@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import { useNavigate } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { setGlobalSearch } from '../state/slices/root';
 import { Icon } from './Icon';
@@ -23,8 +23,9 @@ const LongPress: React.FC = () => {
   );
 
   return (
-    <button
+    <NavLink
       {...handlers()}
+      to="/search"
       className="select-none [-webkit-touch-callout:none]"
       onContextMenu={(e) => e.preventDefault()}
       onClick={() => {
@@ -32,7 +33,6 @@ const LongPress: React.FC = () => {
           suppressClick.current = false;
           return;
         }
-        navigate('/search');
       }}
     >
       <div className="flex items-center cursor-pointer">
@@ -41,7 +41,7 @@ const LongPress: React.FC = () => {
           {t('search')}
         </span>
       </div>
-    </button>
+    </NavLink>
   );
 };
 
