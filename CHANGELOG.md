@@ -1,3 +1,10 @@
+## [2.21.12](https://github.com/pouyio/twiso/compare/v2.21.11...v2.21.12) (2026-10-30)
+
+
+### :bug:
+
+* fix search html tag ([2c9f4ce](https://github.com/pouyio/twiso/commit/2c9f4ce8efc99a50b3fe9c58d54a0ecd1dc523d6))
+
 ## [2.21.11](https://github.com/pouyio/twiso/compare/v2.21.10...v2.21.11) (2026-10-30)
 
 
