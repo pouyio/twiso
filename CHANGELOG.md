@@ -1,3 +1,10 @@
+## [2.21.11](https://github.com/pouyio/twiso/compare/v2.21.10...v2.21.11) (2026-10-30)
+
+
+### :bug:
+
+* revert ([da37b52](https://github.com/pouyio/twiso/commit/da37b5283ed0781e58dfd4511e0a47f7f376b2ed))
+
 ## [2.21.10](https://github.com/pouyio/twiso/compare/v2.21.9...v2.21.10) (2026-10-29)
 
 
