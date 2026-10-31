@@ -44,6 +44,18 @@ export const ThemeProvider: React.FC<
 
     document.documentElement.classList.remove('theme-dark', 'theme-light');
     document.documentElement.classList.add(finalTheme);
+
+    // Keep the browser/PWA chrome in sync with the active theme.
+    const themeColor = finalTheme === 'theme-dark' ? '#000000' : '#ffffff';
+    let meta = document.querySelector<HTMLMetaElement>(
+      'meta[name="theme-color"]'
+    );
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.name = 'theme-color';
+      document.head.appendChild(meta);
+    }
+    meta.content = themeColor;
   }, [localTheme]);
 
   return (

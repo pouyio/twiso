@@ -26,7 +26,7 @@ export const NavigationTabs: React.FC<{
     <ul className="flex justify-around pl-[max(env(safe-area-inset-left),0.5rem)] pr-[max(env(safe-area-inset-right),0.5rem)] text-center lg:max-w-6xl lg:w-full lg:m-auto">
       {logged ? (
         <>
-          <li className="py-1">
+          <li className="pt-1">
             <NavLink
               to={`${ROUTES.movies}?mode=watchlist&page=1`}
               className="flex items-center"
@@ -38,7 +38,7 @@ export const NavigationTabs: React.FC<{
             </NavLink>
             {pathname.startsWith(ROUTES.movies) && <Underline />}
           </li>
-          <li className="py-1">
+          <li className="pt-1">
             <NavLink
               to={`${ROUTES.shows}?mode=watched&page=1`}
               className="flex items-center"
@@ -52,11 +52,11 @@ export const NavigationTabs: React.FC<{
           </li>
         </>
       ) : null}
-      <li className="py-1">
+      <li className="pt-1">
         <LongPress />
         {pathname.startsWith(ROUTES.search) && <Underline />}
       </li>
-      <li className="py-1">
+      <li className="pt-1">
         <NavLink to={ROUTES.profile} className="flex items-center">
           <Icon name="profile" className="h-8" />
           <span className="ml-2 text-base hidden lg:inline">

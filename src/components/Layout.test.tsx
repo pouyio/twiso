@@ -139,6 +139,37 @@ describe('Layout shell', () => {
     });
   });
 
+  it('bleeds the mobile navbar to the bottom edge', async () => {
+    await page.viewport(390, 844);
+    const { navbar, shell, safeBottom } = await renderFixture();
+
+    await waitFor(() => {
+      expect(
+        Math.abs(
+          navbar.getBoundingClientRect().bottom -
+            shell.getBoundingClientRect().bottom
+        )
+      ).toBeLessThanOrEqual(1);
+    });
+    // The bottom safe area is merged into the navbar on mobile.
+    expect(getComputedStyle(safeBottom).display).toBe('none');
+  });
+
+  it('restores the bottom safe-area strip on desktop', async () => {
+    await page.viewport(1280, 800);
+    const { shell, safeBottom } = await renderFixture();
+
+    expect(getComputedStyle(safeBottom).display).not.toBe('none');
+    await waitFor(() => {
+      expect(
+        Math.abs(
+          safeBottom.getBoundingClientRect().bottom -
+            shell.getBoundingClientRect().bottom
+        )
+      ).toBeLessThanOrEqual(1);
+    });
+  });
+
   it('keeps the mobile layout in phone landscape', async () => {
     await page.viewport(844, 390);
     const { navbar, view, shell } = await renderFixture();

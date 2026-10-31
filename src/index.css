@@ -112,12 +112,11 @@ body,
   --page-bg: var(--color-white);
 
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   grid-template-areas:
     'safe-top'
     'view'
-    'navbar'
-    'safe-bottom';
+    'navbar';
   height: 100vh;
   height: 100dvh;
   min-height: 0;
@@ -131,14 +130,18 @@ body,
   background-color: var(--page-bg);
 }
 
+/*
+  On mobile the bottom safe area belongs to the navbar so its background
+  bleeds all the way to the screen edge. The separate strip is desktop-only.
+*/
 #safe-bottom {
-  grid-area: safe-bottom;
+  display: none;
   height: env(safe-area-inset-bottom);
-  background-color: var(--color-gray-200);
 }
 
 #navbar {
   grid-area: navbar;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 #view {
@@ -183,7 +186,13 @@ body,
     background-color: var(--color-gray-200);
   }
 
+  #navbar {
+    padding-bottom: 0;
+  }
+
   #safe-bottom {
+    display: block;
+    grid-area: safe-bottom;
     background-color: var(--page-bg);
   }
 }
