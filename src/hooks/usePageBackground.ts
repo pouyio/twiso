@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { DEFAULT_PAGE_BACKGROUND } from '../utils/pageBackground';
 
 let activeToken: symbol | null = null;
@@ -14,7 +14,7 @@ export const usePageBackground = (color: string = DEFAULT_PAGE_BACKGROUND) => {
     token.current = Symbol('page-background');
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const shell = document.getElementById('app-shell');
     const currentToken = token.current;
     activeToken = currentToken;
@@ -23,7 +23,7 @@ export const usePageBackground = (color: string = DEFAULT_PAGE_BACKGROUND) => {
     return () => {
       if (activeToken !== currentToken) return;
       activeToken = null;
-      shell?.style.removeProperty('--page-bg');
+      shell?.style.setProperty('--page-bg', DEFAULT_PAGE_BACKGROUND);
     };
   }, [color]);
 };

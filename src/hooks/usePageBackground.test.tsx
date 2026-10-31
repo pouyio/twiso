@@ -46,7 +46,7 @@ describe('usePageBackground', () => {
     });
   });
 
-  it('resets the background on unmount', async () => {
+  it('resets the background on unmount for the safe-area strip', async () => {
     const { rerender } = render(
       <Layout.Root>
         <Page color="var(--color-green-400)" />
@@ -65,7 +65,9 @@ describe('usePageBackground', () => {
       </Layout.Root>
     );
 
-    expect(getShell().style.getPropertyValue('--page-bg')).toBe('');
+    expect(getShell().style.getPropertyValue('--page-bg')).toBe(
+      'var(--color-white)'
+    );
   });
 
   it('does not let an old page reset a new page background', async () => {
