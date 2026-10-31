@@ -53,8 +53,7 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
   const status = forceState ? forceState : liveItem?.status;
 
   const borderClass = useMemo(() => {
-    if (!session) return '';
-    if (type === 'person') return 'outline-transparent';
+    if (type === 'person' || !session) return 'outline-transparent';
     if (hidden) {
       return 'brightness-70 opacity-50';
     }
