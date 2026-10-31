@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  useEffect,
   PropsWithChildren,
   ReactNode,
   useCallback,
@@ -23,14 +24,33 @@ const HeaderSlotContext = createContext<HeaderSlotContextValue>({
 
 const Root: React.FC<PropsWithChildren> = ({ children }) => {
   const [slot, setSlotState] = useState<HTMLElement | null>(null);
+  const shellRef = useRef<HTMLDivElement>(null);
+
   const setSlot = useCallback((node: HTMLElement | null) => {
     setSlotState(node);
   }, []);
   const value = useMemo(() => ({ slot, setSlot }), [slot, setSlot]);
 
+  useEffect(() => {
+    const updateHeight = () => {
+      if (window.visualViewport && shellRef.current) {
+        shellRef.current.style.height = `${window.visualViewport.height}px`;
+      }
+    };
+
+    window.visualViewport?.addEventListener('resize', updateHeight);
+    window.visualViewport?.addEventListener('scroll', updateHeight);
+    updateHeight();
+
+    return () => {
+      window.visualViewport?.removeEventListener('resize', updateHeight);
+      window.visualViewport?.removeEventListener('scroll', updateHeight);
+    };
+  }, []);
+
   return (
     <HeaderSlotContext value={value}>
-      <div id="app-shell">{children}</div>
+      <div id="app-shell" ref={shellRef}>{children}</div>
     </HeaderSlotContext>
   );
 };
