@@ -118,7 +118,7 @@ body,
     'view'
     'navbar';
   height: 100vh;
-  height: 100dvh;
+  height: var(--app-height, 100dvh);
   min-height: 0;
   overflow: hidden;
   background-color: var(--page-bg);

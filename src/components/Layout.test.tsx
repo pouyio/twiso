@@ -186,6 +186,37 @@ describe('Layout shell', () => {
     });
   });
 
+  it('keeps the mobile navbar at the bottom after rotating back to portrait', async () => {
+    await page.viewport(390, 844);
+    const { navbar, shell } = await renderFixture();
+
+    await page.viewport(844, 390);
+    await waitFor(() => {
+      expect(
+        Math.abs(shell.getBoundingClientRect().height - window.innerHeight)
+      ).toBeLessThanOrEqual(1);
+      expect(
+        Math.abs(
+          navbar.getBoundingClientRect().bottom -
+            shell.getBoundingClientRect().bottom
+        )
+      ).toBeLessThanOrEqual(1);
+    });
+
+    await page.viewport(390, 844);
+    await waitFor(() => {
+      expect(
+        Math.abs(shell.getBoundingClientRect().height - window.innerHeight)
+      ).toBeLessThanOrEqual(1);
+      expect(
+        Math.abs(
+          navbar.getBoundingClientRect().bottom -
+            shell.getBoundingClientRect().bottom
+        )
+      ).toBeLessThanOrEqual(1);
+    });
+  });
+
   it('keeps the iPad portrait layout mobile', async () => {
     await page.viewport(768, 1024);
     const { navbar, view } = await renderFixture();
