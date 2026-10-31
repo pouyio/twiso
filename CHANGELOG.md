@@ -1,3 +1,10 @@
+## [2.21.14](https://github.com/pouyio/twiso/compare/v2.21.13...v2.21.14) (2026-10-31)
+
+
+### :art:
+
+* fix imgs for users not logged in ([8c439bf](https://github.com/pouyio/twiso/commit/8c439bf78f149ba21b95aee259200921f0e8e210))
+
 ## [2.21.13](https://github.com/pouyio/twiso/compare/v2.21.12...v2.21.13) (2026-10-31)
 
 
