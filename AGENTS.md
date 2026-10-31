@@ -291,12 +291,11 @@ Store shape (`src/state/store.ts`): `root`, `config`, `movies`, `shows`.
 
 `src/components/Layout.tsx` defines the fixed app shell:
 
-- `Layout.Root` → `#app-shell`, a viewport-height CSS grid. Its height follows
-  `visualViewport` resize events (with a `100dvh` fallback) to stay aligned
-  after iOS orientation changes. Mobile rows are `safe-top → view → navbar`
-  (the mobile navbar carries the bottom safe-area inset); at the **`lg`
-  breakpoint (1024px)** they are `safe-top → navbar → view`. There is no
-  bottom safe-area row: desktop content reaches the bottom edge.
+- `Layout.Root` → `#app-shell`, a `100dvh` CSS grid. Mobile rows are
+  `safe-top → view → navbar` (the mobile navbar carries the bottom safe-area
+  inset); at the **`lg` breakpoint (1024px)** they are
+  `safe-top → navbar → view`. There is no bottom safe-area row: desktop content
+  reaches the bottom edge.
 - `Layout.Navbar` is a grid row, **not** `position: fixed`/`sticky`. It holds
   `ProgressBar` and `NavigationTabs`, and sits at the bottom on mobile and the
   top on desktop.

@@ -4,7 +4,6 @@ import React, {
   ReactNode,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -24,43 +23,14 @@ const HeaderSlotContext = createContext<HeaderSlotContextValue>({
 
 const Root: React.FC<PropsWithChildren> = ({ children }) => {
   const [slot, setSlotState] = useState<HTMLElement | null>(null);
-  const shellRef = useRef<HTMLDivElement>(null);
   const setSlot = useCallback((node: HTMLElement | null) => {
     setSlotState(node);
   }, []);
   const value = useMemo(() => ({ slot, setSlot }), [slot, setSlot]);
 
-  useEffect(() => {
-    const shell = shellRef.current;
-    if (!shell) return;
-
-    let frame = 0;
-    const syncHeight = () => {
-      const height = window.visualViewport?.height ?? window.innerHeight;
-      shell.style.setProperty('--app-height', `${height}px`);
-    };
-    const scheduleHeightSync = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(syncHeight);
-    };
-
-    syncHeight();
-    window.addEventListener('resize', scheduleHeightSync);
-    window.visualViewport?.addEventListener('resize', scheduleHeightSync);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener('resize', scheduleHeightSync);
-      window.visualViewport?.removeEventListener('resize', scheduleHeightSync);
-      shell.style.removeProperty('--app-height');
-    };
-  }, []);
-
   return (
     <HeaderSlotContext value={value}>
-      <div id="app-shell" ref={shellRef}>
-        {children}
-      </div>
+      <div id="app-shell">{children}</div>
     </HeaderSlotContext>
   );
 };
