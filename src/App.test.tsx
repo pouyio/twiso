@@ -2,6 +2,7 @@ import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router';
+import { page } from 'vitest/browser';
 import { store } from './state/store';
 import App from './App';
 import './index.css';
@@ -28,7 +29,6 @@ describe('App', () => {
     expect(container.querySelector('#navbar')).toBeInTheDocument();
     expect(container.querySelector('#view')).toBeInTheDocument();
     expect(container.querySelector('#content')).toBeInTheDocument();
-    expect(container.querySelector('#safe-bottom')).toBeInTheDocument();
   });
 
   it('uses #content as the vertical scroll container', () => {
@@ -38,5 +38,18 @@ describe('App', () => {
     const styles = getComputedStyle(content);
     expect(styles.overflowY).toBe('auto');
     expect(styles.overflowX).toBe('hidden');
+  });
+
+  it('keeps the nav item padding on mobile and desktop', async () => {
+    await page.viewport(390, 844);
+    const { container } = renderApp();
+    const item = container.querySelector('#navbar li') as HTMLElement;
+
+    expect(getComputedStyle(item).paddingTop).toBe('4px');
+    expect(getComputedStyle(item).paddingBottom).toBe('4px');
+
+    await page.viewport(1280, 800);
+    expect(getComputedStyle(item).paddingTop).toBe('4px');
+    expect(getComputedStyle(item).paddingBottom).toBe('4px');
   });
 });

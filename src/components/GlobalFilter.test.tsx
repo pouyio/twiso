@@ -53,7 +53,6 @@ const renderOverlay = () => {
               <div style={{ height: 2000 }} />
             </Layout.Content>
           </Layout.View>
-          <Layout.SafeAreaBottom />
         </Layout.Root>
       </MemoryRouter>
     </Provider>

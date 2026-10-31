@@ -294,7 +294,8 @@ Store shape (`src/state/store.ts`): `root`, `config`, `movies`, `shows`.
 - `Layout.Root` → `#app-shell`, a `100dvh` CSS grid. Mobile rows are
   `safe-top → view → navbar` (the mobile navbar carries the bottom safe-area
   inset); at the **`lg` breakpoint (1024px)** they are
-  `safe-top → navbar → view → safe-bottom`.
+  `safe-top → navbar → view`. There is no bottom safe-area row: desktop content
+  reaches the bottom edge.
 - `Layout.Navbar` is a grid row, **not** `position: fixed`/`sticky`. It holds
   `ProgressBar` and `NavigationTabs`, and sits at the bottom on mobile and the
   top on desktop.
@@ -315,10 +316,11 @@ Store shape (`src/state/store.ts`): `root`, `config`, `movies`, `shows`.
   `window.scrollTo`, `max-w-dvw`, or page-level `sticky`/`fixed` chrome.
 - Safe areas: the shell owns the top strip (`SafeAreaTop`). On mobile the
   bottom inset is folded into `#navbar` as `padding-bottom`, so the navbar
-  background bleeds to the screen edge; `#safe-bottom` is desktop-only. Lateral
-  insets are applied once through the `safe-x` utility on the navbar, page
-  header, and `#content`. Keep `viewport-fit=cover`; do not add page-level
-  `env(safe-area-inset-*)` padding or margins.
+  background bleeds to the screen edge. The desktop layout has no bottom
+  inset/strip, so the view reaches the bottom edge. Lateral insets are applied
+  once through the `safe-x` utility on the navbar, page header, and `#content`.
+  Keep `viewport-fit=cover`; do not add page-level `env(safe-area-inset*)`
+  padding or margins.
 - Status bar: `apple-mobile-web-app-status-bar-style` is intentionally absent
   (it made iOS draw a blur/scrim over the top). iOS 26/27 tints the status bar
   by sampling a solid `fixed`/`sticky` element at the top, so standalone iOS

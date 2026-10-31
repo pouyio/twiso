@@ -37,10 +37,6 @@ const Root: React.FC<PropsWithChildren> = ({ children }) => {
 
 const SafeAreaTop: React.FC = () => <div id="safe-top" aria-hidden="true" />;
 
-const SafeAreaBottom: React.FC = () => (
-  <div id="safe-bottom" aria-hidden="true" />
-);
-
 const Navbar: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <nav id="navbar" className="relative z-20 w-full select-none bg-gray-200">
@@ -85,7 +81,10 @@ const PageHeader: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 const Overlay: React.FC<PropsWithChildren> = ({ children }) => (
-  <div id="overlay" className="absolute inset-x-0 top-0 z-30 flex max-h-full flex-col">
+  <div
+    id="overlay"
+    className="absolute inset-x-0 top-0 z-30 flex max-h-full flex-col"
+  >
     {children}
   </div>
 );
@@ -96,7 +95,6 @@ export const Layout = {
   Overlay,
   PageHeader,
   Root,
-  SafeAreaBottom,
   SafeAreaTop,
   View,
 };

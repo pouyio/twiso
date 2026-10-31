@@ -21,7 +21,6 @@ const Fixture = ({ overlay }: { overlay?: React.ReactNode }) => (
           <div data-testid="tall-content" style={{ height: 2000 }} />
         </Layout.Content>
       </Layout.View>
-      <Layout.SafeAreaBottom />
     </Layout.Root>
   </MemoryRouter>
 );
@@ -38,7 +37,6 @@ const EmptyHeaderFixture = () => (
           <div style={{ height: 2000 }} />
         </Layout.Content>
       </Layout.View>
-      <Layout.SafeAreaBottom />
     </Layout.Root>
   </MemoryRouter>
 );
@@ -55,7 +53,6 @@ const renderFixture = async (overlay?: React.ReactNode) => {
     view: document.getElementById('view') as HTMLElement,
     header: document.getElementById('page-header') as HTMLElement,
     content: document.getElementById('content') as HTMLElement,
-    safeBottom: document.getElementById('safe-bottom') as HTMLElement,
   };
 };
 
@@ -67,15 +64,13 @@ afterEach(async () => {
 
 describe('Layout shell', () => {
   it('renders the shell rows in order', async () => {
-    const { shell, safeTop, navbar, view, content, safeBottom } =
-      await renderFixture();
+    const { shell, safeTop, navbar, view, content } = await renderFixture();
 
     expect(shell).toBeInTheDocument();
     expect(safeTop).toBeInTheDocument();
     expect(navbar).toBeInTheDocument();
     expect(view).toBeInTheDocument();
     expect(content).toBeInTheDocument();
-    expect(safeBottom).toBeInTheDocument();
     expect(view.contains(content)).toBe(true);
   });
 
@@ -142,7 +137,7 @@ describe('Layout shell', () => {
 
   it('bleeds the mobile navbar to the bottom edge', async () => {
     await page.viewport(390, 844);
-    const { navbar, shell, safeBottom } = await renderFixture();
+    const { navbar, shell } = await renderFixture();
 
     await waitFor(() => {
       expect(
@@ -152,19 +147,16 @@ describe('Layout shell', () => {
         )
       ).toBeLessThanOrEqual(1);
     });
-    // The bottom safe area is merged into the navbar on mobile.
-    expect(getComputedStyle(safeBottom).display).toBe('none');
   });
 
-  it('restores the bottom safe-area strip on desktop', async () => {
+  it('lets the desktop view reach the bottom edge', async () => {
     await page.viewport(1280, 800);
-    const { shell, safeBottom } = await renderFixture();
+    const { shell, view } = await renderFixture();
 
-    expect(getComputedStyle(safeBottom).display).not.toBe('none');
     await waitFor(() => {
       expect(
         Math.abs(
-          safeBottom.getBoundingClientRect().bottom -
+          view.getBoundingClientRect().bottom -
             shell.getBoundingClientRect().bottom
         )
       ).toBeLessThanOrEqual(1);

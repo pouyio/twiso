@@ -96,7 +96,6 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
             </Suspense>
           </Layout.Content>
         </Layout.View>
-        <Layout.SafeAreaBottom />
       </Layout.Root>
     </>
   );

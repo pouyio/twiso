@@ -143,14 +143,10 @@ body,
 }
 
 /*
-  On mobile the bottom safe area belongs to the navbar so its background
-  bleeds all the way to the screen edge. The separate strip is desktop-only.
+  The bottom safe area belongs to the navbar on mobile so its background bleeds
+  all the way to the screen edge. There is no separate bottom strip: in the
+  desktop layout the content should reach the bottom edge too.
 */
-#safe-bottom {
-  display: none;
-  height: env(safe-area-inset-bottom);
-}
-
 #navbar {
   grid-area: navbar;
   padding-bottom: env(safe-area-inset-bottom);
@@ -179,19 +175,17 @@ body,
   -webkit-overflow-scrolling: touch;
 }
 
-#safe-top,
-#safe-bottom {
+#safe-top {
   transition: background-color 0.25s;
 }
 
 @media (min-width: 64rem) {
   #app-shell {
-    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    grid-template-rows: auto auto minmax(0, 1fr);
     grid-template-areas:
       'safe-top'
       'navbar'
-      'view'
-      'safe-bottom';
+      'view';
   }
 
   #safe-top {
@@ -200,12 +194,6 @@ body,
 
   #navbar {
     padding-bottom: 0;
-  }
-
-  #safe-bottom {
-    display: block;
-    grid-area: safe-bottom;
-    background-color: var(--page-bg);
   }
 }
 
