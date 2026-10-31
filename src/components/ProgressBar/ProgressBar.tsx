@@ -11,7 +11,7 @@ export const ProgressBar: React.FC<React.PropsWithChildren<unknown>> = () => {
     <div
       className={`${
         movies + shows > 0 || global ? '' : 'hidden'
-      } fixed h-1 w-full animated-background bg-linear-to-r from-gray-200 via-black to-gray-200`}
+      } absolute top-0 left-0 h-1 w-full animated-background bg-linear-to-r from-gray-200 via-black to-gray-200 lg:top-auto lg:bottom-0`}
     ></div>
   );
 };

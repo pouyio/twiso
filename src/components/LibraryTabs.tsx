@@ -3,6 +3,7 @@ import { Underline } from './Underline';
 import { Icon } from './Icon';
 import { useSearchParams } from 'react-router';
 import { useTranslate } from '../hooks/useTranslate';
+import { Layout } from './Layout';
 
 interface TabConfig {
   icon: 'clock' | 'archive';
@@ -42,28 +43,30 @@ export const LibraryTabs: React.FC<LibraryTabsProps> = ({
 
   return (
     <>
-      <div className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto pt-[env(safe-area-inset-top)]">
-        <div className="w-full">
-          <button
-            className="py-2 w-full flex justify-center"
-            onClick={() => setMode('watchlist')}
-          >
-            <Icon name={tabs.watchlist.icon} className="px-2 h-6" />{' '}
-            {t(tabs.watchlist.labelKey)} ({tabs.watchlist.count})
-          </button>
-          <Underline selected={mode === 'watchlist'} />
+      <Layout.PageHeader>
+        <div className="flex w-full text-gray-600 lg:max-w-xl lg:mx-auto">
+          <div className="w-full">
+            <button
+              className="py-2 w-full flex justify-center"
+              onClick={() => setMode('watchlist')}
+            >
+              <Icon name={tabs.watchlist.icon} className="px-2 h-6" />{' '}
+              {t(tabs.watchlist.labelKey)} ({tabs.watchlist.count})
+            </button>
+            <Underline selected={mode === 'watchlist'} />
+          </div>
+          <div className="w-full">
+            <button
+              className="py-2 w-full flex justify-center"
+              onClick={() => setMode('watched')}
+            >
+              <Icon name={tabs.watched.icon} className="px-2 h-6" />{' '}
+              {t(watchedLabelKey)} ({tabs.watched.count})
+            </button>
+            <Underline selected={mode === 'watched'} />
+          </div>
         </div>
-        <div className="w-full">
-          <button
-            className="py-2 w-full flex justify-center"
-            onClick={() => setMode('watched')}
-          >
-            <Icon name={tabs.watched.icon} className="px-2 h-6" />{' '}
-            {t(watchedLabelKey)} ({tabs.watched.count})
-          </button>
-          <Underline selected={mode === 'watched'} />
-        </div>
-      </div>
+      </Layout.PageHeader>
       <div className="py-3 lg:max-w-6xl m-auto">
         {mode === 'watchlist' ? children.watchlist : children.watched}
       </div>

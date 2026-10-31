@@ -21,18 +21,18 @@ const Genres: React.FC<IGenresProps> = ({ genres, onClick, selected }) => {
   const type = pathname.includes('/shows')
     ? 'show'
     : pathname.includes('/movies')
-      ? 'movie'
-      : undefined;
+    ? 'movie'
+    : undefined;
   const genreList =
     genres ??
     (type === 'movie'
       ? MOVIE_GENRE_IDS
       : type === 'show'
-        ? TV_GENRE_IDS
-        : GENRE_IDS);
+      ? TV_GENRE_IDS
+      : GENRE_IDS);
   return (
     <ul
-      className={`flex overflow-x-auto my-2 -mx-4 text-sm lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start select-none gap-y-1 ${
+      className={`flex overflow-x-auto my-2 text-sm lg:overflow-auto lg:flex-wrap lg:justify-start select-none gap-y-1 ${
         onClick ? 'flex-wrap justify-evenly' : ''
       }`}
       style={{ WebkitOverflowScrolling: 'touch' }}

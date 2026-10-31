@@ -86,7 +86,7 @@ const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
   return (
     <ul
       ref={resultsRef}
-      className="flex overflow-x-auto -mx-4 my-2 lg:mx-0 justify-between lg:overflow-auto lg:flex-wrap"
+      className="flex overflow-x-auto my-2 justify-between lg:overflow-auto lg:flex-wrap"
       style={{ WebkitOverflowScrolling: 'touch' }}
     >
       {results ? (

@@ -10,6 +10,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 import { useTranslate } from '../../hooks/useTranslate';
 import { SearchMovie, SearchPerson, SearchShow } from '../../models/Movie';
 import { useScrollRestoration } from '../../hooks/useScrollRestoration';
+import { Layout } from '../../components/Layout';
 
 export type RemoteFilterTypes = Array<'movie' | 'show' | 'person'>;
 type LocalFilterTypes = Array<'movie' | 'show'>;
@@ -39,7 +40,7 @@ export default function Search() {
     setLoading(true);
     searchApi<SearchMovie & SearchShow & SearchPerson>(
       query,
-      types.join(','),
+      types.join(',')
     ).then((data) => {
       const movies: SearchMovie[] = data.filter((r) => r.type === 'movie');
       const shows: SearchShow[] = data.filter((r) => r.type === 'show');
@@ -87,136 +88,143 @@ export default function Search() {
   }, [params, debouncedSearch]);
 
   return (
-    <div
-      className="m-4 lg:max-w-6xl lg:m-auto"
-      style={{ paddingTop: 'env(safe-area-inset-top)' }}
-    >
+    <>
       <title>Search</title>
-      <div className="w-full bg-gray-300 rounded-sm flex items-center my-2 m-auto lg:max-w-lg">
-        <input
-          className="bg-gray-300 rounded-sm text-black px-2 py-1 outline-hidden grow"
-          type="text"
-          placeholder={t('search_placeholder')}
-          autoFocus={true}
-          onChange={(e) => {
-            setLocalQuery(e.target.value);
-            setQuery(e.target.value);
-          }}
-          value={query}
-        />
-        <button
-          onClick={() => {
-            setLocalQuery('');
-            setQuery('');
-          }}
-        >
-          <Emoji
-            className="ml-3 mr-2"
-            emoji={loading ? '⏳' : '❌'}
-            rotating={loading}
-          />
-        </button>
+      <Layout.PageHeader>
+        <div className="w-full px-4 lg:max-w-6xl lg:mx-auto lg:px-0">
+          <div className="w-full bg-gray-300 rounded-sm flex items-center my-2 mx-auto lg:max-w-lg">
+            <input
+              className="bg-gray-300 rounded-sm text-black px-2 py-1 outline-hidden grow"
+              type="text"
+              placeholder={t('search_placeholder')}
+              autoFocus={true}
+              onChange={(e) => {
+                setLocalQuery(e.target.value);
+                setQuery(e.target.value);
+              }}
+              value={query}
+            />
+            <button
+              onClick={() => {
+                setLocalQuery('');
+                setQuery('');
+              }}
+            >
+              <Emoji
+                className="ml-3 mr-2"
+                emoji={loading ? '⏳' : '❌'}
+                rotating={loading}
+              />
+            </button>
+          </div>
+
+          <SearchFilters filters={params} onFiltersChange={setFilters} />
+        </div>
+      </Layout.PageHeader>
+
+      <div className="m-4 lg:max-w-6xl lg:mx-auto">
+        {params.query ? (
+          <>
+            {(params.types.length === 0 || params.types.includes('movie')) &&
+              (movieResults.length ? (
+                <>
+                  <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
+                    {t('movies')}
+                  </h1>
+                  <ul
+                    ref={moviesScroll}
+                    className="flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
+                    style={{
+                      WebkitOverflowScrolling: 'touch',
+                    }}
+                  >
+                    {movieResults.map((r) => (
+                      <li key={r.movie.ids.tmdb} className="w-35">
+                        <ImageLink
+                          ids={r.movie.ids}
+                          text={r.movie.title}
+                          type="movie"
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <h1 className="text-3xl mt-8 text-gray-700">
+                  {t('no_movies')}
+                </h1>
+              ))}
+
+            {(params.types.length === 0 || params.types.includes('show')) &&
+              (showResults.length ? (
+                <>
+                  <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
+                    {t('shows')}
+                  </h1>
+                  <ul
+                    ref={showsScroll}
+                    className="flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
+                    style={{
+                      WebkitOverflowScrolling: 'touch',
+                    }}
+                  >
+                    {showResults.map((r) => (
+                      <li key={r.show.ids.tmdb} className="w-35">
+                        <ImageLink
+                          ids={r.show.ids}
+                          text={r.show.title}
+                          type="show"
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <h1 className="text-3xl mt-8 text-gray-700">{t('no_shows')}</h1>
+              ))}
+
+            {(params.types.length === 0 || params.types.includes('person')) &&
+              (peopleResults.length ? (
+                <>
+                  <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
+                    {t('people')}
+                  </h1>
+                  <ul
+                    ref={peopleScroll}
+                    className="-mt-2 flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
+                    style={{
+                      WebkitOverflowScrolling: 'touch',
+                      maxHeight: '30em',
+                    }}
+                  >
+                    {peopleResults.map((r) => (
+                      <li
+                        key={r.person.ids.tmdb}
+                        className="p-2"
+                        style={{ height: '13.5em', width: '9.5em' }}
+                      >
+                        <ImageLink
+                          ids={r.person.ids}
+                          text={r.person.name}
+                          type="person"
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <h1 className="text-3xl mt-8 text-gray-700">
+                  {t('no_people')}
+                </h1>
+              ))}
+          </>
+        ) : (
+          <>
+            <Popular type="movie" />
+            <Popular type="show" />
+          </>
+        )}
       </div>
-
-      <SearchFilters filters={params} onFiltersChange={setFilters} />
-
-      {params.query ? (
-        <>
-          {(params.types.length === 0 || params.types.includes('movie')) &&
-            (movieResults.length ? (
-              <>
-                <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
-                  {t('movies')}
-                </h1>
-                <ul
-                  ref={moviesScroll}
-                  className="-mx-2 flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
-                  style={{
-                    WebkitOverflowScrolling: 'touch',
-                  }}
-                >
-                  {movieResults.map((r) => (
-                    <li key={r.movie.ids.tmdb} className="w-35">
-                      <ImageLink
-                        ids={r.movie.ids}
-                        text={r.movie.title}
-                        type="movie"
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <h1 className="text-3xl mt-8 text-gray-700">{t('no_movies')}</h1>
-            ))}
-
-          {(params.types.length === 0 || params.types.includes('show')) &&
-            (showResults.length ? (
-              <>
-                <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
-                  {t('shows')}
-                </h1>
-                <ul
-                  ref={showsScroll}
-                  className="-mx-2 flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
-                  style={{
-                    WebkitOverflowScrolling: 'touch',
-                  }}
-                >
-                  {showResults.map((r) => (
-                    <li key={r.show.ids.tmdb} className="w-35">
-                      <ImageLink
-                        ids={r.show.ids}
-                        text={r.show.title}
-                        type="show"
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <h1 className="text-3xl mt-8 text-gray-700">{t('no_shows')}</h1>
-            ))}
-
-          {(params.types.length === 0 || params.types.includes('person')) &&
-            (peopleResults.length ? (
-              <>
-                <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
-                  {t('people')}
-                </h1>
-                <ul
-                  ref={peopleScroll}
-                  className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
-                  style={{
-                    WebkitOverflowScrolling: 'touch',
-                    maxHeight: '30em',
-                  }}
-                >
-                  {peopleResults.map((r) => (
-                    <li
-                      key={r.person.ids.tmdb}
-                      className="p-2"
-                      style={{ height: '13.5em', width: '9.5em' }}
-                    >
-                      <ImageLink
-                        ids={r.person.ids}
-                        text={r.person.name}
-                        type="person"
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <h1 className="text-3xl mt-8 text-gray-700">{t('no_people')}</h1>
-            ))}
-        </>
-      ) : (
-        <>
-          <Popular type="movie" />
-          <Popular type="show" />
-        </>
-      )}
-    </div>
+    </>
   );
 }

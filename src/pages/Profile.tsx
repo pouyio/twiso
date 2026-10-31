@@ -19,6 +19,7 @@ import { AVAIABLE_LANGUAGES, Language } from '../models/Translation';
 import { useTranslate } from '../hooks/useTranslate';
 import { supabase } from '../utils/supabase';
 import { User } from '@supabase/supabase-js';
+import { Layout } from '../components/Layout';
 
 const AVG_MOVIE_DURATION = 110;
 const AVG_EPISODE_DURATION = 35;
@@ -59,65 +60,69 @@ export default function Profile() {
   };
 
   return (
-    <div className="pt-[env(safe-area-inset-top)]">
+    <>
       <title>Profile</title>
-      <div className="lg:max-w-lg m-auto p-4">
-        <ul className="flex justify-between">
-          <li className="py-1 relative">
-            <select
-              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
-              onChange={(e) => {
-                const value =
-                  e.target.value === '0'
-                    ? undefined
-                    : (e.target.value as ThemeType);
-                setTheme!(value);
-              }}
-              value={theme || '0'}
-            >
-              <option value="theme-dark">🌚 {t('dark')}</option>
-              <option value="theme-light">🌞 {t('light')}</option>
-              <option value="0">🌓 {t('system')}</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg
-                className="fill-current h-4 w-4"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
+      <Layout.PageHeader>
+        <div className="lg:max-w-lg m-auto p-4 pb-2">
+          <ul className="flex justify-between">
+            <li className="py-1 relative">
+              <select
+                className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
+                onChange={(e) => {
+                  const value =
+                    e.target.value === '0'
+                      ? undefined
+                      : (e.target.value as ThemeType);
+                  setTheme!(value);
+                }}
+                value={theme || '0'}
               >
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-              </svg>
-            </div>
-          </li>
-          <li className="py-1 relative">
-            <select
-              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
-              onChange={(e) => {
-                dispatch(
-                  changeLanguage({ language: e.target.value as Language })
-                );
-              }}
-              value={language}
-            >
-              {AVAIABLE_LANGUAGES.map((code) => {
-                return (
-                  <option key={code} value={code}>
-                    {t(code)}
-                  </option>
-                );
-              })}
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg
-                className="fill-current h-4 w-4"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
+                <option value="theme-dark">🌚 {t('dark')}</option>
+                <option value="theme-light">🌞 {t('light')}</option>
+                <option value="0">🌓 {t('system')}</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg
+                  className="fill-current h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                </svg>
+              </div>
+            </li>
+            <li className="py-1 relative">
+              <select
+                className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
+                onChange={(e) => {
+                  dispatch(
+                    changeLanguage({ language: e.target.value as Language })
+                  );
+                }}
+                value={language}
               >
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-              </svg>
-            </div>
-          </li>
-        </ul>
+                {AVAIABLE_LANGUAGES.map((code) => {
+                  return (
+                    <option key={code} value={code}>
+                      {t(code)}
+                    </option>
+                  );
+                })}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg
+                  className="fill-current h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                </svg>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </Layout.PageHeader>
+      <div className="lg:max-w-lg m-auto p-4 pt-2">
         {isLogged ? (
           <>
             <h1 className="text-2xl text-center text-gray-700 m-4 mt-8 flex justify-center items-center">
@@ -212,6 +217,6 @@ export default function Profile() {
           </>
         ) : null}
       </div>
-    </div>
+    </>
   );
 }

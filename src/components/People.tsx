@@ -70,7 +70,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
             {t('direction')}:
           </p>
           <ul
-            className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
+            className="flex overflow-x-auto my-2 lg:overflow-auto lg:flex-wrap lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {people ? (
@@ -108,7 +108,7 @@ const People: React.FC<IPeopleProps> = ({ people, type }) => {
         </p>
         <Collapsable heightInRem={10} disable={true}>
           <ul
-            className="flex overflow-x-auto my-2 -mx-4 lg:mx-0 lg:overflow-auto lg:flex-wrap justify-between"
+            className="flex overflow-x-auto my-2 lg:overflow-auto lg:flex-wrap justify-between"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {people ? (

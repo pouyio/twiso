@@ -36,7 +36,7 @@ export const VerifyMagicLink: React.FC<React.PropsWithChildren> = () => {
   }, [token_hash]);
 
   return (
-    <div className="pt-40 flex flex-col justify-center text-3xl items-center mt-[env(safe-area-inset-top)]">
+    <div className="pt-40 flex flex-col justify-center text-3xl items-center">
       <Emoji emoji="⏳" rotating={true} />
       <div className="text-center pt-10 ">{t('loading-session')}</div>
     </div>

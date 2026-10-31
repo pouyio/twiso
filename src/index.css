@@ -82,6 +82,7 @@
 html {
   background-color: var(--primary-light);
   height: 100%;
+  overflow: hidden;
 }
 
 body,
@@ -89,10 +90,102 @@ body,
   transition: background-color 0.25s, color 0.25s;
   font-family: Nunito, sans-serif;
   height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 #root {
   height: 100%;
+  overflow: hidden;
+}
+
+@utility safe-x {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/*
+  Fixed app shell. The viewport never scrolls; `#content` is the only
+  vertical scroll container.
+*/
+#app-shell {
+  --page-bg: var(--color-white);
+
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  grid-template-areas:
+    'safe-top'
+    'view'
+    'navbar'
+    'safe-bottom';
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  background-color: var(--page-bg);
+}
+
+#safe-top {
+  grid-area: safe-top;
+  height: env(safe-area-inset-top);
+  background-color: var(--page-bg);
+}
+
+#safe-bottom {
+  grid-area: safe-bottom;
+  height: env(safe-area-inset-bottom);
+  background-color: var(--color-gray-200);
+}
+
+#navbar {
+  grid-area: navbar;
+}
+
+#view {
+  grid-area: view;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+}
+
+#page-header,
+#content {
+  background-color: var(--page-bg);
+  transition: background-color 0.25s;
+}
+
+#content {
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+#safe-top,
+#safe-bottom {
+  transition: background-color 0.25s;
+}
+
+@media (min-width: 64rem) {
+  #app-shell {
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'safe-top'
+      'navbar'
+      'view'
+      'safe-bottom';
+  }
+
+  #safe-top {
+    background-color: var(--color-gray-200);
+  }
+
+  #safe-bottom {
+    background-color: var(--page-bg);
+  }
 }
 
 .font-family-text {

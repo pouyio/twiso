@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { fillDetail } from '../state/slices/movies/thunks';
 import { useAppDispatch, useAppSelector } from '../state/store';
@@ -28,6 +28,8 @@ import { useImage } from '../hooks/useImage';
 import Studios from '../components/Studios';
 import { Releases } from '../components/Releases';
 import { Error } from './Error';
+import { usePageBackground } from '../hooks/usePageBackground';
+import { getMovieBackground } from '../utils/pageBackground';
 
 export default function MovieDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -82,17 +84,12 @@ export default function MovieDetail() {
 
   const { refresh } = useImage(item?.ids.tmdb ?? 0, 'movie', 'big', true);
 
-  const liveStatus = useLiveQuery(() => db[USER_MOVIES_TABLE].get(Number(id)), [id]);
+  const liveStatus = useLiveQuery(
+    () => db[USER_MOVIES_TABLE].get(Number(id)),
+    [id]
+  );
 
-  const bgClassName = useMemo(() => {
-    if (liveStatus?.status === 'watched') {
-      return 'bg-green-400';
-    }
-    if (liveStatus?.status === 'watchlist') {
-      return 'bg-blue-400';
-    }
-    return 'bg-gray-300';
-  }, [liveStatus]);
+  usePageBackground(getMovieBackground(liveStatus?.status));
 
   if (!item) {
     if (loadError) {
@@ -109,7 +106,7 @@ export default function MovieDetail() {
       );
     }
     return (
-      <div className="flex justify-center text-6xl items-center pt-5 mt-[env(safe-area-inset-top)]">
+      <div className="flex justify-center text-6xl items-center pt-5">
         <Emoji emoji="⏳" rotating={true} />
       </div>
     );
@@ -145,7 +142,7 @@ export default function MovieDetail() {
   };
 
   return (
-    <div className={`${bgClassName} transition-colors duration-300`}>
+    <div className="transition-colors duration-300">
       <title>{title}</title>
       <div className="lg:max-w-6xl m-auto">
         <div
@@ -154,13 +151,7 @@ export default function MovieDetail() {
             zoom ? 'pb-10 z-10' : 'p-10 pt-5'
           }  sticky top-0 z-0 lg:hidden transition-[padding]`}
         >
-          <Image
-            ids={item.ids}
-            className="mt-[env(safe-area-inset-top)]"
-            text={title}
-            type="movie"
-            size="big"
-          />
+          <Image ids={item.ids} text={title} type="movie" size="big" />
           {!zoom && (
             <>
               {item.trailer && (

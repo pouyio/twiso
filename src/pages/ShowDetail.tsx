@@ -32,6 +32,8 @@ import { useImage } from '../hooks/useImage';
 import { getMedianRuntime } from '../utils/showRuntime';
 import Studios from '../components/Studios';
 import { Error } from './Error';
+import { usePageBackground } from '../hooks/usePageBackground';
+import { getShowBackground } from '../utils/pageBackground';
 
 export default function ShowDetail() {
   const [people, setPeople] = useState<IPeople>();
@@ -96,10 +98,17 @@ export default function ShowDetail() {
         setShowRating(showData ?? undefined);
       })
       .catch(() => {});
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [item?.ids.tmdb]);
 
-  const liveStatus = useLiveQuery(() => db[USER_SHOWS_TABLE].get(Number(id)), [id]);
+  const liveStatus = useLiveQuery(
+    () => db[USER_SHOWS_TABLE].get(Number(id)),
+    [id]
+  );
+
+  usePageBackground(getShowBackground(liveStatus));
 
   const nextEpisode = useMemo(() => {
     if (!item) return undefined;
@@ -118,19 +127,6 @@ export default function ShowDetail() {
     }
     return null;
   }, [item, liveStatus]);
-
-  const bgClassName = useMemo(() => {
-    if (liveStatus?.hidden) {
-      return 'bg-green-800';
-    }
-    if (liveStatus?.status === 'watched') {
-      return 'bg-green-400';
-    }
-    if (liveStatus?.status === 'watchlist') {
-      return 'bg-blue-400';
-    }
-    return 'bg-gray-300';
-  }, [liveStatus]);
 
   const showRuntime = useMemo(
     () => getMedianRuntime(item?.all_seasons ?? []),
@@ -181,10 +177,7 @@ export default function ShowDetail() {
       );
     }
     return (
-      <div
-        className="flex justify-center text-6xl items-center pt-5"
-        style={{ marginTop: 'env(safe-area-inset-top)' }}
-      >
+      <div className="flex justify-center text-6xl items-center pt-5">
         <Emoji emoji="⏳" rotating={true} />
       </div>
     );
@@ -220,7 +213,7 @@ export default function ShowDetail() {
   };
 
   return (
-    <div className={`${bgClassName} transition-colors duration-300`}>
+    <div className="transition-colors duration-300">
       <title>{title}</title>
       <div className="lg:max-w-6xl m-auto">
         <div
@@ -229,13 +222,7 @@ export default function ShowDetail() {
             zoom ? 'pb-10 z-10' : 'p-10 pt-5'
           }  sticky top-0 z-0 lg:hidden transition-[padding]`}
         >
-          <Image
-            ids={item.ids}
-            className="mt-[env(safe-area-inset-top)]"
-            text={title}
-            type="show"
-            size="big"
-          />
+          <Image ids={item.ids} text={title} type="show" size="big" />
           {item.trailer && (
             <a
               className="absolute"
@@ -315,8 +302,9 @@ export default function ShowDetail() {
                       />
                     </button>
                   )}
-                  {session && liveStatus?.status === 'watched' &&
-                    (nextEpisode && (
+                  {session &&
+                    liveStatus?.status === 'watched' &&
+                    nextEpisode && (
                       <button
                         onClick={() =>
                           goToEpisode(nextEpisode.season, nextEpisode.episode)
@@ -329,7 +317,7 @@ export default function ShowDetail() {
                         {nextEpisode.season} - {t('episode_abbreviation')}
                         {nextEpisode.episode}
                       </button>
-                    ))}
+                    )}
                 </div>
                 <h2 className="flex justify-end">
                   {showRuntime ?? (item.runtime || '?')} mins

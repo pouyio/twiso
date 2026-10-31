@@ -10,7 +10,7 @@ const Underline: React.FC = () => {
   return (
     <motion.div
       layoutId="underline-section"
-      className="bg-gray-600 rounded-sm bottom-[calc(env(safe-area-inset-bottom)_+_4px)] h-[2px]"
+      className="bg-gray-600 rounded-sm h-[2px]"
       initial={false}
     />
   );
@@ -23,7 +23,7 @@ export const NavigationTabs: React.FC<{
   const { t } = useTranslate();
 
   return (
-    <ul className="flex justify-around px-2 text-center lg:max-w-6xl lg:w-full lg:m-auto lg:pt-[calc(1.5*env(safe-area-inset-top))]">
+    <ul className="flex justify-around pl-[max(env(safe-area-inset-left),0.5rem)] pr-[max(env(safe-area-inset-right),0.5rem)] text-center lg:max-w-6xl lg:w-full lg:m-auto">
       {logged ? (
         <>
           <li className="py-1">
@@ -42,7 +42,6 @@ export const NavigationTabs: React.FC<{
             <NavLink
               to={`${ROUTES.shows}?mode=watched&page=1`}
               className="flex items-center"
-              onClick={() => window.scrollTo(0, 0)}
             >
               <Icon name="tv" className="h-8" />
               <span className="ml-2 text-base hidden lg:inline">

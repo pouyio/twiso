@@ -45,49 +45,58 @@ const App: React.FC<React.PropsWithChildren<unknown>> = () => {
     <>
       <NewVersion />
       <Alert />
-      {globalSearch && <GlobalFilter />}
       <Layout.Root>
+        <Layout.SafeAreaTop />
         <Layout.Navbar>
-          <div className="flex flex-col lg:flex-col-reverse bg-gray-200 pb-[env(safe-area-inset-bottom)] lg:pb-0">
-            <ProgressBar />
-            <NavigationTabs logged={isLoggedIn} />
-          </div>
+          <ProgressBar />
+          <NavigationTabs logged={isLoggedIn} />
         </Layout.Navbar>
-        <Layout.Content>
-          <Suspense
-            fallback={
-              <div className="flex justify-center text-6xl items-center pt-5 mt-[env(safe-area-inset-top)]">
-                <Emoji emoji="⏳" rotating={true} />
-              </div>
-            }
-          >
-            <Routes>
-              <Route path="/" element={<SessionRedirect />} />
-              <Route path="/auth/confirm" element={<VerifyMagicLink />} />
-              <Route
-                path={ROUTES.movies}
-                element={
-                  <ProtectedRoute>
-                    <Movies />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path={ROUTES.shows}
-                element={
-                  <ProtectedRoute>
-                    <Shows />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path={ROUTES.search} element={<Search />} />
-              <Route path={ROUTE.movie} element={<MovieDetail />} />
-              <Route path={ROUTE.show} element={<ShowDetail />} />
-              <Route path={ROUTE.person} element={<Person />} />
-              <Route path={ROUTES.profile} element={<Profile />} />
-            </Routes>
-          </Suspense>
-        </Layout.Content>
+        <Layout.View
+          overlay={
+            globalSearch ? (
+              <Layout.Overlay>
+                <GlobalFilter />
+              </Layout.Overlay>
+            ) : null
+          }
+        >
+          <Layout.Content>
+            <Suspense
+              fallback={
+                <div className="flex justify-center text-6xl items-center pt-5">
+                  <Emoji emoji="⏳" rotating={true} />
+                </div>
+              }
+            >
+              <Routes>
+                <Route path="/" element={<SessionRedirect />} />
+                <Route path="/auth/confirm" element={<VerifyMagicLink />} />
+                <Route
+                  path={ROUTES.movies}
+                  element={
+                    <ProtectedRoute>
+                      <Movies />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path={ROUTES.shows}
+                  element={
+                    <ProtectedRoute>
+                      <Shows />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path={ROUTES.search} element={<Search />} />
+                <Route path={ROUTE.movie} element={<MovieDetail />} />
+                <Route path={ROUTE.show} element={<ShowDetail />} />
+                <Route path={ROUTE.person} element={<Person />} />
+                <Route path={ROUTES.profile} element={<Profile />} />
+              </Routes>
+            </Suspense>
+          </Layout.Content>
+        </Layout.View>
+        <Layout.SafeAreaBottom />
       </Layout.Root>
     </>
   );

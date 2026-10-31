@@ -13,6 +13,7 @@ import { Movie } from '../models/Movie';
 import { Show } from '../models/Show';
 import { useTranslate } from '../hooks/useTranslate';
 import { PersonMovies, PersonShows } from '../models/People';
+import { usePageBackground } from '../hooks/usePageBackground';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
@@ -26,6 +27,8 @@ const Person: React.FC = () => {
 
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslate();
+
+  usePageBackground('var(--color-gray-300)');
 
   useEffect(() => {
     setShowResults(undefined);
@@ -42,34 +45,35 @@ const Person: React.FC = () => {
           .map((r) => ({ show: r.show, title: r.character }))
       );
     });
-    getPersonItemsApi<PersonMovies>(personId, 'movie', language).then((data) => {
-      setMovieResults([
-        ...data.cast
-          .filter(
-            (r) => !(r.character === 'Himself' || r.character === 'Herself')
-          )
-          .map((r) => ({
-            movie: r.movie,
-            title: r.character,
-          })),
-      ]);
-      setMovieDirectorResults([
-        ...((data.crew || {}).directing || [])
-          .map((r) => ({ movie: r.movie, title: r.job }))
-          .filter((r) => !(r.title === 'Himself' || r.title === 'Herself')),
-      ]);
-    });
+    getPersonItemsApi<PersonMovies>(personId, 'movie', language).then(
+      (data) => {
+        setMovieResults([
+          ...data.cast
+            .filter(
+              (r) => !(r.character === 'Himself' || r.character === 'Herself')
+            )
+            .map((r) => ({
+              movie: r.movie,
+              title: r.character,
+            })),
+        ]);
+        setMovieDirectorResults([
+          ...((data.crew || {}).directing || [])
+            .map((r) => ({ movie: r.movie, title: r.job }))
+            .filter((r) => !(r.title === 'Himself' || r.title === 'Herself')),
+        ]);
+      }
+    );
   }, [id, language]);
 
   return localState ? (
-    <div className="bg-gray-300">
+    <div>
       <title>{localState.name}</title>
       <div className="lg:max-w-6xl lg:mx-auto">
         <div className="p-10 pt-5 sticky top-0 z-0 lg:hidden">
           {localState && (
             <Image
               ids={localState.ids}
-              className="pt-[env(safe-area-inset-top)]"
               text={localState.name}
               type="person"
               size="big"
@@ -134,7 +138,7 @@ const Person: React.FC = () => {
 
           <h1 className="font-medium font-family-text">{t('movies')} </h1>
           <ul
-            className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
+            className="my-2 flex overflow-x-auto lg:overflow-auto lg:flex-wrap lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {movieResults ? (
@@ -171,7 +175,7 @@ const Person: React.FC = () => {
 
           <h1 className="font-medium font-family-text">{t('direction')} </h1>
           <ul
-            className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
+            className="my-2 flex overflow-x-auto lg:overflow-auto lg:flex-wrap lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {movieDirectorResults ? (
@@ -208,7 +212,7 @@ const Person: React.FC = () => {
 
           <h1 className="font-medium font-family-text">{t('shows')} </h1>
           <ul
-            className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
+            className="my-2 flex overflow-x-auto lg:overflow-auto lg:flex-wrap lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {showResults ? (
@@ -246,7 +250,7 @@ const Person: React.FC = () => {
       </div>
     </div>
   ) : (
-    <div className="flex justify-center text-6xl items-center pt-5 mt-[env(safe-area-inset-top)]">
+    <div className="flex justify-center text-6xl items-center pt-5">
       <Emoji emoji="⏳" rotating={true} />
     </div>
   );

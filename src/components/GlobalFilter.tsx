@@ -36,11 +36,8 @@ export const GlobalFilter = () => {
   };
 
   return (
-    <section
-      className="fixed w-full z-30 top-0 flex flex-col h-full"
-      style={{ marginTop: 'env(safe-area-inset-top)' }}
-    >
-      <div className="w-full bg-blue-100 flex items-center border-b-2">
+    <section className="safe-x flex min-h-0 w-full flex-1 flex-col bg-blue-100">
+      <div className="flex w-full items-center border-b-2">
         <input
           autoFocus={true}
           className="bg-blue-100 w-full px-2 py-2 outline-hidden grow text-gray-700 "
@@ -52,7 +49,7 @@ export const GlobalFilter = () => {
           <Emoji className="ml-3 mr-2" emoji="❌" />
         </button>
       </div>
-      <ul className="flex flex-wrap items-stretch justify-center bg-blue-100 overflow-y-auto">
+      <ul className="flex min-h-0 flex-1 flex-wrap items-stretch justify-center overflow-y-auto">
         {results &&
           results.map((item, i) => {
             const type = getType(item);
@@ -69,7 +66,10 @@ export const GlobalFilter = () => {
                 tabIndex={i + 1}
               >
                 <div
-                  className={`rounded-lg transition-colors duration-300 ${getBgClass(item, type)}`}
+                  className={`rounded-lg transition-colors duration-300 ${getBgClass(
+                    item,
+                    type
+                  )}`}
                 >
                   <ImageLink
                     text={title}

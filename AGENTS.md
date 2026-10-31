@@ -102,7 +102,7 @@ so variables are read as **`process.env.VITE_*`**, not `import.meta.env.*`.
 │   │   ├── Pagination/
 │   │   └── Alert/, ProgressBar/
 │   ├── contexts/            # Auth, Theme, Alert, Modal (React context)
-│   ├── hooks/               # useTranslate, useImage, useFilter, usePagination, ...
+│   ├── hooks/               # useTranslate, useImage, usePageBackground, ...
 │   ├── lib/react-image/     # Vendored react-image fork (Img, useImage)
 │   ├── models/              # Domain types (Movie, Show, Person, Api, Translation, ...)
 │   ├── pages/               # Route components
@@ -125,14 +125,16 @@ so variables are read as **`process.env.VITE_*`**, not `import.meta.env.*`.
 ├── functions/[[catchAll]].ts # Cloudflare Pages Function (OG meta tags)
 ├── public/                  # manifest, icons, splashscreens, _routes.json
 ├── .github/workflows/       # ci.yml (test/release), cd.yml (Sentry release)
-├── PLAN.md                  # Proposal for layout rearchitecture (not implemented)
+├── PLAN.md                  # Original layout rearchitecture proposal
+├── implementation.md        # As-built shell/layout notes
 └── README.md, CHANGELOG.md
 ```
 
 Generated/ignored directories: `build/`, `node_modules/`, `.wrangler/`,
 `test-results/`, `.vitest-attachments/`, `stats.html`, `/mockups`.
-`PLAN.md` and the root `image*.png` screenshots are currently **untracked
-working files** — do not delete or overwrite them unless asked.
+`PLAN.md`, `implementation.md`, and the root `image*.png` screenshots are
+currently **untracked working files** — do not delete or overwrite them unless
+asked.
 
 ## 6. Routing
 
@@ -287,24 +289,42 @@ Store shape (`src/state/store.ts`): `root`, `config`, `movies`, `shows`.
 
 ### Layout
 
-`src/components/Layout.tsx` defines `Layout.Root`, `Layout.Navbar`, and
-`Layout.Content`.
+`src/components/Layout.tsx` defines the fixed app shell:
 
-- Mobile: single column, nav is `sticky bottom-0` (CSS grid `1fr auto`).
-- Desktop at the **`lg` breakpoint (1024px)**: nav is sticky at the top
-  (`auto 1fr`). Note: `PLAN.md` says `md`; the implemented code uses `lg`.
-- `Layout.Content` is the scroll container and restores scroll via
-  `useScrollRestoration`. Horizontal lists pass a ref and `'horizontal'`.
-- Safe areas are handled with `env(safe-area-inset-*)` padding/margins
-  throughout. Keep `viewport-fit=cover` in `index.html` and preserve these
-  classes when restructuring.
+- `Layout.Root` → `#app-shell`, a `100dvh` CSS grid. Mobile rows are
+  `safe-top → view → navbar → safe-bottom`; at the **`lg` breakpoint (1024px)**
+  they are `safe-top → navbar → view → safe-bottom`.
+- `Layout.Navbar` is a grid row, **not** `position: fixed`/`sticky`. It holds
+  `ProgressBar` and `NavigationTabs`, and sits at the bottom on mobile and the
+  top on desktop.
+- `Layout.View` → `#view`, the relative wrapper for `#page-header` and
+  `#content`. `#page-header` is a non-scrolling toolbar row; `#content` is the
+  **only vertical scroll container**.
+- `Layout.PageHeader` portals page toolbars into `#page-header`. Use it for
+  controls that must stay put while the page scrolls (`LibraryTabs`, search
+  input/filters, Profile selectors).
+- `Layout.Content` → `#content`; it owns `useScrollRestoration`. Horizontal
+  lists pass their own ref and `'horizontal'`.
+- `Layout.Overlay` is absolutely positioned over the view. It is top-anchored
+  and grows with its content up to the view height (`max-h-full`). The
+  long-press global search (`GlobalFilter`) uses it, so it covers the
+  header/content but not the navbar or safe-area strips; long result lists
+  scroll inside the overlay.
+- `html`, `body`, `#root`, and `#app-shell` never scroll. Do not reintroduce
+  `window.scrollTo`, `max-w-dvw`, or page-level `sticky`/`fixed` chrome.
+- Safe areas: the shell owns the top/bottom strips (`SafeAreaTop`,
+  `SafeAreaBottom`). Lateral insets are applied once through the `safe-x`
+  utility on the navbar, page header, and `#content`. Keep
+  `viewport-fit=cover`; do not add page-level `env(safe-area-inset-*)` padding
+  or margins.
+- Page background: `usePageBackground()` sets `--page-bg` on `#app-shell` for
+  detail/person status colors. Mappings live in
+  `src/utils/pageBackground.ts`.
 - The global collection search opens on **long-press** of the search nav icon
-  (`Longpress.tsx`, 400 ms, logged-in only) and renders `GlobalFilter` above the
-  page.
+  (`Longpress.tsx`, 400 ms, logged-in only).
 
-`PLAN.md` proposes replacing the current layout with a single CSS grid and
-fixing lateral iOS safe areas. Treat it as a design proposal, **not** as current
-behavior.
+`PLAN.md` is the original layout proposal; the current implementation is
+described above. Keep this section in sync when changing the shell.
 
 ### Tailwind / theming
 
@@ -353,8 +373,17 @@ in dark mode.
 - Setup: `src/test/setup.ts` mocks `virtual:pwa-register/react` and
   `src/lib/react-image`, loads `@testing-library/jest-dom`, and stubs
   `process.env`.
-- `src/App.tsx` has smoke tests in `src/App.test.tsx`; pure logic has focused
-  tests (`showAvailability.test.ts`, `showRuntime.test.ts`).
+- `vitest.config.ts` includes `@tailwindcss/vite` so utility classes resolve in
+  browser tests. Layout tests import `src/index.css` to assert real geometry.
+- `src/vitest-browser.d.ts` bridges `vitest/browser` for the repo’s
+  `moduleResolution: "node"`. Use `page.viewport(width, height)` from
+  `vitest/browser` to test responsive shells.
+- `src/App.tsx` has smoke tests in `src/App.test.tsx`. Layout regressions are
+  covered by `Layout.test.tsx`, `LibraryTabs.test.tsx`,
+  `GlobalFilter.test.tsx`, `Search.test.tsx`, `Profile.test.tsx`, and
+  `usePageBackground.test.tsx`; pure logic has focused tests
+  (`showAvailability.test.ts`, `showRuntime.test.ts`,
+  `pageBackground.test.ts`).
 - Write focused tests for pure utilities and reducers. UI tests use
   `@testing-library/react`; they execute in Chromium, so browser APIs are
   available.
@@ -473,6 +502,16 @@ Examples: `:bug: fix double scroll`, `:sparkles: add hide-finished filter`,
 - The default palette is reset — using an unmapped color utility silently does
   nothing.
 - **Dark mode is CSS-variable based**; use semantic tokens, not `dark:`.
+- **Only `#content` scrolls.** The viewport is locked; use
+  `content.scrollTop`/scroll restoration, not `window.scrollTo`.
+- **Page toolbars belong in `Layout.PageHeader`.** Rendering them inside
+  `Layout.Content` makes them scroll away.
+- **Lateral safe areas are centralized** in the `safe-x` utility. Do not add
+  page-level `env(safe-area-inset-*)` padding or negative margins to escape it.
+- **Page backgrounds go through `usePageBackground`**, not a wrapper
+  `bg-*` class, so the shell strips and header stay in sync.
+- **The global search overlay must stay inside `Layout.View`** so it covers the
+  header/content but leaves the navbar reachable.
 - Keep `env(safe-area-inset-*)` handling and the PWA viewport meta intact.
 - Do not edit or commit generated artifacts: `build/`, `stats.html`,
   `test-results/`, `.vitest-attachments/`, `.wrangler/`.

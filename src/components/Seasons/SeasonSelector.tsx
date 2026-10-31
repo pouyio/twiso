@@ -73,7 +73,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
 
   return (
     <ul
-      className="flex gap-1 overflow-x-auto -mx-3 relative border-b"
+      className="flex gap-1 overflow-x-auto relative border-b"
       style={{ WebkitOverflowScrolling: 'touch' }}
       ref={ref}
     >

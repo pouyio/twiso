@@ -8,7 +8,7 @@ interface StudiosProps {
 
 const Studios: React.FC<StudiosProps> = ({ studios }) => {
   return (
-    <ul className="flex overflow-x-auto my-2 -mx-4 text-sm lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start select-none gap-y-1">
+    <ul className="flex overflow-x-auto my-2 text-sm lg:overflow-auto lg:flex-wrap lg:justify-start select-none gap-y-1">
       {studios.length ? (
         studios.map((studio) => (
           <li key={studio.name + studio.country}>
