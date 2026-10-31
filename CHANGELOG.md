@@ -1,3 +1,10 @@
+## [2.21.13](https://github.com/pouyio/twiso/compare/v2.21.12...v2.21.13) (2026-10-31)
+
+
+### :bug:
+
+* fix OG function ([e5f4f14](https://github.com/pouyio/twiso/commit/e5f4f14d25f089a0c1f331580dfc5c8bd740cd25))
+
 ## [2.21.12](https://github.com/pouyio/twiso/compare/v2.21.11...v2.21.12) (2026-10-30)
 
 
