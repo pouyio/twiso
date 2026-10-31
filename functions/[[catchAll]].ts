@@ -21,7 +21,8 @@ export const getImgsApi = (id: number, type: ItemType, tmdbApiKey: string) => {
     newType = 'tv';
   }
   return axios.get<ImageResponse>(
-    `${IMG_URL}/${newType}/${id}/images?api_key=${tmdbApiKey}`
+    `${IMG_URL}/${newType}/${id}/images?api_key=${tmdbApiKey}`,
+    { fetchOptions: { cache: 'no-store' } }
   );
 };
 
@@ -37,7 +38,8 @@ const fetchData = async (
     overview?: string;
     biography?: string;
   }>(
-    `${IMG_URL}/${tmdbType}/${id}?api_key=${env.VITE_TMDB_API_KEY}&language=es`
+    `${IMG_URL}/${tmdbType}/${id}?api_key=${env.VITE_TMDB_API_KEY}&language=es`,
+    { fetchOptions: { cache: 'no-store' } }
   );
   const item = detailResponse.data;
   let imgUrl = 'https://placehold.co/185x330';
