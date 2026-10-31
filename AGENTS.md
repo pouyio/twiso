@@ -291,7 +291,7 @@ Store shape (`src/state/store.ts`): `root`, `config`, `movies`, `shows`.
 
 `src/components/Layout.tsx` defines the fixed app shell:
 
-- `Layout.Root` → `#app-shell`, a `100dvh` CSS grid. Mobile rows are
+- `Layout.Root` → `#app-shell`, a `100vh` CSS grid. Mobile rows are
   `safe-top → view → navbar` (the mobile navbar carries the bottom safe-area
   inset); at the **`lg` breakpoint (1024px)** they are
   `safe-top → navbar → view`. There is no bottom safe-area row: desktop content

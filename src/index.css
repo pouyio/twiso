@@ -81,7 +81,7 @@
 
 html {
   background-color: var(--primary-light);
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -89,13 +89,13 @@ body,
 .theme-wrapper {
   transition: background-color 0.25s, color 0.25s;
   font-family: Nunito, sans-serif;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
   overscroll-behavior: none;
 }
 
 #root {
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -118,7 +118,6 @@ body,
     'view'
     'navbar';
   height: 100vh;
-  height: 100dvh;
   min-height: 0;
   overflow: hidden;
   background-color: var(--page-bg);
