@@ -131,6 +131,18 @@ body,
 }
 
 /*
+  iOS 26/27 tints the status bar by sampling a solid fixed/sticky element at the
+  top of the page, and falls back to a blur when there is none. Installed PWAs
+  can report a 0 top inset, so guarantee a sampled strip above the content.
+*/
+.ios-standalone #safe-top {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: max(11px, env(safe-area-inset-top));
+}
+
+/*
   On mobile the bottom safe area belongs to the navbar so its background
   bleeds all the way to the screen edge. The separate strip is desktop-only.
 */

@@ -292,8 +292,9 @@ Store shape (`src/state/store.ts`): `root`, `config`, `movies`, `shows`.
 `src/components/Layout.tsx` defines the fixed app shell:
 
 - `Layout.Root` → `#app-shell`, a `100dvh` CSS grid. Mobile rows are
-  `safe-top → view → navbar → safe-bottom`; at the **`lg` breakpoint (1024px)**
-  they are `safe-top → navbar → view → safe-bottom`.
+  `safe-top → view → navbar` (the mobile navbar carries the bottom safe-area
+  inset); at the **`lg` breakpoint (1024px)** they are
+  `safe-top → navbar → view → safe-bottom`.
 - `Layout.Navbar` is a grid row, **not** `position: fixed`/`sticky`. It holds
   `ProgressBar` and `NavigationTabs`, and sits at the bottom on mobile and the
   top on desktop.
@@ -319,9 +320,12 @@ Store shape (`src/state/store.ts`): `root`, `config`, `movies`, `shows`.
   header, and `#content`. Keep `viewport-fit=cover`; do not add page-level
   `env(safe-area-inset-*)` padding or margins.
 - Status bar: `apple-mobile-web-app-status-bar-style` is intentionally absent
-  (it made iOS draw a blur/scrim over the top). `ThemeProvider` syncs
-  `meta[name="theme-color"]` with the active theme (`#ffffff` light, `#000000`
-  dark). Installed PWAs must be removed and re-added to drop the old meta.
+  (it made iOS draw a blur/scrim over the top). iOS 26/27 tints the status bar
+  by sampling a solid `fixed`/`sticky` element at the top, so standalone iOS
+  (`.ios-standalone #safe-top`) keeps an in-flow sticky strip of at least 11px
+  painted with `--page-bg`. `ThemeProvider` also syncs
+  `meta[name="theme-color"]` (`#ffffff` light, `#000000` dark) for browsers
+  that still honor it.
 - Page background: `usePageBackground()` sets `--page-bg` on `#app-shell` for
   detail/person status colors. Mappings live in
   `src/utils/pageBackground.ts`.

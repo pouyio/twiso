@@ -61,6 +61,7 @@ const renderFixture = async (overlay?: React.ReactNode) => {
 
 afterEach(async () => {
   cleanup();
+  document.documentElement.classList.remove('ios-standalone');
   await page.viewport(1280, 800);
 });
 
@@ -168,6 +169,15 @@ describe('Layout shell', () => {
         )
       ).toBeLessThanOrEqual(1);
     });
+  });
+
+  it('gives standalone iOS a sticky strip for status-bar tinting', async () => {
+    document.documentElement.classList.add('ios-standalone');
+    const { safeTop } = await renderFixture();
+
+    const styles = getComputedStyle(safeTop);
+    expect(styles.position).toBe('sticky');
+    expect(safeTop.getBoundingClientRect().height).toBeGreaterThanOrEqual(11);
   });
 
   it('keeps the mobile layout in phone landscape', async () => {
