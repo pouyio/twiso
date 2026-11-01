@@ -59,10 +59,10 @@ export default function Profile() {
   };
 
   return (
-    <div className="pt-[env(safe-area-inset-top)]">
+    <div>
       <title>Profile</title>
-      <div className="lg:max-w-lg m-auto p-4">
-        <ul className="flex justify-between">
+      <div className="lg:max-w-lg m-auto">
+        <ul className="sticky top-0 flex z-10 justify-between bg-white px-4 pt-[env(safe-area-inset-top)]">
           <li className="py-1 relative">
             <select
               className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
@@ -118,99 +118,101 @@ export default function Profile() {
             </div>
           </li>
         </ul>
-        {isLogged ? (
-          <>
-            <h1 className="text-2xl text-center text-gray-700 m-4 mt-8 flex justify-center items-center">
-              <Icon name="movie" className="h-6 pr-1" /> {t('movies')}
-            </h1>
-            <p className="text-center">
-              {t('have_watched_f')}: {stats?.movies} en{' '}
-              {convertMinutes(stats && stats.movies * AVG_MOVIE_DURATION)}
-            </p>
-            <h1 className="text-2xl text-center text-gray-700 m-4 mt-8 flex justify-center items-center">
-              <Icon name="tv" className="h-6 pr-1" /> {t('episodes')}
-            </h1>
-            <p className="text-center">
-              {t('have_watched')}: {stats?.episodes} en{' '}
-              {convertMinutes(stats && stats.episodes * AVG_EPISODE_DURATION)}{' '}
-            </p>{' '}
-            <p className="text-sm mt-12 flex flex-col items-end">
-              <span>Logged in as:</span>
-              <span className="italic h-5">{user?.email}</span>
-            </p>
-          </>
-        ) : null}
-
-        <div className="flex justify-between pt-2 text-sm font-mono items-center">
-          <h1 className="inline">Version: {packageInfo.version}</h1>
+        <div className="p-4">
           {isLogged ? (
-            <button
-              onClick={logout}
-              className="bg-gray-200 px-4 py-1 pl-2 rounded-full flex items-center cursor-pointer"
-            >
-              <Icon name="logout" className="h-6 pr-1" /> Logout
-            </button>
-          ) : (
-            <LoginButton small />
-          )}
-        </div>
+            <>
+              <h1 className="text-2xl text-center text-gray-700 m-4 mt-8 flex justify-center items-center">
+                <Icon name="movie" className="h-6 pr-1" /> {t('movies')}
+              </h1>
+              <p className="text-center">
+                {t('have_watched_f')}: {stats?.movies} en{' '}
+                {convertMinutes(stats && stats.movies * AVG_MOVIE_DURATION)}
+              </p>
+              <h1 className="text-2xl text-center text-gray-700 m-4 mt-8 flex justify-center items-center">
+                <Icon name="tv" className="h-6 pr-1" /> {t('episodes')}
+              </h1>
+              <p className="text-center">
+                {t('have_watched')}: {stats?.episodes} en{' '}
+                {convertMinutes(stats && stats.episodes * AVG_EPISODE_DURATION)}{' '}
+              </p>{' '}
+              <p className="text-sm mt-12 flex flex-col items-end">
+                <span>Logged in as:</span>
+                <span className="italic h-5">{user?.email}</span>
+              </p>
+            </>
+          ) : null}
 
-        {dev ? (
-          <>
-            <h1 className="text-center text-2xl py-4">Dev tools</h1>
-            <p className="text-center py-4">
+          <div className="flex justify-between pt-2 text-sm font-mono items-center">
+            <h1 className="inline">Version: {packageInfo.version}</h1>
+            {isLogged ? (
               <button
-                onClick={() => window.location.reload()}
-                className="bg-gray-200 px-2 py-1 rounded-full"
+                onClick={logout}
+                className="bg-gray-200 px-4 py-1 pl-2 rounded-full flex items-center cursor-pointer"
               >
-                <Emoji emoji="🌎" />
-                Force Reload
+                <Icon name="logout" className="h-6 pr-1" /> Logout
               </button>
-            </p>
-            <p className="text-center py-4">
-              <button
-                onClick={removeUserActivities}
-                className="bg-gray-200 px-2 py-1 rounded-full"
+            ) : (
+              <LoginButton small />
+            )}
+          </div>
+
+          {dev ? (
+            <>
+              <h1 className="text-center text-2xl py-4">Dev tools</h1>
+              <p className="text-center py-4">
+                <button
+                  onClick={() => window.location.reload()}
+                  className="bg-gray-200 px-2 py-1 rounded-full"
+                >
+                  <Emoji emoji="🌎" />
+                  Force Reload
+                </button>
+              </p>
+              <p className="text-center py-4">
+                <button
+                  onClick={removeUserActivities}
+                  className="bg-gray-200 px-2 py-1 rounded-full"
+                >
+                  <Emoji emoji="⚠️" />
+                  Remove USER activities only
+                </button>
+              </p>
+              <p className="text-center py-4">
+                <button
+                  onClick={removeUserCaches}
+                  className="bg-gray-200 px-2 py-1 rounded-full"
+                >
+                  <Emoji emoji="⚠️" />
+                  Remove USER data
+                </button>
+              </p>
+              <p className="text-center py-4">
+                <button
+                  onClick={removeDetailsCaches}
+                  className="bg-gray-200 px-2 py-1 rounded-full"
+                >
+                  <Emoji emoji="⚠️" />
+                  Remove DETAIL data
+                </button>
+              </p>
+              <p className="text-center py-4">
+                <button
+                  onClick={removeImgCaches}
+                  className="bg-gray-200 px-2 py-1 rounded-full"
+                >
+                  <Emoji emoji="♻️" />
+                  Remove images from cache
+                </button>
+              </p>
+              <a
+                className="text-center py-4 underline block"
+                href="https://github.com/mbrevda/react-image/pull/1006"
               >
-                <Emoji emoji="⚠️" />
-                Remove USER activities only
-              </button>
-            </p>
-            <p className="text-center py-4">
-              <button
-                onClick={removeUserCaches}
-                className="bg-gray-200 px-2 py-1 rounded-full"
-              >
-                <Emoji emoji="⚠️" />
-                Remove USER data
-              </button>
-            </p>
-            <p className="text-center py-4">
-              <button
-                onClick={removeDetailsCaches}
-                className="bg-gray-200 px-2 py-1 rounded-full"
-              >
-                <Emoji emoji="⚠️" />
-                Remove DETAIL data
-              </button>
-            </p>
-            <p className="text-center py-4">
-              <button
-                onClick={removeImgCaches}
-                className="bg-gray-200 px-2 py-1 rounded-full"
-              >
-                <Emoji emoji="♻️" />
-                Remove images from cache
-              </button>
-            </p>
-            <a
-              className="text-center py-4 underline block"
-              href="https://github.com/mbrevda/react-image/pull/1006"
-            >
-              react-image Pull Request
-            </a>
-          </>
-        ) : null}
+                react-image Pull Request
+              </a>
+            </>
+          ) : null}
+        </div>
       </div>
     </div>
   );

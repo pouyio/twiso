@@ -27,7 +27,11 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
   const ref = useRef<HTMLDivElement>(null);
   useScrollRestoration(ref);
   return (
-    <div id="content" ref={ref} className="overflow-x-auto max-w-dvw">
+    <div
+      id="content"
+      ref={ref}
+      className="overflow-x-auto max-w-dvw pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]"
+    >
       {children}
     </div>
   );

@@ -151,8 +151,8 @@ export default function MovieDetail() {
         <div
           onClick={() => setZoom((z) => !z)}
           className={`${
-            zoom ? 'pb-10 z-10' : 'p-10 pt-5'
-          }  sticky top-0 z-0 lg:hidden transition-[padding]`}
+            zoom ? 'pb-10 z-10' : 'p-10 pt-[calc(theme(spacing.5)_+_env(safe-area-inset-top))]'
+          } sticky top-0 z-0 lg:hidden transition-[padding]`}
         >
           <Image
             ids={item.ids}

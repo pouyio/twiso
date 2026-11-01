@@ -42,7 +42,7 @@ export const LibraryTabs: React.FC<LibraryTabsProps> = ({
 
   return (
     <>
-      <div className="flex w-full text-gray-600 lg:max-w-xl lg:m-auto pt-[env(safe-area-inset-top)]">
+      <div className="sticky top-0 z-10 flex w-full text-gray-600 bg-white lg:m-auto pt-[env(safe-area-inset-top)]">
         <div className="w-full">
           <button
             className="py-2 w-full flex justify-center"

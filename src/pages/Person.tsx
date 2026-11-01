@@ -16,6 +16,7 @@ import { PersonMovies, PersonShows } from '../models/People';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
+  const [zoom, setZoom] = useState(false);
   const [movieResults, setMovieResults] =
     useState<{ movie: Movie; title: string }[]>();
   const [movieDirectorResults, setMovieDirectorResults] =
@@ -42,30 +43,39 @@ const Person: React.FC = () => {
           .map((r) => ({ show: r.show, title: r.character }))
       );
     });
-    getPersonItemsApi<PersonMovies>(personId, 'movie', language).then((data) => {
-      setMovieResults([
-        ...data.cast
-          .filter(
-            (r) => !(r.character === 'Himself' || r.character === 'Herself')
-          )
-          .map((r) => ({
-            movie: r.movie,
-            title: r.character,
-          })),
-      ]);
-      setMovieDirectorResults([
-        ...((data.crew || {}).directing || [])
-          .map((r) => ({ movie: r.movie, title: r.job }))
-          .filter((r) => !(r.title === 'Himself' || r.title === 'Herself')),
-      ]);
-    });
+    getPersonItemsApi<PersonMovies>(personId, 'movie', language).then(
+      (data) => {
+        setMovieResults([
+          ...data.cast
+            .filter(
+              (r) => !(r.character === 'Himself' || r.character === 'Herself')
+            )
+            .map((r) => ({
+              movie: r.movie,
+              title: r.character,
+            })),
+        ]);
+        setMovieDirectorResults([
+          ...((data.crew || {}).directing || [])
+            .map((r) => ({ movie: r.movie, title: r.job }))
+            .filter((r) => !(r.title === 'Himself' || r.title === 'Herself')),
+        ]);
+      }
+    );
   }, [id, language]);
 
   return localState ? (
     <div className="bg-gray-300">
       <title>{localState.name}</title>
       <div className="lg:max-w-6xl lg:mx-auto">
-        <div className="p-10 pt-5 sticky top-0 z-0 lg:hidden">
+        <div
+          onClick={() => setZoom((z) => !z)}
+          className={`${
+            zoom
+              ? 'pb-10 z-10'
+              : 'p-10 pt-[calc(theme(spacing.5)_+_env(safe-area-inset-top))]'
+          }  sticky top-0 z-0 lg:hidden transition-[padding]`}
+        >
           {localState && (
             <Image
               ids={localState.ids}

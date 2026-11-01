@@ -39,7 +39,7 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
       </h1>
       <ul
         ref={resultsScroll}
-        className="-mx-4 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto"
+        className="-mx-4 lg:mx-0 flex flex-col flex-wrap content-start overflow-x-auto"
         style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
       >
         {results.map((r) => (

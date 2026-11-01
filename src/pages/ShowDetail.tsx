@@ -226,7 +226,7 @@ export default function ShowDetail() {
         <div
           onClick={() => setZoom((z) => !z)}
           className={`${
-            zoom ? 'pb-10 z-10' : 'p-10 pt-5'
+            zoom ? 'pb-10 z-10' : 'p-10 pt-[calc(theme(spacing.5)_+_env(safe-area-inset-top))]'
           }  sticky top-0 z-0 lg:hidden transition-[padding]`}
         >
           <Image
