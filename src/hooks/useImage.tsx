@@ -8,7 +8,7 @@ export const useImage = (
   id: number,
   type: 'show' | 'movie' | 'person',
   size: 'small' | 'big',
-  inview: boolean
+  inview: boolean,
 ) => {
   const [imgUrl, setImgUrl] = useState('');
   const [imgPreview, setImgPreview] = useState('');
@@ -32,10 +32,10 @@ export const useImage = (
     const imgArrSize = size === 'small' ? 1 : 2;
     if (cachedUrl) {
       setImgPreview(
-        cachedUrl.replace('__size__', config.images.profile_sizes[0])
+        cachedUrl.replace('__size__', config.images.profile_sizes[0]),
       );
       setImgUrl(
-        cachedUrl.replace('__size__', config.images.profile_sizes[imgArrSize])
+        cachedUrl.replace('__size__', config.images.profile_sizes[imgArrSize]),
       );
       return;
     }
@@ -48,16 +48,16 @@ export const useImage = (
       .then(({ data }) => {
         const poster = findFirstValid(
           (data.posters || data.profiles)!,
-          language
+          language,
         );
         if (poster) {
           const url = `${config.images.secure_base_url}__size__${poster.file_path}`;
           saveToCache(id, type, language, url);
           setImgPreview(
-            url.replace('__size__', config.images.profile_sizes[0])
+            url.replace('__size__', config.images.profile_sizes[0]),
           );
           setImgUrl(
-            url.replace('__size__', config.images.profile_sizes[imgArrSize])
+            url.replace('__size__', config.images.profile_sizes[imgArrSize]),
           );
           return;
         } else {

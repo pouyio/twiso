@@ -7,25 +7,25 @@ export const useIsWatch = () => {
     useLiveQuery(
       () => db[USER_MOVIES_TABLE].where({ status: 'watched' }).primaryKeys(),
       [],
-      []
+      [],
     ) ?? [];
 
   const watchlistMovieIds =
     useLiveQuery(() =>
-      db[USER_MOVIES_TABLE].where({ status: 'watchlist' }).primaryKeys()
+      db[USER_MOVIES_TABLE].where({ status: 'watchlist' }).primaryKeys(),
     ) ?? [];
 
   const watchedShows =
     useLiveQuery(
       () => db[USER_SHOWS_TABLE].where({ status: 'watched' }).primaryKeys(),
       [],
-      []
+      [],
     ) ?? [];
   const watchedShowIds = watchedShows.map((s) => s.show_tmdb);
 
   const watchlistShowIds =
     useLiveQuery(() =>
-      db[USER_SHOWS_TABLE].where({ status: 'watchlist' }).primaryKeys()
+      db[USER_SHOWS_TABLE].where({ status: 'watchlist' }).primaryKeys(),
     ) ?? [];
 
   const isWatched = (id: number, type: 'show' | 'movie' = 'show') => {

@@ -39,7 +39,7 @@ export default function Search() {
     setLoading(true);
     searchApi<SearchMovie & SearchShow & SearchPerson>(
       query,
-      types.join(',')
+      types.join(','),
     ).then((data) => {
       const movies: SearchMovie[] = data.filter((r) => r.type === 'movie');
       const shows: SearchShow[] = data.filter((r) => r.type === 'show');
@@ -90,7 +90,7 @@ export default function Search() {
     <div className="lg:m-auto">
       <title>Search</title>
       <div className="sticky top-0 z-10 bg-white px-4 pt-[env(safe-area-inset-top)]">
-        <div className="py-2">        
+        <div className="py-2">
           <div className="w-full bg-gray-300 rounded-sm flex items-center m-auto lg:max-w-lg">
             <input
               className="bg-gray-300 rounded-sm text-black px-2 py-1 outline-hidden grow"

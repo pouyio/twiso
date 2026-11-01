@@ -33,45 +33,45 @@ const moviesSlice = createSlice({
         isAnyOf(addWatchedMovie.pending, removeWatched.pending),
         (state, { meta }) => {
           state.pending.watched.push(meta.arg.movie.ids.tmdb);
-        }
+        },
       )
       .addMatcher(
         isAnyOf(
           addWatchedMovie.fulfilled,
           addWatchedMovie.rejected,
           removeWatched.fulfilled,
-          removeWatched.rejected
+          removeWatched.rejected,
         ),
         (state, { meta }) => {
           state.pending.watched = state.pending.watched.filter(
-            (p) => p !== meta.arg.movie.ids.tmdb
+            (p) => p !== meta.arg.movie.ids.tmdb,
           );
-        }
+        },
       )
       .addMatcher(
         isAnyOf(addWatchlist.pending, removeWatchlist.pending),
         (state, { meta }) => {
           state.pending.watchlist.push(meta.arg.movie.ids.tmdb);
-        }
+        },
       )
       .addMatcher(
         isAnyOf(
           addWatchlist.fulfilled,
           addWatchlist.rejected,
           removeWatchlist.rejected,
-          removeWatchlist.fulfilled
+          removeWatchlist.fulfilled,
         ),
         (state, { meta }) => {
           state.pending.watchlist = state.pending.watchlist.filter(
-            (p) => p !== meta.arg.movie.ids.tmdb
+            (p) => p !== meta.arg.movie.ids.tmdb,
           );
-        }
+        },
       )
       .addMatcher(
         isAnyOf(fillDetail.fulfilled, fillDetail.rejected),
         (state) => {
           state.totalRequestsPending = state.totalRequestsPending - 1;
-        }
+        },
       );
   },
 });

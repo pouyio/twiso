@@ -39,7 +39,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
   const { t } = useTranslate();
 
   const watchedEpisodeNumbers = new Set(
-    episodesProgress.map((e) => e.episode_number)
+    episodesProgress.map((e) => e.episode_number),
   );
 
   const isSeasonWatched = () => {
@@ -47,7 +47,7 @@ const Episodes: React.FC<ISeasonsProps> = ({
       return false;
     }
     const episodesAvailable = episodesDates.filter(
-      (e) => e.first_aired && new Date(e.first_aired) < new Date()
+      (e) => e.first_aired && new Date(e.first_aired) < new Date(),
     );
     return episodesProgress.length === episodesAvailable.length;
   };
@@ -57,8 +57,10 @@ const Episodes: React.FC<ISeasonsProps> = ({
     watched.some((w) =>
       episodes.find(
         (e) =>
-          showId === w.showId && e.number === w.episode && w.season === e.season
-      )
+          showId === w.showId &&
+          e.number === w.episode &&
+          w.season === e.season,
+      ),
     )
   );
 
@@ -78,14 +80,14 @@ const Episodes: React.FC<ISeasonsProps> = ({
                 (w) =>
                   w.episode === e.number &&
                   w.season === e.season &&
-                  w.showId === showId
+                  w.showId === showId,
               );
               return (
                 <Episode
                   key={`${e.season}_${e.number}`}
                   episode={e}
                   episodeDate={episodesDates.find(
-                    (ed) => ed.number === e.number
+                    (ed) => ed.number === e.number,
                   )}
                   watchedEpisodeNumbers={watchedEpisodeNumbers}
                   isPending={isPending}

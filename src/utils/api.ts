@@ -33,7 +33,7 @@ const limitClient = rateLimit(axios.create(), {
 
 export const getImgsConfigApi = () => {
   return axios.get<ImgConfig>(
-    `${IMG_URL}/configuration?api_key=${config.tmdbApiKey}`
+    `${IMG_URL}/configuration?api_key=${config.tmdbApiKey}`,
   );
 };
 
@@ -43,25 +43,21 @@ export const getImgsApi = (id: number, type: ItemType) => {
     newType = 'tv';
   }
   return limitClient.get<ImageResponse>(
-    `${IMG_URL}/${newType}/${id}/images?api_key=${config.tmdbApiKey}`
+    `${IMG_URL}/${newType}/${id}/images?api_key=${config.tmdbApiKey}`,
   );
 };
 
 const getCatalog = async <T>(path: string): Promise<T> => {
-  const { data, error } = await supabase.functions.invoke<T>(
-    `api${path}`,
-    {
-      method: 'GET',
-    }
-  );
+  const { data, error } = await supabase.functions.invoke<T>(`api${path}`, {
+    method: 'GET',
+  });
   if (error) {
     throw error;
   }
   return data as T;
 };
 
-const typeSegment = (type: ItemType) =>
-  type === 'show' ? 'shows' : 'movies';
+const typeSegment = (type: ItemType) => (type === 'show' ? 'shows' : 'movies');
 
 export const getMovieApi = (id: number, language: Language = 'es') => {
   return getCatalog<Movie>(`/movies/${id}?language=${language}`);
@@ -78,35 +74,38 @@ export const getSeasonsApi = (id: number, language: Language) => {
 export const getTranslationsApi = (
   id: number,
   type: ItemType,
-  language: Language
+  language: Language,
 ) => {
   return getCatalog<Translation | null>(
-    `/${typeSegment(type)}/${id}/translations/${language}`
+    `/${typeSegment(type)}/${id}/translations/${language}`,
   );
 };
 
 export const searchApi = <T>(
   query: string,
   type: string,
-  limit: number = 40
+  limit: number = 40,
 ) => {
   return getCatalog<T[]>(
-    `/search?query=${encodeURIComponent(query)}&type=${type}&limit=${limit}`
+    `/search?query=${encodeURIComponent(query)}&type=${type}&limit=${limit}`,
   );
 };
 
 export const addWatchedMovieApi = (id: number, type: ItemType) => {
-  return supabase.functions.invoke<MovieStatus>(`api/${typeSegment(type)}/${id}`, {
-    method: 'POST',
-    body: {
-      status: 'watched',
+  return supabase.functions.invoke<MovieStatus>(
+    `api/${typeSegment(type)}/${id}`,
+    {
+      method: 'POST',
+      body: {
+        status: 'watched',
+      },
     },
-  });
+  );
 };
 
 export const addWatchedEpisodesApi = (
   showIds: Ids,
-  episodes: SeasonEpisode[]
+  episodes: SeasonEpisode[],
 ) => {
   return supabase.functions.invoke<EpisodeStatus[]>(
     `api/shows/${showIds.tmdb}/episodes`,
@@ -119,13 +118,13 @@ export const addWatchedEpisodesApi = (
           episode: e.number,
         })),
       },
-    }
+    },
   );
 };
 
 export const removeWatchedEpisodesApi = (
   showIds: Ids,
-  episodes: SeasonEpisode[]
+  episodes: SeasonEpisode[],
 ) => {
   return supabase.functions.invoke<null>(`api/shows/${showIds.tmdb}/episodes`, {
     method: 'DELETE',
@@ -169,9 +168,13 @@ export const removeWatchlistApi = (id: number, type: ItemType) => {
   });
 };
 
-export const getPeopleApi = (id: number, type: ItemType, language: Language = 'es') => {
+export const getPeopleApi = (
+  id: number,
+  type: ItemType,
+  language: Language = 'es',
+) => {
   return getCatalog<People>(
-    `/${typeSegment(type)}/${id}/people?language=${language}`
+    `/${typeSegment(type)}/${id}/people?language=${language}`,
   );
 };
 
@@ -182,9 +185,11 @@ export const getPersonApi = (id: number, language: Language = 'es') => {
 export const getPersonItemsApi = <T>(
   person: number,
   type: ItemType,
-  language: Language = 'es'
+  language: Language = 'es',
 ) => {
-  return getCatalog<T>(`/people/${person}/${typeSegment(type)}?language=${language}`);
+  return getCatalog<T>(
+    `/people/${person}/${typeSegment(type)}?language=${language}`,
+  );
 };
 
 export const getPopularApi = (type: ItemType, limit: number = 40) => {
@@ -214,15 +219,16 @@ export const getStudiosApi = (id: number, type: ItemType) => {
 export const getShowSeasonRatingsApi = (showId: number) => {
   return supabase.functions.invoke<SeasonRating[]>(
     `api/season-ratings/${showId}`,
-    { method: 'GET' }
+    {
+      method: 'GET',
+    },
   );
 };
 
 export const getShowRatingsApi = (showId: number) => {
-  return supabase.functions.invoke<ShowRating>(
-    `api/show-ratings/${showId}`,
-    { method: 'GET' }
-  );
+  return supabase.functions.invoke<ShowRating>(`api/show-ratings/${showId}`, {
+    method: 'GET',
+  });
 };
 
 export const getMovieReleasesApi = (id: number) => {
@@ -255,17 +261,15 @@ export const getAllMovies = (dateFrom?: string | null) => {
     `api/movies?${dateFrom ? `date_from=${encodeURIComponent(dateFrom)}` : ''}`,
     {
       method: 'GET',
-    }
+    },
   );
 };
 
 export const getAllShowsComplete = (dateFrom?: string | null) => {
   return supabase.functions.invoke<ShowStatusComplete[]>(
-    `api/shows/complete?${
-      dateFrom ? `date_from=${encodeURIComponent(dateFrom)}` : ''
-    }`,
+    `api/shows/complete?${dateFrom ? `date_from=${encodeURIComponent(dateFrom)}` : ''}`,
     {
       method: 'GET',
-    }
+    },
   );
 };

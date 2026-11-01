@@ -14,29 +14,31 @@ const ShowsWatched: React.FC = () => {
   const [genres, setGenres] = useState<number[]>([]);
   const [searchParams] = useSearchParams();
   const [hideFinished, setHideFinished] = useState(
-    () => searchParams.get('showFinished') !== '1'
+    () => searchParams.get('showFinished') !== '1',
   );
 
   const orderedUserShows = useLiveQuery(
     () =>
-      db[USER_SHOWS_TABLE].where('status')
+      db[USER_SHOWS_TABLE]
+        .where('status')
         .equals('watched')
         .reverse()
         .sortBy('created_at'),
     [],
-    []
+    [],
   );
 
   const fullShows = useLiveQuery(
     () =>
-      db[DETAIL_SHOWS_TABLE].where('ids.tmdb')
+      db[DETAIL_SHOWS_TABLE]
+        .where('ids.tmdb')
         .anyOf(
-          orderedUserShows.filter((s) => !s.hidden).map((us) => us.show_tmdb)
+          orderedUserShows.filter((s) => !s.hidden).map((us) => us.show_tmdb),
         )
         .and((show) => genres.every((g) => show.genres.includes(g)))
         .toArray(),
     [genres, orderedUserShows],
-    []
+    [],
   );
 
   const orderedShows: Show[] = orderedUserShows
@@ -48,15 +50,16 @@ const ShowsWatched: React.FC = () => {
     watchedEpisodesByShow.set(
       ous.show_tmdb,
       new Set(
-        ous.episodes?.map((e) => `${e.season_number}:${e.episode_number}`) ?? []
-      )
+        ous.episodes?.map((e) => `${e.season_number}:${e.episode_number}`) ??
+          [],
+      ),
     );
   });
 
   const hasAvailable = (show: Show) =>
     hasAvailableEpisodes(
       show,
-      watchedEpisodesByShow.get(show.ids.tmdb) ?? new Set<string>()
+      watchedEpisodesByShow.get(show.ids.tmdb) ?? new Set<string>(),
     );
 
   const visibleShows = hideFinished

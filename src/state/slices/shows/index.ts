@@ -40,7 +40,7 @@ const showsSlice = createSlice({
             showId: meta.arg.showIds.tmdb,
             season: e.season,
             episode: e.number,
-          }))
+          })),
         );
       })
       .addCase(removeEpisodeWatched.pending, (state, { meta }) => {
@@ -49,34 +49,34 @@ const showsSlice = createSlice({
             showId: meta.arg.showIds.tmdb,
             season: e.season,
             episode: e.number,
-          }))
+          })),
         );
       })
       .addMatcher(
         isAnyOf(removeWatchlist.pending, addWatchlist.pending),
         (state, { meta }) => {
           state.pending.watchlist.push(meta.arg.show.ids.tmdb);
-        }
+        },
       )
       .addMatcher(
         isAnyOf(
           addWatchlist.rejected,
           addWatchlist.fulfilled,
           removeWatchlist.rejected,
-          removeWatchlist.fulfilled
+          removeWatchlist.fulfilled,
         ),
         (state, { meta }) => {
           state.pending.watchlist = state.pending.watchlist.filter(
-            (p) => p !== meta.arg.show.ids.tmdb
+            (p) => p !== meta.arg.show.ids.tmdb,
           );
-        }
+        },
       )
       .addMatcher(
         isAnyOf(
           addEpisodeWatched.rejected,
           addEpisodeWatched.fulfilled,
           removeEpisodeWatched.rejected,
-          removeEpisodeWatched.fulfilled
+          removeEpisodeWatched.fulfilled,
         ),
         (state, { meta }) => {
           state.pending.watched = state.pending.watched.filter(
@@ -85,27 +85,27 @@ const showsSlice = createSlice({
                 (me) =>
                   me.number === p.episode &&
                   me.season === p.season &&
-                  meta.arg.showIds.tmdb === p.showId
-              )
+                  meta.arg.showIds.tmdb === p.showId,
+              ),
           );
-        }
+        },
       )
       .addMatcher(
         isAnyOf(fillDetail.pending, setHiddenShow.pending),
         (state) => {
           state.totalRequestsPending = state.totalRequestsPending + 1;
-        }
+        },
       )
       .addMatcher(
         isAnyOf(
           fillDetail.rejected,
           setHiddenShow.rejected,
           fillDetail.fulfilled,
-          setHiddenShow.fulfilled
+          setHiddenShow.fulfilled,
         ),
         (state) => {
           state.totalRequestsPending = state.totalRequestsPending - 1;
-        }
+        },
       );
   },
 });

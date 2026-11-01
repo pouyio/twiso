@@ -53,7 +53,7 @@ const imageCache: Record<string, CacheEntry> = {};
 
 const tryLoadImage = (
   srcList: string[],
-  imgPromise: ImagePromise
+  imgPromise: ImagePromise,
 ): Promise<string> => {
   let isLoaded = false;
   return new Promise<string>((resolve, reject) => {

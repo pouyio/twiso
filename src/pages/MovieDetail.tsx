@@ -77,12 +77,15 @@ export default function MovieDetail() {
     () =>
       // @ts-expect-error limitations on Dexie EntityTable
       db[DETAIL_MOVIES_TABLE].get(Number(id)),
-    [id]
+    [id],
   );
 
   const { refresh } = useImage(item?.ids.tmdb ?? 0, 'movie', 'big', true);
 
-  const liveStatus = useLiveQuery(() => db[USER_MOVIES_TABLE].get(Number(id)), [id]);
+  const liveStatus = useLiveQuery(
+    () => db[USER_MOVIES_TABLE].get(Number(id)),
+    [id],
+  );
 
   const bgClassName = useMemo(() => {
     if (liveStatus?.status === 'watched') {
@@ -151,7 +154,9 @@ export default function MovieDetail() {
         <div
           onClick={() => setZoom((z) => !z)}
           className={`${
-            zoom ? 'pb-10 z-10' : 'p-10 pt-[calc(theme(spacing.5)_+_env(safe-area-inset-top))]'
+            zoom
+              ? 'pb-10 z-10'
+              : 'p-10 pt-[calc(theme(spacing.5)_+_env(safe-area-inset-top))]'
           } sticky top-0 z-0 lg:hidden transition-[padding]`}
         >
           <Image

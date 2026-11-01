@@ -27,7 +27,7 @@ export const firstLoadThunk = createAsyncThunk(
       console.error(e);
       throw e;
     }
-  }
+  },
 );
 
 const rootSlice = createSlice({
@@ -46,7 +46,7 @@ const rootSlice = createSlice({
       isAnyOf(firstLoadThunk.fulfilled, firstLoadThunk.rejected),
       (state) => {
         state.loading = false;
-      }
+      },
     );
   },
 });

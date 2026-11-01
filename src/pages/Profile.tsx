@@ -39,7 +39,9 @@ export default function Profile() {
       supabase.auth.getUser().then(({ data }) => {
         getStatsApi().then(({ data }) => data && setStats(data));
         setDev(
-          ['7904e28b-a8bf-49af-9bc3-6efca4bda7ab'].includes(data.user?.id ?? '')
+          ['7904e28b-a8bf-49af-9bc3-6efca4bda7ab'].includes(
+            data.user?.id ?? '',
+          ),
         );
         setUser(data.user);
       });
@@ -94,7 +96,7 @@ export default function Profile() {
               className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
               onChange={(e) => {
                 dispatch(
-                  changeLanguage({ language: e.target.value as Language })
+                  changeLanguage({ language: e.target.value as Language }),
                 );
               }}
               value={language}
@@ -133,7 +135,9 @@ export default function Profile() {
               </h1>
               <p className="text-center">
                 {t('have_watched')}: {stats?.episodes} en{' '}
-                {convertMinutes(stats && stats.episodes * AVG_EPISODE_DURATION)}{' '}
+                {convertMinutes(
+                  stats && stats.episodes * AVG_EPISODE_DURATION,
+                )}{' '}
               </p>{' '}
               <p className="text-sm mt-12 flex flex-col items-end">
                 <span>Logged in as:</span>

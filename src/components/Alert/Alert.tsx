@@ -19,9 +19,7 @@ export const Alert: React.FC = () => {
         </span>
       </div>
       <div
-        className={`w-full h-1 bg-gray-800 progress ${
-          opened ? 'full' : 'empty'
-        }`}
+        className={`w-full h-1 bg-gray-800 progress ${opened ? 'full' : 'empty'}`}
       />
     </div>
   );

@@ -18,7 +18,7 @@ import { ShowStatusComplete } from '../../../models/Api';
 
 const _getRemoteWithTranslations = async (
   id: number,
-  language: Language
+  language: Language,
 ): Promise<Show & { translation?: Translation }> => {
   const results = await Promise.all([
     getShowApi(id, language),
@@ -56,7 +56,7 @@ export const removeWatchlist = createAsyncThunk<null, { show: Show }>(
       console.error(e);
       throw e;
     }
-  }
+  },
 );
 
 export const addEpisodeWatched = createAsyncThunk<

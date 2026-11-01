@@ -39,7 +39,7 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
     ids.tmdb,
     type,
     size,
-    inView
+    inView,
   );
 
   const liveItem = useLiveQuery(() => {

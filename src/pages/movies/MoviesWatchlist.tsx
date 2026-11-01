@@ -12,23 +12,25 @@ export const MoviesWatchlist: React.FC = () => {
   const [genres, setGenres] = useState<number[]>([]);
   const orderedUserMoviesIds = useLiveQuery(
     () =>
-      db[USER_MOVIES_TABLE].where('status')
+      db[USER_MOVIES_TABLE]
+        .where('status')
         .equals('watchlist')
         .reverse()
         .sortBy('created_at')
         .then((items) => items.map((i) => i.movie_tmdb)),
     [],
-    [] as string[]
+    [] as string[],
   );
 
   const fullMovies = useLiveQuery(
     () =>
-      db[DETAIL_MOVIES_TABLE].where('ids.tmdb')
+      db[DETAIL_MOVIES_TABLE]
+        .where('ids.tmdb')
         .anyOf(orderedUserMoviesIds)
         .and((movie) => genres.every((g) => movie.genres.includes(g)))
         .toArray(),
     [genres, orderedUserMoviesIds],
-    []
+    [],
   );
 
   const orderedMovies: Movie[] = orderedUserMoviesIds

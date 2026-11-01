@@ -38,9 +38,9 @@ const Person: React.FC = () => {
         data.cast
           .filter((r) => r.series_regular)
           .filter(
-            (r) => !(r.character === 'Himself' || r.character === 'Herself')
+            (r) => !(r.character === 'Himself' || r.character === 'Herself'),
           )
-          .map((r) => ({ show: r.show, title: r.character }))
+          .map((r) => ({ show: r.show, title: r.character })),
       );
     });
     getPersonItemsApi<PersonMovies>(personId, 'movie', language).then(
@@ -48,7 +48,7 @@ const Person: React.FC = () => {
         setMovieResults([
           ...data.cast
             .filter(
-              (r) => !(r.character === 'Himself' || r.character === 'Herself')
+              (r) => !(r.character === 'Himself' || r.character === 'Herself'),
             )
             .map((r) => ({
               movie: r.movie,
@@ -60,7 +60,7 @@ const Person: React.FC = () => {
             .map((r) => ({ movie: r.movie, title: r.job }))
             .filter((r) => !(r.title === 'Himself' || r.title === 'Herself')),
         ]);
-      }
+      },
     );
   }, [id, language]);
 

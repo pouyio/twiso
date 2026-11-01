@@ -12,7 +12,7 @@ describe('App', () => {
         <BrowserRouter>
           <App />
         </BrowserRouter>
-      </Provider>
+      </Provider>,
     );
   });
 
@@ -22,7 +22,7 @@ describe('App', () => {
         <BrowserRouter>
           <App />
         </BrowserRouter>
-      </Provider>
+      </Provider>,
     );
 
     expect(container.querySelector('#navbar')).toBeInTheDocument();

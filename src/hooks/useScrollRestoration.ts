@@ -6,14 +6,12 @@ type ScrollDirection = 'vertical' | 'horizontal';
 export const useScrollRestoration = (
   containerRef: React.RefObject<HTMLElement | null> | null,
   direction: ScrollDirection = 'vertical',
-  identifier?: string
+  identifier?: string,
 ) => {
   const location = useLocation();
   const scrollRestored = useRef(false);
   const maxRetries = useRef(0);
-  const key = `scroll_${location.pathname}${location.search}${
-    identifier ? `_${identifier}` : ''
-  }`;
+  const key = `scroll_${location.pathname}${location.search}${identifier ? `_${identifier}` : ''}`;
 
   useEffect(() => {
     scrollRestored.current = false;

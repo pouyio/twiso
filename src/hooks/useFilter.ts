@@ -17,22 +17,22 @@ export const useFilter = () => {
   const userMovies = useLiveQuery(
     () => db[USER_MOVIES_TABLE].toCollection().primaryKeys(),
     [],
-    []
+    [],
   );
   const movies = useLiveQuery(
     () => db[DETAIL_MOVIES_TABLE].where('ids.tmdb').anyOf(userMovies).toArray(),
     [userMovies],
-    []
+    [],
   );
   const userShows = useLiveQuery(
     () => db[USER_SHOWS_TABLE].toCollection().primaryKeys(),
     [],
-    []
+    [],
   );
   const shows = useLiveQuery(
     () => db[DETAIL_SHOWS_TABLE].where('ids.tmdb').anyOf(userShows).toArray(),
     [userShows],
-    []
+    [],
   );
 
   const filter = (text: string, genres: number[] = []) => {
@@ -48,7 +48,7 @@ export const useFilter = () => {
     if (language === 'es') {
       keys.push(
         { name: 'translation.title', weight: 0.7 },
-        { name: 'translation.overview', weight: 0.3 }
+        { name: 'translation.overview', weight: 0.3 },
       );
     }
 
@@ -67,7 +67,7 @@ export const useFilter = () => {
 
   const filterBy = <T extends SearchMovie | SearchShow>(
     text: string,
-    type: 'movie' | 'show'
+    type: 'movie' | 'show',
   ): T[] => {
     if (!text) {
       return [];

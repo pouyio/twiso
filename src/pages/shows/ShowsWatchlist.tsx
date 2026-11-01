@@ -13,23 +13,25 @@ const ShowsWatchlist: React.FC = () => {
 
   const orderedUserShowsIds = useLiveQuery(
     () =>
-      db[USER_SHOWS_TABLE].where('status')
+      db[USER_SHOWS_TABLE]
+        .where('status')
         .equals('watchlist')
         .reverse()
         .sortBy('added_to_watchlist_at')
         .then((items) => items.map((i) => i.show_tmdb)),
     [],
-    [] as string[]
+    [] as string[],
   );
 
   const fullShows = useLiveQuery(
     () =>
-      db[DETAIL_SHOWS_TABLE].where('ids.tmdb')
+      db[DETAIL_SHOWS_TABLE]
+        .where('ids.tmdb')
         .anyOf(orderedUserShowsIds)
         .and((show) => genres.every((g) => show.genres.includes(g)))
         .toArray(),
     [genres, orderedUserShowsIds],
-    []
+    [],
   );
 
   const orderedShows: Show[] = orderedUserShowsIds

@@ -19,7 +19,7 @@ const LongPress: React.FC = () => {
       suppressClick.current = true;
       dispatch(setGlobalSearch(true));
     },
-    { threshold: 400 }
+    { threshold: 400 },
   );
 
   return (

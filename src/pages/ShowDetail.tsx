@@ -78,7 +78,7 @@ export default function ShowDetail() {
     () =>
       // @ts-expect-error limitations on Dexie EntityTable
       db[DETAIL_SHOWS_TABLE].get(Number(id)),
-    [id]
+    [id],
   );
 
   const { refresh } = useImage(item?.ids.tmdb ?? 0, 'show', 'big', true);
@@ -96,17 +96,22 @@ export default function ShowDetail() {
         setShowRating(showData ?? undefined);
       })
       .catch(() => {});
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [item?.ids.tmdb]);
 
-  const liveStatus = useLiveQuery(() => db[USER_SHOWS_TABLE].get(Number(id)), [id]);
+  const liveStatus = useLiveQuery(
+    () => db[USER_SHOWS_TABLE].get(Number(id)),
+    [id],
+  );
 
   const nextEpisode = useMemo(() => {
     if (!item) return undefined;
     const watched = new Set(
       (liveStatus?.episodes ?? []).map(
-        (e) => `${e.season_number}_${e.episode_number}`
-      )
+        (e) => `${e.season_number}_${e.episode_number}`,
+      ),
     );
     for (const season of item.all_seasons) {
       if (season.number === 0) continue;
@@ -134,7 +139,7 @@ export default function ShowDetail() {
 
   const showRuntime = useMemo(
     () => getMedianRuntime(item?.all_seasons ?? []),
-    [item?.all_seasons]
+    [item?.all_seasons],
   );
 
   const onShare = () => {
@@ -151,7 +156,7 @@ export default function ShowDetail() {
         setHiddenShow({
           showId: liveStatus.show_tmdb,
           hidden: !liveStatus.hidden,
-        })
+        }),
       );
     }
   };
@@ -226,7 +231,9 @@ export default function ShowDetail() {
         <div
           onClick={() => setZoom((z) => !z)}
           className={`${
-            zoom ? 'pb-10 z-10' : 'p-10 pt-[calc(theme(spacing.5)_+_env(safe-area-inset-top))]'
+            zoom
+              ? 'pb-10 z-10'
+              : 'p-10 pt-[calc(theme(spacing.5)_+_env(safe-area-inset-top))]'
           }  sticky top-0 z-0 lg:hidden transition-[padding]`}
         >
           <Image
@@ -315,8 +322,9 @@ export default function ShowDetail() {
                       />
                     </button>
                   )}
-                  {session && liveStatus?.status === 'watched' &&
-                    (nextEpisode && (
+                  {session &&
+                    liveStatus?.status === 'watched' &&
+                    nextEpisode && (
                       <button
                         onClick={() =>
                           goToEpisode(nextEpisode.season, nextEpisode.episode)
@@ -329,7 +337,7 @@ export default function ShowDetail() {
                         {nextEpisode.season} - {t('episode_abbreviation')}
                         {nextEpisode.episode}
                       </button>
-                    ))}
+                    )}
                 </div>
                 <h2 className="flex justify-end">
                   {showRuntime ?? (item.runtime || '?')} mins
@@ -353,17 +361,14 @@ export default function ShowDetail() {
                       {showProgressPercentage
                         ? `${Math.round(
                             ((liveStatus?.episodes.length ?? 0) * 100) /
-                              totalEpisodes
+                              totalEpisodes,
                           )}%`
                         : `${liveStatus?.episodes.length}/${totalEpisodes}`}
                       <div className="bg-green-100 rounded-sm">
                         <div
                           className="bg-green-400 h-1 rounded-sm text-white text-xs"
                           style={{
-                            width: `${
-                              ((liveStatus?.episodes.length ?? 0) * 100) /
-                              totalEpisodes
-                            }%`,
+                            width: `${((liveStatus?.episodes.length ?? 0) * 100) / totalEpisodes}%`,
                           }}
                         ></div>
                       </div>

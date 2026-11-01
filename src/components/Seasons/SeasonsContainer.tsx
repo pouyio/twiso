@@ -46,7 +46,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       removeEpisodeWatched({
         showIds: show.ids,
         episodes: [episode],
-      })
+      }),
     );
   };
 
@@ -55,10 +55,10 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       return;
     }
     const episodesToWawtch = selectedSeasonEpisodes.filter(
-      (e) => e.first_aired && new Date(e.first_aired) < new Date()
+      (e) => e.first_aired && new Date(e.first_aired) < new Date(),
     );
     dispatch(
-      addEpisodeWatched({ showIds: show.ids, episodes: episodesToWawtch })
+      addEpisodeWatched({ showIds: show.ids, episodes: episodesToWawtch }),
     );
   };
 
@@ -67,13 +67,13 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
       return;
     }
     const episodesToWawtch = selectedSeasonEpisodes.filter(
-      (e) => e.first_aired && new Date(e.first_aired) < new Date()
+      (e) => e.first_aired && new Date(e.first_aired) < new Date(),
     );
     dispatch(
       removeEpisodeWatched({
         showIds: show.ids,
         episodes: episodesToWawtch,
-      })
+      }),
     );
   };
 
@@ -90,7 +90,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
   const episodesRatings = useMemo(() => {
     if (!seasonRatings || selectedSeason === undefined) return undefined;
     const sr = seasonRatings.find((r) =>
-      r.episodes.some((ep) => ep.season_number === selectedSeason)
+      r.episodes.some((ep) => ep.season_number === selectedSeason),
     );
     if (!sr) return undefined;
     const map: Record<number, number> = {};
@@ -123,7 +123,7 @@ const SeasonsContainer: React.FC<ISeasonsContainerProps> = ({
           <Episodes
             episodesProgress={
               status?.episodes?.filter(
-                (e) => e.season_number === selectedSeason
+                (e) => e.season_number === selectedSeason,
               ) ?? []
             }
             addEpisodeWatched={addEpisode}

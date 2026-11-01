@@ -21,8 +21,8 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [session, setSession] = useState<Session | null>(
     JSON.parse(
       localStorage.getItem(`sb-${process.env.VITE_SUPABASE_DB}-auth-token`) ||
-        'null'
-    )
+        'null',
+    ),
   );
 
   const logout = async () => {

@@ -10,7 +10,7 @@ const episode = (
   first_aired: string | null,
   number = 1,
   season = 1,
-  tmdb = 10
+  tmdb = 10,
 ): Show['all_seasons'][number]['episodes'][number] => ({
   ids: { slug: 's', tmdb },
   number,
@@ -28,7 +28,7 @@ const episode = (
 
 const show = (
   episodes: Show['all_seasons'][number]['episodes'][number][],
-  seasonNumber = 1
+  seasonNumber = 1,
 ): Show =>
   ({
     aired_episodes: 0,
@@ -57,14 +57,18 @@ const show = (
 describe('hasAvailableEpisodes', () => {
   it('returns false when every aired episode is watched', () => {
     expect(
-      hasAvailableEpisodes(show([episode('2026-01-01')]), new Set(['1:1']), today)
+      hasAvailableEpisodes(
+        show([episode('2026-01-01')]),
+        new Set(['1:1']),
+        today,
+      ),
     ).toBe(false);
   });
 
   it('returns true when an aired episode is not watched', () => {
-    expect(hasAvailableEpisodes(show([episode('2026-01-01')]), new Set(), today)).toBe(
-      true
-    );
+    expect(
+      hasAvailableEpisodes(show([episode('2026-01-01')]), new Set(), today),
+    ).toBe(true);
   });
 
   it('matches by season and episode number regardless of tmdb id', () => {
@@ -74,18 +78,24 @@ describe('hasAvailableEpisodes', () => {
   });
 
   it('returns false when only future episodes exist', () => {
-    expect(hasAvailableEpisodes(show([episode('2099-01-01')]), new Set(), today)).toBe(
-      false
-    );
+    expect(
+      hasAvailableEpisodes(show([episode('2099-01-01')]), new Set(), today),
+    ).toBe(false);
   });
 
   it('skips season 0 specials', () => {
     expect(
-      hasAvailableEpisodes(show([episode('2026-01-01', 1, 0)], 0), new Set(), today)
+      hasAvailableEpisodes(
+        show([episode('2026-01-01', 1, 0)], 0),
+        new Set(),
+        today,
+      ),
     ).toBe(false);
   });
 
   it('treats episodes without a first_aired date as available', () => {
-    expect(hasAvailableEpisodes(show([episode(null)]), new Set(), today)).toBe(true);
+    expect(hasAvailableEpisodes(show([episode(null)]), new Set(), today)).toBe(
+      true,
+    );
   });
 });

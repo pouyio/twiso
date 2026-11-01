@@ -22,7 +22,7 @@ export const addWatchedMovie = createAsyncThunk<AddedWatched, { movie: Movie }>(
       console.error(e);
       throw e;
     }
-  }
+  },
 );
 
 export const removeWatched = createAsyncThunk<null, { movie: Movie }>(
@@ -35,7 +35,7 @@ export const removeWatched = createAsyncThunk<null, { movie: Movie }>(
       console.error(e);
       throw e;
     }
-  }
+  },
 );
 
 export const addWatchlist = createAsyncThunk<AddedWatched, { movie: Movie }>(
@@ -48,7 +48,7 @@ export const addWatchlist = createAsyncThunk<AddedWatched, { movie: Movie }>(
       console.error(e);
       throw e;
     }
-  }
+  },
 );
 
 export const removeWatchlist = createAsyncThunk<null, { movie: Movie }>(
@@ -61,7 +61,7 @@ export const removeWatchlist = createAsyncThunk<null, { movie: Movie }>(
       console.error(e);
       throw e;
     }
-  }
+  },
 );
 
 export const fillDetail = createAsyncThunk<

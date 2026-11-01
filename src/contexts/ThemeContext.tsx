@@ -23,7 +23,7 @@ export const ThemeProvider: React.FC<
   React.PropsWithChildren<IThemeProviderProps>
 > = ({ children }) => {
   const [localTheme, setLocalTheme] = useState<ThemeType | undefined>(
-    localStorage.getItem('theme') as ThemeType
+    localStorage.getItem('theme') as ThemeType,
   );
 
   const setTheme = (newTheme?: ThemeType) => {

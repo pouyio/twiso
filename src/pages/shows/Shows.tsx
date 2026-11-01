@@ -7,10 +7,10 @@ import { useLiveQuery } from 'dexie-react-hooks';
 
 export default function Shows() {
   const watchlist = useLiveQuery(() =>
-    db[USER_SHOWS_TABLE].where('status').equals('watchlist').count()
+    db[USER_SHOWS_TABLE].where('status').equals('watchlist').count(),
   );
   const watched = useLiveQuery(() =>
-    db[USER_SHOWS_TABLE].where('status').equals('watched').count()
+    db[USER_SHOWS_TABLE].where('status').equals('watched').count(),
   );
 
   return (
