@@ -91,14 +91,6 @@ body,
   height: 100%;
 }
 
-@media (display-mode: standalone) {
-  html,
-  body {
-    height: 100vh;
-    overflow: hidden;
-  }
-}
-
 #root {
   height: 100%;
 }
