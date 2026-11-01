@@ -5,7 +5,7 @@ const Root: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <div
       id="root-grid"
-      className="grid h-full grid-rows-[minmax(0,1fr)_auto] lg:grid-rows-[auto_minmax(0,1fr)]"
+      className="grid h-full grid-rows-[1fr_auto] lg:grid-rows-[auto_1fr]"
     >
       {children}
     </div>
@@ -27,7 +27,7 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
   const ref = useRef<HTMLDivElement>(null);
   useScrollRestoration(ref);
   return (
-    <div id="content" ref={ref} className="min-h-0 overflow-auto max-w-dvw">
+    <div id="content" ref={ref} className="overflow-x-auto max-w-dvw">
       {children}
     </div>
   );
