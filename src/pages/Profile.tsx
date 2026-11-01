@@ -1,6 +1,5 @@
 import { Icon } from '../components/Icon';
 import { useContext, useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { changeLanguage } from '../state/slices/config';
 import { useAppDispatch, useAppSelector } from '../state/store';
 import packageInfo from '../../package.json';
@@ -29,16 +28,11 @@ export default function Profile() {
   const [stats, setStats] = useState<UserStats>();
   const [dev, setDev] = useState(false);
   const [user, setUser] = useState<User | null>();
-  const [mounted, setMounted] = useState(false);
   const { session, logout } = useContext(AuthContext);
   const isLogged = !!session;
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.config.language);
   const { t } = useTranslate();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (isLogged) {
@@ -67,68 +61,63 @@ export default function Profile() {
   return (
     <div>
       <title>Profile</title>
-      {mounted &&
-        createPortal(
-          <ul className="flex z-10 justify-between bg-white px-4 pt-[env(safe-area-inset-top)]">
-            <li className="py-1 relative">
-              <select
-                className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
-                onChange={(e) => {
-                  const value =
-                    e.target.value === '0'
-                      ? undefined
-                      : (e.target.value as ThemeType);
-                  setTheme!(value);
-                }}
-                value={theme || '0'}
-              >
-                <option value="theme-dark">🌚 {t('dark')}</option>
-                <option value="theme-light">🌞 {t('light')}</option>
-                <option value="0">🌓 {t('system')}</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg
-                  className="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                </svg>
-              </div >
-            </li >
-            <li className="py-1 relative">
-              <select
-                className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
-                onChange={(e) => {
-                  dispatch(
-                    changeLanguage({ language: e.target.value as Language })
-                  );
-                }}
-                value={language}
-              >
-                {AVAIABLE_LANGUAGES.map((code) => {
-                  return (
-                    <option key={code} value={code}>
-                      {t(code)}
-                    </option>
-                  );
-                })}
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg
-                  className="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                </svg>
-              </div >
-            </li >
-          </ul >
-        ,
-        document.getElementById('top-bar-slot')!
-      )}
       <div className="lg:max-w-lg m-auto">
+        <ul className="sticky top-0 flex z-10 justify-between bg-white px-4 pt-[env(safe-area-inset-top)]">
+          <li className="py-1 relative">
+            <select
+              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
+              onChange={(e) => {
+                const value =
+                  e.target.value === '0'
+                    ? undefined
+                    : (e.target.value as ThemeType);
+                setTheme!(value);
+              }}
+              value={theme || '0'}
+            >
+              <option value="theme-dark">🌚 {t('dark')}</option>
+              <option value="theme-light">🌞 {t('light')}</option>
+              <option value="0">🌓 {t('system')}</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg
+                className="fill-current h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg>
+            </div>
+          </li>
+          <li className="py-1 relative">
+            <select
+              className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
+              onChange={(e) => {
+                dispatch(
+                  changeLanguage({ language: e.target.value as Language })
+                );
+              }}
+              value={language}
+            >
+              {AVAIABLE_LANGUAGES.map((code) => {
+                return (
+                  <option key={code} value={code}>
+                    {t(code)}
+                  </option>
+                );
+              })}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg
+                className="fill-current h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg>
+            </div>
+          </li>
+        </ul>
         <div className="p-4">
           {isLogged ? (
             <>
@@ -165,7 +154,7 @@ export default function Profile() {
             ) : (
               <LoginButton small />
             )}
-          </div >
+          </div>
 
           {dev ? (
             <>
@@ -223,8 +212,8 @@ export default function Profile() {
               </a>
             </>
           ) : null}
-        </div >
-      </div >
-    </div >
+        </div>
+      </div>
+    </div>
   );
 }
