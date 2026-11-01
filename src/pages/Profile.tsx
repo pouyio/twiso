@@ -62,7 +62,7 @@ export default function Profile() {
     <div>
       <title>Profile</title>
       <div className="lg:max-w-lg m-auto">
-        <ul className="sticky top-0 z-10 flex justify-between bg-white px-4 pt-[env(safe-area-inset-top)]">
+        <ul className="sticky top-0 flex justify-between bg-white px-4 pt-[env(safe-area-inset-top)]">
           <li className="py-1 relative">
             <select
               className="cursor-pointer appearance-none bg-white border border-gray-400 px-4 py-1 pr-8 rounded-full leading-tight outline-hidden"
