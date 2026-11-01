@@ -5,7 +5,7 @@ const Root: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <div
       id="root-grid"
-      className="grid h-full grid-rows-[1fr_auto] lg:grid-rows-[auto_1fr]"
+      className="grid min-h-dvh grid-rows-[1fr_auto] lg:grid-rows-[auto_1fr]"
     >
       {children}
     </div>
