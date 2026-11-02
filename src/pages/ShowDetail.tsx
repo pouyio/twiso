@@ -227,7 +227,7 @@ export default function ShowDetail() {
           onClick={() => setZoom((z) => !z)}
           className={`${
             zoom ? 'pb-10 z-10' : 'p-10'
-          } sticky top-0 z-0 lg:hidden transition-[padding]`}
+          } ${bgClassName} sticky top-0 z-0 lg:hidden transition-[padding]`}
         >
           <Image ids={item.ids} text={title} type="show" size="big" />
           {item.trailer && (
