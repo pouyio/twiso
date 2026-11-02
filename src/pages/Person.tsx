@@ -45,17 +45,21 @@ const Person: React.FC = () => {
     });
     getPersonItemsApi<PersonMovies>(personId, 'movie', language).then(
       (data) => {
-        setMovieResults(data.cast
+        setMovieResults(
+          data.cast
             .filter(
               (r) => !(r.character === 'Himself' || r.character === 'Herself'),
             )
             .map((r) => ({
               movie: r.movie,
               title: r.character,
-            })));
-        setMovieDirectorResults(((data.crew || {}).directing || [])
+            })),
+        );
+        setMovieDirectorResults(
+          ((data.crew || {}).directing || [])
             .map((r) => ({ movie: r.movie, title: r.job }))
-            .filter((r) => !(r.title === 'Himself' || r.title === 'Herself')));
+            .filter((r) => !(r.title === 'Himself' || r.title === 'Herself')),
+        );
       },
     );
   }, [id, language]);
