@@ -59,7 +59,7 @@ export default function Profile() {
   };
 
   return (
-    <div>
+    <>
       <title>Profile</title>
       <div className="lg:max-w-lg m-auto">
         <ul className="sticky top-0 flex z-10 justify-between bg-white px-4 pt-[env(safe-area-inset-top)]">
@@ -214,6 +214,6 @@ export default function Profile() {
           ) : null}
         </div>
       </div>
-    </div>
+    </>
   );
 }

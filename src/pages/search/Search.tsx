@@ -89,8 +89,8 @@ export default function Search() {
   return (
     <div className="lg:m-auto">
       <title>Search</title>
-      <div className="sticky top-0 z-10 bg-white px-4 pt-[env(safe-area-inset-top)]">
-        <div className="py-2">        
+      <div className="sticky top-0 z-10 bg-white px-4">
+        <div className="py-2">
           <div className="w-full bg-gray-300 rounded-sm flex items-center m-auto lg:max-w-lg">
             <input
               className="bg-gray-300 rounded-sm text-black px-2 py-1 outline-hidden grow"
