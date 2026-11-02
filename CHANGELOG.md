@@ -1,3 +1,10 @@
+## [2.21.18](https://github.com/pouyio/twiso/compare/v2.21.17...v2.21.18) (2026-11-02)
+
+
+### :art:
+
+* max width for tabs ([b40f8da](https://github.com/pouyio/twiso/commit/b40f8da4f8f096d4fd31a47c0891a82a18a82d14))
+
 ## [2.21.17](https://github.com/pouyio/twiso/compare/v2.21.16...v2.21.17) (2026-11-02)
 
 
