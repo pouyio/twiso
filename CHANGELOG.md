@@ -1,3 +1,10 @@
+## [2.21.19](https://github.com/pouyio/twiso/compare/v2.21.18...v2.21.19) (2026-11-02)
+
+
+### :art:
+
+* expand img bg to safe area in details ([550a46e](https://github.com/pouyio/twiso/commit/550a46ef0ee77b66b50677a44002ecd1e2f273de))
+
 ## [2.21.18](https://github.com/pouyio/twiso/compare/v2.21.17...v2.21.18) (2026-11-02)
 
 
