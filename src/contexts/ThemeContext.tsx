@@ -42,9 +42,7 @@ export const ThemeProvider: React.FC<
 
   return (
     <ThemeContext value={{ theme: localTheme, setTheme }}>
-      <div className="theme-wrapper text-black bg-white">
-        {children}
-      </div>
+      <div className="theme-wrapper text-black bg-white">{children}</div>
     </ThemeContext>
   );
 };

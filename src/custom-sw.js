@@ -1,5 +1,5 @@
 self.addEventListener('fetch', (event) => {
-  if (/\.jpg$/.test(event.request.url)) {
+  if (event.request.url.endsWith('.jpg')) {
     event.respondWith(
       caches.open('images-cache').then((cache) => {
         return cache.match(event.request).then((response) => {

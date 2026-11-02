@@ -77,7 +77,7 @@ const moviesSlice = createSlice({
 });
 
 // actions
-export const {} = moviesSlice.actions;
+export const actions = moviesSlice.actions;
 
 // reducer
 export const reducer = moviesSlice.reducer;

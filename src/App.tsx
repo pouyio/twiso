@@ -25,7 +25,7 @@ const Search = lazy(() => import('./pages/search/Search'));
 const SessionRedirect: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { session } = useContext(AuthContext);
 
-  return !!session ? <Navigate to="/movies" /> : <Navigate to="/search" />;
+  return session ? <Navigate to="/movies" /> : <Navigate to="/search" />;
 };
 
 const App: React.FC<React.PropsWithChildren<unknown>> = () => {

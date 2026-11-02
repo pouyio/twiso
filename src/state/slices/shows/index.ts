@@ -111,7 +111,7 @@ const showsSlice = createSlice({
 });
 
 // actions
-export const {} = showsSlice.actions;
+export const actions = showsSlice.actions;
 
 // reducer
 export const reducer = showsSlice.reducer;
