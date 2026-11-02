@@ -71,7 +71,7 @@ const Person: React.FC = () => {
         <div
           onClick={() => setZoom((z) => !z)}
           className={`${
-            zoom ? 'pb-10 z-10' : 'p-10'
+            zoom ? 'pb-10 z-10' : 'p-10 pt-5'
           } bg-gray-300 sticky top-0 z-0 lg:hidden transition-[padding]`}
         >
           {localState && (
