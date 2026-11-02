@@ -72,7 +72,7 @@ const Person: React.FC = () => {
           onClick={() => setZoom((z) => !z)}
           className={`${
             zoom ? 'pb-10 z-10' : 'p-10'
-          }  sticky top-0 z-0 lg:hidden transition-[padding]`}
+          } sticky top-0 z-0 lg:hidden transition-[padding]`}
         >
           {localState && (
             <Image
