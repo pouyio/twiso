@@ -24,7 +24,6 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
   ids,
   text,
   type,
-  className = '',
   style = {},
   size = 'small',
   forceState,
@@ -72,10 +71,9 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
       style={style}
       {...props}
       className={
-        className +
-        ` ${
-          size === 'big' ? 'min-h-116' : 'min-h-53'
-        } ${dimmed ? 'opacity-50' : ''} h-full bg-transparent flex justify-center items-center rounded-lg overflow-hidden transition-colors duration-300 outline-2 ` +
+        ` ${size === 'big' ? 'min-h-116' : 'min-h-53'} ${
+          dimmed ? 'opacity-50' : ''
+        } h-full bg-transparent flex justify-center items-center rounded-lg overflow-hidden transition-colors duration-300 outline-2 ` +
         borderClass
       }
     >
