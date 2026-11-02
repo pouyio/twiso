@@ -1,3 +1,10 @@
+## [2.21.20](https://github.com/pouyio/twiso/compare/v2.21.19...v2.21.20) (2026-11-02)
+
+
+### :art:
+
+* adjust padding in details ([49cfd70](https://github.com/pouyio/twiso/commit/49cfd705d632afa4c515357e2b5456bd073f28f4))
+
 ## [2.21.19](https://github.com/pouyio/twiso/compare/v2.21.18...v2.21.19) (2026-11-02)
 
 
