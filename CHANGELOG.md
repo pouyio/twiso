@@ -1,3 +1,47 @@
+## [2.21.20](https://github.com/pouyio/twiso/compare/v2.21.19...v2.21.20) (2026-11-02)
+
+
+### :art:
+
+* adjust padding in details ([49cfd70](https://github.com/pouyio/twiso/commit/49cfd705d632afa4c515357e2b5456bd073f28f4))
+
+## [2.21.19](https://github.com/pouyio/twiso/compare/v2.21.18...v2.21.19) (2026-11-02)
+
+
+### :art:
+
+* expand img bg to safe area in details ([550a46e](https://github.com/pouyio/twiso/commit/550a46ef0ee77b66b50677a44002ecd1e2f273de))
+
+## [2.21.18](https://github.com/pouyio/twiso/compare/v2.21.17...v2.21.18) (2026-11-02)
+
+
+### :art:
+
+* max width for tabs ([b40f8da](https://github.com/pouyio/twiso/commit/b40f8da4f8f096d4fd31a47c0891a82a18a82d14))
+
+## [2.21.17](https://github.com/pouyio/twiso/compare/v2.21.16...v2.21.17) (2026-11-02)
+
+
+### :art:
+
+* added side safe areas ([9c93818](https://github.com/pouyio/twiso/commit/9c93818f5cc323950c65655a959c419d03c29843))
+* expand safe area padding in detail pages ([f1538b1](https://github.com/pouyio/twiso/commit/f1538b1d1a7ceb2dd541a889f49b2c46153b8681))
+* removed unused margins & fix color in details ([f73b36f](https://github.com/pouyio/twiso/commit/f73b36fd71283fd2b48145bce2dfe2d7ae78d7e2))
+* test no z-10 ([668c35c](https://github.com/pouyio/twiso/commit/668c35c9e423ef18e0904075604df52ca13f1068))
+
+### :bug:
+
+* fix blurry top ([487a2e8](https://github.com/pouyio/twiso/commit/487a2e84d6ce7bb27f98ee39df13d68cdca1c6ab))
+* fix double scroll ([96100c7](https://github.com/pouyio/twiso/commit/96100c7891c761f64883ef84019f22bc1c7aa832))
+* fix double scroll ([a1c22da](https://github.com/pouyio/twiso/commit/a1c22da16373311adc6372c86b83ed8e18ac672a))
+* fix sticky z-index ([c762456](https://github.com/pouyio/twiso/commit/c762456a1274ab76a6dce5a083105b0d26f72879))
+* move sticky elements higher in html. Same level as navbar ([8e636b6](https://github.com/pouyio/twiso/commit/8e636b6fbccc95a7a631da076edca68f3ad91f66))
+* revert fix double scroll ([282fb14](https://github.com/pouyio/twiso/commit/282fb1480f844d5944f3c7d9d3fbde4107aa02c7))
+* revert move sticky elements higher in html. Same level as navbar ([307abf6](https://github.com/pouyio/twiso/commit/307abf65c4bdd2d02f3ee215674ab584831b289b))
+* revert test and remove styles in standalone ([40d1516](https://github.com/pouyio/twiso/commit/40d1516fdae4c89695e5cf16c19955ebc7fe48c9))
+* test ([79b09fd](https://github.com/pouyio/twiso/commit/79b09fd7dc53608377a8c7e6ecdb42d7e6381169))
+* test ([c95ae90](https://github.com/pouyio/twiso/commit/c95ae90807ce1d7f5af2281e123244cae7298209))
+
 ## [2.21.16](https://github.com/pouyio/twiso/compare/v2.21.15...v2.21.16) (2026-11-01)
 
 

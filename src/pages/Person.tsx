@@ -71,15 +71,12 @@ const Person: React.FC = () => {
         <div
           onClick={() => setZoom((z) => !z)}
           className={`${
-            zoom
-              ? 'pb-10 z-10'
-              : 'p-10 pt-[calc(theme(spacing.5)_+_env(safe-area-inset-top))]'
-          }  sticky top-0 z-0 lg:hidden transition-[padding]`}
+            zoom ? 'pb-10 z-10' : 'p-10 pt-5'
+          } bg-gray-300 sticky top-0 z-0 lg:hidden transition-[padding]`}
         >
           {localState && (
             <Image
               ids={localState.ids}
-              className="pt-[env(safe-area-inset-top)]"
               text={localState.name}
               type="person"
               size="big"

@@ -13,12 +13,6 @@ interface IThemeProviderProps {
   children: ReactNode;
 }
 
-const styles = () => {
-  return {
-    style: (window.navigator as any).standalone ? { minHeight: '100vh' } : {},
-  };
-};
-
 export const ThemeProvider: React.FC<
   React.PropsWithChildren<IThemeProviderProps>
 > = ({ children }) => {
@@ -48,7 +42,7 @@ export const ThemeProvider: React.FC<
 
   return (
     <ThemeContext value={{ theme: localTheme, setTheme }}>
-      <div className="theme-wrapper text-black bg-white" {...styles()}>
+      <div className="theme-wrapper text-black bg-white">
         {children}
       </div>
     </ThemeContext>
