@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setGlobalSearch } from '../state/slices/root';
 import { getType } from '../utils/getType';
 import Emoji from './Emoji';
-import ImageLink from './ImageLink';
-import PosterList from './PosterList';
+import ImageList from './ImageList';
 import { useFilter } from '../hooks/useFilter';
 import { useIsWatch } from '../hooks/useIsWatch';
 import { Movie } from '../models/Movie';
@@ -54,7 +53,7 @@ export const GlobalFilter = () => {
         </button>
       </div>
       {results && (
-        <PosterList
+        <ImageList.Container
           layout="custom"
           className="flex flex-wrap items-stretch justify-center bg-blue-100 overflow-y-auto gap-4 p-2"
         >
@@ -66,7 +65,7 @@ export const GlobalFilter = () => {
                 : item.title;
 
             return (
-              <ImageLink
+              <ImageList.Link
                 key={item.ids.tmdb}
                 tabIndex={i + 1}
                 ids={item.ids}
@@ -76,10 +75,10 @@ export const GlobalFilter = () => {
                 onClick={() => dispatch(setGlobalSearch(false))}
               >
                 {title && <p className="text-sm text-center py-1">{title}</p>}
-              </ImageLink>
+              </ImageList.Link>
             );
           })}
-        </PosterList>
+        </ImageList.Container>
       )}
     </section>
   );

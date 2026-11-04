@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import ImageLink from '../../components/ImageLink';
-import PosterList from '../../components/PosterList';
+import ImageList from '../../components/ImageList';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from '../../components/EmptyState';
@@ -51,9 +50,9 @@ export const MoviesWatched: React.FC = () => {
       {genres.length && !orderedMovies.length ? (
         <NoResults />
       ) : (
-        <PosterList layout="grid">
+        <ImageList.Container layout="grid">
           {getItemsByPage().map((m, i) => (
-            <ImageLink
+            <ImageList.Link
               key={`${m.ids.tmdb}_${i}`}
               ids={m.ids}
               text={m.title}
@@ -61,7 +60,7 @@ export const MoviesWatched: React.FC = () => {
               forceState="watched"
             />
           ))}
-        </PosterList>
+        </ImageList.Container>
       )}
     </PaginationContainer>
   );

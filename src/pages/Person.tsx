@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from '../components/Image';
-import ImageLink from '../components/ImageLink';
-import PosterList from '../components/PosterList';
+import ImageList from '../components/ImageList';
 import Collapsable from '../components/Collapsable/Collapsable';
 import { getPersonItemsApi, getPersonApi } from '../utils/api';
 import Emoji from '../components/Emoji';
@@ -139,7 +138,7 @@ const Person: React.FC = () => {
           </div>
 
           <h1 className="font-medium font-family-text">{t('movies')} </h1>
-          <PosterList
+          <ImageList.Container
             className="p-1 lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
             loadingCount={movieResults ? 0 : 10}
@@ -147,7 +146,7 @@ const Person: React.FC = () => {
             {movieResults ? (
               movieResults.length ? (
                 movieResults.map((r, i) => (
-                  <ImageLink
+                  <ImageList.Link
                     key={`${r.movie.ids.tmdb}-movie-${i}`}
                     ids={r.movie.ids}
                     text={r.movie.title}
@@ -159,16 +158,16 @@ const Person: React.FC = () => {
                         {r.title}
                       </p>
                     )}
-                  </ImageLink>
+                  </ImageList.Link>
                 ))
               ) : (
                 <Empty />
               )
             ) : null}
-          </PosterList>
+          </ImageList.Container>
 
           <h1 className="font-medium font-family-text">{t('direction')} </h1>
-          <PosterList
+          <ImageList.Container
             className="p-1 lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
             loadingCount={movieDirectorResults ? 0 : 10}
@@ -176,7 +175,7 @@ const Person: React.FC = () => {
             {movieDirectorResults ? (
               movieDirectorResults.length ? (
                 movieDirectorResults.map((r, i) => (
-                  <ImageLink
+                  <ImageList.Link
                     key={`${r.movie.ids.tmdb}-movie-${i}`}
                     ids={r.movie.ids}
                     text={r.movie.title}
@@ -188,16 +187,16 @@ const Person: React.FC = () => {
                         {r.title}
                       </p>
                     )}
-                  </ImageLink>
+                  </ImageList.Link>
                 ))
               ) : (
                 <Empty />
               )
             ) : null}
-          </PosterList>
+          </ImageList.Container>
 
           <h1 className="font-medium font-family-text">{t('shows')} </h1>
-          <PosterList
+          <ImageList.Container
             className="p-1 lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
             loadingCount={showResults ? 0 : 10}
@@ -205,7 +204,7 @@ const Person: React.FC = () => {
             {showResults ? (
               showResults.length ? (
                 showResults.map((r, i) => (
-                  <ImageLink
+                  <ImageList.Link
                     key={`${r.show.ids.tmdb}-show-${i}`}
                     ids={r.show.ids}
                     text={r.show.title}
@@ -217,13 +216,13 @@ const Person: React.FC = () => {
                         {r.title}
                       </p>
                     )}
-                  </ImageLink>
+                  </ImageList.Link>
                 ))
               ) : (
                 <Empty />
               )
             ) : null}
-          </PosterList>
+          </ImageList.Container>
         </article>
       </div>
     </div>

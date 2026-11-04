@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import ImageLink from './ImageLink';
-import PosterList from './PosterList';
+import ImageList from './ImageList';
 import { getPopularApi } from '../utils/api';
 import Emoji from './Emoji';
 import { Popular as IPopular } from '../models/Popular';
@@ -38,20 +37,20 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
         <Emoji emoji={loading ? '⏳' : '⭐'} rotating={loading} />
         <span className="mx-2">{t(`popular_${type}`)}</span>
       </h1>
-      <PosterList
+      <ImageList.Container
         layout="columns"
         listRef={resultsScroll}
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {results.map((r) => (
-          <ImageLink
+          <ImageList.Link
             key={r[type]!.ids.tmdb}
             ids={(r.show || r.movie)!.ids}
             text={(r.show || r.movie)!.title}
             type={type}
           />
         ))}
-      </PosterList>
+      </ImageList.Container>
     </>
   );
 };

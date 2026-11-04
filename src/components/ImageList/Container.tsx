@@ -2,7 +2,7 @@ import React from 'react';
 
 type PosterListLayout = 'horizontal' | 'columns' | 'grid' | 'custom';
 
-interface IPosterListProps {
+interface IImageListContainerProps {
   children?: React.ReactNode;
   className?: string;
   layout?: PosterListLayout;
@@ -20,7 +20,7 @@ const layoutClasses: Record<PosterListLayout, string> = {
   custom: '',
 };
 
-const PosterList: React.FC<IPosterListProps> = ({
+const Container: React.FC<IImageListContainerProps> = ({
   children,
   className = '',
   layout = 'horizontal',
@@ -43,4 +43,4 @@ const PosterList: React.FC<IPosterListProps> = ({
   </ul>
 );
 
-export default PosterList;
+export default Container;

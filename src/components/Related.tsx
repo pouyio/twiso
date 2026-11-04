@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getRelatedApi } from '../utils/api';
-import ImageLink from './ImageLink';
-import PosterList from './PosterList';
+import ImageList from './ImageList';
 import { Empty } from './Empty';
 import { Show } from '../models/Show';
 import { Movie } from '../models/Movie';
@@ -26,7 +25,7 @@ const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
   }, [itemIds, type]);
 
   return (
-    <PosterList
+    <ImageList.Container
       listRef={resultsRef}
       className="justify-between"
       style={{ WebkitOverflowScrolling: 'touch' }}
@@ -35,7 +34,7 @@ const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
       {results ? (
         results.length ? (
           results.map((r) => (
-            <ImageLink
+            <ImageList.Link
               key={r.ids.tmdb}
               text={r.title}
               ids={r.ids}
@@ -46,7 +45,7 @@ const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
           <Empty />
         )
       ) : null}
-    </PosterList>
+    </ImageList.Container>
   );
 };
 

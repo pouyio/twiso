@@ -1,8 +1,7 @@
 import { SearchFilters } from '../../pages/search/SearchFilters';
 import React, { useEffect, useRef, useState } from 'react';
 import Emoji from '../../components/Emoji';
-import ImageLink from '../../components/ImageLink';
-import PosterList from '../../components/PosterList';
+import ImageList from '../../components/ImageList';
 import Popular from '../../components/Popular';
 import { searchApi } from '../../utils/api';
 import { useFilter } from '../../hooks/useFilter';
@@ -132,7 +131,7 @@ export default function Search() {
                   <h1 className="text-2xl justify-center text-gray-700 m-4 flex items-baseline">
                     {t('movies')}
                   </h1>
-                  <PosterList
+                  <ImageList.Container
                     layout="columns"
                     listRef={moviesScroll}
                     style={{
@@ -140,14 +139,14 @@ export default function Search() {
                     }}
                   >
                     {movieResults.map((r) => (
-                      <ImageLink
+                      <ImageList.Link
                         key={r.movie.ids.tmdb}
                         ids={r.movie.ids}
                         text={r.movie.title}
                         type="movie"
                       />
                     ))}
-                  </PosterList>
+                  </ImageList.Container>
                 </>
               ) : (
                 <h1 className="text-3xl mt-8 text-gray-700">
@@ -161,7 +160,7 @@ export default function Search() {
                   <h1 className="text-2xl justify-center text-gray-700 m-4 flex items-baseline">
                     {t('shows')}
                   </h1>
-                  <PosterList
+                  <ImageList.Container
                     layout="columns"
                     listRef={showsScroll}
                     style={{
@@ -169,14 +168,14 @@ export default function Search() {
                     }}
                   >
                     {showResults.map((r) => (
-                      <ImageLink
+                      <ImageList.Link
                         key={r.show.ids.tmdb}
                         ids={r.show.ids}
                         text={r.show.title}
                         type="show"
                       />
                     ))}
-                  </PosterList>
+                  </ImageList.Container>
                 </>
               ) : (
                 <h1 className="text-3xl mt-8 text-gray-700">{t('no_shows')}</h1>
@@ -188,7 +187,7 @@ export default function Search() {
                   <h1 className="text-2xl justify-center text-gray-700 m-4 flex items-baseline">
                     {t('people')}
                   </h1>
-                  <PosterList
+                  <ImageList.Container
                     layout="columns"
                     listRef={peopleScroll}
                     style={{
@@ -196,14 +195,14 @@ export default function Search() {
                     }}
                   >
                     {peopleResults.map((r) => (
-                      <ImageLink
+                      <ImageList.Link
                         key={r.person.ids.tmdb}
                         ids={r.person.ids}
                         text={r.person.name}
                         type="person"
                       />
                     ))}
-                  </PosterList>
+                  </ImageList.Container>
                 </>
               ) : (
                 <h1 className="text-3xl mt-8 text-gray-700">

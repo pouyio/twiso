@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import ImageLink from '../../components/ImageLink';
-import PosterList from '../../components/PosterList';
+import ImageList from '../../components/ImageList';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from '../../components/EmptyState';
@@ -48,9 +47,9 @@ const ShowsWatchlist: React.FC = () => {
       {genres.length && !orderedShows.length ? (
         <NoResults />
       ) : (
-        <PosterList layout="grid">
+        <ImageList.Container layout="grid">
           {getItemsByPage().map((s) => (
-            <ImageLink
+            <ImageList.Link
               key={s.ids.tmdb}
               ids={s.ids}
               text={s.title}
@@ -58,7 +57,7 @@ const ShowsWatchlist: React.FC = () => {
               forceState="watchlist"
             />
           ))}
-        </PosterList>
+        </ImageList.Container>
       )}
     </PaginationContainer>
   );
