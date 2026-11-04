@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setGlobalSearch } from '../state/slices/root';
 import { getType } from '../utils/getType';
 import Emoji from './Emoji';
-import PosterCard from './PosterCard';
+import ImageLink from './ImageLink';
 import PosterList from './PosterList';
 import { useFilter } from '../hooks/useFilter';
 import { useIsWatch } from '../hooks/useIsWatch';
@@ -66,7 +66,7 @@ export const GlobalFilter = () => {
                 : item.title;
 
             return (
-              <PosterCard
+              <ImageLink
                 key={item.ids.tmdb}
                 tabIndex={i + 1}
                 ids={item.ids}
@@ -74,9 +74,9 @@ export const GlobalFilter = () => {
                 type={type}
                 className={`transition-colors duration-300 ${getBgClass(item, type)}`}
                 onClick={() => dispatch(setGlobalSearch(false))}
-                caption={title}
-                captionClassName="text-sm text-center py-1"
-              />
+              >
+                {title && <p className="text-sm text-center py-1">{title}</p>}
+              </ImageLink>
             );
           })}
         </PosterList>

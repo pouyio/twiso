@@ -1,4 +1,4 @@
-import PosterCard from '../../components/PosterCard';
+import ImageLink from '../../components/ImageLink';
 import PosterList from '../../components/PosterList';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import React, { useState } from 'react';
@@ -49,7 +49,7 @@ export const MoviesWatchlist: React.FC = () => {
       ) : (
         <PosterList layout="grid">
           {getItemsByPage().map((m, i) => (
-            <PosterCard
+            <ImageLink
               key={`${m.ids.tmdb}_${i}`}
               text={m.title}
               ids={m.ids}

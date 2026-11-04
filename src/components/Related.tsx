@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getRelatedApi } from '../utils/api';
-import PosterCard from './PosterCard';
+import ImageLink from './ImageLink';
 import PosterList from './PosterList';
 import { Empty } from './Empty';
 import { Show } from '../models/Show';
@@ -35,7 +35,7 @@ const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
       {results ? (
         results.length ? (
           results.map((r) => (
-            <PosterCard
+            <ImageLink
               key={r.ids.tmdb}
               text={r.title}
               ids={r.ids}

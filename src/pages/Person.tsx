@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from '../components/Image';
-import PosterCard from '../components/PosterCard';
+import ImageLink from '../components/ImageLink';
 import PosterList from '../components/PosterList';
 import Collapsable from '../components/Collapsable/Collapsable';
 import { getPersonItemsApi, getPersonApi } from '../utils/api';
@@ -148,15 +148,19 @@ const Person: React.FC = () => {
             {movieResults ? (
               movieResults.length ? (
                 movieResults.map((r, i) => (
-                  <PosterCard
+                  <ImageLink
                     key={`${r.movie.ids.tmdb}-movie-${i}`}
                     ids={r.movie.ids}
                     text={r.movie.title}
                     type="movie"
-                    caption={r.title}
-                    captionClassName="text-sm text-gray-700 text-center py-1"
                     className="bg-gray-300"
-                  />
+                  >
+                    {r.title && (
+                      <p className="text-sm text-gray-700 text-center py-1">
+                        {r.title}
+                      </p>
+                    )}
+                  </ImageLink>
                 ))
               ) : (
                 <Empty />
@@ -173,15 +177,19 @@ const Person: React.FC = () => {
             {movieDirectorResults ? (
               movieDirectorResults.length ? (
                 movieDirectorResults.map((r, i) => (
-                  <PosterCard
+                  <ImageLink
                     key={`${r.movie.ids.tmdb}-movie-${i}`}
                     ids={r.movie.ids}
                     text={r.movie.title}
                     type="movie"
-                    caption={r.title}
-                    captionClassName="text-sm text-gray-700 text-center py-1"
                     className="bg-gray-300"
-                  />
+                  >
+                    {r.title && (
+                      <p className="text-sm text-gray-700 text-center py-1">
+                        {r.title}
+                      </p>
+                    )}
+                  </ImageLink>
                 ))
               ) : (
                 <Empty />
@@ -198,15 +206,19 @@ const Person: React.FC = () => {
             {showResults ? (
               showResults.length ? (
                 showResults.map((r, i) => (
-                  <PosterCard
+                  <ImageLink
                     key={`${r.show.ids.tmdb}-show-${i}`}
                     ids={r.show.ids}
                     text={r.show.title}
                     type="show"
-                    caption={r.title}
-                    captionClassName="text-sm text-gray-700 text-center py-1"
                     className="bg-gray-300"
-                  />
+                  >
+                    {r.title && (
+                      <p className="text-sm text-gray-700 text-center py-1">
+                        {r.title}
+                      </p>
+                    )}
+                  </ImageLink>
                 ))
               ) : (
                 <Empty />

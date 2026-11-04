@@ -1,7 +1,7 @@
 import { SearchFilters } from '../../pages/search/SearchFilters';
 import React, { useEffect, useRef, useState } from 'react';
 import Emoji from '../../components/Emoji';
-import PosterCard from '../../components/PosterCard';
+import ImageLink from '../../components/ImageLink';
 import PosterList from '../../components/PosterList';
 import Popular from '../../components/Popular';
 import { searchApi } from '../../utils/api';
@@ -140,7 +140,7 @@ export default function Search() {
                     }}
                   >
                     {movieResults.map((r) => (
-                      <PosterCard
+                      <ImageLink
                         key={r.movie.ids.tmdb}
                         ids={r.movie.ids}
                         text={r.movie.title}
@@ -169,7 +169,7 @@ export default function Search() {
                     }}
                   >
                     {showResults.map((r) => (
-                      <PosterCard
+                      <ImageLink
                         key={r.show.ids.tmdb}
                         ids={r.show.ids}
                         text={r.show.title}
@@ -196,7 +196,7 @@ export default function Search() {
                     }}
                   >
                     {peopleResults.map((r) => (
-                      <PosterCard
+                      <ImageLink
                         key={r.person.ids.tmdb}
                         ids={r.person.ids}
                         text={r.person.name}

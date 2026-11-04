@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import PosterCard from './PosterCard';
+import ImageLink from './ImageLink';
 import PosterList from './PosterList';
 import { getPopularApi } from '../utils/api';
 import Emoji from './Emoji';
@@ -44,7 +44,7 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {results.map((r) => (
-          <PosterCard
+          <ImageLink
             key={r[type]!.ids.tmdb}
             ids={(r.show || r.movie)!.ids}
             text={(r.show || r.movie)!.title}

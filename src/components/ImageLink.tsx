@@ -6,43 +6,48 @@ import { Ids } from '../models/Ids';
 interface IImageLinkProps {
   ids: Ids;
   text: string;
-  style?: React.CSSProperties;
   type: 'movie' | 'show' | 'person';
-  onClick?: React.MouseEventHandler<HTMLAnchorElement> | undefined;
+  className?: string;
+  tabIndex?: number;
+  children?: React.ReactNode;
   forceState?: 'watched' | 'watchlist';
   hidden?: boolean;
   dimmed?: boolean;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
-const ImageLink: React.FC<React.PropsWithChildren<IImageLinkProps>> = ({
+const ImageLink: React.FC<IImageLinkProps> = ({
   ids,
   text,
-  style,
   type,
+  className = '',
+  tabIndex,
+  children,
   forceState,
   hidden,
   dimmed,
-  children = '',
-  onClick = () => {},
+  onClick,
 }) => {
   return (
-    <Link
-      to={{
-        pathname: `/${type}/${ids.tmdb}`,
-      }}
-      onClick={onClick}
-    >
-      <Image
-        ids={ids}
-        text={text}
-        style={style}
-        type={type}
-        forceState={forceState}
-        hidden={hidden}
-        dimmed={dimmed}
-      />
-      {children}
-    </Link>
+    <li className="w-35 shrink-0" tabIndex={tabIndex}>
+      <Link
+        className={`block rounded-lg ${className}`}
+        to={{
+          pathname: `/${type}/${ids.tmdb}`,
+        }}
+        onClick={onClick}
+      >
+        <Image
+          ids={ids}
+          text={text}
+          type={type}
+          forceState={forceState}
+          hidden={hidden}
+          dimmed={dimmed}
+        />
+        {children}
+      </Link>
+    </li>
   );
 };
 
