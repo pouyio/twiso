@@ -110,11 +110,16 @@ const Person: React.FC = () => {
               </h1>
               <div className="flex flex-wrap mb-4 justify-between items-center text-gray-600">
                 <h2>
-                  {new Date(localState.birthday).toLocaleDateString(language, {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                  })}{' '}
+                  {localState.birthday
+                    ? new Date(localState.birthday).toLocaleDateString(
+                        language,
+                        {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        },
+                      )
+                    : '-'}{' '}
                 </h2>
                 {localState.death && (
                   <h2>
