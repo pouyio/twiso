@@ -24,7 +24,7 @@ const ShowWatchButton: React.FC<IShowWatchButtonProps> = ({ item }) => {
 
   return (
     <div className="flex justify-around">
-      {!!session ? (
+      {session ? (
         <>
           <button
             className={`${

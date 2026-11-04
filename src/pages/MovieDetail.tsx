@@ -77,12 +77,15 @@ export default function MovieDetail() {
     () =>
       // @ts-expect-error limitations on Dexie EntityTable
       db[DETAIL_MOVIES_TABLE].get(Number(id)),
-    [id]
+    [id],
   );
 
   const { refresh } = useImage(item?.ids.tmdb ?? 0, 'movie', 'big', true);
 
-  const liveStatus = useLiveQuery(() => db[USER_MOVIES_TABLE].get(Number(id)), [id]);
+  const liveStatus = useLiveQuery(
+    () => db[USER_MOVIES_TABLE].get(Number(id)),
+    [id],
+  );
 
   const bgClassName = useMemo(() => {
     if (liveStatus?.status === 'watched') {

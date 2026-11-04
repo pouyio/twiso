@@ -6,7 +6,7 @@ const ProtectedRoute: React.FC<React.PropsWithChildren<RouteProps>> = ({
   children,
 }) => {
   const { session } = useContext(AuthContext);
-  return !!session ? <>{children}</> : <Navigate to="/" />;
+  return session ? <>{children}</> : <Navigate to="/" />;
 };
 
 export default ProtectedRoute;

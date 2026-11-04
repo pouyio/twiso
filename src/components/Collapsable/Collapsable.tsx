@@ -10,7 +10,7 @@ interface ICollapsableProps {
 
 const isOverflown = (
   element: HTMLParagraphElement | null,
-  heightInRem: number
+  heightInRem: number,
 ) => {
   if (!element) {
     return false;

@@ -24,7 +24,7 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
     setToRef(
       window.setTimeout(() => {
         setOpened(false);
-      }, DEFAULT_TIME)
+      }, DEFAULT_TIME),
     );
   };
 

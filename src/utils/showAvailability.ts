@@ -3,7 +3,7 @@ import { Show } from '../models/Show';
 export const hasAvailableEpisodes = (
   show: Show,
   watchedEpisodeKeys: Set<string>,
-  today = new Date()
+  today = new Date(),
 ): boolean =>
   show.all_seasons
     .filter((season) => season.number > 0)
@@ -12,6 +12,6 @@ export const hasAvailableEpisodes = (
         (episode) =>
           (!episode.first_aired ||
             new Date(episode.first_aired).getTime() <= today.getTime()) &&
-          !watchedEpisodeKeys.has(`${episode.season}:${episode.number}`)
-      )
+          !watchedEpisodeKeys.has(`${episode.season}:${episode.number}`),
+      ),
     );

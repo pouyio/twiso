@@ -17,7 +17,7 @@ export const ThemeProvider: React.FC<
   React.PropsWithChildren<IThemeProviderProps>
 > = ({ children }) => {
   const [localTheme, setLocalTheme] = useState<ThemeType | undefined>(
-    localStorage.getItem('theme') as ThemeType
+    localStorage.getItem('theme') as ThemeType,
   );
 
   const setTheme = (newTheme?: ThemeType) => {
@@ -42,9 +42,7 @@ export const ThemeProvider: React.FC<
 
   return (
     <ThemeContext value={{ theme: localTheme, setTheme }}>
-      <div className="theme-wrapper text-black bg-white">
-        {children}
-      </div>
+      <div className="theme-wrapper text-black bg-white">{children}</div>
     </ThemeContext>
   );
 };

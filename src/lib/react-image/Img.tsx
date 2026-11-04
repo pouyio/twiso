@@ -3,8 +3,10 @@ import React, { forwardRef, ReactNode, Ref } from 'react';
 
 const defaultPassthrough = (el: ReactNode): ReactNode => el;
 
-interface ImgProps
-  extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src'> {
+interface ImgProps extends Omit<
+  React.ImgHTMLAttributes<HTMLImageElement>,
+  'src'
+> {
   decode?: boolean;
   src: string | string[];
   loader?: ReactNode | null;
@@ -31,7 +33,7 @@ function ImgComponent(
     useSuspense = false,
     ...imgProps
   }: ImgProps,
-  ref: Ref<HTMLImageElement>
+  ref: Ref<HTMLImageElement>,
 ) {
   const imgPromiseFactory =
     imgPromise || imagePromiseFactory({ decode, crossOrigin: crossorigin });
@@ -44,13 +46,13 @@ function ImgComponent(
 
   return loadedSrc
     ? container(
-        React.createElement('img', { src: loadedSrc, ...imgProps, ref })
+        React.createElement('img', { src: loadedSrc, ...imgProps, ref }),
       )
     : !useSuspense && isLoading
-    ? loaderContainer(loader)
-    : !useSuspense && unloader
-    ? unloaderContainer(unloader)
-    : null;
+      ? loaderContainer(loader)
+      : !useSuspense && unloader
+        ? unloaderContainer(unloader)
+        : null;
 }
 
 export const Img = forwardRef(ImgComponent) as React.ForwardRefExoticComponent<

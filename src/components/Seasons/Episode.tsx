@@ -34,13 +34,13 @@ export const Episode: React.FC<EpisodeProps> = ({
 
   const getTranslated = (string: 'title' | 'overview') => {
     if (language !== 'es') {
-      return string === 'title' ? episode.title : episodeDate?.overview ?? '';
+      return string === 'title' ? episode.title : (episodeDate?.overview ?? '');
     }
 
     if (episode.translations?.length) {
       return episode.translations[0][string] ?? '';
     }
-    return string === 'title' ? episode.title : episode['overview'] ?? '';
+    return string === 'title' ? episode.title : (episode['overview'] ?? '');
   };
 
   const isEpisodeAvailable = () => {
@@ -103,28 +103,33 @@ export const Episode: React.FC<EpisodeProps> = ({
               title: getTranslated('title'),
               overview: `${getFormattedDate(
                 episodeDate?.first_aired ?? '',
-                'long'
+                'long',
               )}\n${getTranslated('overview')}`,
             })
           }
-          className={`grow flex flex-col ${
-            isEpisodeWatched ? 'text-gray-600' : ''
-          }`}
+          className={`grow flex flex-col ${isEpisodeWatched ? 'text-gray-600' : ''}`}
         >
           <span>{getTranslated('title')}</span>
           <span className="text-xs flex items-center gap-1.5">
             {getFormattedDate(episodeDate?.first_aired ?? '', 'short')}
-            {rating !== undefined && (() => {
-              const bg = getColor(rating);
-              return (
-                <span
-                  className="font-semibold px-1.5 rounded text-center leading-none"
-                  style={{ backgroundColor: bg, color: textFill(bg), fontSize: '0.65rem', paddingTop: '1px', paddingBottom: '1px' }}
-                >
-                  {formatVote(rating)}
-                </span>
-              );
-            })()}
+            {rating !== undefined &&
+              (() => {
+                const bg = getColor(rating);
+                return (
+                  <span
+                    className="font-semibold px-1.5 rounded text-center leading-none"
+                    style={{
+                      backgroundColor: bg,
+                      color: textFill(bg),
+                      fontSize: '0.65rem',
+                      paddingTop: '1px',
+                      paddingBottom: '1px',
+                    }}
+                  >
+                    {formatVote(rating)}
+                  </span>
+                );
+              })()}
           </span>
         </div>
         {isEpisodeAvailable() &&
