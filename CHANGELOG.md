@@ -1,3 +1,14 @@
+## [2.21.22](https://github.com/pouyio/twiso/compare/v2.21.21...v2.21.22) (2026-11-04)
+
+
+### :art:
+
+* remove ad-hox styles for posters everywhere and simplify ([93f9d5b](https://github.com/pouyio/twiso/commit/93f9d5bf9949708cf33d6d27f8c002af22ec46d6))
+
+### :rocket:
+
+* replace ImageLink with PosterCard and PosterList components acro ([67532f0](https://github.com/pouyio/twiso/commit/67532f094c8a0ab8fe4bcf24726e97bb469b8cb4))
+
 ## [2.21.21](https://github.com/pouyio/twiso/compare/v2.21.20...v2.21.21) (2026-11-04)
 
 
