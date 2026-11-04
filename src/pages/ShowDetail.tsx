@@ -256,7 +256,12 @@ export default function ShowDetail() {
               className="hidden lg:block relative pr-4"
               style={{ minWidth: '10em', maxWidth: '10em' }}
             >
-              <ZoomableImage ids={item.ids} text={title} type="show" size="small" />
+              <ZoomableImage
+                ids={item.ids}
+                text={title}
+                type="show"
+                size="small"
+              />
               {item.trailer && (
                 <a
                   className="absolute"
