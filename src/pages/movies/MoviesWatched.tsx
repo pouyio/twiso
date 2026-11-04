@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ImageLink from '../../components/ImageLink';
+import ImageList from '../../components/ImageList';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from '../../components/EmptyState';
@@ -50,23 +50,17 @@ export const MoviesWatched: React.FC = () => {
       {genres.length && !orderedMovies.length ? (
         <NoResults />
       ) : (
-        <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
+        <ImageList.Container layout="grid">
           {getItemsByPage().map((m, i) => (
-            <li
+            <ImageList.Link
               key={`${m.ids.tmdb}_${i}`}
-              className="p-2"
-              style={{ flex: '1 0 50%', maxWidth: '10em' }}
-            >
-              <ImageLink
-                ids={m.ids}
-                text={m.title}
-                style={{ minHeight: '13.5em' }}
-                type="movie"
-                forceState="watched"
-              />
-            </li>
+              ids={m.ids}
+              text={m.title}
+              type="movie"
+              forceState="watched"
+            />
           ))}
-        </ul>
+        </ImageList.Container>
       )}
     </PaginationContainer>
   );

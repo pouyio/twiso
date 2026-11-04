@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import ImageLink from './ImageLink';
+import ImageList from './ImageList';
 import { getPopularApi } from '../utils/api';
 import Emoji from './Emoji';
 import { Popular as IPopular } from '../models/Popular';
@@ -33,31 +33,24 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
 
   return (
     <>
-      <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
+      <h1 className="text-2xl justify-center text-gray-700 m-4 flex items-baseline">
         <Emoji emoji={loading ? '⏳' : '⭐'} rotating={loading} />
         <span className="mx-2">{t(`popular_${type}`)}</span>
       </h1>
-      <ul
-        ref={resultsScroll}
-        className="-mx-4 lg:mx-0 flex flex-col flex-wrap content-start overflow-x-auto"
-        style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
+      <ImageList.Container
+        layout="columns"
+        listRef={resultsScroll}
+        style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {results.map((r) => (
-          <li
+          <ImageList.Link
             key={r[type]!.ids.tmdb}
-            className="p-2"
-            style={{ height: '13.5em', width: '9.5em' }}
-          >
-            <ImageLink
-              ids={(r.show || r.movie)!.ids}
-              text={(r.show || r.movie)!.title}
-              style={{ minHeight: '10em' }}
-              type={type}
-            />
-          </li>
+            ids={(r.show || r.movie)!.ids}
+            text={(r.show || r.movie)!.title}
+            type={type}
+          />
         ))}
-      </ul>
-      <div className="h-1 border-b-2 rounded-full my-8"></div>
+      </ImageList.Container>
     </>
   );
 };

@@ -50,6 +50,7 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
   }, [ids, forceState]);
 
   const status = forceState ? forceState : liveItem?.status;
+  const posterClassName = 'block w-full h-full rounded-lg object-cover';
 
   const borderClass = useMemo(() => {
     if (type === 'person' || !session) return 'outline-transparent';
@@ -71,15 +72,15 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
       style={style}
       {...props}
       className={
-        ` ${size === 'big' ? 'min-h-116' : 'min-h-53'} ${
+        `${size === 'big' ? 'md:max-h-[70dvh] w-auto max-w-full' : 'w-full'} aspect-[2/3] ${
           dimmed ? 'opacity-50' : ''
-        } h-full bg-transparent flex justify-center items-center rounded-lg overflow-hidden transition-colors duration-300 outline-2 ` +
+        } bg-transparent flex justify-center items-center rounded-lg overflow-hidden transition-colors duration-300 outline-2 ` +
         borderClass
       }
     >
       <Img
         src={imgUrl}
-        className="m-auto md:max-w-md h-full rounded-lg"
+        className={posterClassName}
         alt={text}
         unloader={
           <h1 className="justify-center items-center p-2 text-center">
@@ -90,8 +91,7 @@ const Image: React.FC<React.PropsWithChildren<IImageProps>> = ({
         }
         loader={
           <Img
-            className="m-auto md:max-w-md h-full rounded-lg"
-            style={{ filter: 'blur(5px)' }}
+            className={`${posterClassName} blur-[5px]`}
             src={imgPreview}
             alt={text}
             loader={

@@ -1,4 +1,4 @@
-import ImageLink from '../../components/ImageLink';
+import ImageList from '../../components/ImageList';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import React, { useState } from 'react';
 import { usePagination } from '../../hooks/usePagination';
@@ -46,22 +46,17 @@ export const MoviesWatchlist: React.FC = () => {
       {genres.length && !orderedMovies.length ? (
         <NoResults />
       ) : (
-        <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
+        <ImageList.Container layout="grid">
           {getItemsByPage().map((m, i) => (
-            <li
+            <ImageList.Link
               key={`${m.ids.tmdb}_${i}`}
-              className="p-2"
-              style={{ flex: '1 0 50%', maxWidth: '10em' }}
-            >
-              <ImageLink
-                text={m.title}
-                ids={m.ids}
-                type="movie"
-                forceState="watchlist"
-              />
-            </li>
+              text={m.title}
+              ids={m.ids}
+              type="movie"
+              forceState="watchlist"
+            />
           ))}
-        </ul>
+        </ImageList.Container>
       )}
     </PaginationContainer>
   );

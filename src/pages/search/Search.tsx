@@ -1,7 +1,7 @@
 import { SearchFilters } from '../../pages/search/SearchFilters';
 import React, { useEffect, useRef, useState } from 'react';
 import Emoji from '../../components/Emoji';
-import ImageLink from '../../components/ImageLink';
+import ImageList from '../../components/ImageList';
 import Popular from '../../components/Popular';
 import { searchApi } from '../../utils/api';
 import { useFilter } from '../../hooks/useFilter';
@@ -13,6 +13,8 @@ import { useScrollRestoration } from '../../hooks/useScrollRestoration';
 
 export type RemoteFilterTypes = Array<'movie' | 'show' | 'person'>;
 type LocalFilterTypes = Array<'movie' | 'show'>;
+
+const Divider = () => <div className="h-1 border-b-2 rounded-full my-8"></div>;
 
 export default function Search() {
   const { params, setQuery, setFilters } = useSearchParams();
@@ -126,89 +128,81 @@ export default function Search() {
             {(params.types.length === 0 || params.types.includes('movie')) &&
               (movieResults.length ? (
                 <>
-                  <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
+                  <h1 className="text-2xl justify-center text-gray-700 m-4 flex items-baseline">
                     {t('movies')}
                   </h1>
-                  <ul
-                    ref={moviesScroll}
-                    className="-mx-2 flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
+                  <ImageList.Container
+                    layout="columns"
+                    listRef={moviesScroll}
                     style={{
                       WebkitOverflowScrolling: 'touch',
                     }}
                   >
                     {movieResults.map((r) => (
-                      <li key={r.movie.ids.tmdb} className="w-35">
-                        <ImageLink
-                          ids={r.movie.ids}
-                          text={r.movie.title}
-                          type="movie"
-                        />
-                      </li>
+                      <ImageList.Link
+                        key={r.movie.ids.tmdb}
+                        ids={r.movie.ids}
+                        text={r.movie.title}
+                        type="movie"
+                      />
                     ))}
-                  </ul>
+                  </ImageList.Container>
                 </>
               ) : (
                 <h1 className="text-3xl mt-8 text-gray-700">
                   {t('no_movies')}
                 </h1>
               ))}
-
+            <Divider />
             {(params.types.length === 0 || params.types.includes('show')) &&
               (showResults.length ? (
                 <>
-                  <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
+                  <h1 className="text-2xl justify-center text-gray-700 m-4 flex items-baseline">
                     {t('shows')}
                   </h1>
-                  <ul
-                    ref={showsScroll}
-                    className="-mx-2 flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
+                  <ImageList.Container
+                    layout="columns"
+                    listRef={showsScroll}
                     style={{
                       WebkitOverflowScrolling: 'touch',
                     }}
                   >
                     {showResults.map((r) => (
-                      <li key={r.show.ids.tmdb} className="w-35">
-                        <ImageLink
-                          ids={r.show.ids}
-                          text={r.show.title}
-                          type="show"
-                        />
-                      </li>
+                      <ImageList.Link
+                        key={r.show.ids.tmdb}
+                        ids={r.show.ids}
+                        text={r.show.title}
+                        type="show"
+                      />
                     ))}
-                  </ul>
+                  </ImageList.Container>
                 </>
               ) : (
                 <h1 className="text-3xl mt-8 text-gray-700">{t('no_shows')}</h1>
               ))}
-
+            <Divider />
             {(params.types.length === 0 || params.types.includes('person')) &&
               (peopleResults.length ? (
                 <>
-                  <h1 className="text-2xl justify-center text-gray-700 m-4 mt-8 flex items-baseline">
+                  <h1 className="text-2xl justify-center text-gray-700 m-4 flex items-baseline">
                     {t('people')}
                   </h1>
-                  <ul
-                    ref={peopleScroll}
-                    className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
+                  <ImageList.Container
+                    layout="columns"
+                    listRef={peopleScroll}
                     style={{
                       WebkitOverflowScrolling: 'touch',
-                      maxHeight: '30em',
                     }}
                   >
                     {peopleResults.map((r) => (
-                      <li
+                      <ImageList.Link
                         key={r.person.ids.tmdb}
-                        className="p-2"
-                        style={{ height: '13.5em', width: '9.5em' }}
-                      >
-                        <ImageLink
-                          ids={r.person.ids}
-                          text={r.person.name}
-                          type="person"
-                        />
-                      </li>
+                        ids={r.person.ids}
+                        text={r.person.name}
+                        type="person"
+                      />
                     ))}
-                  </ul>
+                  </ImageList.Container>
                 </>
               ) : (
                 <h1 className="text-3xl mt-8 text-gray-700">
@@ -219,6 +213,7 @@ export default function Search() {
         ) : (
           <>
             <Popular type="movie" />
+            <Divider />
             <Popular type="show" />
           </>
         )}

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Image from '../components/Image';
-import ImageLink from '../components/ImageLink';
+import ImageList from '../components/ImageList';
 import Collapsable from '../components/Collapsable/Collapsable';
 import { getPersonItemsApi, getPersonApi } from '../utils/api';
 import Emoji from '../components/Emoji';
 import { useParams } from 'react-router';
 import { Person as IPerson } from '../models/Person';
-import { placeholders } from '../components/Related';
 import { Empty } from '../components/Empty';
 import { useAppSelector } from '../state/store';
 import { Movie } from '../models/Movie';
@@ -16,7 +15,6 @@ import { PersonMovies, PersonShows } from '../models/People';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
-  const [zoom, setZoom] = useState(false);
   const [movieResults, setMovieResults] =
     useState<{ movie: Movie; title: string }[]>();
   const [movieDirectorResults, setMovieDirectorResults] =
@@ -68,12 +66,7 @@ const Person: React.FC = () => {
     <div className="bg-gray-300">
       <title>{localState.name}</title>
       <div className="lg:max-w-6xl lg:mx-auto">
-        <div
-          onClick={() => setZoom((z) => !z)}
-          className={`${
-            zoom ? 'pb-10 z-10' : 'p-10 pt-5'
-          } bg-gray-300 sticky top-0 z-0 lg:hidden transition-[padding]`}
-        >
+        <div className="p-10 pt-5 bg-gray-300 sticky top-0 z-0 lg:hidden">
           {localState && (
             <Image
               ids={localState.ids}
@@ -110,11 +103,16 @@ const Person: React.FC = () => {
               </h1>
               <div className="flex flex-wrap mb-4 justify-between items-center text-gray-600">
                 <h2>
-                  {new Date(localState.birthday).toLocaleDateString(language, {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                  })}{' '}
+                  {localState.birthday
+                    ? new Date(localState.birthday).toLocaleDateString(
+                        language,
+                        {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        },
+                      )
+                    : '-'}{' '}
                 </h2>
                 {localState.death && (
                   <h2>
@@ -140,115 +138,91 @@ const Person: React.FC = () => {
           </div>
 
           <h1 className="font-medium font-family-text">{t('movies')} </h1>
-          <ul
-            className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
+          <ImageList.Container
+            className="p-1 lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
+            loadingCount={movieResults ? 0 : 10}
           >
             {movieResults ? (
               movieResults.length ? (
                 movieResults.map((r, i) => (
-                  <li
+                  <ImageList.Link
                     key={`${r.movie.ids.tmdb}-movie-${i}`}
-                    className="p-2 h-full"
-                    style={{ flex: '1 0 50%', maxWidth: '10em' }}
+                    ids={r.movie.ids}
+                    text={r.movie.title}
+                    type="movie"
+                    className="bg-gray-300"
                   >
-                    <div className="bg-gray-300 rounded-lg">
-                      <ImageLink
-                        ids={r.movie.ids}
-                        text={r.movie.title}
-                        type="movie"
-                        style={{ minHeight: '13.5em' }}
-                      >
-                        {r.title && (
-                          <p className="text-sm text-gray-700 text-center py-1">
-                            {r.title}
-                          </p>
-                        )}
-                      </ImageLink>
-                    </div>
-                  </li>
+                    {r.title && (
+                      <p className="text-sm text-gray-700 text-center py-1">
+                        {r.title}
+                      </p>
+                    )}
+                  </ImageList.Link>
                 ))
               ) : (
                 <Empty />
               )
-            ) : (
-              placeholders
-            )}
-          </ul>
+            ) : null}
+          </ImageList.Container>
 
           <h1 className="font-medium font-family-text">{t('direction')} </h1>
-          <ul
-            className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
+          <ImageList.Container
+            className="p-1 lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
+            loadingCount={movieDirectorResults ? 0 : 10}
           >
             {movieDirectorResults ? (
               movieDirectorResults.length ? (
                 movieDirectorResults.map((r, i) => (
-                  <li
+                  <ImageList.Link
                     key={`${r.movie.ids.tmdb}-movie-${i}`}
-                    className="p-2 h-full"
-                    style={{ flex: '1 0 50%', maxWidth: '10em' }}
+                    ids={r.movie.ids}
+                    text={r.movie.title}
+                    type="movie"
+                    className="bg-gray-300"
                   >
-                    <div className="bg-gray-300 rounded-lg">
-                      <ImageLink
-                        ids={r.movie.ids}
-                        text={r.movie.title}
-                        type="movie"
-                        style={{ minHeight: '13.5em' }}
-                      >
-                        {r.title && (
-                          <p className="text-sm text-gray-700 text-center py-1">
-                            {r.title}
-                          </p>
-                        )}
-                      </ImageLink>
-                    </div>
-                  </li>
+                    {r.title && (
+                      <p className="text-sm text-gray-700 text-center py-1">
+                        {r.title}
+                      </p>
+                    )}
+                  </ImageList.Link>
                 ))
               ) : (
                 <Empty />
               )
-            ) : (
-              placeholders
-            )}
-          </ul>
+            ) : null}
+          </ImageList.Container>
 
           <h1 className="font-medium font-family-text">{t('shows')} </h1>
-          <ul
-            className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
+          <ImageList.Container
+            className="p-1 lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
+            loadingCount={showResults ? 0 : 10}
           >
             {showResults ? (
               showResults.length ? (
                 showResults.map((r, i) => (
-                  <li
+                  <ImageList.Link
                     key={`${r.show.ids.tmdb}-show-${i}`}
-                    className="p-2 h-full"
-                    style={{ flex: '1 0 50%', maxWidth: '10em' }}
+                    ids={r.show.ids}
+                    text={r.show.title}
+                    type="show"
+                    className="bg-gray-300"
                   >
-                    <div className="bg-gray-300 rounded-lg">
-                      <ImageLink
-                        ids={r.show.ids}
-                        text={r.show.title}
-                        type="show"
-                        style={{ minHeight: '13.5em' }}
-                      >
-                        {r.title && (
-                          <p className="text-sm text-gray-700 text-center py-1">
-                            {r.title}
-                          </p>
-                        )}
-                      </ImageLink>
-                    </div>
-                  </li>
+                    {r.title && (
+                      <p className="text-sm text-gray-700 text-center py-1">
+                        {r.title}
+                      </p>
+                    )}
+                  </ImageList.Link>
                 ))
               ) : (
                 <Empty />
               )
-            ) : (
-              placeholders
-            )}
-          </ul>
+            ) : null}
+          </ImageList.Container>
         </article>
       </div>
     </div>

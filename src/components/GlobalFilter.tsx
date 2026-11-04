@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setGlobalSearch } from '../state/slices/root';
 import { getType } from '../utils/getType';
 import Emoji from './Emoji';
-import ImageLink from './ImageLink';
+import ImageList from './ImageList';
 import { useFilter } from '../hooks/useFilter';
 import { useIsWatch } from '../hooks/useIsWatch';
 import { Movie } from '../models/Movie';
@@ -52,9 +52,12 @@ export const GlobalFilter = () => {
           <Emoji className="ml-3 mr-2" emoji="❌" />
         </button>
       </div>
-      <ul className="flex flex-wrap items-stretch justify-center bg-blue-100 overflow-y-auto">
-        {results &&
-          results.map((item, i) => {
+      {results && (
+        <ImageList.Container
+          layout="custom"
+          className="flex flex-wrap items-stretch justify-center bg-blue-100 overflow-y-auto gap-4 p-2"
+        >
+          {results.map((item, i) => {
             const type = getType(item);
             const title =
               language === 'es'
@@ -62,31 +65,21 @@ export const GlobalFilter = () => {
                 : item.title;
 
             return (
-              <li
-                key={item?.ids?.tmdb}
-                className="p-2"
-                style={{ flex: '1 0 50%', maxWidth: '10em' }}
+              <ImageList.Link
+                key={item.ids.tmdb}
                 tabIndex={i + 1}
+                ids={item.ids}
+                text={title}
+                type={type}
+                className={`transition-colors duration-300 ${getBgClass(item, type)}`}
+                onClick={() => dispatch(setGlobalSearch(false))}
               >
-                <div
-                  className={`rounded-lg transition-colors duration-300 ${getBgClass(item, type)}`}
-                >
-                  <ImageLink
-                    text={title}
-                    ids={item?.ids}
-                    style={{ minHeight: '13.5em' }}
-                    type={type}
-                    onClick={() => dispatch(setGlobalSearch(false))}
-                  >
-                    {title && (
-                      <p className="text-sm text-center py-1">{title}</p>
-                    )}
-                  </ImageLink>
-                </div>
-              </li>
+                {title && <p className="text-sm text-center py-1">{title}</p>}
+              </ImageList.Link>
             );
           })}
-      </ul>
+        </ImageList.Container>
+      )}
     </section>
   );
 };

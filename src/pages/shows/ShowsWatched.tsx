@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ImageLink from '../../components/ImageLink';
+import ImageList from '../../components/ImageList';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from '../../components/EmptyState';
@@ -83,25 +83,19 @@ const ShowsWatched: React.FC = () => {
       {!visibleShows.length ? (
         <NoResults />
       ) : (
-        <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
+        <ImageList.Container layout="grid">
           {getItemsByPage().map((m) => (
-            <li
+            <ImageList.Link
               key={m.ids.tmdb}
-              className="p-2"
-              style={{ flex: '1 0 50%', maxWidth: '10em' }}
-            >
-              <ImageLink
-                ids={m.ids}
-                text={m.title}
-                style={{ minHeight: '13.5em' }}
-                type="show"
-                forceState="watched"
-                hidden={isHidden(m.ids.tmdb)}
-                dimmed={!hasAvailable(m)}
-              />
-            </li>
+              ids={m.ids}
+              text={m.title}
+              type="show"
+              forceState="watched"
+              hidden={isHidden(m.ids.tmdb)}
+              dimmed={!hasAvailable(m)}
+            />
           ))}
-        </ul>
+        </ImageList.Container>
       )}
     </PaginationContainer>
   );

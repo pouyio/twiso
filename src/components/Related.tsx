@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getRelatedApi } from '../utils/api';
-import ImageLink from './ImageLink';
+import ImageList from './ImageList';
 import { Empty } from './Empty';
 import { Show } from '../models/Show';
 import { Movie } from '../models/Movie';
@@ -11,65 +11,6 @@ interface IRelatedProps {
   itemIds: Ids;
   type: 'movie' | 'show';
 }
-
-const placeholderStyle = {
-  minHeight: '13.5em',
-  flex: '1 0 50%',
-  maxWidth: '10em',
-};
-
-export const placeholders = [
-  <li
-    key="placeholder-1"
-    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-linear-to-r animate-pulse"
-    style={placeholderStyle}
-  ></li>,
-  <li
-    key="placeholder-2"
-    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-linear-to-r animate-pulse"
-    style={placeholderStyle}
-  ></li>,
-  <li
-    key="placeholder-3"
-    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-linear-to-r animate-pulse"
-    style={placeholderStyle}
-  ></li>,
-  <li
-    key="placeholder-4"
-    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-linear-to-r animate-pulse"
-    style={placeholderStyle}
-  ></li>,
-  <li
-    key="placeholder-5"
-    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-linear-to-r animate-pulse"
-    style={placeholderStyle}
-  ></li>,
-  <li
-    key="placeholder-6"
-    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-linear-to-r animate-pulse"
-    style={placeholderStyle}
-  ></li>,
-  <li
-    key="placeholder-7"
-    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-linear-to-r animate-pulse"
-    style={placeholderStyle}
-  ></li>,
-  <li
-    key="placeholder-8"
-    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-linear-to-r animate-pulse"
-    style={placeholderStyle}
-  ></li>,
-  <li
-    key="placeholder-9"
-    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-linear-to-r animate-pulse"
-    style={placeholderStyle}
-  ></li>,
-  <li
-    key="placeholder-10"
-    className=" h-full bg-gray-200 rounded-lg m-2 from-gray-300 bg-linear-to-r animate-pulse"
-    style={placeholderStyle}
-  ></li>,
-];
 
 const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
   const [results, setResults] = useState<(Show | Movie)[]>();
@@ -84,35 +25,27 @@ const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
   }, [itemIds, type]);
 
   return (
-    <ul
-      ref={resultsRef}
-      className="flex overflow-x-auto -mx-4 my-2 lg:mx-0 justify-between lg:overflow-auto lg:flex-wrap"
+    <ImageList.Container
+      listRef={resultsRef}
+      className="justify-between"
       style={{ WebkitOverflowScrolling: 'touch' }}
+      loadingCount={results ? 0 : 10}
     >
       {results ? (
         results.length ? (
           results.map((r) => (
-            <li
+            <ImageList.Link
               key={r.ids.tmdb}
-              className="p-2"
-              style={{ flex: '1 0 50%', maxWidth: '10em' }}
-            >
-              <ImageLink
-                // item={r}
-                text={r.title}
-                ids={r.ids}
-                type={type}
-                style={{ minHeight: '13.5em' }}
-              />
-            </li>
+              text={r.title}
+              ids={r.ids}
+              type={type}
+            />
           ))
         ) : (
           <Empty />
         )
-      ) : (
-        placeholders
-      )}
-    </ul>
+      ) : null}
+    </ImageList.Container>
   );
 };
 

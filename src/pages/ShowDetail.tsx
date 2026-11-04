@@ -47,7 +47,6 @@ export default function ShowDetail() {
   const { share } = useShare();
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
-  const [zoom, setZoom] = useState(false);
   const refreshIconRef = useRef<HTMLImageElement>(null);
   const { session } = useContext(AuthContext);
   const [, setSearchParams] = useSearchParams();
@@ -228,12 +227,7 @@ export default function ShowDetail() {
     <div className={`${bgClassName} transition-colors duration-300`}>
       <title>{title}</title>
       <div className="lg:max-w-6xl m-auto">
-        <div
-          onClick={() => setZoom((z) => !z)}
-          className={`${
-            zoom ? 'pb-10 z-10' : 'p-10 pt-5'
-          } ${bgClassName} sticky top-0 z-0 lg:hidden transition-[padding]`}
-        >
+        <div className={`p-10 pt-5 ${bgClassName} sticky top-0 z-0 lg:hidden`}>
           <Image ids={item.ids} text={title} type="show" size="big" />
           {item.trailer && (
             <a
