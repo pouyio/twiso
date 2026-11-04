@@ -80,17 +80,15 @@ const ShowsWatched: React.FC = () => {
       {!visibleShows.length ? (
         <NoResults />
       ) : (
-        <ul className="flex flex-wrap p-2 items-stretch justify-center select-none">
+        <ul className="flex flex-wrap py-4 px-2 items-stretch justify-center select-none gap-4">
           {getItemsByPage().map((m) => (
             <li
               key={m.ids.tmdb}
-              className="p-2"
-              style={{ flex: '1 0 50%', maxWidth: '10em' }}
+              className="w-35"
             >
               <ImageLink
                 ids={m.ids}
                 text={m.title}
-                style={{ minHeight: '13.5em' }}
                 type="show"
                 forceState="watched"
                 hidden={isHidden(m.ids.tmdb)}

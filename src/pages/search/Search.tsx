@@ -131,7 +131,7 @@ export default function Search() {
                   </h1>
                   <ul
                     ref={moviesScroll}
-                    className="-mx-2 flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
+                    className="-mx-4 p-1 flex flex-col flex-wrap content-start overflow-x-auto gap-4 max-h-120"
                     style={{
                       WebkitOverflowScrolling: 'touch',
                     }}
@@ -161,7 +161,7 @@ export default function Search() {
                   </h1>
                   <ul
                     ref={showsScroll}
-                    className="-mx-2 flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
+                    className="-mx-4 p-1 flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
                     style={{
                       WebkitOverflowScrolling: 'touch',
                     }}

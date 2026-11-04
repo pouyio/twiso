@@ -141,7 +141,7 @@ const Person: React.FC = () => {
 
           <h1 className="font-medium font-family-text">{t('movies')} </h1>
           <ul
-            className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
+            className="-mx-4 my-2 p-1 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start gap-4"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {movieResults ? (
@@ -149,15 +149,12 @@ const Person: React.FC = () => {
                 movieResults.map((r, i) => (
                   <li
                     key={`${r.movie.ids.tmdb}-movie-${i}`}
-                    className="p-2 h-full"
-                    style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >
-                    <div className="bg-gray-300 rounded-lg">
+                    <div className="bg-gray-300 rounded-lg w-35">
                       <ImageLink
                         ids={r.movie.ids}
                         text={r.movie.title}
                         type="movie"
-                        style={{ minHeight: '13.5em' }}
                       >
                         {r.title && (
                           <p className="text-sm text-gray-700 text-center py-1">
@@ -178,7 +175,7 @@ const Person: React.FC = () => {
 
           <h1 className="font-medium font-family-text">{t('direction')} </h1>
           <ul
-            className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
+            className="-mx-4 my-2 p-1 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start gap-4"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {movieDirectorResults ? (
@@ -186,15 +183,12 @@ const Person: React.FC = () => {
                 movieDirectorResults.map((r, i) => (
                   <li
                     key={`${r.movie.ids.tmdb}-movie-${i}`}
-                    className="p-2 h-full"
-                    style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >
-                    <div className="bg-gray-300 rounded-lg">
+                    <div className="bg-gray-300 rounded-lg w-35">
                       <ImageLink
                         ids={r.movie.ids}
                         text={r.movie.title}
                         type="movie"
-                        style={{ minHeight: '13.5em' }}
                       >
                         {r.title && (
                           <p className="text-sm text-gray-700 text-center py-1">
@@ -215,7 +209,7 @@ const Person: React.FC = () => {
 
           <h1 className="font-medium font-family-text">{t('shows')} </h1>
           <ul
-            className="-mx-2 my-2 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start"
+            className="-mx-4 my-2 p-1 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start gap-4"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {showResults ? (
@@ -223,15 +217,12 @@ const Person: React.FC = () => {
                 showResults.map((r, i) => (
                   <li
                     key={`${r.show.ids.tmdb}-show-${i}`}
-                    className="p-2 h-full"
-                    style={{ flex: '1 0 50%', maxWidth: '10em' }}
                   >
-                    <div className="bg-gray-300 rounded-lg">
+                    <div className="bg-gray-300 rounded-lg w-35">
                       <ImageLink
                         ids={r.show.ids}
                         text={r.show.title}
                         type="show"
-                        style={{ minHeight: '13.5em' }}
                       >
                         {r.title && (
                           <p className="text-sm text-gray-700 text-center py-1">

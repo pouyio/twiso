@@ -39,19 +39,17 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
       </h1>
       <ul
         ref={resultsScroll}
-        className="-mx-4 lg:mx-0 flex flex-col flex-wrap content-start overflow-x-auto"
-        style={{ WebkitOverflowScrolling: 'touch', maxHeight: '30em' }}
+        className="-mx-4 p-1 flex flex-col flex-wrap content-start overflow-x-auto gap-4 max-h-120"
+        style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {results.map((r) => (
           <li
             key={r[type]!.ids.tmdb}
-            className="p-2"
-            style={{ height: '13.5em', width: '9.5em' }}
+            className="w-35"
           >
             <ImageLink
               ids={(r.show || r.movie)!.ids}
               text={(r.show || r.movie)!.title}
-              style={{ minHeight: '10em' }}
               type={type}
             />
           </li>
