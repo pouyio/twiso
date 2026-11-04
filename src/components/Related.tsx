@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getRelatedApi } from '../utils/api';
-import ImageLink from './ImageLink';
+import PosterCard from './PosterCard';
+import PosterList from './PosterList';
 import { Empty } from './Empty';
 import { Show } from '../models/Show';
 import { Movie } from '../models/Movie';
@@ -11,49 +12,6 @@ interface IRelatedProps {
   itemIds: Ids;
   type: 'movie' | 'show';
 }
-
-export const placeholders = [
-  <li
-    key="placeholder-1"
-    className="w-35 min-h-53 shrink-0 bg-gray-200 rounded-lg from-gray-300 bg-linear-to-r animate-pulse"
-  ></li>,
-  <li
-    key="placeholder-2"
-    className="w-35 min-h-53 shrink-0 bg-gray-200 rounded-lg from-gray-300 bg-linear-to-r animate-pulse"
-  ></li>,
-  <li
-    key="placeholder-3"
-    className="w-35 min-h-53 shrink-0 bg-gray-200 rounded-lg from-gray-300 bg-linear-to-r animate-pulse"
-  ></li>,
-  <li
-    key="placeholder-4"
-    className="w-35 min-h-53 shrink-0 bg-gray-200 rounded-lg from-gray-300 bg-linear-to-r animate-pulse"
-  ></li>,
-  <li
-    key="placeholder-5"
-    className="w-35 min-h-53 shrink-0 bg-gray-200 rounded-lg from-gray-300 bg-linear-to-r animate-pulse"
-  ></li>,
-  <li
-    key="placeholder-6"
-    className="w-35 min-h-53 shrink-0 bg-gray-200 rounded-lg from-gray-300 bg-linear-to-r animate-pulse"
-  ></li>,
-  <li
-    key="placeholder-7"
-    className="w-35 min-h-53 shrink-0 bg-gray-200 rounded-lg from-gray-300 bg-linear-to-r animate-pulse"
-  ></li>,
-  <li
-    key="placeholder-8"
-    className="w-35 min-h-53 shrink-0 bg-gray-200 rounded-lg from-gray-300 bg-linear-to-r animate-pulse"
-  ></li>,
-  <li
-    key="placeholder-9"
-    className="w-35 min-h-53 shrink-0 bg-gray-200 rounded-lg from-gray-300 bg-linear-to-r animate-pulse"
-  ></li>,
-  <li
-    key="placeholder-10"
-    className="w-35 min-h-53 shrink-0 bg-gray-200 rounded-lg from-gray-300 bg-linear-to-r animate-pulse"
-  ></li>,
-];
 
 const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
   const [results, setResults] = useState<(Show | Movie)[]>();
@@ -68,25 +26,27 @@ const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
   }, [itemIds, type]);
 
   return (
-    <ul
-      ref={resultsRef}
-      className="flex overflow-x-auto -mx-4 my-2 lg:mx-0 justify-between lg:overflow-auto lg:flex-wrap gap-4"
+    <PosterList
+      listRef={resultsRef}
+      className="justify-between"
       style={{ WebkitOverflowScrolling: 'touch' }}
+      loadingCount={results ? 0 : 10}
     >
       {results ? (
         results.length ? (
           results.map((r) => (
-            <li key={r.ids.tmdb} className="w-35 shrink-0">
-              <ImageLink text={r.title} ids={r.ids} type={type} />
-            </li>
+            <PosterCard
+              key={r.ids.tmdb}
+              text={r.title}
+              ids={r.ids}
+              type={type}
+            />
           ))
         ) : (
           <Empty />
         )
-      ) : (
-        placeholders
-      )}
-    </ul>
+      ) : null}
+    </PosterList>
   );
 };
 

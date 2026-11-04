@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import { setGlobalSearch } from '../state/slices/root';
 import { getType } from '../utils/getType';
 import Emoji from './Emoji';
-import ImageLink from './ImageLink';
+import PosterCard from './PosterCard';
+import PosterList from './PosterList';
 import { useFilter } from '../hooks/useFilter';
 import { useIsWatch } from '../hooks/useIsWatch';
 import { Movie } from '../models/Movie';
@@ -53,7 +54,10 @@ export const GlobalFilter = () => {
         </button>
       </div>
       {results && (
-        <ul className="flex flex-wrap items-stretch justify-center bg-blue-100 overflow-y-auto gap-4 p-2">
+        <PosterList
+          layout="custom"
+          className="flex flex-wrap items-stretch justify-center bg-blue-100 overflow-y-auto gap-4 p-2"
+        >
           {results.map((item, i) => {
             const type = getType(item);
             const title =
@@ -62,25 +66,20 @@ export const GlobalFilter = () => {
                 : item.title;
 
             return (
-              <li key={item?.ids?.tmdb} className="w-35" tabIndex={i + 1}>
-                <div
-                  className={`rounded-lg transition-colors duration-300 ${getBgClass(item, type)}`}
-                >
-                  <ImageLink
-                    text={title}
-                    ids={item?.ids}
-                    type={type}
-                    onClick={() => dispatch(setGlobalSearch(false))}
-                  >
-                    {title && (
-                      <p className="text-sm text-center py-1">{title}</p>
-                    )}
-                  </ImageLink>
-                </div>
-              </li>
+              <PosterCard
+                key={item.ids.tmdb}
+                tabIndex={i + 1}
+                ids={item.ids}
+                text={title}
+                type={type}
+                className={`transition-colors duration-300 ${getBgClass(item, type)}`}
+                onClick={() => dispatch(setGlobalSearch(false))}
+                caption={title}
+                captionClassName="text-sm text-center py-1"
+              />
             );
           })}
-        </ul>
+        </PosterList>
       )}
     </section>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import ImageLink from '../../components/ImageLink';
+import PosterCard from '../../components/PosterCard';
+import PosterList from '../../components/PosterList';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from '../../components/EmptyState';
@@ -83,20 +84,19 @@ const ShowsWatched: React.FC = () => {
       {!visibleShows.length ? (
         <NoResults />
       ) : (
-        <ul className="flex flex-wrap py-4 px-2 items-stretch justify-center select-none gap-4">
+        <PosterList layout="grid">
           {getItemsByPage().map((m) => (
-            <li key={m.ids.tmdb} className="w-35">
-              <ImageLink
-                ids={m.ids}
-                text={m.title}
-                type="show"
-                forceState="watched"
-                hidden={isHidden(m.ids.tmdb)}
-                dimmed={!hasAvailable(m)}
-              />
-            </li>
+            <PosterCard
+              key={m.ids.tmdb}
+              ids={m.ids}
+              text={m.title}
+              type="show"
+              forceState="watched"
+              hidden={isHidden(m.ids.tmdb)}
+              dimmed={!hasAvailable(m)}
+            />
           ))}
-        </ul>
+        </PosterList>
       )}
     </PaginationContainer>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import ImageLink from '../../components/ImageLink';
+import PosterCard from '../../components/PosterCard';
+import PosterList from '../../components/PosterList';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from '../../components/EmptyState';
@@ -47,18 +48,17 @@ const ShowsWatchlist: React.FC = () => {
       {genres.length && !orderedShows.length ? (
         <NoResults />
       ) : (
-        <ul className="flex flex-wrap py-4 px-2 items-stretch justify-center select-none gap-4">
+        <PosterList layout="grid">
           {getItemsByPage().map((s) => (
-            <li key={s.ids.tmdb} className="w-35">
-              <ImageLink
-                ids={s.ids}
-                text={s.title}
-                type="show"
-                forceState="watchlist"
-              />
-            </li>
+            <PosterCard
+              key={s.ids.tmdb}
+              ids={s.ids}
+              text={s.title}
+              type="show"
+              forceState="watchlist"
+            />
           ))}
-        </ul>
+        </PosterList>
       )}
     </PaginationContainer>
   );

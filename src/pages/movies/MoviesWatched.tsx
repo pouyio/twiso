@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import ImageLink from '../../components/ImageLink';
+import PosterCard from '../../components/PosterCard';
+import PosterList from '../../components/PosterList';
 import PaginationContainer from '../../components/Pagination/PaginationContainer';
 import { usePagination } from '../../hooks/usePagination';
 import { EmptyState } from '../../components/EmptyState';
@@ -50,18 +51,17 @@ export const MoviesWatched: React.FC = () => {
       {genres.length && !orderedMovies.length ? (
         <NoResults />
       ) : (
-        <ul className="flex flex-wrap py-4 px-2 items-stretch justify-center select-none gap-4">
+        <PosterList layout="grid">
           {getItemsByPage().map((m, i) => (
-            <li key={`${m.ids.tmdb}_${i}`} className="w-35">
-              <ImageLink
-                ids={m.ids}
-                text={m.title}
-                type="movie"
-                forceState="watched"
-              />
-            </li>
+            <PosterCard
+              key={`${m.ids.tmdb}_${i}`}
+              ids={m.ids}
+              text={m.title}
+              type="movie"
+              forceState="watched"
+            />
           ))}
-        </ul>
+        </PosterList>
       )}
     </PaginationContainer>
   );

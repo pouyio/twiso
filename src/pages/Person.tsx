@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Image from '../components/Image';
-import ImageLink from '../components/ImageLink';
+import PosterCard from '../components/PosterCard';
+import PosterList from '../components/PosterList';
 import Collapsable from '../components/Collapsable/Collapsable';
 import { getPersonItemsApi, getPersonApi } from '../utils/api';
 import Emoji from '../components/Emoji';
 import { useParams } from 'react-router';
 import { Person as IPerson } from '../models/Person';
-import { placeholders } from '../components/Related';
 import { Empty } from '../components/Empty';
 import { useAppSelector } from '../state/store';
 import { Movie } from '../models/Movie';
@@ -140,100 +140,79 @@ const Person: React.FC = () => {
           </div>
 
           <h1 className="font-medium font-family-text">{t('movies')} </h1>
-          <ul
-            className="-mx-4 my-2 p-1 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start gap-4"
+          <PosterList
+            className="p-1 lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
+            loadingCount={movieResults ? 0 : 10}
           >
             {movieResults ? (
               movieResults.length ? (
                 movieResults.map((r, i) => (
-                  <li key={`${r.movie.ids.tmdb}-movie-${i}`}>
-                    <div className="bg-gray-300 rounded-lg w-35">
-                      <ImageLink
-                        ids={r.movie.ids}
-                        text={r.movie.title}
-                        type="movie"
-                      >
-                        {r.title && (
-                          <p className="text-sm text-gray-700 text-center py-1">
-                            {r.title}
-                          </p>
-                        )}
-                      </ImageLink>
-                    </div>
-                  </li>
+                  <PosterCard
+                    key={`${r.movie.ids.tmdb}-movie-${i}`}
+                    ids={r.movie.ids}
+                    text={r.movie.title}
+                    type="movie"
+                    caption={r.title}
+                    captionClassName="text-sm text-gray-700 text-center py-1"
+                    className="bg-gray-300"
+                  />
                 ))
               ) : (
                 <Empty />
               )
-            ) : (
-              placeholders
-            )}
-          </ul>
+            ) : null}
+          </PosterList>
 
           <h1 className="font-medium font-family-text">{t('direction')} </h1>
-          <ul
-            className="-mx-4 my-2 p-1 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start gap-4"
+          <PosterList
+            className="p-1 lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
+            loadingCount={movieDirectorResults ? 0 : 10}
           >
             {movieDirectorResults ? (
               movieDirectorResults.length ? (
                 movieDirectorResults.map((r, i) => (
-                  <li key={`${r.movie.ids.tmdb}-movie-${i}`}>
-                    <div className="bg-gray-300 rounded-lg w-35">
-                      <ImageLink
-                        ids={r.movie.ids}
-                        text={r.movie.title}
-                        type="movie"
-                      >
-                        {r.title && (
-                          <p className="text-sm text-gray-700 text-center py-1">
-                            {r.title}
-                          </p>
-                        )}
-                      </ImageLink>
-                    </div>
-                  </li>
+                  <PosterCard
+                    key={`${r.movie.ids.tmdb}-movie-${i}`}
+                    ids={r.movie.ids}
+                    text={r.movie.title}
+                    type="movie"
+                    caption={r.title}
+                    captionClassName="text-sm text-gray-700 text-center py-1"
+                    className="bg-gray-300"
+                  />
                 ))
               ) : (
                 <Empty />
               )
-            ) : (
-              placeholders
-            )}
-          </ul>
+            ) : null}
+          </PosterList>
 
           <h1 className="font-medium font-family-text">{t('shows')} </h1>
-          <ul
-            className="-mx-4 my-2 p-1 flex overflow-x-auto lg:mx-0 lg:overflow-auto lg:flex-wrap lg:justify-start gap-4"
+          <PosterList
+            className="p-1 lg:justify-start"
             style={{ WebkitOverflowScrolling: 'touch' }}
+            loadingCount={showResults ? 0 : 10}
           >
             {showResults ? (
               showResults.length ? (
                 showResults.map((r, i) => (
-                  <li key={`${r.show.ids.tmdb}-show-${i}`}>
-                    <div className="bg-gray-300 rounded-lg w-35">
-                      <ImageLink
-                        ids={r.show.ids}
-                        text={r.show.title}
-                        type="show"
-                      >
-                        {r.title && (
-                          <p className="text-sm text-gray-700 text-center py-1">
-                            {r.title}
-                          </p>
-                        )}
-                      </ImageLink>
-                    </div>
-                  </li>
+                  <PosterCard
+                    key={`${r.show.ids.tmdb}-show-${i}`}
+                    ids={r.show.ids}
+                    text={r.show.title}
+                    type="show"
+                    caption={r.title}
+                    captionClassName="text-sm text-gray-700 text-center py-1"
+                    className="bg-gray-300"
+                  />
                 ))
               ) : (
                 <Empty />
               )
-            ) : (
-              placeholders
-            )}
-          </ul>
+            ) : null}
+          </PosterList>
         </article>
       </div>
     </div>
