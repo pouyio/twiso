@@ -16,7 +16,6 @@ import { PersonMovies, PersonShows } from '../models/People';
 
 const Person: React.FC = () => {
   const [localState, setLocalState] = useState<IPerson>();
-  const [zoom, setZoom] = useState(false);
   const [movieResults, setMovieResults] =
     useState<{ movie: Movie; title: string }[]>();
   const [movieDirectorResults, setMovieDirectorResults] =
@@ -68,12 +67,7 @@ const Person: React.FC = () => {
     <div className="bg-gray-300">
       <title>{localState.name}</title>
       <div className="lg:max-w-6xl lg:mx-auto">
-        <div
-          onClick={() => setZoom((z) => !z)}
-          className={`${
-            zoom ? 'pb-10 z-10' : 'p-10 pt-5'
-          } bg-gray-300 sticky top-0 z-0 lg:hidden transition-[padding]`}
-        >
+        <div className="p-10 pt-5 bg-gray-300 sticky top-0 z-0 lg:hidden">
           {localState && (
             <Image
               ids={localState.ids}

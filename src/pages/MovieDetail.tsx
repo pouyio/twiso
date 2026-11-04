@@ -41,7 +41,6 @@ export default function MovieDetail() {
   const { share } = useShare();
   const dispatch = useAppDispatch();
   const { t } = useTranslate();
-  const [zoom, setZoom] = useState(false);
   const refreshIconRef = useRef<HTMLImageElement>(null);
   useEffect(() => {
     let cancelled = false;
@@ -152,42 +151,27 @@ export default function MovieDetail() {
       <title>{title}</title>
       <div className="lg:max-w-6xl m-auto">
         <div
-          onClick={() => setZoom((z) => !z)}
-          className={`${
-            zoom ? 'pb-10 z-10' : 'p-10 pt-5'
-          } ${bgClassName} sticky top-0 z-0 lg:hidden transition-[padding] md:flex md:justify-center`}
+          className={`p-10 pt-5 ${bgClassName} sticky top-0 z-0 lg:hidden md:flex md:justify-center`}
         >
           <Image ids={item.ids} text={title} type="movie" size="big" />
-          {!zoom && (
-            <>
-              {item.trailer && (
-                <a
-                  onClick={(e) => e.stopPropagation()}
-                  className="absolute"
-                  style={{ right: '4em', bottom: '4em' }}
-                  href={item.trailer}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Icon
-                    name="trailer"
-                    className="h-12"
-                    title="Youtube trailer"
-                  />
-                </a>
-              )}
-              <button
-                className="absolute"
-                style={{ left: '4em', bottom: '4em' }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onShare();
-                }}
-              >
-                <Icon name="share" className="h-12" title="Share" />
-              </button>
-            </>
+          {item.trailer && (
+            <a
+              className="absolute"
+              style={{ right: '4em', bottom: '4em' }}
+              href={item.trailer}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="trailer" className="h-12" title="Youtube trailer" />
+            </a>
           )}
+          <button
+            className="absolute"
+            style={{ left: '4em', bottom: '4em' }}
+            onClick={onShare}
+          >
+            <Icon name="share" className="h-12" title="Share" />
+          </button>
         </div>
         <article className="relative p-4 lg:p-8 bg-white rounded-t-lg lg:rounded-none">
           <div className="lg:hidden bg-gray-400 h-1 w-1/4 -mt-1 mb-5 mx-auto rounded-full"></div>
