@@ -9,7 +9,7 @@ export const NewVersion: React.FC = () => {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
   } = useRegisterSW({
-    onRegistered(r) {
+    onRegistered() {
       console.log('SW registered:');
     },
     onRegisterError(error) {

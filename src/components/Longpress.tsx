@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import { NavLink, useNavigate } from 'react-router';
+import { NavLink } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { setGlobalSearch } from '../state/slices/root';
 import { Icon } from './Icon';
@@ -8,7 +8,6 @@ import { useLongPress } from 'use-long-press';
 import { AuthContext } from '../contexts/AuthContext';
 
 const LongPress: React.FC = () => {
-  const navigate = useNavigate();
   const { t } = useTranslate();
   const { session } = useContext(AuthContext);
   const dispatch = useDispatch();
@@ -19,7 +18,7 @@ const LongPress: React.FC = () => {
       suppressClick.current = true;
       dispatch(setGlobalSearch(true));
     },
-    { threshold: 400 }
+    { threshold: 400 },
   );
 
   return (

@@ -86,7 +86,9 @@ html {
 
 body,
 .theme-wrapper {
-  transition: background-color 0.25s, color 0.25s;
+  transition:
+    background-color 0.25s,
+    color 0.25s;
   font-family: Nunito, sans-serif;
   height: 100%;
 }

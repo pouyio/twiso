@@ -37,7 +37,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
       return;
     }
     const seasonTag = Array.from(ref.current.children).find(
-      (c) => !c.classList.toString().includes(UNSELECTED_CLASS)
+      (c) => !c.classList.toString().includes(UNSELECTED_CLASS),
     ) as HTMLUListElement;
     if (!seasonTag) {
       return;
@@ -83,7 +83,7 @@ const SeasonSelector: React.FC<ISeasonsProps> = ({
             role="button"
             onClick={() =>
               setSelectedSeason(
-                selectedSeason?.number === s.number ? undefined : s.number
+                selectedSeason?.number === s.number ? undefined : s.number,
               )
             }
             key={s.ids.tmdb}

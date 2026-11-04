@@ -22,14 +22,16 @@ export const getImgsApi = (id: number, type: ItemType, tmdbApiKey: string) => {
   }
   return axios.get<ImageResponse>(
     `${IMG_URL}/${newType}/${id}/images?api_key=${tmdbApiKey}`,
-    { fetchOptions: { cache: 'no-store' } }
+    {
+      fetchOptions: { cache: 'no-store' },
+    },
   );
 };
 
 const fetchData = async (
   type: 'movie' | 'show' | 'person',
   id: string,
-  env: ENVs
+  env: ENVs,
 ) => {
   const tmdbType = type === 'show' ? 'tv' : type;
   const detailResponse = await axios.get<{
@@ -39,7 +41,9 @@ const fetchData = async (
     biography?: string;
   }>(
     `${IMG_URL}/${tmdbType}/${id}?api_key=${env.VITE_TMDB_API_KEY}&language=es`,
-    { fetchOptions: { cache: 'no-store' } }
+    {
+      fetchOptions: { cache: 'no-store' },
+    },
   );
   const item = detailResponse.data;
   let imgUrl = 'https://placehold.co/185x330';
@@ -49,14 +53,10 @@ const fetchData = async (
     return { imgUrl };
   }
 
-  const imgResponse = await getImgsApi(
-    Number(id),
-    type,
-    env.VITE_TMDB_API_KEY
-  );
+  const imgResponse = await getImgsApi(Number(id), type, env.VITE_TMDB_API_KEY);
   const poster = findFirstValid(
     (imgResponse.data.posters || imgResponse.data.profiles)!,
-    'es'
+    'es',
   );
 
   if (poster) {
@@ -102,7 +102,7 @@ export const onRequest = async (context: EventContext<ENVs, any, any>) => {
     <meta property="og:image" content="${imgUrl}" />
     <meta property="og:url" content="https://twiso.pages.dev${url.pathname}" />
     <meta property="og:description" content="${item?.overview}" />
-    `
+    `,
   );
 
   return new Response(finalData, {
