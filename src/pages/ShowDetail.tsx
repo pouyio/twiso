@@ -6,6 +6,7 @@ import Collapsable from '../components/Collapsable/Collapsable';
 import Emoji from '../components/Emoji';
 import Genres from '../components/Genres';
 import Image from '../components/Image';
+import ZoomableImage from '../components/ZoomableImage';
 import People from '../components/People';
 import Rating from '../components/Rating';
 import Related from '../components/Related';
@@ -228,7 +229,7 @@ export default function ShowDetail() {
       <title>{title}</title>
       <div className="lg:max-w-6xl m-auto">
         <div className={`p-10 pt-5 ${bgClassName} sticky top-0 z-0 lg:hidden`}>
-          <Image ids={item.ids} text={title} type="show" size="big" />
+          <ZoomableImage ids={item.ids} text={title} type="show" size="big" />
           {item.trailer && (
             <a
               className="absolute"
@@ -255,7 +256,7 @@ export default function ShowDetail() {
               className="hidden lg:block relative pr-4"
               style={{ minWidth: '10em', maxWidth: '10em' }}
             >
-              <Image ids={item.ids} text={title} type="show" size="small" />
+              <ZoomableImage ids={item.ids} text={title} type="show" size="small" />
               {item.trailer && (
                 <a
                   className="absolute"

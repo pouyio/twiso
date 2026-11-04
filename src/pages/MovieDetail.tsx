@@ -8,7 +8,9 @@ import Genres from '../components/Genres';
 import Image from '../components/Image';
 import People from '../components/People';
 import Rating from '../components/Rating';
+import ZoomableImage from '../components/ZoomableImage';
 import Related from '../components/Related';
+
 import WatchButton from '../components/WatchButton';
 import { AlertContext } from '../contexts/AlertContext';
 import { People as IPeople } from '../models/People';
@@ -153,7 +155,7 @@ export default function MovieDetail() {
         <div
           className={`p-10 pt-5 ${bgClassName} sticky top-0 z-0 lg:hidden md:flex md:justify-center`}
         >
-          <Image ids={item.ids} text={title} type="movie" size="big" />
+          <ZoomableImage ids={item.ids} text={title} type="movie" size="big" />
           {item.trailer && (
             <a
               className="absolute"
@@ -180,7 +182,7 @@ export default function MovieDetail() {
               className="hidden lg:block relative pr-4"
               style={{ minWidth: '10em', maxWidth: '10em' }}
             >
-              <Image ids={item.ids} text={title} type="movie" size="small" />
+              <ZoomableImage ids={item.ids} text={title} type="movie" size="small" />
               {item.trailer && (
                 <a
                   className="absolute"

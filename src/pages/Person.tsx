@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from '../components/Image';
+import ZoomableImage from '../components/ZoomableImage';
 import ImageList from '../components/ImageList';
 import Collapsable from '../components/Collapsable/Collapsable';
 import { getPersonItemsApi, getPersonApi } from '../utils/api';
@@ -68,7 +69,7 @@ const Person: React.FC = () => {
       <div className="lg:max-w-6xl lg:mx-auto">
         <div className="p-10 pt-5 bg-gray-300 sticky top-0 z-0 lg:hidden">
           {localState && (
-            <Image
+            <ZoomableImage
               ids={localState.ids}
               text={localState.name}
               type="person"
@@ -88,7 +89,7 @@ const Person: React.FC = () => {
               style={{ minWidth: '10em', maxWidth: '10em' }}
             >
               {localState && (
-                <Image
+                <ZoomableImage
                   ids={localState.ids}
                   text={localState.name}
                   type="person"
