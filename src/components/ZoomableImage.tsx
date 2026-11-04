@@ -1,16 +1,21 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import Image from './Image';
-import { IIds } from '../models/Ids';
+import { Ids } from '../models/Ids';
 
 interface IZoomableImageProps {
-  ids: IIds;
+  ids: Ids;
   text: string;
   type: 'movie' | 'show' | 'person';
   size?: 'small' | 'big';
 }
 
-export default function ZoomableImage({ ids, text, type, size = 'small' }: IZoomableImageProps) {
+export default function ZoomableImage({
+  ids,
+  text,
+  type,
+  size = 'small',
+}: IZoomableImageProps) {
   const [isZoomed, setIsZoomed] = useState(false);
 
   const scale = useMotionValue(1);
@@ -29,7 +34,7 @@ export default function ZoomableImage({ ids, text, type, size = 'small' }: IZoom
     if (e.touches.length === 2) {
       const dist = Math.hypot(
         e.touches[0].pageX - e.touches[1].pageX,
-        e.touches[0].pageY - e.touches[1].pageY
+        e.touches[0].pageY - e.touches[1].pageY,
       );
       initialDistance.current = dist;
       initialScale.current = scale.get();
@@ -40,12 +45,15 @@ export default function ZoomableImage({ ids, text, type, size = 'small' }: IZoom
     if (e.touches.length === 2 && initialDistance.current !== null) {
       const dist = Math.hypot(
         e.touches[0].pageX - e.touches[1].pageX,
-        e.touches[0].pageY - e.touches[1].pageY
+        e.touches[0].pageY - e.touches[1].pageY,
       );
-      
+
       const scaleFactor = dist / initialDistance.current!;
-      const newScale = Math.min(Math.max(initialScale.current * scaleFactor, 1), 4);
-      
+      const newScale = Math.min(
+        Math.max(initialScale.current * scaleFactor, 1),
+        4,
+      );
+
       scale.set(newScale);
       if (newScale > 1) {
         setIsZoomed(true);
@@ -77,7 +85,7 @@ export default function ZoomableImage({ ids, text, type, size = 'small' }: IZoom
   };
 
   return (
-    <div 
+    <div
       className="relative overflow-hidden w-full h-full flex justify-center items-center bg-black/5"
       style={{ touchAction: 'none' }}
       onTouchStart={handleTouchStart}
