@@ -52,9 +52,9 @@ export const GlobalFilter = () => {
           <Emoji className="ml-3 mr-2" emoji="❌" />
         </button>
       </div>
-      <ul className="flex flex-wrap items-stretch justify-center bg-blue-100 overflow-y-auto">
-        {results &&
-          results.map((item, i) => {
+      {results && (
+        <ul className="flex flex-wrap items-stretch justify-center bg-blue-100 overflow-y-auto gap-4 p-2">
+          {results.map((item, i) => {
             const type = getType(item);
             const title =
               language === 'es'
@@ -62,19 +62,13 @@ export const GlobalFilter = () => {
                 : item.title;
 
             return (
-              <li
-                key={item?.ids?.tmdb}
-                className="p-2"
-                style={{ flex: '1 0 50%', maxWidth: '10em' }}
-                tabIndex={i + 1}
-              >
+              <li key={item?.ids?.tmdb} className="w-35" tabIndex={i + 1}>
                 <div
                   className={`rounded-lg transition-colors duration-300 ${getBgClass(item, type)}`}
                 >
                   <ImageLink
                     text={title}
                     ids={item?.ids}
-                    style={{ minHeight: '13.5em' }}
                     type={type}
                     onClick={() => dispatch(setGlobalSearch(false))}
                   >
@@ -86,7 +80,8 @@ export const GlobalFilter = () => {
               </li>
             );
           })}
-      </ul>
+        </ul>
+      )}
     </section>
   );
 };

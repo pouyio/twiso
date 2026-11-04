@@ -161,7 +161,7 @@ export default function Search() {
                   </h1>
                   <ul
                     ref={showsScroll}
-                    className="-mx-4 p-1 flex flex-col flex-wrap content-start overflow-x-auto gap-2 max-h-120"
+                    className="-mx-4 p-1 flex flex-col flex-wrap content-start overflow-x-auto gap-4 max-h-120"
                     style={{
                       WebkitOverflowScrolling: 'touch',
                     }}
@@ -189,18 +189,13 @@ export default function Search() {
                   </h1>
                   <ul
                     ref={peopleScroll}
-                    className="-mx-2 -mt-2 flex flex-col flex-wrap content-start overflow-x-auto lg:flex-row"
+                    className="-mx-4 p-1 flex flex-col flex-wrap content-start overflow-x-auto gap-4 max-h-120"
                     style={{
                       WebkitOverflowScrolling: 'touch',
-                      maxHeight: '30em',
                     }}
                   >
                     {peopleResults.map((r) => (
-                      <li
-                        key={r.person.ids.tmdb}
-                        className="p-2"
-                        style={{ height: '13.5em', width: '9.5em' }}
-                      >
+                      <li key={r.person.ids.tmdb} className="w-35">
                         <ImageLink
                           ids={r.person.ids}
                           text={r.person.name}
