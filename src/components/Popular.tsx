@@ -43,10 +43,7 @@ const Popular: React.FC<IPopularProps> = ({ type }) => {
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {results.map((r) => (
-          <li
-            key={r[type]!.ids.tmdb}
-            className="w-35"
-          >
+          <li key={r[type]!.ids.tmdb} className="w-35">
             <ImageLink
               ids={(r.show || r.movie)!.ids}
               text={(r.show || r.movie)!.title}

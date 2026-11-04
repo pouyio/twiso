@@ -147,9 +147,7 @@ const Person: React.FC = () => {
             {movieResults ? (
               movieResults.length ? (
                 movieResults.map((r, i) => (
-                  <li
-                    key={`${r.movie.ids.tmdb}-movie-${i}`}
-                  >
+                  <li key={`${r.movie.ids.tmdb}-movie-${i}`}>
                     <div className="bg-gray-300 rounded-lg w-35">
                       <ImageLink
                         ids={r.movie.ids}
@@ -181,9 +179,7 @@ const Person: React.FC = () => {
             {movieDirectorResults ? (
               movieDirectorResults.length ? (
                 movieDirectorResults.map((r, i) => (
-                  <li
-                    key={`${r.movie.ids.tmdb}-movie-${i}`}
-                  >
+                  <li key={`${r.movie.ids.tmdb}-movie-${i}`}>
                     <div className="bg-gray-300 rounded-lg w-35">
                       <ImageLink
                         ids={r.movie.ids}
@@ -215,9 +211,7 @@ const Person: React.FC = () => {
             {showResults ? (
               showResults.length ? (
                 showResults.map((r, i) => (
-                  <li
-                    key={`${r.show.ids.tmdb}-show-${i}`}
-                  >
+                  <li key={`${r.show.ids.tmdb}-show-${i}`}>
                     <div className="bg-gray-300 rounded-lg w-35">
                       <ImageLink
                         ids={r.show.ids}

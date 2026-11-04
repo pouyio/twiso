@@ -92,15 +92,9 @@ const Related: React.FC<IRelatedProps> = ({ itemIds, type }) => {
       {results ? (
         results.length ? (
           results.map((r) => (
-            <li
-              key={r.ids.tmdb}
-            >
+            <li key={r.ids.tmdb}>
               <div className="w-35">
-                <ImageLink
-                  text={r.title}
-                  ids={r.ids}
-                  type={type}
-                  />
+                <ImageLink text={r.title} ids={r.ids} type={type} />
               </div>
             </li>
           ))

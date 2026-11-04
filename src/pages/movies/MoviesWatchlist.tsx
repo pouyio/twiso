@@ -48,10 +48,7 @@ export const MoviesWatchlist: React.FC = () => {
       ) : (
         <ul className="flex flex-wrap py-4 px-2 items-stretch justify-center select-none gap-4">
           {getItemsByPage().map((m, i) => (
-            <li
-              key={`${m.ids.tmdb}_${i}`}
-              className="w-35"
-            >
+            <li key={`${m.ids.tmdb}_${i}`} className="w-35">
               <ImageLink
                 text={m.title}
                 ids={m.ids}

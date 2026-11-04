@@ -85,10 +85,7 @@ const ShowsWatched: React.FC = () => {
       ) : (
         <ul className="flex flex-wrap py-4 px-2 items-stretch justify-center select-none gap-4">
           {getItemsByPage().map((m) => (
-            <li
-              key={m.ids.tmdb}
-              className="w-35"
-            >
+            <li key={m.ids.tmdb} className="w-35">
               <ImageLink
                 ids={m.ids}
                 text={m.title}
